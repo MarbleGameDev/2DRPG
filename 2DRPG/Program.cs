@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,10 +14,12 @@ namespace _2DRPG {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-			objects.Add(new RotatingTriangle() { angle = 10f, });
-			objects.Add(new RotatingTriangle());
-            Application.Run(new Form1());
-        }
-		public static List<IRenderObject> objects = new List<IRenderObject>();
+			WorldData.currentObjects.Add(new RotatingTriangle() { angle = 10f, });
+			WorldData.currentObjects.Add(new RotatingTriangle());
+			logic = new Thread(() => Logic.LogicStart());
+			Application.Run(new Form1());
+		}
+
+		public static Thread logic;
     }
 }

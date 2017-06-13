@@ -13,6 +13,7 @@ namespace _2DRPG {
     public partial class Form1 : Form {
 		public Form1() {
 			InitializeComponent();
+			Program.logic.Start();
 		}
 
 		private void RenderControl_ContextCreated(object sender, GlControlEventArgs e) {
@@ -21,6 +22,7 @@ namespace _2DRPG {
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
 			Gl.Ortho(0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+
 
 			// Uses multisampling, if available
 			if (glControl.MultisampleBits > 0)
@@ -32,8 +34,10 @@ namespace _2DRPG {
 		}
 
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
-			foreach (IRenderObject o in Program.objects) {
-				o.ContextUpdate();
+			object[] tobjects = WorldData.currentObjects.ToArray();
+			foreach (object o in tobjects) {
+				if (o is IRenderObject)
+				((IRenderObject)o).ContextUpdate();
 			}
 			// Change triangle rotation
 
@@ -41,8 +45,10 @@ namespace _2DRPG {
 
 		private void RenderControl_ContextDestroying(object sender, GlControlEventArgs e) {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
-			foreach (IRenderObject o in Program.objects) {
-				o.ContextDestroyed();
+			object[] tobjects = WorldData.currentObjects.ToArray();
+			foreach (object o in tobjects) {
+				if (o is IRenderObject)
+					((IRenderObject)o).ContextDestroyed();
 			}
 		}
 
@@ -65,8 +71,10 @@ namespace _2DRPG {
 			Gl.LoadIdentity();
 
 			// Setup & enable client states to specify vertex arrays, and use Gl.DrawArrays instead of Gl.Begin/End paradigm
-			foreach (IRenderObject o in Program.objects) {
-				o.Render();
+			object[] tobjects = WorldData.currentObjects.ToArray();
+			foreach (object o in tobjects) {
+				if (o is IRenderObject)
+					((IRenderObject)o).Render();
 			}
 		}
 		#endregion

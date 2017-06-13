@@ -25,7 +25,9 @@
 		private void InitializeComponent() {
 			this.RenderControl = new OpenGL.GlControl();
 			this.SuspendLayout();
-
+			// 
+			// RenderControl
+			// 
 			this.RenderControl.Animation = true;
 			this.RenderControl.BackColor = System.Drawing.Color.DimGray;
 			this.RenderControl.ColorBits = ((uint)(24u));
@@ -41,17 +43,19 @@
 			this.RenderControl.ContextDestroying += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextDestroying);
 			this.RenderControl.Render += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_Render);
 			this.RenderControl.ContextUpdate += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextUpdate);
+			this.RenderControl.KeyDown += new System.Windows.Forms.KeyEventHandler(Input.KeySent);
+			this.RenderControl.MouseClick += new System.Windows.Forms.MouseEventHandler(Input.MouseSent);
 			// 
-			// SampleForm
+			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(731, 428);
 			this.Controls.Add(this.RenderControl);
-
-			this.components = new System.ComponentModel.Container();
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Name = "Form1";
 			this.Text = "Test Form 1";
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion;
