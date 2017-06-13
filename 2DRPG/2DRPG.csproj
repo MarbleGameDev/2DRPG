@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1480FD35-FE02-448E-AF09-69FCD77212A1}</ProjectGuid>
+    <ProjectGuid>{AB6AA442-F2EA-4B0E-8C54-E8F3B2613431}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_2DRPG</RootNamespace>
     <AssemblyName>2DRPG</AssemblyName>
@@ -57,8 +57,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="IRenderObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RotatingTriangle.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

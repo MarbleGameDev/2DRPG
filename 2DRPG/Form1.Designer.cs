@@ -1,33 +1,32 @@
-﻿using OpenGL;
-namespace _2DRPG {
-    partial class Form1 {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+﻿namespace _2DRPG {
+	partial class Form1 {
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing) {
+			if (disposing && (components != null)) {
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-        #region Windows Form Designer generated code
+		#region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent() {
-            this.RenderControl = new OpenGL.GlControl();
-            this.SuspendLayout();
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent() {
+			this.RenderControl = new OpenGL.GlControl();
+			this.SuspendLayout();
 
-            this.RenderControl.Animation = true;
+			this.RenderControl.Animation = true;
 			this.RenderControl.BackColor = System.Drawing.Color.DimGray;
 			this.RenderControl.ColorBits = ((uint)(24u));
 			this.RenderControl.DepthBits = ((uint)(0u));
@@ -50,13 +49,13 @@ namespace _2DRPG {
 			this.ClientSize = new System.Drawing.Size(731, 428);
 			this.Controls.Add(this.RenderControl);
 
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Test Form 1";
-        }
+			this.components = new System.ComponentModel.Container();
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Text = "Test Form 1";
+		}
 
-        #endregion;
-        private OpenGL.GlControl RenderControl;
-    }
+		#endregion;
+		private OpenGL.GlControl RenderControl;
+	}
 }
 
