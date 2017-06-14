@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG {
-    interface IRenderObject {
+    interface IRenderable {
 		void Render();
 		void ContextUpdate();
 		void ContextCreated();

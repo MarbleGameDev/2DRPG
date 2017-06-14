@@ -14,8 +14,8 @@ namespace _2DRPG {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-			WorldData.currentObjects.Add(new RotatingTriangle() { angle = 10f, });
-			WorldData.currentObjects.Add(new RotatingTriangle());
+			//WorldData.currentObjects.Add(new TexturedObject());
+			WorldData.currentObjects.Add(new TexturedObject());
 			logic = new Thread(() => Logic.LogicStart());
 			Application.Run(new Form1());
 		}

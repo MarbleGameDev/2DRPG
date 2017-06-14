@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using OpenGL;
 
 namespace _2DRPG {
-	class RotatingTriangle : IRenderObject {
+	class RotatingTriangle : IRenderable {
 		public float[] arrayPosition = new float[] {
 			0.0f, 0.0f,
 			0.5f, 1.0f,
@@ -21,7 +21,7 @@ namespace _2DRPG {
 		public float angle = 0;
 
 		public void Render() {
-			Gl.Rotate(angle, 0.0f, 0.0f, 1.0f);
+			//Gl.Rotate(angle, 0.0f, 0.0f, 1.0f);
 			using (MemoryLock vertexArrayLock = new MemoryLock(arrayPosition))
 			using (MemoryLock vertexColorLock = new MemoryLock(arrayColor)) {
 				// Note: the use of MemoryLock objects is necessary to pin vertex arrays since they can be reallocated by GC

@@ -36,8 +36,8 @@ namespace _2DRPG {
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
-				if (o is IRenderObject)
-				((IRenderObject)o).ContextUpdate();
+				if (o is IRenderable)
+				((IRenderable)o).ContextUpdate();
 			}
 			// Change triangle rotation
 
@@ -47,8 +47,8 @@ namespace _2DRPG {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
-				if (o is IRenderObject)
-					((IRenderObject)o).ContextDestroyed();
+				if (o is IRenderable)
+					((IRenderable)o).ContextDestroyed();
 			}
 		}
 
@@ -73,8 +73,8 @@ namespace _2DRPG {
 			// Setup & enable client states to specify vertex arrays, and use Gl.DrawArrays instead of Gl.Begin/End paradigm
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
-				if (o is IRenderObject)
-					((IRenderObject)o).Render();
+				if (o is IRenderable)
+					((IRenderable)o).Render();
 			}
 		}
 		#endregion
