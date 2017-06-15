@@ -9,15 +9,24 @@ using System.Drawing.Imaging;
 
 namespace _2DRPG {
 	public static class TextureManager {
-		public static Dictionary<string, uint> loadedTextureIDs = new Dictionary<string, uint>();
+		private static Dictionary<string, uint> loadedTextureIDs = new Dictionary<string, uint>();
 
+		/// <summary>
+		/// Returns the Texture ID for the given textureName as set up earlier by LoadTexture
+		/// </summary>
+		/// <param name="textureName"></param>
+		/// <returns></returns>
 		public static uint GetTextureID(string textureName) {
 			if (loadedTextureIDs.ContainsKey(textureName))
 				return loadedTextureIDs[textureName];
 			return 0;
 		}
 
-
+		/// <summary>
+		/// Loads a texture from the file path specified into the manager for access via the textureName given
+		/// </summary>
+		/// <param name="path"></param>
+		/// <param name="textureName"></param>
 		public static void LoadTexture(string path, string textureName) {
 			if (!loadedTextureIDs.ContainsKey(textureName)) {
 				try {

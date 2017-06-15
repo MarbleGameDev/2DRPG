@@ -31,7 +31,7 @@
 			this.RenderControl.Animation = true;
 			this.RenderControl.BackColor = System.Drawing.Color.DimGray;
 			this.RenderControl.ColorBits = ((uint)(24u));
-			this.RenderControl.DepthBits = ((uint)(0u));
+			this.RenderControl.DepthBits = ((uint)(24u));
 			this.RenderControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RenderControl.Location = new System.Drawing.Point(0, 0);
 			this.RenderControl.MultisampleBits = ((uint)(4u));
@@ -43,8 +43,6 @@
 			this.RenderControl.ContextDestroying += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextDestroying);
 			this.RenderControl.Render += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_Render);
 			this.RenderControl.ContextUpdate += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextUpdate);
-			this.RenderControl.KeyDown += new System.Windows.Forms.KeyEventHandler(Input.KeySent);
-			this.RenderControl.MouseClick += new System.Windows.Forms.MouseEventHandler(Input.MouseSent);
 			// 
 			// Form1
 			// 
