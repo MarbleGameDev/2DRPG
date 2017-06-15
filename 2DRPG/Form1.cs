@@ -71,9 +71,12 @@ namespace _2DRPG {
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
 			Control senderControl = (Control)sender;
 			int idealWidth = (int)(senderControl.ClientSize.Height * (16f / 9));
+            int idealHeight = (int)(senderControl.ClientSize.Width * (9f / 16));
 			if (senderControl.ClientSize.Width > idealWidth)
 				Gl.Viewport((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
-			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            else
+                Gl.Viewport(0, (senderControl.ClientSize.Height - idealHeight) / 2, senderControl.ClientSize.Width, idealHeight);
+            Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			Gl.ClearColor(Color.Aqua.R, Color.Aqua.G, Color.Aqua.B, Color.Aqua.A);
 			// Animate triangle
 			Gl.MatrixMode(MatrixMode.Modelview);
