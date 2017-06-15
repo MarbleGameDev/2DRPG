@@ -19,17 +19,11 @@ namespace _2DRPG {
 		}
 
 		public float[] arrayPosition = new float[] {
-			0.0f, 0.0f,
+			0.25f, 0.0f,
 			0.25f, 1.0f,
-			0.75f, .9f,
-			1.0f, 0.0f,
+			0.75f, 1f,
+			.75f, 0.0f,
 
-		};
-		public float[] arrayColor = new float[] {
-			1.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f,
-			0.0f, 0.0f, 1.0f,
-			0.0f, 0.0f, 0.0f
 		};
 		public float[] texturePosition = new float[] {
 			0.0f, 0.0f,
@@ -40,50 +34,33 @@ namespace _2DRPG {
 
 		public void Render() {
 			using (MemoryLock vertexArrayLock = new MemoryLock(arrayPosition))
-			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition))
-			using (MemoryLock vertexColorLock = new MemoryLock(arrayColor)) {
+			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
 				Gl.Enable(EnableCap.Blend);
 				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-				//Gl.BindTexture(TextureTarget.Texture2d, LoadTexture("josh.png"));
-				//Gl.EnableClientState(EnableCap.Texture2d);
-				// Note: the use of MemoryLock objects is necessary to pin vertex arrays since they can be reallocated by GC
-				// at any time between the Gl.VertexPointer execution and the Gl.DrawArrays execution
-
-				Gl.VertexPointer(2, VertexPointerType.Float, 0, vertexArrayLock.Address);
+				LoadTexture("josh.png");	//Sets the texture used as josh.png
+				Gl.VertexPointer(2, VertexPointerType.Float, 0, vertexArrayLock.Address);	//Use the vertex array for vertex information
 				Gl.EnableClientState(EnableCap.VertexArray);
 
-				Gl.ColorPointer(3, ColorPointerType.Float, 0, vertexColorLock.Address);
-				Gl.EnableClientState(EnableCap.ColorArray);
-
-				Gl.TexCoordPointer(2, TexCoordPointerType.Float, 0, vertexTextureLock.Address);
+				Gl.TexCoordPointer(2, TexCoordPointerType.Float, 0, vertexTextureLock.Address);		//Use the texture array for texture coordinates
 				Gl.EnableClientState(EnableCap.TextureCoordArray);
-
-				Gl.DrawArrays(PrimitiveType.Quads, 0, 4);
-				uint id = Gl.GenTexture();
-				Gl.BindTexture(TextureTarget.Texture2d, id);
-				Bitmap bmp = new Bitmap("josh.png");
-				bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-				BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-				Gl.DrawPixels(16, 16, OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, data.Scan0);
+				
+				Gl.DrawArrays(PrimitiveType.Quads, 0, 4);	//Draw the quad
 			}
 
 		}
-
-		public uint LoadTexture(string path) {
+		//Sets the texture located at the path specified as the active bound texture
+		public void LoadTexture(string path) {
+			Gl.Enable(EnableCap.Texture2d);
+			Bitmap texSource = new Bitmap(path);	//Graps the bitmap data from the path
+			texSource.RotateFlip(RotateFlipType.RotateNoneFlipY);
 			uint id = Gl.GenTexture();
 			Gl.BindTexture(TextureTarget.Texture2d, id);
-			Bitmap bmp = new Bitmap(path);
-			BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			Gl.TexImage2D(TextureTarget.Texture2d, 0, InternalFormat.Rgba, data.Width, data.Height, 0, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-
-			bmp.UnlockBits(data);
-
-			Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-			Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
-			Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-			Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-
-			return id;
+			Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter , (int)TextureMagFilter.Nearest);	//Mipmap options
+			Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+			Gl.TexImage2D(TextureTarget.Texture2d, 0, InternalFormat.Rgba, texSource.Width, texSource.Height, 0, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);		//Sets up the blank GL 2d Texture
+			BitmapData bitmap_data = texSource.LockBits(new Rectangle(0, 0, texSource.Width, texSource.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);    //extracts the bitmap data
+			Gl.TexSubImage2D(TextureTarget.Texture2d, 0, 0, 0, texSource.Width, texSource.Height, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmap_data.Scan0);		//Adds the bitmap data to the texture
+			texSource.UnlockBits(bitmap_data);
 		}
 	}
 }
