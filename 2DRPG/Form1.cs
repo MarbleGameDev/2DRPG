@@ -71,8 +71,17 @@ namespace _2DRPG {
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
 			Control senderControl = (Control)sender;
 			int idealWidth = (int)(senderControl.ClientSize.Height * (16f / 9));
-			if (senderControl.ClientSize.Width > idealWidth)
+			if (senderControl.ClientSize.Width > idealWidth) {
 				Gl.Viewport((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
+				Screen.SetWindowDimensions(idealWidth, senderControl.ClientSize.Height);
+			} else if (senderControl.ClientSize.Width < idealWidth) {
+				int idealheight = (int)(senderControl.ClientSize.Width * (9f / 16));
+				Gl.Viewport(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
+				Screen.SetWindowDimensions(senderControl.ClientSize.Width, idealheight);
+			} else {
+				Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
+				Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
+			}
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			Gl.ClearColor(Color.Aqua.R, Color.Aqua.G, Color.Aqua.B, Color.Aqua.A);
 			// Animate triangle
