@@ -37,7 +37,6 @@ namespace _2DRPG {
 			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
 				Gl.Enable(EnableCap.Blend);
 				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-				LoadTexture("josh.png");	//Sets the texture used as josh.png
 				Gl.VertexPointer(2, VertexPointerType.Float, 0, vertexArrayLock.Address);	//Use the vertex array for vertex information
 				Gl.EnableClientState(EnableCap.VertexArray);
 
