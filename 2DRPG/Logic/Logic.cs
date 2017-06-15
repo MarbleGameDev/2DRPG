@@ -24,7 +24,6 @@ namespace _2DRPG {
 		private static Timer interactionTimer;
 
 		public static void LogicStart() {
-			System.Diagnostics.Debug.WriteLine(logicInterval);
 			movementTimer = new Timer() { Interval = logicInterval };
 			movementTimer.Elapsed += new ElapsedEventHandler(MovementLogic);
 			interactionTimer = new Timer() { Interval = logicInterval };

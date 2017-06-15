@@ -22,11 +22,17 @@ namespace _2DRPG {
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
 			Gl.Ortho(0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-
+			Gl.Enable(EnableCap.Texture2d);
 
 			// Uses multisampling, if available
 			if (glControl.MultisampleBits > 0)
 				Gl.Enable(EnableCap.Multisample);
+
+			object[] tobjects = WorldData.currentObjects.ToArray();
+			foreach (object o in tobjects) {
+				if (o is IRenderable)
+					((IRenderable)o).ContextCreated();
+			}
 		}
 
 		private void RenderControl_Render(object sender, GlControlEventArgs e) {

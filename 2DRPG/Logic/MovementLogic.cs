@@ -10,7 +10,6 @@ namespace _2DRPG {
 
 		//Logic for calculating movement
 		static void MovementLogic(object sender, ElapsedEventArgs e) {
-			System.Diagnostics.Debug.WriteLine("Tick");
 			//WorldData.currentObjects.Add(new RotatingTriangle());
 		}
 	}

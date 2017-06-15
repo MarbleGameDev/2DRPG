@@ -10,9 +10,11 @@ using System.Drawing.Imaging;
 namespace _2DRPG {
 	class TexturedObject : IRenderable {
 		public void ContextCreated() {
+			TextureManager.LoadTexture("Sprites/heart.png", "heart");
 		}
 
 		public void ContextDestroyed() {
+			TextureManager.UnloadTexture("heart");
 		}
 
 		public void ContextUpdate() {
@@ -37,29 +39,18 @@ namespace _2DRPG {
 			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
 				Gl.Enable(EnableCap.Blend);
 				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+				//Sets the texture used
+				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID("heart"));
 				Gl.VertexPointer(2, VertexPointerType.Float, 0, vertexArrayLock.Address);	//Use the vertex array for vertex information
 				Gl.EnableClientState(EnableCap.VertexArray);
 
 				Gl.TexCoordPointer(2, TexCoordPointerType.Float, 0, vertexTextureLock.Address);		//Use the texture array for texture coordinates
 				Gl.EnableClientState(EnableCap.TextureCoordArray);
 				
-				Gl.DrawArrays(PrimitiveType.Quads, 0, 4);	//Draw the quad
+				Gl.DrawArrays(PrimitiveType.Quads, 0, 4);   //Draw the quad
+				Gl.BindTexture(TextureTarget.Texture2d, 0);
 			}
 
-		}
-		//Sets the texture located at the path specified as the active bound texture
-		public void LoadTexture(string path) {
-			Gl.Enable(EnableCap.Texture2d);
-			Bitmap texSource = new Bitmap(path);	//Graps the bitmap data from the path
-			texSource.RotateFlip(RotateFlipType.RotateNoneFlipY);
-			uint id = Gl.GenTexture();
-			Gl.BindTexture(TextureTarget.Texture2d, id);
-			Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter , (int)TextureMagFilter.Nearest);	//Mipmap options
-			Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-			Gl.TexImage2D(TextureTarget.Texture2d, 0, InternalFormat.Rgba, texSource.Width, texSource.Height, 0, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);		//Sets up the blank GL 2d Texture
-			BitmapData bitmap_data = texSource.LockBits(new Rectangle(0, 0, texSource.Width, texSource.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);    //extracts the bitmap data
-			Gl.TexSubImage2D(TextureTarget.Texture2d, 0, 0, 0, texSource.Width, texSource.Height, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmap_data.Scan0);		//Adds the bitmap data to the texture
-			texSource.UnlockBits(bitmap_data);
 		}
 	}
 }
