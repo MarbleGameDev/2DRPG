@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG {
-	class MovableObject : TexturedObject {
+	class MovableObject : TexturedObject, IMovable {
 
 		public MovableObject(float x, float y, int layer, string textureName) : base(x, y, layer, textureName) {
 			Input.InputCall += MoveOnKey;
