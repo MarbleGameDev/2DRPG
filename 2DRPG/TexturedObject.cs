@@ -9,8 +9,37 @@ using System.Drawing.Imaging;
 
 namespace _2DRPG {
 	class TexturedObject : IRenderable {
-		public void ContextCreated() {
-			TextureManager.LoadTexture("Sprites/heart.png", "heart");	//Loads the png from the sprites folder and registers it as a texture named 'heart'
+
+        private float x;
+        private float y;
+        private int layer;
+        private String path;
+
+        public TexturedObject(float x, float y, int layer, String path)
+        {
+
+            this.x = x;
+            this.y = y;
+            this.layer = layer;
+            this.path = path;
+
+            MoveAbsolute(x,y,layer);
+
+        }
+
+        public TexturedObject()
+        {
+
+            x = 0;
+            y = 0;
+            layer = 5;
+            path = "Sprites/Default.png";
+            MoveAbsolute(x, y, layer);
+
+        }
+
+        public void ContextCreated() {
+			TextureManager.LoadTexture(path, "heart");	//Loads the png from the sprites folder and registers it as a texture named 'heart'
 		}
 
 		public void ContextDestroyed() {
@@ -74,7 +103,7 @@ namespace _2DRPG {
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <param name="z"></param>
-		public void MoveAbsolute(float x, float y, float z) {
+		public void MoveAbsolute(float x, float y, int layer) {
 			arrayPosition[0] = x - size;
 			arrayPosition[3] = x - size;
 			arrayPosition[6] = x + size;
@@ -83,10 +112,10 @@ namespace _2DRPG {
 			arrayPosition[10] = y - size;
 			arrayPosition[4] = y + size;
 			arrayPosition[7] = y + size;
-			arrayPosition[2] = z;
-			arrayPosition[5] = z;
-			arrayPosition[8] = z;
-			arrayPosition[11] = z;
+			arrayPosition[2] = (float)layer/10;
+			arrayPosition[5] = (float)layer / 10;
+			arrayPosition[8] = (float)layer / 10;
+			arrayPosition[11] = (float)layer / 10;
 		}
 	}
 }

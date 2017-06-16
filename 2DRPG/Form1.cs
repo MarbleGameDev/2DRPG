@@ -60,7 +60,7 @@ namespace _2DRPG {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
-				if (o is IRenderable)
+				if  (o is IRenderable)
 					((IRenderable)o).ContextDestroyed();
 			}
 		}
@@ -71,7 +71,7 @@ namespace _2DRPG {
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
 			Control senderControl = (Control)sender;
 			int idealWidth = (int)(senderControl.ClientSize.Height * (16f / 9));
-			if (senderControl.ClientSize.Width > idealWidth) {
+			if (senderControl.ClientSize.Width > idealWidth) { 
 				Gl.Viewport((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
 				Screen.SetWindowDimensions(idealWidth, senderControl.ClientSize.Height);
 			} else if (senderControl.ClientSize.Width < idealWidth) {
