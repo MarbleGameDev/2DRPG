@@ -58,10 +58,11 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Input.cs" />
-    <Compile Include="Logic\InteractionLogic.cs" />
-    <Compile Include="IRenderable.cs" />
-    <Compile Include="Logic\Logic.cs" />
-    <Compile Include="Logic\MovementLogic.cs" />
+    <Compile Include="LogicUtils\IInteractable.cs" />
+    <Compile Include="LogicUtils\CollisionLogic.cs" />
+    <Compile Include="LogicUtils\Logic.cs" />
+    <Compile Include="LogicUtils\MovementLogic.cs" />
+    <Compile Include="MovableObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RotatingTriangle.cs" />

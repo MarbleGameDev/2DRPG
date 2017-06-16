@@ -34,7 +34,7 @@
 			this.RenderControl.DepthBits = ((uint)(24u));
 			this.RenderControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RenderControl.Location = new System.Drawing.Point(0, 0);
-			this.RenderControl.MultisampleBits = ((uint)(4u));
+			this.RenderControl.MultisampleBits = ((uint)(0u));
 			this.RenderControl.Name = "RenderControl";
 			this.RenderControl.Size = new System.Drawing.Size(731, 428);
 			this.RenderControl.StencilBits = ((uint)(0u));
@@ -52,6 +52,7 @@
 			this.Controls.Add(this.RenderControl);
 			this.Name = "Form1";
 			this.Text = "Test Form 1";
+			this.RenderControl.KeyDown += new System.Windows.Forms.KeyEventHandler(Input.KeySent);
 			this.ResumeLayout(false);
 
 		}

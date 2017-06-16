@@ -53,5 +53,9 @@ namespace _2DRPG {
 				loadedTextureIDs.Remove(textureName);
 		}
 
+		public static void ClearTextures() {
+			loadedTextureIDs.Clear();
+		}
+
 	}
 }

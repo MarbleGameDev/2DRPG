@@ -14,8 +14,7 @@ namespace _2DRPG {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-			WorldData.LoadCurrentObjects();
-			logic = new Thread(() => Logic.LogicStart());
+			logic = new Thread(() => LogicUtils.Logic.LogicStart());
 			Application.Run(new Form1());
 		}
 

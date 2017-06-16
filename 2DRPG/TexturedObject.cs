@@ -8,22 +8,22 @@ using OpenGL;
 using System.Drawing.Imaging;
 
 namespace _2DRPG {
-	class TexturedObject : IRenderable {
+	class TexturedObject {
 
         private float x;
         private float y;
         private int layer;
-        private String path;
+        private String texName;
 
-        public TexturedObject(float x, float y, int layer, String path)
+        public TexturedObject(float x, float y, int layer, String textureName)
         {
 
             this.x = x;
             this.y = y;
             this.layer = layer;
-            this.path = path;
+            this.texName = textureName;
 
-            MoveAbsolute(x,y,layer);
+            SetPosition(x,y,layer);
 
         }
 
@@ -33,22 +33,24 @@ namespace _2DRPG {
             x = 0;
             y = 0;
             layer = 5;
-            path = "Sprites/Default.png";
-            MoveAbsolute(x, y, layer);
+            texName = "default";
+            SetPosition(x, y, layer);
 
         }
 
-        public void ContextCreated() {
-			TextureManager.LoadTexture(path, "heart");	//Loads the png from the sprites folder and registers it as a texture named 'heart'
+		public TexturedObject(string textureName) {
+			x = 0;
+			y = 0;
+			layer = 5;
+			texName = textureName;
+			SetPosition(x, y, layer);
 		}
 
-		public void ContextDestroyed() {
-			TextureManager.UnloadTexture("heart");
-		}
+        public void ContextCreated() { }
 
-		public void ContextUpdate() {
+		public void ContextDestroyed() { }
 
-		}
+		public void ContextUpdate() { }
 
 		public float size = .25f;
 
@@ -71,7 +73,7 @@ namespace _2DRPG {
 			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
 				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				//Sets the texture used
-				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID("heart"));
+				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID(texName));
 				Gl.VertexPointer(3, VertexPointerType.Float, 0, vertexArrayLock.Address);	//Use the vertex array for vertex information
 				Gl.EnableClientState(EnableCap.VertexArray);
 
@@ -83,19 +85,6 @@ namespace _2DRPG {
 			}
 			//System.Diagnostics.Debug.WriteLine(Gl.GetError());
 		}
-		/// <summary>
-		/// Shifts the quad by the values given in x,y,z
-		/// </summary>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="z"></param>
-		public void MoveRelative(float x = 0, float y = 0, float z = 0) {
-			for (int i = 0; i < 4; i++) {
-				arrayPosition[i * 3] += x;
-				arrayPosition[i * 3 + 1] += y;
-				arrayPosition[i * 3 + 2] += z;
-			}
-		}
 
 		/// <summary>
 		/// Sets the position of the Quad
@@ -103,7 +92,7 @@ namespace _2DRPG {
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <param name="z"></param>
-		public void MoveAbsolute(float x, float y, int layer) {
+		public void SetPosition(float x, float y, int layer) {
 			arrayPosition[0] = x - size;
 			arrayPosition[3] = x - size;
 			arrayPosition[6] = x + size;
@@ -112,10 +101,14 @@ namespace _2DRPG {
 			arrayPosition[10] = y - size;
 			arrayPosition[4] = y + size;
 			arrayPosition[7] = y + size;
-			arrayPosition[2] = (float)layer/10;
-			arrayPosition[5] = (float)layer / 10;
-			arrayPosition[8] = (float)layer / 10;
-			arrayPosition[11] = (float)layer / 10;
+			SetLayer(layer);
+		}
+
+		public void SetLayer(int layer) {
+			arrayPosition[2] = -(float)layer / 10;
+			arrayPosition[5] = -(float)layer / 10;
+			arrayPosition[8] = -(float)layer / 10;
+			arrayPosition[11] = -(float)layer / 10;
 		}
 	}
 }

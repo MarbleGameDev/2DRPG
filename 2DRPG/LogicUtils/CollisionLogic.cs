@@ -5,12 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace _2DRPG {
+namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
+		static void CollisionLogic(object sender, ElapsedEventArgs e) {
 
-		//Logic for calculating movement
-		static void MovementLogic(object sender, ElapsedEventArgs e) {
-			//WorldData.currentObjects.Add(new RotatingTriangle());
 		}
 	}
 }

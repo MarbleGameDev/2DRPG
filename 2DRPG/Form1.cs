@@ -11,6 +11,9 @@ using OpenGL;
 
 namespace _2DRPG {
     public partial class Form1 : Form {
+
+		public static bool contextCreated = false;
+
 		public Form1() {
 			InitializeComponent();
 			Program.logic.Start();
@@ -34,11 +37,12 @@ namespace _2DRPG {
 			// Uses multisampling, if available
 			if (glControl.MultisampleBits > 0)
 				Gl.Enable(EnableCap.Multisample);
-
+			contextCreated = true;
+			WorldData.LoadCurrentTextures();
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
-				if (o is IRenderable)
-					((IRenderable)o).ContextCreated();
+				if (o is TexturedObject)
+					((TexturedObject)o).ContextCreated();
 			}
 		}
 
@@ -49,8 +53,8 @@ namespace _2DRPG {
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
-				if (o is IRenderable)
-				((IRenderable)o).ContextUpdate();
+				if (o is TexturedObject)
+				((TexturedObject)o).ContextUpdate();
 			}
 			// Change triangle rotation
 
@@ -60,8 +64,8 @@ namespace _2DRPG {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
-				if  (o is IRenderable)
-					((IRenderable)o).ContextDestroyed();
+				if  (o is TexturedObject)
+					((TexturedObject)o).ContextDestroyed();
 			}
 		}
 
@@ -91,8 +95,8 @@ namespace _2DRPG {
 			// Setup & enable client states to specify vertex arrays, and use Gl.DrawArrays instead of Gl.Begin/End paradigm
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
-				if (o is IRenderable)
-					((IRenderable)o).Render();
+				if (o is TexturedObject)
+					((TexturedObject)o).Render();
 			}
 		}
 		#endregion

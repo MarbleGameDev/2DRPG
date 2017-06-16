@@ -9,7 +9,7 @@ namespace _2DRPG {
 	/// <summary>
 	/// Sample Code provided by OpenGL.NET, implemented with the current rendering system
 	/// </summary>
-	class RotatingTriangle : IRenderable {
+	class RotatingTriangle {
 		public float[] arrayPosition = new float[] {
 			0.0f, 0.0f,
 			0.5f, 1.0f,
