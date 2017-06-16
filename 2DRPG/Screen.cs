@@ -14,5 +14,14 @@ namespace _2DRPG {
 			WindowWidth = width;
 			windowRatio = (float)width / height;
 		}
+		/// <summary>
+		/// Converts the conventional -1 to 1 width coordinates for screen space into the correct values for the orthographic projection
+		/// Height is the same
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static float ConvertWidth(float value) {
+			return value *= Screen.windowRatio;
+		}
 	}
 }

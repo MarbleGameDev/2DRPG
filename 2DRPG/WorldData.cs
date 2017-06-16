@@ -16,7 +16,8 @@ namespace _2DRPG {
 			TexturedObject t = new TexturedObject();
 			TexturedObject j = new TexturedObject();
 			t.MoveRelative(0.2f, 0, -.5f);
-			j.MoveRelative(0, 0.1f, -.6f);	//Testing two objects of differing depths
+			j.MoveRelative(0, 0f, -.6f);    //Testing two objects of differing depths
+			t.MoveAbsolute(0f, 0, 0);
 			currentObjects.Add(t);
 			currentObjects.Add(j);
 		}

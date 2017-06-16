@@ -21,7 +21,7 @@ namespace _2DRPG {
 			// Here you can allocate resources or initialize state
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
-			Gl.Ortho(0.0, 1.0, 0.0, 1.0, -0.1, 10.0);
+			Gl.Ortho(-16d/9, 16d/9, -1.0, 1.0, -0.1, 10.0);
 			Gl.Enable(EnableCap.Texture2d);
 			Gl.Enable(EnableCap.Blend);
 			Gl.Enable(EnableCap.DepthTest);		//Set up Z Depth tests for drawing pixels

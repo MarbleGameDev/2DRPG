@@ -38,10 +38,6 @@ namespace _2DRPG {
 		};
 
 		public void Render() {
-			float[] oldArr = arrayPosition.ToArray();
-			for(int i = 0; i < arrayPosition.Length; i += 3) {
-				arrayPosition[i] /= Screen.windowRatio;
-			}
 			using (MemoryLock vertexArrayLock = new MemoryLock(arrayPosition))
 			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
 				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
@@ -56,7 +52,6 @@ namespace _2DRPG {
 				Gl.DrawArrays(PrimitiveType.Quads, 0, 4);   //Draw the quad
 				Gl.BindTexture(TextureTarget.Texture2d, 0);
 			}
-			arrayPosition = oldArr.ToArray();
 			//System.Diagnostics.Debug.WriteLine(Gl.GetError());
 		}
 		/// <summary>
