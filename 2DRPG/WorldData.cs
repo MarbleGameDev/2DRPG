@@ -15,7 +15,7 @@ namespace _2DRPG {
 		/// Loads the objects and their data into the currentObjects list
 		/// </summary>
 		public static void LoadCurrentObjects() {
-			MovableObject t = new MovableObject("heart");
+			ControllableObject t = new ControllableObject("heart");
 			TexturedObject j = new TexturedObject();
 			t.MoveRelative(0.2f, 0.1f);
 			t.SetLayer(2);

@@ -7,15 +7,9 @@ using System.Threading.Tasks;
 namespace _2DRPG {
 	class MovableObject : TexturedObject, IMovable {
 
-		public MovableObject(float x, float y, int layer, string textureName) : base(x, y, layer, textureName) {
-			Input.InputCall += MoveOnKey;
-		}
-		public MovableObject() : base() {
-			Input.InputCall += MoveOnKey;
-		}
-		public MovableObject(String textureName) : base(textureName) {
-			Input.InputCall += MoveOnKey;
-		}
+		public MovableObject(float x, float y, int layer, string textureName) : base(x, y, layer, textureName) { }
+		public MovableObject() : base() { }
+		public MovableObject(String textureName) : base(textureName) { }
 
 		/// <summary>
 		/// Shifts the quad by the values given in x,y,z
@@ -30,15 +24,5 @@ namespace _2DRPG {
 			}
 		}
 
-		private void MoveOnKey(Input.KeyInputs k) {
-			if (k.Equals(Input.KeyInputs.left))
-				MoveRelative(-.03125f, 0);
-			else if (k.Equals(Input.KeyInputs.right))
-				MoveRelative(.03125f, 0);
-			else if (k.Equals(Input.KeyInputs.up))
-				MoveRelative(0f, .03125f);
-			else if (k.Equals(Input.KeyInputs.down))
-				MoveRelative(0f, -.03125f);
-		}
 	}
 }
