@@ -46,8 +46,14 @@ namespace _2DRPG {
 					System.Diagnostics.Debug.WriteLine("Could not find file: " + path);
 				}
 
-			}
-		}
+                Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+                Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+                Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+                Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+
+
+            }
+        }
 		public static void UnloadTexture(string textureName) {
 			if (loadedTextureIDs.ContainsKey(textureName))
 				loadedTextureIDs.Remove(textureName);
