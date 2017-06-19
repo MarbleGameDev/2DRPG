@@ -10,41 +10,26 @@ using System.Drawing.Imaging;
 namespace _2DRPG {
 	class TexturedObject {
 
-        private float x;
-        private float y;
-        private int layer;
+        protected float screenX;
+        protected float screenY;
+        protected int layer;
         private String texName;
 
-        public TexturedObject(float x, float y, int layer, String textureName)
+        public TexturedObject(float x, float y, int layer, string textureName)
         {
 
-            this.x = x;
-            this.y = y;
+            this.screenX = x;
+            this.screenY = y;
             this.layer = layer;
             this.texName = textureName;
 
-            SetPosition(x,y,layer);
+            SetScreenPosition(x,y,layer);
 
         }
 
-        public TexturedObject()
-        {
+        public TexturedObject() : this(0, 0, 5, "default") { }
 
-            x = 0;
-            y = 0;
-            layer = 5;
-            texName = "default";
-            SetPosition(x, y, layer);
-
-        }
-
-		public TexturedObject(string textureName) {
-			x = 0;
-			y = 0;
-			layer = 5;
-			texName = textureName;
-			SetPosition(x, y, layer);
-		}
+		public TexturedObject(string textureName) : this(0, 0, 5, textureName) { }
 
         public void ContextCreated() { }
 
@@ -87,12 +72,12 @@ namespace _2DRPG {
 		}
 
 		/// <summary>
-		/// Sets the position of the Quad
+		/// Sets the position of the Quad on the Screen
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <param name="z"></param>
-		public void SetPosition(float x, float y, int layer) {
+		public void SetScreenPosition(float x, float y) {
 			arrayPosition[0] = x - size;
 			arrayPosition[3] = x - size;
 			arrayPosition[6] = x + size;
@@ -101,7 +86,19 @@ namespace _2DRPG {
 			arrayPosition[10] = y - size;
 			arrayPosition[4] = y + size;
 			arrayPosition[7] = y + size;
+		}
+		public void SetScreenPosition(float x, float y, int layer) {
+			SetScreenPosition(x, y);
 			SetLayer(layer);
+		}
+
+		/// <summary>
+		/// Moves the Screen Position by the floats passed
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void ShiftScreenPosition(float x, float y) {
+			SetScreenPosition(screenX + x, screenY + y);
 		}
 
 		public void SetLayer(int layer) {

@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG.Entities {
-	class StandardMob : MovableAnimatedObject, IEffectable, IDamagable {
+	class StandardMob : World.Objects.WorldObjectMovableAnimated, IEffectable, IDamagable {
 		public float entityHealth;
 		List<EntityEffect> effectList = new List<EntityEffect>();
 
 		public StandardMob() : base() {
 			entityHealth = 10;
 		}
-		public StandardMob(float x, float y, int layer, string textureName, float health = 10) : base(x, y, layer, textureName) {
+		public StandardMob(float x, float y, string textureName, float health = 10) : base(x, y, textureName) {
 			entityHealth = health;
 		}
 		public StandardMob(string textureName, float health = 10) : base(textureName) {

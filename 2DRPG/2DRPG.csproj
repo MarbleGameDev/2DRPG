@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimatedObject.cs" />
-    <Compile Include="ControllableObject.cs" />
+    <Compile Include="World\Objects\WorldObjectControllable.cs" />
     <Compile Include="EffectAttack.cs" />
     <Compile Include="Entities\EntityEffect.cs" />
     <Compile Include="Entities\StandardMob.cs" />
@@ -62,19 +62,20 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="IAnimated.cs" />
+    <Compile Include="GUI\UIAnimated.cs" />
+    <Compile Include="GUI\UIBase.cs" />
     <Compile Include="Entities\IDamagable.cs" />
     <Compile Include="Entities\IEffectable.cs" />
-    <Compile Include="IMovable.cs" />
+    <Compile Include="World\Objects\IMovable.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="LogicUtils\AnimationLogic.cs" />
-    <Compile Include="IInteractable.cs" />
+    <Compile Include="World\Objects\IInteractable.cs" />
     <Compile Include="LogicUtils\CollisionLogic.cs" />
     <Compile Include="LogicUtils\Logic.cs" />
     <Compile Include="LogicUtils\EntityLogic.cs" />
     <Compile Include="Attack.cs" />
-    <Compile Include="MovableAnimatedObject.cs" />
-    <Compile Include="MovableObject.cs" />
+    <Compile Include="Player\MCObject.cs" />
+    <Compile Include="Player\PlayerData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RotatingTriangle.cs" />
@@ -82,6 +83,13 @@
     <Compile Include="TexturedObject.cs" />
     <Compile Include="TextureManager.cs" />
     <Compile Include="WorldData.cs" />
+    <Compile Include="World\Objects\WorldObjectAnimated.cs" />
+    <Compile Include="World\Objects\WorldObjectBase.cs" />
+    <Compile Include="World\Objects\WorldObjectMovable.cs" />
+    <Compile Include="World\Objects\WorldObjectMovableAnimated.cs" />
+    <Compile Include="World\Regions\IWorldRegion.cs" />
+    <Compile Include="World\Regions\Region-1x0.cs" />
+    <Compile Include="World\Regions\Region0x0.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

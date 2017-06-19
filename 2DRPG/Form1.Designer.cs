@@ -43,6 +43,7 @@
 			this.RenderControl.ContextDestroying += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextDestroying);
 			this.RenderControl.Render += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_Render);
 			this.RenderControl.ContextUpdate += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextUpdate);
+			this.RenderControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownE);
 			// 
 			// Form1
 			// 
@@ -52,7 +53,6 @@
 			this.Controls.Add(this.RenderControl);
 			this.Name = "Form1";
 			this.Text = "Test Form 1";
-			this.RenderControl.KeyDown += new System.Windows.Forms.KeyEventHandler(Input.KeySent);
 			this.ResumeLayout(false);
 
 		}

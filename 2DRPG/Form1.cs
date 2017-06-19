@@ -38,7 +38,7 @@ namespace _2DRPG {
 			if (glControl.MultisampleBits > 0)
 				Gl.Enable(EnableCap.Multisample);
 			contextCreated = true;
-			WorldData.LoadCurrentTextures();
+			WorldData.WorldStartup();
 			object[] tobjects = WorldData.currentObjects.ToArray();
 			foreach (object o in tobjects) {
 				if (o is TexturedObject)
@@ -100,5 +100,9 @@ namespace _2DRPG {
 			}
 		}
 		#endregion
+
+		private void KeyDownE(object sender, KeyEventArgs e) {
+			Input.KeySent(sender, e);
+		}
 	}
 }

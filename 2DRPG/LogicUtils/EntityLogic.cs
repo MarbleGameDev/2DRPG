@@ -9,8 +9,8 @@ namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 		//Logic for calculating entities
 		static void EntityLogic(object sender, ElapsedEventArgs e) {
-			object[] worldObjects = WorldData.currentObjects.ToArray();
-			foreach (object o in worldObjects) {
+			World.Objects.WorldObjectBase[] worldObjects = WorldData.currentObjects.ToArray();
+			foreach (World.Objects.WorldObjectBase o in worldObjects) {
 				if (o is Entities.IEffectable) {
 					((Entities.IEffectable)o).EffectTick();
 				}

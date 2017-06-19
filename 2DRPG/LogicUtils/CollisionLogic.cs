@@ -4,23 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using _2DRPG.World.Objects;
 
 namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 		static void CollisionLogic(object sender, ElapsedEventArgs e) {
-			object[] worldObjects = WorldData.currentObjects.ToArray();
-			foreach (object o in worldObjects) {
-				if (o is IMovable && o is TexturedObject) {
-					float[] testPoints = ((TexturedObject)o).arrayPosition;
-					foreach (object j in worldObjects) {
-						if (j != o && j is TexturedObject) {
-							if (CheckIntersection(((TexturedObject)j).arrayPosition, testPoints[0], testPoints[1]))		//1 is bottom left
+			WorldObjectBase[] worldObjects = WorldData.currentObjects.ToArray();
+			foreach (WorldObjectBase o in worldObjects) {
+				if (o is IMovable) {
+					float[] testPoints = o.arrayPosition;
+					foreach (WorldObjectBase j in worldObjects) {
+						if (j != o) {
+							if (CheckIntersection(j.arrayPosition, testPoints[0], testPoints[1]))		//1 is bottom left
 								FixCollision((IMovable)o, 1);
-							else if (CheckIntersection(((TexturedObject)j).arrayPosition, testPoints[3], testPoints[4]))	//2 is upper left
+							else if (CheckIntersection(j.arrayPosition, testPoints[3], testPoints[4]))	//2 is upper left
 								FixCollision((IMovable)o, 2);
-							else if (CheckIntersection(((TexturedObject)j).arrayPosition, testPoints[6], testPoints[7]))	//3 is upper right
+							else if (CheckIntersection(j.arrayPosition, testPoints[6], testPoints[7]))	//3 is upper right
 								FixCollision((IMovable)o, 3);
-							else if (CheckIntersection(((TexturedObject)j).arrayPosition, testPoints[9], testPoints[10]))	//4 is bottom right
+							else if (CheckIntersection(j.arrayPosition, testPoints[9], testPoints[10]))	//4 is bottom right
 								FixCollision((IMovable)o, 4);
 						}
 					}
@@ -51,7 +52,10 @@ namespace _2DRPG.LogicUtils {
 			return PnPoly(xCoords, yCoords, testX, testY);
 		}
 
+		static bool fixCollisionEnabled = false;
 		private static void FixCollision(IMovable o, int direction) {
+			if (!fixCollisionEnabled)
+				return;
 			//System.Diagnostics.Debug.WriteLine("Collision: " + direction);
 			switch (direction) {
 				default:
@@ -68,6 +72,7 @@ namespace _2DRPG.LogicUtils {
 					o.MoveRelative(-.05f, .05f);
 					break;
 			}
+
 		}
 
 		/**

@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _2DRPG {
-	public interface IAnimated {
-		void SpriteUpdate();
+namespace _2DRPG.GUI {
+	class UIAnimated : UIBase{
+
+
+		public void SpriteUpdate() {
+
+		}
 	}
 }

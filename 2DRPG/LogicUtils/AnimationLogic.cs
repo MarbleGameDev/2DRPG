@@ -9,11 +9,17 @@ namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 
 		public static void AnimationLogic(object sender, ElapsedEventArgs e) {
-			object[] worldObjects = WorldData.currentObjects.ToArray();
+			World.Objects.WorldObjectBase[] worldObjects = WorldData.currentObjects.ToArray();
 			foreach (object o in worldObjects) {
-				if (o is IAnimated)
-					((IAnimated)o).SpriteUpdate();
+				if (o is World.Objects.WorldObjectAnimated)
+					((World.Objects.WorldObjectAnimated)o).SpriteUpdate();
 			}
+			GUI.UIBase[] guiObjects = Screen.UIObjects.ToArray();
+			foreach (GUI.UIBase u in guiObjects) {
+				if (u is GUI.UIAnimated)
+					((GUI.UIAnimated)u).SpriteUpdate();
+			}
+
 		}
 
 	}
