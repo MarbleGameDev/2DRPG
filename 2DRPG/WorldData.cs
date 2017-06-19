@@ -10,7 +10,6 @@ using System.Drawing.Imaging;
 namespace _2DRPG {
 	public static class WorldData {
 		public static List<object> currentObjects = new List<object>(); //TODO: replace with a more accurate object type
-
 		/// <summary>
 		/// Loads the objects and their data into the currentObjects list
 		/// </summary>
@@ -22,6 +21,10 @@ namespace _2DRPG {
 			//t.MoveAbsolute(0f, 0, 0);
 			currentObjects.Add(t);
 			currentObjects.Add(j);
+
+			Entities.StandardMob mob = new Entities.StandardMob("josh", 15);
+			mob.ReceiveAttack(new EffectAttack(new Entities.EntityEffect(() => { System.Diagnostics.Debug.WriteLine("Test Effect"); }, 5)));	//Attack the mob with an attack that deals an effect for 5 seconds that just outputs "Test Effect"
+			currentObjects.Add(mob);
 		}
 
 		/// <summary>

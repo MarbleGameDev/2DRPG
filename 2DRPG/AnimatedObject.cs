@@ -11,6 +11,7 @@ namespace _2DRPG {
 		public AnimatedObject() : base() { }
 		public AnimatedObject(String textureName) : base(textureName) { }
 
+		//Put code to change sprites on animation intervals here
 		public void SpriteUpdate() {
 
 		}

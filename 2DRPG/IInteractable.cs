@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _2DRPG.LogicUtils {
+namespace _2DRPG {
 	/// <summary>
 	/// Interface allowing the player to interact with an object
 	/// </summary>

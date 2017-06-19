@@ -53,6 +53,9 @@
   <ItemGroup>
     <Compile Include="AnimatedObject.cs" />
     <Compile Include="ControllableObject.cs" />
+    <Compile Include="EffectAttack.cs" />
+    <Compile Include="Entities\EntityEffect.cs" />
+    <Compile Include="Entities\StandardMob.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,13 +63,16 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="IAnimated.cs" />
+    <Compile Include="Entities\IDamagable.cs" />
+    <Compile Include="Entities\IEffectable.cs" />
     <Compile Include="IMovable.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="LogicUtils\AnimationLogic.cs" />
-    <Compile Include="LogicUtils\IInteractable.cs" />
+    <Compile Include="IInteractable.cs" />
     <Compile Include="LogicUtils\CollisionLogic.cs" />
     <Compile Include="LogicUtils\Logic.cs" />
-    <Compile Include="LogicUtils\MovementLogic.cs" />
+    <Compile Include="LogicUtils\EntityLogic.cs" />
+    <Compile Include="Attack.cs" />
     <Compile Include="MovableAnimatedObject.cs" />
     <Compile Include="MovableObject.cs" />
     <Compile Include="Program.cs" />
