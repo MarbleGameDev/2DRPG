@@ -13,6 +13,12 @@ namespace _2DRPG {
 
 		public static List<UIBase> UIObjects = new List<UIBase>();
 
+		public static void ScreenStartup() {
+			LoadGUITextures();
+			UIButton b = new UIButton(-1.7f, .8f, .1f, .1f, () => { System.Diagnostics.Debug.WriteLine("ayo"); });
+			UIObjects.Add(b);
+
+		}
 
 		public static void SetWindowDimensions(int width, int height) {
 			WindowHeight = height;
@@ -26,7 +32,12 @@ namespace _2DRPG {
 		/// <param name="value"></param>
 		/// <returns></returns>
 		public static float ConvertWidth(float value) {
-			return value *= Screen.windowRatio;
+			return value * windowRatio;
+		}
+
+		public static void LoadGUITextures() {
+			TextureManager.LoadTexture("Sprites/Button.png", "Button");
+			TextureManager.LoadTexture("Sprites/Heart.png", "Heart");
 		}
 	}
 }

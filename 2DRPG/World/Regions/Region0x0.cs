@@ -23,6 +23,7 @@ namespace _2DRPG.World.Regions {
 			t.SetLayer(2);
 			regionObjects.Add(t);
 			regionObjects.Add(j);
+			//regionObjects.Add(new WorldObjectAnimated("Heart"));
 
 			return regionObjects;
 		}

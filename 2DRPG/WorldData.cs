@@ -13,8 +13,8 @@ namespace _2DRPG {
 	static class WorldData {
 		static int CurrentRegionX = 0;
 		static int CurrentRegionY = 0;
-		static float CurrentX = 0;
-		static float CurrentY = 0;
+		public static float CurrentX = 0;
+		public static float CurrentY = 0;
 		public static List<WorldObjectBase> currentObjects = new List<WorldObjectBase>(); //TODO: replace with a more accurate object type
 		static Dictionary<string, IWorldRegion> regionObjects = new Dictionary<string, IWorldRegion>();
 		static List<IWorldRegion> loadedRegions = new List<IWorldRegion>();
@@ -59,7 +59,7 @@ namespace _2DRPG {
 		public static void MoveCenter(float x, float y) {
 			CurrentX += x;
 			CurrentY += y;
-			SetScreenCoords();
+			Form1.ShiftOrtho(x, y);
 		}
 		public static void SetCenter(float x, float y) {
 			CurrentX = x;

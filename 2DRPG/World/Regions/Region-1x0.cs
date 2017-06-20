@@ -15,8 +15,8 @@ namespace _2DRPG.World.Regions {
 		public List<WorldObjectBase> LoadObjects() {
 
 			Entities.StandardMob mob = new Entities.StandardMob(99, 1, "josh", 15);
-			mob.ReceiveAttack(new EffectAttack(new Entities.EntityEffect(() => { System.Diagnostics.Debug.WriteLine("Test Effect"); }, 1)));    //Attack the mob with an attack that deals an effect for 5 seconds that just outputs "Test Effect"
-			regionObjects.Add(mob);
+			//mob.ReceiveAttack(new EffectAttack(new Entities.EntityEffect(() => { System.Diagnostics.Debug.WriteLine("Test Effect"); }, 1)));    //Attack the mob with an attack that deals an effect for 5 seconds that just outputs "Test Effect"
+			//regionObjects.Add(mob);
 
 			return regionObjects;
 		}

@@ -24,7 +24,7 @@ namespace _2DRPG {
 			// Here you can allocate resources or initialize state
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
-			Gl.Ortho(-16d/9, 16d/9, -1.0, 1.0, -0.1, 10.0);
+			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
 			Gl.Enable(EnableCap.Texture2d);
 			Gl.Enable(EnableCap.Blend);
 			Gl.Enable(EnableCap.DepthTest);		//Set up Z Depth tests for drawing pixels
@@ -32,18 +32,19 @@ namespace _2DRPG {
 			Gl.DepthMask(true);
 			Gl.ClearDepth(10f);
 			Gl.Enable(EnableCap.AlphaTest);		//Set up Alpha tests for drawing pixels
-			Gl.AlphaFunc(AlphaFunction.Greater, .05f);	//Don't draw transparent pixels on polygons
+			Gl.AlphaFunc(AlphaFunction.Greater, .05f);  //Don't draw transparent pixels on polygons
 
 			// Uses multisampling, if available
 			if (glControl.MultisampleBits > 0)
 				Gl.Enable(EnableCap.Multisample);
 			contextCreated = true;
 			WorldData.WorldStartup();
-			object[] tobjects = WorldData.currentObjects.ToArray();
-			foreach (object o in tobjects) {
-				if (o is TexturedObject)
-					((TexturedObject)o).ContextCreated();
+			Screen.ScreenStartup();
+			World.Objects.WorldObjectBase[] tobjects = WorldData.currentObjects.ToArray();		//Render the World Objects
+			foreach (World.Objects.WorldObjectBase o in tobjects) {
+				o.ContextCreated();
 			}
+
 		}
 
 		private void RenderControl_Render(object sender, GlControlEventArgs e) {
@@ -51,10 +52,9 @@ namespace _2DRPG {
 		}
 
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
-			object[] tobjects = WorldData.currentObjects.ToArray();
-			foreach (object o in tobjects) {
-				if (o is TexturedObject)
-				((TexturedObject)o).ContextUpdate();
+			World.Objects.WorldObjectBase[] tobjects = WorldData.currentObjects.ToArray();      //Render the World Objects
+			foreach (World.Objects.WorldObjectBase o in tobjects) {
+				o.ContextUpdate();
 			}
 			// Change triangle rotation
 
@@ -62,47 +62,69 @@ namespace _2DRPG {
 
 		private void RenderControl_ContextDestroying(object sender, GlControlEventArgs e) {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
-			object[] tobjects = WorldData.currentObjects.ToArray();
-			foreach (object o in tobjects) {
-				if  (o is TexturedObject)
-					((TexturedObject)o).ContextDestroyed();
+			World.Objects.WorldObjectBase[] tobjects = WorldData.currentObjects.ToArray();      //Render the World Objects
+			foreach (World.Objects.WorldObjectBase o in tobjects) {
+				o.ContextDestroyed();
 			}
 		}
 
+		public static void ShiftOrtho(double x, double y) {
+			OrthoLeft += x;
+			OrthoRight += x;
+			OrthoTop += y;
+			OrthoBottom += y;
+		}
+		private static double OrthoLeft = -16d / 9;
+		private static double OrthoRight = 16d / 9;
+		private static double OrthoTop = 1.0;
+		private static double OrthoBottom = -1.0;
 
-		#region GL Resources
 
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
+			Gl.MatrixMode(MatrixMode.Projection);
+			Gl.LoadIdentity();	
+			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
+			
 			Control senderControl = (Control)sender;
-			int idealWidth = (int)(senderControl.ClientSize.Height * (16f / 9));
+			int idealWidth = (int)(senderControl.ClientSize.Height * (16f / 9));		//Center the 16:9 Viewport in the middle of the window regardless of window dimensions
 			if (senderControl.ClientSize.Width > idealWidth) { 
 				Gl.Viewport((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
-				Screen.SetWindowDimensions(idealWidth, senderControl.ClientSize.Height);
 			} else if (senderControl.ClientSize.Width < idealWidth) {
 				int idealheight = (int)(senderControl.ClientSize.Width * (9f / 16));
 				Gl.Viewport(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
-				Screen.SetWindowDimensions(senderControl.ClientSize.Width, idealheight);
 			} else {
 				Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
-				Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 			}
-			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 			Gl.ClearColor(Color.Aqua.R, Color.Aqua.G, Color.Aqua.B, Color.Aqua.A);
-			// Animate triangle
-			Gl.MatrixMode(MatrixMode.Modelview);
-			Gl.LoadIdentity();
+			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 			// Setup & enable client states to specify vertex arrays, and use Gl.DrawArrays instead of Gl.Begin/End paradigm
-			object[] tobjects = WorldData.currentObjects.ToArray();
-			foreach (object o in tobjects) {
-				if (o is TexturedObject)
-					((TexturedObject)o).Render();
+			World.Objects.WorldObjectBase[] tobjects = WorldData.currentObjects.ToArray();      //Render the World Objects
+			foreach (World.Objects.WorldObjectBase o in tobjects) {
+				o.Render();
 			}
+			Gl.MatrixMode(MatrixMode.Projection);
+			Gl.LoadIdentity();
+			Gl.Ortho(-16d / 9, 16d / 9, -1.0, 1.0, -0.1, 10.0);
+
+			GUI.UIBase[] guiObjects = Screen.UIObjects.ToArray();   //Render the GUI Objects
+			foreach (GUI.UIBase u in guiObjects) {
+				u.Render();
+			}
+			Input.UpdateKeys();
 		}
-		#endregion
 
 		private void KeyDownE(object sender, KeyEventArgs e) {
-			Input.KeySent(sender, e);
+			Input.KeyDown(sender, e);
+		}
+
+		private void MClick(object sender, MouseEventArgs e) {
+			Input.MouseSent(sender, e);
+		}
+
+		private void KeyUpE(object sender, KeyEventArgs e) {
+			Input.KeyUp(sender, e);
 		}
 	}
 }

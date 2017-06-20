@@ -36,7 +36,7 @@ namespace _2DRPG.LogicUtils {
 		/// <param name="testX"></param>
 		/// <param name="testY"></param>
 		/// <returns></returns>
-		private static bool CheckIntersection(float[] coords, float testX, float testY) {
+		public static bool CheckIntersection(float[] coords, float testX, float testY) {
 			int sideCount = coords.Length / 3;
 			float[] xCoords = new float[sideCount];
 			float[] yCoords = new float[sideCount];

@@ -77,7 +77,7 @@ namespace _2DRPG {
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <param name="z"></param>
-		public void SetScreenPosition(float x, float y) {
+		public virtual void SetScreenPosition(float x, float y) {
 			arrayPosition[0] = x - size;
 			arrayPosition[3] = x - size;
 			arrayPosition[6] = x + size;
@@ -87,7 +87,7 @@ namespace _2DRPG {
 			arrayPosition[4] = y + size;
 			arrayPosition[7] = y + size;
 		}
-		public void SetScreenPosition(float x, float y, int layer) {
+		public virtual void SetScreenPosition(float x, float y, int layer) {
 			SetScreenPosition(x, y);
 			SetLayer(layer);
 		}
