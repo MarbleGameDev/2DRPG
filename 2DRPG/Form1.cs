@@ -35,8 +35,7 @@ namespace _2DRPG {
 			Gl.AlphaFunc(AlphaFunction.Greater, .05f);  //Don't draw transparent pixels on polygons
 
 			// Uses multisampling, if available
-			if (glControl.MultisampleBits > 0)
-				Gl.Enable(EnableCap.Multisample);
+			Gl.Enable(EnableCap.Multisample);
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
@@ -82,7 +81,7 @@ namespace _2DRPG {
 
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
 			Gl.MatrixMode(MatrixMode.Projection);
-			Gl.LoadIdentity();	
+			Gl.LoadIdentity();
 			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
 			
 			Control senderControl = (Control)sender;

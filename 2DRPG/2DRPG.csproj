@@ -53,6 +53,9 @@
   <ItemGroup>
     <Compile Include="AnimatedObject.cs" />
     <Compile Include="GUI\UIButton.cs" />
+    <Compile Include="GUI\UIChar.cs" />
+    <Compile Include="GUI\UIDropdownButton.cs" />
+    <Compile Include="GUI\UIText.cs" />
     <Compile Include="World\Objects\WorldObjectControllable.cs" />
     <Compile Include="EffectAttack.cs" />
     <Compile Include="Entities\EntityEffect.cs" />
@@ -120,6 +123,12 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Sprites\Button.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\CourierFont.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\CourierFont.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sprites\Default.png">

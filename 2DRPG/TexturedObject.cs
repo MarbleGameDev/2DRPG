@@ -18,10 +18,10 @@ namespace _2DRPG {
         public TexturedObject(float x, float y, int layer, string textureName)
         {
 
-            this.screenX = x;
-            this.screenY = y;
+            screenX = x;
+            screenY = y;
             this.layer = layer;
-            this.texName = textureName;
+            texName = textureName;
 
             SetScreenPosition(x,y,layer);
 
@@ -53,7 +53,7 @@ namespace _2DRPG {
 			1.0f, 0.0f
 		};
 
-		public void Render() {
+		public virtual void Render() {
 			using (MemoryLock vertexArrayLock = new MemoryLock(arrayPosition))
 			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
 				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
@@ -78,6 +78,8 @@ namespace _2DRPG {
 		/// <param name="y"></param>
 		/// <param name="z"></param>
 		public virtual void SetScreenPosition(float x, float y) {
+			screenX = x;
+			screenY = y;
 			arrayPosition[0] = x - size;
 			arrayPosition[3] = x - size;
 			arrayPosition[6] = x + size;

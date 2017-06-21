@@ -22,6 +22,8 @@ namespace _2DRPG.GUI {
 		}
 
 		public override void SetScreenPosition(float x, float y) {
+			screenX = x;
+			screenY = y;
 			arrayPosition[0] = x - width;
 			arrayPosition[3] = x - width;
 			arrayPosition[6] = x + width;
