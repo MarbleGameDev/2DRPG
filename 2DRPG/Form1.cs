@@ -34,6 +34,8 @@ namespace _2DRPG {
 			Gl.Enable(EnableCap.AlphaTest);		//Set up Alpha tests for drawing pixels
 			Gl.AlphaFunc(AlphaFunction.Greater, .05f);  //Don't draw transparent pixels on polygons
 
+			Gl.Enable(EnableCap.ScissorTest);
+
 			// Uses multisampling, if available
 			Gl.Enable(EnableCap.Multisample);
 			contextCreated = true;
@@ -55,7 +57,6 @@ namespace _2DRPG {
 			foreach (World.Objects.WorldObjectBase o in tobjects) {
 				o.ContextUpdate();
 			}
-			// Change triangle rotation
 
 		}
 
@@ -83,18 +84,7 @@ namespace _2DRPG {
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
 			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
-			
-			Control senderControl = (Control)sender;
-			int idealWidth = (int)(senderControl.ClientSize.Height * (16f / 9));		//Center the 16:9 Viewport in the middle of the window regardless of window dimensions
-			if (senderControl.ClientSize.Width > idealWidth) { 
-				Gl.Viewport((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
-			} else if (senderControl.ClientSize.Width < idealWidth) {
-				int idealheight = (int)(senderControl.ClientSize.Width * (9f / 16));
-				Gl.Viewport(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
-			} else {
-				Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
-			}
-			Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
+
 			Gl.ClearColor(Color.Aqua.R, Color.Aqua.G, Color.Aqua.B, Color.Aqua.A);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -103,6 +93,8 @@ namespace _2DRPG {
 			foreach (World.Objects.WorldObjectBase o in tobjects) {
 				o.Render();
 			}
+
+			//Load a separete projection for GUI rendering that doesn't move with the character
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
 			Gl.Ortho(-16d / 9, 16d / 9, -1.0, 1.0, -0.1, 10.0);
@@ -124,6 +116,23 @@ namespace _2DRPG {
 
 		private void KeyUpE(object sender, KeyEventArgs e) {
 			Input.KeyUp(sender, e);
+		}
+
+		private void ResizeE(object sender, EventArgs e) {
+			Control senderControl = (Control)sender;
+			int idealWidth = (int)(senderControl.ClientSize.Height * (16f / 9));        //Center the 16:9 Viewport in the middle of the window regardless of window dimensions
+			if (senderControl.ClientSize.Width > idealWidth) {
+				Gl.Viewport((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
+				Gl.Scissor((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
+			} else if (senderControl.ClientSize.Width < idealWidth) {
+				int idealheight = (int)(senderControl.ClientSize.Width * (9f / 16));
+				Gl.Viewport(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
+				Gl.Scissor(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
+			} else {
+				Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
+				Gl.Scissor(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
+			}
+			Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 		}
 	}
 }

@@ -46,6 +46,7 @@
 			this.RenderControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownE);
 			this.RenderControl.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyUpE);
 			this.RenderControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MClick);
+			this.RenderControl.Resize += new System.EventHandler(this.ResizeE);
 			// 
 			// Form1
 			// 
