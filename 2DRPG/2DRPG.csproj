@@ -120,8 +120,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="Sprite Sheets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GUI\Heart Gui.png" />
+    <Content Include="GUI\Mana Gui.png" />
     <Content Include="Sprites\Button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -140,6 +144,7 @@
     <Content Include="Sprites\josh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Sprites\Mana.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
