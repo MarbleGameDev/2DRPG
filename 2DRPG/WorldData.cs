@@ -15,16 +15,16 @@ namespace _2DRPG {
 		static int CurrentRegionY = 0;
 		public static float CurrentX = 0;
 		public static float CurrentY = 0;
-		public static List<WorldObjectBase> currentObjects = new List<WorldObjectBase>(); //TODO: replace with a more accurate object type
-		static Dictionary<string, IWorldRegion> regionObjects = new Dictionary<string, IWorldRegion>();
+		static Dictionary<string, IWorldRegion> regionFiles = new Dictionary<string, IWorldRegion>();
 		static List<IWorldRegion> loadedRegions = new List<IWorldRegion>();
+		public static Dictionary<string, List<WorldObjectBase>> currentRegions = new Dictionary<string, List<WorldObjectBase>>();
 
 		/// <summary>
 		/// Adds the Region files to the directory
 		/// </summary>
 		static WorldData() {
-			regionObjects.Add("0x0", new Region0x0());
-			regionObjects.Add("-1x0", new Region_1x0());
+			regionFiles.Add("0x0", new Region0x0());
+			regionFiles.Add("-1x0", new Region_1x0());
 		}
 
 		/// <summary>
@@ -33,18 +33,30 @@ namespace _2DRPG {
 		public static void LoadRegionObjects() {
 			for (int rx = CurrentRegionX - 1; rx <= CurrentRegionX + 1; rx++) {
 				for (int ry = CurrentRegionY - 1; ry <= CurrentRegionY + 1; ry++) {
-					string reg = rx + "x" + ry;
-					if (regionObjects.ContainsKey(reg)) {
-						regionObjects[reg].LoadTextures();
-						foreach (WorldObjectBase b in regionObjects[reg].LoadObjects()) {
-							b.worldX += 100 * rx;
-							b.worldY += 100 * ry;
-							currentObjects.Add(b);
-						}
-					}
+					LoadRegion(rx, ry);
 				}
 			}
 			SetScreenCoords();
+		}
+
+		private static void LoadRegion(int rx, int ry) {
+			string reg = rx + "x" + ry;
+			if (regionFiles.ContainsKey(reg)) {
+				regionFiles[reg].LoadTextures();
+				List<WorldObjectBase> tempReg = regionFiles[reg].LoadObjects();
+				foreach (WorldObjectBase b in tempReg) {
+					b.worldX += 100 * rx;
+					b.worldY += 100 * ry;
+				}
+				currentRegions.Add(reg, tempReg);
+			}
+		}
+		private static void UnloadRegion(int rx, int ry) {
+			string reg = rx + "x" + ry;
+			if (regionFiles.ContainsKey(reg)) {
+				regionFiles[reg].UnloadTextures();
+				currentRegions.Remove(reg);
+			}
 		}
 
 		/// <summary>
@@ -57,22 +69,37 @@ namespace _2DRPG {
 		}
 
 		public static void MoveCenter(float x, float y) {
+			int oldX = CurrentRegionX;
+			int oldY = CurrentRegionY;
 			CurrentX += x;
 			CurrentY += y;
+			CurrentRegionX = (int)CurrentX % 100;
+			CurrentRegionY = (int)CurrentY % 100;
 			Form1.ShiftOrtho(x, y);
+
+			oldX = oldX - CurrentRegionX;
+			oldY = oldY - CurrentRegionY;
+			if (oldX != 0) {
+				UnloadRegion(CurrentRegionX + 1 + oldX, CurrentRegionY);
+			}
+			if (oldY != 0) {
+				UnloadRegion(CurrentRegionX, CurrentRegionY + 1 + oldY);
+			}
 		}
 		public static void SetCenter(float x, float y) {
 			CurrentX = x;
 			CurrentY = y;
-			SetScreenCoords();
+			//SetScreenCoords();
 		}
 
 		/// <summary>
 		/// Adjusts the world object coordinates to line up with the current center of the screen.
 		/// </summary>
+		///
 		static void SetScreenCoords() {
-			WorldObjectBase[] worldObjects = currentObjects.ToArray();
-			foreach (WorldObjectBase o in worldObjects) {
+			List<WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
+			foreach (List<WorldObjectBase> l in tobjects)
+				foreach (WorldObjectBase o in l) {
 				o.SetScreenPosition(o.worldX - CurrentX, o.worldY - CurrentY);
 			}
 		}

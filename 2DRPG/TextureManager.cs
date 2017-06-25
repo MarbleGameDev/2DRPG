@@ -48,6 +48,10 @@ namespace _2DRPG {
 	
             }
         }
+		/// <summary>
+		/// Unloads the texture given the texture name if it's loaded currently
+		/// </summary>
+		/// <param name="textureName"></param>
 		public static void UnloadTexture(string textureName) {
 			if (loadedTextureIDs.ContainsKey(textureName))
 				loadedTextureIDs.Remove(textureName);

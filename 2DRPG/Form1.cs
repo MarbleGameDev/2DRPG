@@ -41,9 +41,10 @@ namespace _2DRPG {
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
-			World.Objects.WorldObjectBase[] tobjects = WorldData.currentObjects.ToArray();		//Render the World Objects
-			foreach (World.Objects.WorldObjectBase o in tobjects) {
-				o.ContextCreated();
+			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();		//Render the World Objects
+			foreach (List<World.Objects.WorldObjectBase> l in tobjects) {
+				foreach(World.Objects.WorldObjectBase o in l)
+					o.ContextCreated();
 			}
 
 		}
@@ -53,18 +54,20 @@ namespace _2DRPG {
 		}
 
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
-			World.Objects.WorldObjectBase[] tobjects = WorldData.currentObjects.ToArray();      //Render the World Objects
-			foreach (World.Objects.WorldObjectBase o in tobjects) {
-				o.ContextUpdate();
+			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
+			foreach (List<World.Objects.WorldObjectBase> l in tobjects) {
+				foreach (World.Objects.WorldObjectBase o in l)
+					o.ContextUpdate();
 			}
 
 		}
 
 		private void RenderControl_ContextDestroying(object sender, GlControlEventArgs e) {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
-			World.Objects.WorldObjectBase[] tobjects = WorldData.currentObjects.ToArray();      //Render the World Objects
-			foreach (World.Objects.WorldObjectBase o in tobjects) {
-				o.ContextDestroyed();
+			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
+			foreach (List<World.Objects.WorldObjectBase> l in tobjects) {
+				foreach (World.Objects.WorldObjectBase o in l)
+					o.ContextDestroyed();
 			}
 		}
 
@@ -88,10 +91,10 @@ namespace _2DRPG {
 			Gl.ClearColor(Color.Aqua.R, Color.Aqua.G, Color.Aqua.B, Color.Aqua.A);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			// Setup & enable client states to specify vertex arrays, and use Gl.DrawArrays instead of Gl.Begin/End paradigm
-			World.Objects.WorldObjectBase[] tobjects = WorldData.currentObjects.ToArray();      //Render the World Objects
-			foreach (World.Objects.WorldObjectBase o in tobjects) {
-				o.Render();
+			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
+			foreach (List<World.Objects.WorldObjectBase> l in tobjects) {
+				foreach (World.Objects.WorldObjectBase o in l)
+					o.Render();
 			}
 
 			//Load a separete projection for GUI rendering that doesn't move with the character
@@ -124,13 +127,16 @@ namespace _2DRPG {
 			if (senderControl.ClientSize.Width > idealWidth) {
 				Gl.Viewport((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
 				Gl.Scissor((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
+				Screen.SetScreenDimensions(idealWidth, senderControl.ClientSize.Height);
 			} else if (senderControl.ClientSize.Width < idealWidth) {
 				int idealheight = (int)(senderControl.ClientSize.Width * (9f / 16));
 				Gl.Viewport(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
 				Gl.Scissor(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
+				Screen.SetScreenDimensions(senderControl.ClientSize.Width, idealheight);
 			} else {
 				Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 				Gl.Scissor(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
+				Screen.SetScreenDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 			}
 			Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 		}

@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using _2DRPG.World.Objects;
 
 namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 
 		public static void AnimationLogic(object sender, ElapsedEventArgs e) {
-			World.Objects.WorldObjectBase[] worldObjects = WorldData.currentObjects.ToArray();
-			foreach (object o in worldObjects) {
+			List<WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
+			foreach (List<WorldObjectBase> l in tobjects)
+				foreach (WorldObjectBase o in l) {
 				if (o is World.Objects.WorldObjectAnimated)
 					((World.Objects.WorldObjectAnimated)o).SpriteUpdate();
 			}
