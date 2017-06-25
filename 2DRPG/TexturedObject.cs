@@ -37,7 +37,7 @@ namespace _2DRPG {
 
 		public void ContextUpdate() { }
 
-		public float size = .25f;
+		public float size = 16f;
 
 		public float[] arrayPosition = new float[] {
 			0.25f, 0.25f, 0f,
@@ -47,21 +47,14 @@ namespace _2DRPG {
 
 		};
 		public float[] texturePosition = new float[] {
-			0.0f, 0.0f,
-			0.0f, 1.0f,
-			1.0f, 1.0f,
-			1.0f, 0.0f
+			0.0f- 1/32f, 0.0f- 1/32f,
+			0.0f- 1/32f, 1.0f+ 1/32f,
+			1.0f+ 1/32f, 1.0f+ 1/32f,
+			1.0f+ 1/32f, 0.0f- 1/32f
 		};
 
 		public virtual void Render() {
-			float[] temparray = new float[arrayPosition.Length];
-			for (int i = 0; i < arrayPosition.Length; i++) {
-				if ((i + 1) % 3 != 0)
-					temparray[i] = (float)Math.Ceiling(arrayPosition[i] * Screen.screenHeight / 2);
-				else
-					temparray[i] = arrayPosition[i];
-			}
-			using (MemoryLock vertexArrayLock = new MemoryLock(temparray))
+			using (MemoryLock vertexArrayLock = new MemoryLock(arrayPosition))
 			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
 				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				//Sets the texture used

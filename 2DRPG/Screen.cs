@@ -14,17 +14,22 @@ namespace _2DRPG {
 		public static int screenHeight;
 		public static int screenWidth;
 
+		public static int pixelWidth = 496;
+		public static int pixelHeight = 279;
+
 		public static List<UIBase> UIObjects = new List<UIBase>();
 
+		public static UIText worldText = new UIText(400f, 200f, 100f, 30f, "Coords: ");
 		public static void ScreenStartup() {
 			LoadGUITextures();
 			//UIButton b = new UIButton(-1.7f, .8f, .1f, .1f, () => { System.Diagnostics.Debug.WriteLine("ayo"); });
 			//UIObjects.Add(b);
 			UIObjects.Add(new UIText(1f, 0f, .7f, .2f, "Test text"));
-			UIObjects.Add(new UIDropdownButton(-1.4f, .8f, .3f, .1f, "Dropdown", new UIButton[]{
+			UIObjects.Add(new UIDropdownButton(45f, 250f, 90f, 15f, "Dropdown", new UIButton[]{
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("1 Pressed"); }, "Button 1"),
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("2 Pressed"); }, "Button 2")
 			}));
+			UIObjects.Add(worldText);
 
 		}
 
@@ -52,6 +57,13 @@ namespace _2DRPG {
 			TextureManager.LoadTexture("Sprites/Heart.png", "Heart");
 			TextureManager.LoadTexture("Sprites/CourierFont.png", "CourierFont");
 			TextureManager.LoadTexture("Sprites/Default.png", "Default");
+		}
+		/// <summary>
+		/// Takes a value either [0, 16/9] for width or [0, 1] for height and returns the pixel number
+		/// </summary>
+		/// <returns></returns>
+		public static int NormalizedToScreen(float normalizedCoord) {
+			return (int)(normalizedCoord * 279);
 		}
 	}
 }
