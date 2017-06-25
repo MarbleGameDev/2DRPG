@@ -12,13 +12,13 @@ namespace _2DRPG.World.Objects {
         int spriteHeight;
         int frameInterval;
 
-        public WorldObjectAnimated(float x, float y, int layer, int spritesAmount, int spriteWidth, int spriteHeight, int frameInterval, string textureName) : base(textureName) {
+        public WorldObjectAnimated(float x, float y, int layer, int spritesAmount, int spriteWidth, int spriteHeight, int frameInterval, string textureName) : this(x, y, textureName) {
 
             this.spritesAmount = spritesAmount;
             this.spriteWidth = spriteWidth;
             this.spriteHeight = spriteHeight;
             this.frameInterval = frameInterval;
-
+			SetLayer(layer);
         }
         public WorldObjectAnimated() : base() { }
 		public WorldObjectAnimated(string textureName) : base(textureName) { }

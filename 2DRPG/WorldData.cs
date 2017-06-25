@@ -16,7 +16,6 @@ namespace _2DRPG {
 		public static float CurrentX = 0;
 		public static float CurrentY = 0;
 		static Dictionary<string, IWorldRegion> regionFiles = new Dictionary<string, IWorldRegion>();
-		static List<IWorldRegion> loadedRegions = new List<IWorldRegion>();
 		public static Dictionary<string, List<WorldObjectBase>> currentRegions = new Dictionary<string, List<WorldObjectBase>>();
 
 		/// <summary>
@@ -41,7 +40,8 @@ namespace _2DRPG {
 
 		private static void LoadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
-			if (regionFiles.ContainsKey(reg)) {
+			System.Diagnostics.Debug.WriteLine("loaded: " + reg);
+			if (regionFiles.ContainsKey(reg) && !currentRegions.ContainsKey(reg)) {
 				regionFiles[reg].LoadTextures();
 				List<WorldObjectBase> tempReg = regionFiles[reg].LoadObjects();
 				foreach (WorldObjectBase b in tempReg) {
@@ -50,9 +50,11 @@ namespace _2DRPG {
 				}
 				currentRegions.Add(reg, tempReg);
 			}
+			SetScreenCoords();
 		}
 		private static void UnloadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
+			System.Diagnostics.Debug.WriteLine("unloaded: " + reg);
 			if (regionFiles.ContainsKey(reg)) {
 				regionFiles[reg].UnloadTextures();
 				currentRegions.Remove(reg);
@@ -68,6 +70,11 @@ namespace _2DRPG {
 			LoadRegionObjects();
 		}
 
+		/// <summary>
+		/// Moves the Center of the Screen around the world and unloads and loads regions if necessary
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		public static void MoveCenter(float x, float y) {
 			int oldX = CurrentRegionX;
 			int oldY = CurrentRegionY;
@@ -76,14 +83,15 @@ namespace _2DRPG {
 			CurrentRegionX = (int)CurrentX % 100;
 			CurrentRegionY = (int)CurrentY % 100;
 			Form1.ShiftOrtho(x, y);
-
-			oldX = oldX - CurrentRegionX;
-			oldY = oldY - CurrentRegionY;
+			oldX = CurrentRegionX - oldX;
+			oldY = CurrentRegionY - oldY;
 			if (oldX != 0) {
-				UnloadRegion(CurrentRegionX + 1 + oldX, CurrentRegionY);
+				UnloadRegion(CurrentRegionX - (oldX * 2), CurrentRegionY);
+				LoadRegion(CurrentRegionX + oldX, CurrentRegionY);
 			}
 			if (oldY != 0) {
-				UnloadRegion(CurrentRegionX, CurrentRegionY + 1 + oldY);
+				UnloadRegion(CurrentRegionX, CurrentRegionY - (oldY * 2));
+				LoadRegion(CurrentRegionX, CurrentRegionY + oldY);
 			}
 		}
 		public static void SetCenter(float x, float y) {

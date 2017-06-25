@@ -17,10 +17,12 @@ namespace _2DRPG.World.Regions {
 		List<WorldObjectBase> regionObjects = new List<WorldObjectBase>();
 
 		public List<WorldObjectBase> LoadObjects() {
+			regionObjects.Clear();
 			MCObject t = new MCObject();
 			WorldObjectBase j = new WorldObjectBase();
-            WorldObjectAnimated flower = new WorldObjectAnimated(.5f,.5f,1,4,16,16,15, "flower");
+            WorldObjectAnimated flower = new WorldObjectAnimated(-1.5f,.2f,1,4,16,16,15, "flower");
 			j.SetWorldPosition(0.2f, 0.1f);
+			regionObjects.Add(new WorldObjectBase(.45f, .1f, "default"));
 			t.SetLayer(2);
 			regionObjects.Add(t);
 			regionObjects.Add(j);

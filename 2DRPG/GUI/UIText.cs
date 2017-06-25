@@ -26,7 +26,6 @@ namespace _2DRPG.GUI {
 			if (displayText == null)
 				return;
 			chars.Clear();
-			//System.Diagnostics.Debug.WriteLine(screenX + ":" + screenY);
 			char[] characters = displayText.ToCharArray();
 			float charSize, startX, startY;
 			if (width / characters.Length < height) {

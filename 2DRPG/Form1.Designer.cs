@@ -36,7 +36,7 @@
 			this.RenderControl.Location = new System.Drawing.Point(0, 0);
 			this.RenderControl.MultisampleBits = ((uint)(96u));
 			this.RenderControl.Name = "RenderControl";
-			this.RenderControl.Size = new System.Drawing.Size(731, 428);
+			this.RenderControl.Size = new System.Drawing.Size(992, 558);
 			this.RenderControl.StencilBits = ((uint)(0u));
 			this.RenderControl.TabIndex = 0;
 			this.RenderControl.ContextCreated += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextCreated);
@@ -52,7 +52,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(731, 428);
+			this.ClientSize = new System.Drawing.Size(992, 558);
 			this.Controls.Add(this.RenderControl);
 			this.Name = "Form1";
 			this.Text = "Test Form 1";

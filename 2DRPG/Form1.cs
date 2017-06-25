@@ -36,6 +36,8 @@ namespace _2DRPG {
 
 			Gl.Enable(EnableCap.ScissorTest);
 
+			ResizeE(sender, e);
+
 			// Uses multisampling, if available
 			Gl.Enable(EnableCap.Multisample);
 			contextCreated = true;
@@ -77,17 +79,16 @@ namespace _2DRPG {
 			OrthoTop += y;
 			OrthoBottom += y;
 		}
-		private static double OrthoLeft = -16d / 9;
-		private static double OrthoRight = 16d / 9;
-		private static double OrthoTop = 1.0;
-		private static double OrthoBottom = -1.0;
+		private static double OrthoLeft = 0;
+		private static double OrthoRight = 0;
+		private static double OrthoTop = 0;
+		private static double OrthoBottom = 0;
 
 
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
-			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
-
+			Gl.Ortho(-Screen.screenWidth / 2 + OrthoLeft * Screen.screenHeight / 2, Screen.screenWidth / 2 + OrthoRight * Screen.screenHeight / 2, (-1 + OrthoBottom) * Screen.screenHeight / 2, (1 + OrthoTop) * Screen.screenHeight / 2, -0.1, 10.0);
 			Gl.ClearColor(Color.Aqua.R, Color.Aqua.G, Color.Aqua.B, Color.Aqua.A);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -100,7 +101,7 @@ namespace _2DRPG {
 			//Load a separete projection for GUI rendering that doesn't move with the character
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
-			Gl.Ortho(-16d / 9, 16d / 9, -1.0, 1.0, -0.1, 10.0);
+			Gl.Ortho(-Screen.screenWidth / 2, Screen.screenWidth / 2, -Screen.screenHeight / 2, Screen.screenHeight / 2, -0.1, 10.0);
 
 			GUI.UIBase[] guiObjects = Screen.UIObjects.ToArray();   //Render the GUI Objects
 			foreach (GUI.UIBase u in guiObjects) {

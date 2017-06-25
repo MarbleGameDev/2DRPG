@@ -9,7 +9,7 @@ namespace _2DRPG.Player {
 	class MCObject : WorldObjectControllable, IDamagable, IEffectable {
 
 		public MCObject() : base("heart") {
-			MovementSpeed = .025f;
+			MovementSpeed = .020f;
 		}
 		public void AddEffect(EntityEffect e) {
 			throw new NotImplementedException();
