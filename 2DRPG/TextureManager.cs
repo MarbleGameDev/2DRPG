@@ -48,7 +48,8 @@ namespace _2DRPG {
 	
             }
         }
-		public static void UnloadTexture(string textureName) {
+
+        public static void UnloadTexture(string textureName) {
 			if (loadedTextureIDs.ContainsKey(textureName))
 				loadedTextureIDs.Remove(textureName);
 		}

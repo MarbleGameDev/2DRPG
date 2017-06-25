@@ -19,16 +19,19 @@ namespace _2DRPG.World.Regions {
 		public List<WorldObjectBase> LoadObjects() {
 			MCObject t = new MCObject();
 			WorldObjectBase j = new WorldObjectBase();
+            WorldObjectAnimated flower = new WorldObjectAnimated(.5f,.5f,1,4,16,16,15, "flower");
 			j.SetWorldPosition(0.2f, 0.1f);
 			t.SetLayer(2);
 			regionObjects.Add(t);
 			regionObjects.Add(j);
+            regionObjects.Add(flower);
 			//regionObjects.Add(new WorldObjectAnimated("Heart"));
 
 			return regionObjects;
 		}
 
 		public void LoadTextures() {
+            TextureManager.LoadTexture("Sprites/SpriteSheets/Flowers.png","flower");
 			TextureManager.LoadTexture("Sprites/Default.png", "default");
 			TextureManager.LoadTexture("Sprites/Heart.png", "heart");
 			TextureManager.LoadTexture("Sprites/josh.png", "josh");
