@@ -9,11 +9,12 @@ using _2DRPG.World.Objects;
 namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 		static void CollisionLogic(object sender, ElapsedEventArgs e) {
-			WorldObjectBase[] worldObjects = WorldData.currentObjects.ToArray();
-			foreach (WorldObjectBase o in worldObjects) {
+			List<WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
+			foreach (List<WorldObjectBase> l in tobjects)
+				foreach (WorldObjectBase o in l) {
 				if (o is IMovable) {
 					float[] testPoints = o.arrayPosition;
-					foreach (WorldObjectBase j in worldObjects) {
+					foreach (WorldObjectBase j in l) {
 						if (j != o) {
 							if (CheckIntersection(j.arrayPosition, testPoints[0], testPoints[1]))		//1 is bottom left
 								FixCollision((IMovable)o, 1);

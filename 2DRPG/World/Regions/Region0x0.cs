@@ -36,5 +36,11 @@ namespace _2DRPG.World.Regions {
 			TextureManager.LoadTexture("Sprites/Heart.png", "heart");
 			TextureManager.LoadTexture("Sprites/josh.png", "josh");
 		}
+		public void UnloadTextures() {
+			TextureManager.UnloadTexture("default");
+			TextureManager.UnloadTexture("heart");
+			TextureManager.UnloadTexture("josh");
+		}
+
 	}
 }

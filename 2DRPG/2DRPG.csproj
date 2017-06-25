@@ -120,12 +120,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Sprite Sheets\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="GUI\Heart Gui.png" />
-    <Content Include="GUI\Mana Gui.png" />
+    <Content Include="Sprites\GUI Texutures\Heart Gui.png" />
+    <Content Include="Sprites\GUI Texutures\Mana Gui.png" />
+    <Content Include="Sprites\SpriteSheets\Flowers.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sprites\Button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

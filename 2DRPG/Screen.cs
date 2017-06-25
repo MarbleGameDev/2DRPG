@@ -11,6 +11,9 @@ namespace _2DRPG {
 		public static int WindowWidth;
 		public static float windowRatio;
 
+		public static int screenHeight;
+		public static int screenWidth;
+
 		public static List<UIBase> UIObjects = new List<UIBase>();
 
 		public static void ScreenStartup() {
@@ -29,6 +32,10 @@ namespace _2DRPG {
 			WindowHeight = height;
 			WindowWidth = width;
 			windowRatio = (float)width / height;
+		}
+		public static void SetScreenDimensions(int width, int height) {
+			screenHeight = height;
+			screenWidth = width;
 		}
 		/// <summary>
 		/// Converts the conventional -1 to 1 width coordinates for screen space into the correct values for the orthographic projection
