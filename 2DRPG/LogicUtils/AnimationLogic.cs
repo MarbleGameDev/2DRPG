@@ -8,9 +8,7 @@ using _2DRPG.World.Objects;
 
 namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
-		private static int frameCnt = 0;
 		public static void AnimationLogic(object sender, ElapsedEventArgs e) {
-			Screen.worldText.SetText("Frames: " + frameCnt++);
 			List<WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
 			foreach (List<WorldObjectBase> l in tobjects)
 				foreach (WorldObjectBase o in l) {

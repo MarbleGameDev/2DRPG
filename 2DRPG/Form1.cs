@@ -154,5 +154,10 @@ namespace _2DRPG {
 			}
 			Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 		}
-	}
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
