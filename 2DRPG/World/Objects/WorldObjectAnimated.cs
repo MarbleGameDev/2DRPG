@@ -29,17 +29,24 @@ namespace _2DRPG.World.Objects {
 
         
 		int counter = 0;
-        int frameCount = 1;
+        int frameCount = 0;
         public void SpriteUpdate()
         {
 
-            if (frameCount == 1)
+            float sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
+            float sheetShiftVertical = 1f/((spritesAmount / 10) + 1);
+
+            if (frameCount == 0)
             {
 
                 texturePosition[0] = 0;
+                texturePosition[1] = 0;
                 texturePosition[2] = 0;
-                texturePosition[4] = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
-                texturePosition[6] = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
+                texturePosition[3] = sheetShiftVertical;
+                texturePosition[4] = sheetShiftHorizontal;
+                texturePosition[5] = sheetShiftVertical;
+                texturePosition[6] = sheetShiftHorizontal;
+                texturePosition[7] = 0;
 
             }
 
@@ -49,21 +56,33 @@ namespace _2DRPG.World.Objects {
                 if (frameCount % frameInterval == 0)
                 {
 
-                    texturePosition[0] = texturePosition[0] + ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
-                    texturePosition[2] = texturePosition[2] + ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
-                    texturePosition[4] = texturePosition[4] + ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
-                    texturePosition[6] = texturePosition[6] + ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
+                    texturePosition[0] += sheetShiftHorizontal;
+                    texturePosition[2] += sheetShiftHorizontal;
+                    texturePosition[4] += sheetShiftHorizontal;
+                    texturePosition[6] += sheetShiftHorizontal;
+
+                    if (/*spritesAmount > 10 &&*/ (frameCount / frameInterval) % 10 == 0)
+                    {
+
+                        texturePosition[1] += sheetShiftVertical;
+                        texturePosition[3] += sheetShiftVertical;
+                        texturePosition[5] += sheetShiftVertical;
+                        texturePosition[7] += sheetShiftVertical;
+
+                    }
 
                 }
+
                 frameCount++;
 
             }
             else
             {
 
-                frameCount = 1;
+                frameCount = 0;
 
             }
+
 
 
 
