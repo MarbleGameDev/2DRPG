@@ -19,6 +19,8 @@ namespace _2DRPG {
 			Program.logic.Start();
 		}
 
+		TexturedObject oboe = new TexturedObject(-1f, 0f, 3, "josh");
+
 		private void RenderControl_ContextCreated(object sender, GlControlEventArgs e) {
 			GlControl glControl = (GlControl)sender;
 			// Here you can allocate resources or initialize state
@@ -35,7 +37,7 @@ namespace _2DRPG {
 			Gl.AlphaFunc(AlphaFunction.Greater, .05f);  //Don't draw transparent pixels on polygons
 
 			Gl.Enable(EnableCap.ScissorTest);
-
+			Wgl.SwapIntervalEXT(1);	//Swap Interval (V-Sync Enabled at 1 or -1)
 			ResizeE(sender, e);
 
 			// Uses multisampling, if available
@@ -47,7 +49,10 @@ namespace _2DRPG {
 				foreach(World.Objects.WorldObjectBase o in l)
 					o.ContextCreated();
 			}
-
+			/*
+			FormBorderStyle = FormBorderStyle.None;
+			WindowState = FormWindowState.Maximized;
+			*/
 		}
 
 		private void RenderControl_Render(object sender, GlControlEventArgs e) {
@@ -104,6 +109,7 @@ namespace _2DRPG {
 				foreach (World.Objects.WorldObjectBase o in l)
 					o.Render();
 			}
+			oboe.Render();
 
 			//Load a separete projection for GUI rendering that doesn't move with the character
 			Gl.MatrixMode(MatrixMode.Projection);

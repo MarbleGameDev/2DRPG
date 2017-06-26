@@ -18,6 +18,8 @@ namespace _2DRPG {
 		static Dictionary<string, IWorldRegion> regionFiles = new Dictionary<string, IWorldRegion>();
 		public static Dictionary<string, List<WorldObjectBase>> currentRegions = new Dictionary<string, List<WorldObjectBase>>();
 
+		public static WorldObjectControllable controllableOBJ = new Player.MCObject();
+
 		/// <summary>
 		/// Adds the Region files to the directory
 		/// </summary>

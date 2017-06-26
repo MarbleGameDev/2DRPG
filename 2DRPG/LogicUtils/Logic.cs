@@ -8,7 +8,8 @@ using System.Timers;
 namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 		static double logicInterval = 1000d / 10;	//Logic is run 10 times per second
-		static double animationInterval = 1000d / 30;	//Animation calls are run 30 times per second
+		static double animationInterval = 1000d / 30;   //Animation calls are run 30 times per second
+		static double physicsInterval = 1000d / 60;
 
 		private static bool LogicEnabled {
 			get { return entityTimer.Enabled && collisionTimer.Enabled && animationTimer.Enabled; }
@@ -26,8 +27,8 @@ namespace _2DRPG.LogicUtils {
 		public static void LogicStart() {
 			entityTimer = new Timer() { Interval = logicInterval };
 			entityTimer.Elapsed += new ElapsedEventHandler(EntityLogic);
-			collisionTimer = new Timer() { Interval = logicInterval };
-			collisionTimer.Elapsed += new ElapsedEventHandler(CollisionLogic);
+			collisionTimer = new Timer() { Interval = physicsInterval };
+			collisionTimer.Elapsed += new ElapsedEventHandler(PhysicsLogic);
 			animationTimer = new Timer() { Interval = animationInterval };
 			animationTimer.Elapsed += new ElapsedEventHandler(AnimationLogic);
 			entityTimer.Start();

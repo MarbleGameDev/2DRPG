@@ -74,7 +74,7 @@
     <Compile Include="Input.cs" />
     <Compile Include="LogicUtils\AnimationLogic.cs" />
     <Compile Include="World\Objects\IInteractable.cs" />
-    <Compile Include="LogicUtils\CollisionLogic.cs" />
+    <Compile Include="LogicUtils\PhysicsLogic.cs" />
     <Compile Include="LogicUtils\Logic.cs" />
     <Compile Include="LogicUtils\EntityLogic.cs" />
     <Compile Include="Attack.cs" />

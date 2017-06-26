@@ -38,6 +38,7 @@
 			this.RenderControl.Name = "RenderControl";
 			this.RenderControl.Size = new System.Drawing.Size(992, 558);
 			this.RenderControl.StencilBits = ((uint)(0u));
+			this.RenderControl.SwapInterval = 0;
 			this.RenderControl.TabIndex = 0;
 			this.RenderControl.ContextCreated += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextCreated);
 			this.RenderControl.ContextDestroying += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextDestroying);

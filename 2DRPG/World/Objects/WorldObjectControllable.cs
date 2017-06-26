@@ -22,18 +22,22 @@ namespace _2DRPG {
 
 		private void MoveOnKeys(Input.KeyInputs[] k) {
 			if (k.Contains(Input.KeyInputs.left))
-				MoveRelative(-MovementSpeed, 0);
+				movementX = -MovementSpeed;
 			if (k.Contains(Input.KeyInputs.right))
-				MoveRelative(MovementSpeed, 0);
+				movementX = MovementSpeed;
 			if (k.Contains(Input.KeyInputs.up))
-				MoveRelative(0f, MovementSpeed);
+				movementY = MovementSpeed;
 			if (k.Contains(Input.KeyInputs.down))
-				MoveRelative(0f, -MovementSpeed);
+				movementY = -MovementSpeed;
 		}
+		float movementX;
+		float movementY;
 
 		public override void MoveRelative(float x = 0, float y = 0) {
-			WorldData.MoveCenter(x, y);
-			SetScreenPosition(WorldData.CurrentX - worldX, WorldData.CurrentY - worldY);
+			WorldData.MoveCenter(movementX, movementY);
+			//SetScreenPosition(WorldData.CurrentX - worldX, WorldData.CurrentY - worldY);
+			movementX = 0;
+			movementY = 0;
 		}
 
 	}

@@ -14,14 +14,19 @@ namespace _2DRPG {
 			{KeyInputs.left, Keys.A },
 			{KeyInputs.right, Keys.D },
 			{KeyInputs.up, Keys.W },
-			{KeyInputs.down, Keys.S }
+			{KeyInputs.down, Keys.S },
+			{KeyInputs.escape, Keys.Escape},
+			{KeyInputs.interact, Keys.E}
 		};
 		private static bool anyKeysHeld = false;
 		private static Dictionary<KeyInputs, bool> keysHeld = new Dictionary<KeyInputs, bool>() {
+			{KeyInputs.none, false },
 			{KeyInputs.left, false },
 			{KeyInputs.right, false },
 			{KeyInputs.up, false },
-			{KeyInputs.down, false }
+			{KeyInputs.down, false },
+			{KeyInputs.escape, false },
+			{KeyInputs.interact, false }
 		};
 
 		public static void KeyDown(object sender, KeyEventArgs e) {
@@ -52,6 +57,7 @@ namespace _2DRPG {
 						keys.Add(k);
 				}
 				InputCall.Invoke(keys.ToArray());
+				ManualKeys(keys.ToArray());
 			}
 		}
 
@@ -67,10 +73,16 @@ namespace _2DRPG {
 			}
 		}
 
+
+		private static void ManualKeys(KeyInputs[] keys) {
+			if (keys.Contains(KeyInputs.escape))
+				Application.Exit();
+		}
+
 		/// <summary>
 		/// Enum values for the game inputs
 		/// </summary>
-		public enum KeyInputs { left, right, up, down};
+		public enum KeyInputs {none, left, right, up, down, escape, interact};
 
 	}
 }

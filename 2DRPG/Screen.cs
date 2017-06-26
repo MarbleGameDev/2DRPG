@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.GUI;
+using System.Drawing;
 
 namespace _2DRPG {
 	static class Screen {
@@ -19,17 +20,18 @@ namespace _2DRPG {
 
 		public static List<UIBase> UIObjects = new List<UIBase>();
 
-		//public static UIText worldText = new UIText(400f, 200f, 100f, 30f, "Coords: ");
+		public static UIText worldText = new UIText(1.3f, .9f, .4f, .1f, "Coords: ") { textColor = Color.Black};
 		public static void ScreenStartup() {
 			LoadGUITextures();
 			//UIButton b = new UIButton(-1.7f, .8f, .1f, .1f, () => { System.Diagnostics.Debug.WriteLine("ayo"); });
 			//UIObjects.Add(b);
-			UIObjects.Add(new UIText(1f, 0f, .7f, .2f, "Test text"));
+			UIObjects.Add(new UIText(1f, 0f, .7f, .2f, "Test text") { textColor = Color.Blue});
 			UIObjects.Add(new UIDropdownButton(-1.4f, .8f, .3f, .1f, "Dropdown", new UIButton[]{
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("1 Pressed"); }, "Button 1"),
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("2 Pressed"); }, "Button 2")
 			}));
-			//UIObjects.Add(worldText);
+			UIObjects.Add(worldText);
+			UIObjects.Add(new UIBase(0f, 0f, .05f, .05f, 0, "default"));
 
 		}
 
