@@ -35,7 +35,7 @@ namespace _2DRPG {
 					LoadRegion(rx, ry);
 				}
 			}
-			SetScreenCoords();
+			//SetScreenCoords();
 		}
 
 		private static void LoadRegion(int rx, int ry) {
@@ -83,7 +83,6 @@ namespace _2DRPG {
 			CurrentY += y;
 			CurrentRegionX = (int)Math.Ceiling(CurrentX / 1000) - 1 ;
 			CurrentRegionY = (int)Math.Ceiling(CurrentY / 1000) - 1;
-			Form1.ShiftOrtho(x, y);
 			oldX = CurrentRegionX - oldX;
 			oldY = CurrentRegionY - oldY;
 			if (oldX != 0) {
@@ -94,6 +93,7 @@ namespace _2DRPG {
 				UnloadRegion(CurrentRegionX, CurrentRegionY - (oldY * 2));
 				LoadRegion(CurrentRegionX, CurrentRegionY + oldY);
 			}
+			Form1.ShiftOrtho(x, y);
 			Screen.worldText.SetText("Coords: " + CurrentRegionX + ", " + CurrentRegionY + " : " + CurrentX + ", " + CurrentY);
 		}
 		public static void SetCenter(float x, float y) {

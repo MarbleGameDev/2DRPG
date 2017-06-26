@@ -39,7 +39,6 @@ namespace _2DRPG {
 			ResizeE(sender, e);
 
 			// Uses multisampling, if available
-			Gl.Enable(EnableCap.Multisample);
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();

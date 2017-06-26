@@ -20,7 +20,7 @@ namespace _2DRPG.World.Regions {
 			regionObjects.Clear();
 			MCObject t = new MCObject();
 			WorldObjectBase j = new WorldObjectBase();
-            WorldObjectAnimated flower = new WorldObjectAnimated(-16f,16f,1,4,16,16,15, "flower");
+			WorldObjectAnimated flower = new WorldObjectAnimated(-16f,16f,1,4,16,16,15, "flower");
 			j.SetWorldPosition(16f, 16f);
 			regionObjects.Add(new WorldObjectBase(0f, 0f, "default"));
 			t.SetLayer(2);

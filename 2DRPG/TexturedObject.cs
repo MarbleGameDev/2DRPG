@@ -44,13 +44,12 @@ namespace _2DRPG {
 			0.25f, 0.75f, 0f,
 			0.75f, 0.75f, 0f, 
 			.75f, 0.25f, 0f
-
 		};
 		public float[] texturePosition = new float[] {
-			0.0f- 1/32f, 0.0f- 1/32f,
-			0.0f- 1/32f, 1.0f+ 1/32f,
-			1.0f+ 1/32f, 1.0f+ 1/32f,
-			1.0f+ 1/32f, 0.0f- 1/32f
+			0.0f, 0.0f,
+			0.0f, 1.0f,
+			1.0f, 1.0f,
+			1.0f, 0.0f
 		};
 
 		public virtual void Render() {
