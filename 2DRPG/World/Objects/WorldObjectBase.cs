@@ -24,5 +24,17 @@ namespace _2DRPG.World.Objects {
 			worldX = x;
 			worldY = y;
 		}
+
+		public override void Render() {
+			arrayPosition[0] = worldX - size / 2 - .5f;
+			arrayPosition[3] = worldX - size / 2 - .5f;
+			arrayPosition[6] = worldX + size / 2 + .5f;
+			arrayPosition[9] = worldX + size / 2 + .5f;
+			arrayPosition[1] = worldY - size / 2 - .5f;
+			arrayPosition[10] = worldY - size / 2 - .5f;
+			arrayPosition[4] = worldY + size / 2 + .5f;
+			arrayPosition[7] = worldY + size / 2 + .5f;
+			base.Render();
+		}
 	}
 }

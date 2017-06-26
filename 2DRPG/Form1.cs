@@ -79,6 +79,13 @@ namespace _2DRPG {
 			OrthoTop += y;
 			OrthoBottom += y;
 		}
+
+		public static void SetOrtho(double x, double y) {
+			OrthoLeft = x;
+			OrthoRight = x;
+			OrthoTop = y;
+			OrthoBottom = y;
+		}
 		private static double OrthoLeft = 0;
 		private static double OrthoRight = 0;
 		private static double OrthoTop = 0;
@@ -88,8 +95,9 @@ namespace _2DRPG {
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
-			Gl.Ortho(-Screen.screenWidth / 2 + OrthoLeft * Screen.screenHeight / 2, Screen.screenWidth / 2 + OrthoRight * Screen.screenHeight / 2, (-1 + OrthoBottom) * Screen.screenHeight / 2, (1 + OrthoTop) * Screen.screenHeight / 2, -0.1, 10.0);
-			Gl.ClearColor(Color.Aqua.R, Color.Aqua.G, Color.Aqua.B, Color.Aqua.A);
+			//Gl.Ortho(-Screen.screenWidth / 2 + OrthoLeft * Screen.screenHeight / 2, Screen.screenWidth / 2 + OrthoRight * Screen.screenHeight / 2, (-1 + OrthoBottom) * Screen.screenHeight / 2, (1 + OrthoTop) * Screen.screenHeight / 2, -0.1, 10.0);
+			Gl.Ortho(0 + OrthoLeft, Screen.pixelWidth + OrthoRight, 0 + OrthoBottom, Screen.pixelHeight + OrthoTop, -.1, 10);
+			Gl.ClearColor(Color.White.R, Color.White.G, Color.White.B, Color.White.A);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
@@ -101,7 +109,7 @@ namespace _2DRPG {
 			//Load a separete projection for GUI rendering that doesn't move with the character
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
-			Gl.Ortho(-Screen.screenWidth / 2, Screen.screenWidth / 2, -Screen.screenHeight / 2, Screen.screenHeight / 2, -0.1, 10.0);
+			Gl.Ortho(0, Screen.pixelWidth, 0, Screen.pixelHeight, -.1, 10);
 
 			GUI.UIBase[] guiObjects = Screen.UIObjects.ToArray();   //Render the GUI Objects
 			foreach (GUI.UIBase u in guiObjects) {
