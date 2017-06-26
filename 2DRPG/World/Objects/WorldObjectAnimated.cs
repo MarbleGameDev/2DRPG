@@ -19,6 +19,7 @@ namespace _2DRPG.World.Objects {
             this.spriteHeight = spriteHeight;
             this.frameInterval = frameInterval;
 			SetLayer(layer);
+			SetWorldPosition(x, y);
         }
         public WorldObjectAnimated() : base() { }
 		public WorldObjectAnimated(string textureName) : base(textureName) { }

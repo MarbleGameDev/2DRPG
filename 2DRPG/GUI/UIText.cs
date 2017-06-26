@@ -16,7 +16,6 @@ namespace _2DRPG.GUI {
 		}
 
 		public override void Render() {
-			base.Render();
 			UIChar[] renderC = chars.ToArray();
 			foreach (UIChar c in renderC)
 				c.Render();
@@ -36,7 +35,7 @@ namespace _2DRPG.GUI {
 			float charSize, startX, startY;
 			if (width / characters.Length < height) {
 				charSize = width / characters.Length;
-				startX = screenX - width/4;
+				startX = screenX - width/2;
 				startY = screenY + (height - charSize) / 2 - height/3;
 			} else {
 				charSize = height;

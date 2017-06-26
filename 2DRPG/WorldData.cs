@@ -68,7 +68,6 @@ namespace _2DRPG {
 			TextureManager.ClearTextures();
 
 			LoadRegionObjects();
-			SetCenter(0, 0);
 		}
 
 		/// <summary>
@@ -81,8 +80,8 @@ namespace _2DRPG {
 			int oldY = CurrentRegionY;
 			CurrentX += x;
 			CurrentY += y;
-			CurrentRegionX = (int)Math.Ceiling(CurrentX / 1000) - 1 ;
-			CurrentRegionY = (int)Math.Ceiling(CurrentY / 1000) - 1;
+			CurrentRegionX = (int)Math.Ceiling(CurrentX / 100) - 1 ;
+			CurrentRegionY = (int)Math.Ceiling(CurrentY / 100) - 1;
 			oldX = CurrentRegionX - oldX;
 			oldY = CurrentRegionY - oldY;
 			if (oldX != 0) {
@@ -94,11 +93,11 @@ namespace _2DRPG {
 				LoadRegion(CurrentRegionX, CurrentRegionY + oldY);
 			}
 			Form1.ShiftOrtho(x, y);
-			Screen.worldText.SetText("Coords: " + CurrentRegionX + ", " + CurrentRegionY + " : " + CurrentX + ", " + CurrentY);
+			//Screen.worldText.SetText("Coords: " + CurrentRegionX + ", " + CurrentRegionY + " : " + CurrentX + ", " + CurrentY);
 		}
 		public static void SetCenter(float x, float y) {
-			CurrentX = x - Screen.pixelWidth / 2;
-			CurrentY = y - Screen.pixelHeight / 2;
+			CurrentX = x;
+			CurrentY = y;
 			Form1.SetOrtho(CurrentX, CurrentY);
 			//SetScreenCoords();
 		}

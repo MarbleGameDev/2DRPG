@@ -9,7 +9,7 @@ namespace _2DRPG.GUI {
 
 		private List<UIButton> drops = new List<UIButton>();
 		private bool showDrops = false;
-		private float spacing = 4f; //gap between buttons displayed in the dropdown
+		private float spacing = .05f; //gap between buttons displayed in the dropdown
 
 		public UIDropdownButton(float x, float y, float width, float height, UIButton[] dropdowns) : this(x, y, width, height, null, dropdowns) { }
 		public UIDropdownButton(float x, float y, float width, float height, string labelText, UIButton[] dropdowns) : base(x, y, width, height, 1, "Button") {
@@ -19,7 +19,7 @@ namespace _2DRPG.GUI {
 			foreach (UIButton b in dropdowns) {
 				b.width = width;
 				b.height = height;
-				b.SetScreenPosition(x, y - counter++ * (height + spacing));
+				b.SetScreenPosition(x, y - counter++ * height * (2 + spacing));
 				drops.Add(b);
 			}
 			buttonAction = new Action(ToggleDropdowns);

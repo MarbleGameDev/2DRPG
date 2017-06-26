@@ -37,7 +37,7 @@ namespace _2DRPG {
 
 		public void ContextUpdate() { }
 
-		public float size = 16f;
+		public float size = .25f;
 
 		public float[] arrayPosition = new float[] {
 			0.25f, 0.25f, 0f,

@@ -9,15 +9,15 @@ namespace _2DRPG {
 		
 		public WorldObjectControllable(float x, float y, int layer, string textureName) : base(x, y, textureName) {
 			Input.InputCall += MoveOnKeys;
-			MovementSpeed = .1f;
+			MovementSpeed = .01f;
 		}
 		public WorldObjectControllable() : base() {
 			Input.InputCall += MoveOnKeys;
-			MovementSpeed = .1f;
+			MovementSpeed = .01f;
 		}
 		public WorldObjectControllable(String textureName) : base(textureName) {
 			Input.InputCall += MoveOnKeys;
-			MovementSpeed = .1f;
+			MovementSpeed = .01f;
 		}
 
 		private void MoveOnKeys(Input.KeyInputs[] k) {
@@ -33,7 +33,7 @@ namespace _2DRPG {
 
 		public override void MoveRelative(float x = 0, float y = 0) {
 			WorldData.MoveCenter(x, y);
-			SetScreenPosition(WorldData.CurrentX, WorldData.CurrentY);
+			SetScreenPosition(WorldData.CurrentX - worldX, WorldData.CurrentY - worldY);
 		}
 
 	}

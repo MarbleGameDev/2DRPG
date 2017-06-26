@@ -57,9 +57,9 @@ namespace _2DRPG {
 
 		public static void MouseSent(object sender, MouseEventArgs e) {
 			if (e.Button.Equals(MouseButtons.Left)) {
-				GUI.UIBase[] guiObjects = Screen.UIObjects.ToArray();   
-				float checkX = (float)e.X / Screen.WindowWidth * Screen.pixelWidth;	//Convert from mouse coordinates to screen coordinates
-				float checkY = (1f - (float)e.Y / Screen.WindowHeight) * Screen.pixelHeight;
+				GUI.UIBase[] guiObjects = Screen.UIObjects.ToArray();
+				float checkX = Screen.windowRatio * 2 * ((float)e.X / Screen.WindowWidth - .5f);    //Convert from mouse coordinates to screen coordinates
+				float checkY = 2 * (.5f - (float)e.Y / Screen.WindowHeight);
 				foreach (GUI.UIBase u in guiObjects) {
 					if (u is GUI.UIButton)
 						((GUI.UIButton)u).CheckClick( checkX, checkY);
