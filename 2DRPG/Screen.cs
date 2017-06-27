@@ -57,7 +57,7 @@ namespace _2DRPG {
 		public static void LoadGUITextures() {
 			TextureManager.LoadTexture("Sprites/Button.png", "Button");
 			TextureManager.LoadTexture("Sprites/Heart.png", "Heart");
-			TextureManager.LoadTexture("Sprites/CourierFont.png", "CourierFont");
+			TextureManager.LoadTexture("Sprites/SpriteSheets/CourierFont.png", "CourierFont");
 			TextureManager.LoadTexture("Sprites/Default.png", "Default");
 		}
 		/// <summary>

@@ -123,16 +123,17 @@
   <ItemGroup>
     <Content Include="Sprites\GUI Texutures\Heart Gui.png" />
     <Content Include="Sprites\GUI Texutures\Mana Gui.png" />
+    <Content Include="Sprites\SpriteSheets\BaseFont.png" />
     <Content Include="Sprites\SpriteSheets\Flowers.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sprites\Button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sprites\CourierFont.bmp">
+    <Content Include="Sprites\SpriteSheets\CourierFont.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sprites\CourierFont.png">
+    <Content Include="Sprites\SpriteSheets\CourierFont.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sprites\Default.png">
