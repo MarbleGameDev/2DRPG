@@ -16,10 +16,9 @@ namespace _2DRPG {
 
 		public Form1() {
 			InitializeComponent();
-			Program.logic.Start();
 		}
 
-		TexturedObject oboe = new TexturedObject(-1f, 0f, 3, "josh");
+		TexturedObject oboe = new GUI.UIChar(-1f, 0f, .08f, '2');
 
 		private void RenderControl_ContextCreated(object sender, GlControlEventArgs e) {
 			GlControl glControl = (GlControl)sender;
@@ -44,15 +43,18 @@ namespace _2DRPG {
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
-			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();		//Render the World Objects
-			foreach (List<World.Objects.WorldObjectBase> l in tobjects) {
-				foreach(World.Objects.WorldObjectBase o in l)
-					o.ContextCreated();
+			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+					foreach (World.Objects.WorldObjectBase o in l)
+						o.ContextCreated();
+				}
 			}
 			/*
 			FormBorderStyle = FormBorderStyle.None;
 			WindowState = FormWindowState.Maximized;
 			*/
+
+			Program.logic.Start();
 		}
 
 		private void RenderControl_Render(object sender, GlControlEventArgs e) {
@@ -60,20 +62,22 @@ namespace _2DRPG {
 		}
 
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
-			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
-			foreach (List<World.Objects.WorldObjectBase> l in tobjects) {
-				foreach (World.Objects.WorldObjectBase o in l)
-					o.ContextUpdate();
+			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+					foreach (World.Objects.WorldObjectBase o in l)
+						o.ContextUpdate();
+				}
 			}
 
 		}
 
 		private void RenderControl_ContextDestroying(object sender, GlControlEventArgs e) {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
-			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
-			foreach (List<World.Objects.WorldObjectBase> l in tobjects) {
-				foreach (World.Objects.WorldObjectBase o in l)
-					o.ContextDestroyed();
+			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+					foreach (World.Objects.WorldObjectBase o in l)
+						o.ContextDestroyed();
+				}
 			}
 		}
 
@@ -101,15 +105,18 @@ namespace _2DRPG {
 			Gl.LoadIdentity();
 			//Gl.Ortho(-Screen.screenWidth / 2 + OrthoLeft * Screen.screenHeight / 2, Screen.screenWidth / 2 + OrthoRight * Screen.screenHeight / 2, (-1 + OrthoBottom) * Screen.screenHeight / 2, (1 + OrthoTop) * Screen.screenHeight / 2, -0.1, 10.0);
 			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
-			Gl.ClearColor(Color.Teal.R, Color.Teal.G, Color.Teal.B, Color.Teal.A);
+			Gl.ClearColor(36 / 255f, 71 / 255f, 143 / 255f, 1f);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			List<World.Objects.WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
-			foreach (List<World.Objects.WorldObjectBase> l in tobjects) {
-				foreach (World.Objects.WorldObjectBase o in l)
-					o.Render();
+			//Render World Objects
+			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {
+				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+					foreach (World.Objects.WorldObjectBase o in l)
+						o.Render();
+				}
 			}
 			oboe.Render();
+			WorldData.controllableOBJ.Render();
 
 			//Load a separete projection for GUI rendering that doesn't move with the character
 			Gl.MatrixMode(MatrixMode.Projection);

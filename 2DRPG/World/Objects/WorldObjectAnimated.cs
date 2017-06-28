@@ -7,83 +7,48 @@ using System.Threading.Tasks;
 namespace _2DRPG.World.Objects {
 	class WorldObjectAnimated : WorldObjectBase {
 
-        int spritesAmount;
-        int spriteWidth;
-        int spriteHeight;
-        int frameInterval;
+        int spritesAmount = 1;
+        int spriteWidth = 16;
+        int spriteHeight = 16;
+        int frameInterval = 10;
+		float sheetShiftHorizontal = 1f;
+		float sheetShiftVertical = 1f;
 
-        public WorldObjectAnimated(float x, float y, int layer, int spritesAmount, int spriteWidth, int spriteHeight, int frameInterval, string textureName) : this(x, y, textureName) {
-
-            this.spritesAmount = spritesAmount;
-            this.spriteWidth = spriteWidth;
-            this.spriteHeight = spriteHeight;
-            this.frameInterval = frameInterval;
+        public WorldObjectAnimated(float x, float y, int layer, int spritesAmt, int spriteWth, int spriteHt, int frameInt, string textureName) : this(x, y, textureName) {
+            spritesAmount = spritesAmt;
+            spriteWidth = spriteWth;
+            spriteHeight = spriteHt;
+            frameInterval = frameInt;
+			sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
+			sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
 			SetLayer(layer);
-			SetWorldPosition(x, y);
         }
-        public WorldObjectAnimated() : base() { }
-		public WorldObjectAnimated(string textureName) : base(textureName) { }
-		public WorldObjectAnimated(float x, float y, string textureName) : base(textureName) {
+		public WorldObjectAnimated(string textureName) : base(textureName) {
+			sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
+			sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
+			SetLayer(layer);
+		}
+		public WorldObjectAnimated(float x, float y, string textureName) : this(textureName) {
 			SetWorldPosition(x, y);
 		}
 
         int frameCount = 0;
-        public void SpriteUpdate()
-        {
-
-            float sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
-            float sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
-
-            if (frameCount == 0)
-            {
-
-                texturePosition[0] = 0;
-                texturePosition[1] = 0;
-                texturePosition[2] = 0;
-                texturePosition[3] = sheetShiftVertical;
-                texturePosition[4] = sheetShiftHorizontal;
-                texturePosition[5] = sheetShiftVertical;
-                texturePosition[6] = sheetShiftHorizontal;
-                texturePosition[7] = 0;
-
-            }
-
-            if (frameCount < spritesAmount * frameInterval)
-            {
-
-                if (frameCount % frameInterval == 0)
-                {
-
-                    texturePosition[0] += sheetShiftHorizontal;
-                    texturePosition[2] += sheetShiftHorizontal;
-                    texturePosition[4] += sheetShiftHorizontal;
-                    texturePosition[6] += sheetShiftHorizontal;
-
-                    if (/*spritesAmount > 10 &&*/ (frameCount / frameInterval) % 10 == 0)
-                    {
-
-                        texturePosition[1] += sheetShiftVertical;
-                        texturePosition[3] += sheetShiftVertical;
-                        texturePosition[5] += sheetShiftVertical;
-                        texturePosition[7] += sheetShiftVertical;
-
-                    }
-
-                }
-
-                frameCount++;
-
-            }
-            else
-            {
-
-                frameCount = 0;
-
-            }
-
-
-
-
+        public void SpriteUpdate() {
+			if (frameCount % frameInterval == 0) {
+				int frameNum = frameCount / frameInterval;
+				texturePosition[0] = 0 + sheetShiftHorizontal * (frameNum % 10);
+				texturePosition[2] = 0 + sheetShiftHorizontal * (frameNum % 10);
+				texturePosition[4] = sheetShiftHorizontal + sheetShiftHorizontal * (frameNum % 10);
+				texturePosition[6] = sheetShiftHorizontal + sheetShiftHorizontal * (frameNum % 10);
+				texturePosition[1] = 0 + sheetShiftVertical * (frameNum / 10);
+				texturePosition[3] = sheetShiftVertical + sheetShiftVertical * (frameNum / 10);
+				texturePosition[5] = sheetShiftVertical + sheetShiftVertical * (frameNum / 10);
+				texturePosition[7] = 0 + sheetShiftVertical * (frameNum / 10);
+			}
+			frameCount++;
+			if (frameCount / frameInterval == spritesAmount)
+				frameCount = 0;
+			return;
         }
 	}
 }

@@ -13,7 +13,7 @@ namespace _2DRPG.GUI {
 		float charSize;
         int[] baseFontWidth = {9, 1, 3, 8, 5, 8, 5, 1, 3, 3, 3, 5, 2, 4, 1, 4, 5, 3, 4, 4, 5, 4, 5, 4, 5, 5, 1, 2, 3, 5, 3, 4, 7, 6, 5, 5, 6, 5, 5, 5, 6, 3, 4, 5, 4, 7, 5, 5, 5, 5, 5, 5, 5, 6, 7, 7, 5, 5, 4, 3, 4, 3, 5, 6, 2, 5, 4, 4, 4, 4, 6, 4, 4, 1, 4, 4, 1, 7, 5, 4, 4, 4, 3, 4, 4, 5, 5, 7, 4, 4, 4, 3, 1, 3, 6};
 
-		public UIChar(float x, float y, float size, char ch) : base(x, y, size, size, 1, "BaseFont") {
+		public UIChar(float x, float y, float size, char ch) : base(x, y, size, size, 1, "baseFont") {
 			charSize = size;
 			displayChar = ch;
 		}

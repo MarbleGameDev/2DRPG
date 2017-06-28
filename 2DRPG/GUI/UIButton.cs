@@ -12,10 +12,10 @@ namespace _2DRPG.GUI {
 
 		public UIButton(string textureName) : base(textureName) { }
 
-		public UIButton(Action click) : base("Button") {
+		public UIButton(Action click) : base("button") {
 			buttonAction = click;
 		}
-		public UIButton(Action click, string labelText) : base("Button") {
+		public UIButton(Action click, string labelText) : base("button") {
 			buttonAction = click;
 			displayLabel = new UIText(0, 0, .1f, .1f, labelText);
 		}
@@ -27,7 +27,7 @@ namespace _2DRPG.GUI {
 			buttonAction = click;
 		}
 		public UIButton(float x, float y, float width, float height, int layer, string textureName) : base(x, y, width, height, layer, textureName) { }
-		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 1, "Button") {
+		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 1, "button") {
 			SetLayer(defaultLayer);
 			buttonAction = click;
 		}

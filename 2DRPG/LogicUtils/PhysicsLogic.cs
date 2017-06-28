@@ -10,26 +10,28 @@ namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 		static void PhysicsLogic(object sender, ElapsedEventArgs e) {
 			WorldData.controllableOBJ.MoveRelative();
-			List<WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
-			foreach (List<WorldObjectBase> l in tobjects)
-				foreach (WorldObjectBase o in l) {
-					if (o is IMovable) {
-						float[] testPoints = o.arrayPosition;
-						foreach (WorldObjectBase j in l) {
-							if (j != o) {
-								if (CheckIntersection(j.arrayPosition, testPoints[0], testPoints[1]))		//1 is bottom left
-									FixCollision((IMovable)o, 1);
-								else if (CheckIntersection(j.arrayPosition, testPoints[3], testPoints[4]))	//2 is upper left
-									FixCollision((IMovable)o, 2);
-								else if (CheckIntersection(j.arrayPosition, testPoints[6], testPoints[7]))	//3 is upper right
-									FixCollision((IMovable)o, 3);
-								else if (CheckIntersection(j.arrayPosition, testPoints[9], testPoints[10]))	//4 is bottom right
-									FixCollision((IMovable)o, 4);
+			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+					foreach (WorldObjectBase o in l) {
+						if (o is IMovable) {
+							float[] testPoints = o.arrayPosition;
+							foreach (WorldObjectBase j in l) {
+								if (j != o) {
+									if (CheckIntersection(j.arrayPosition, testPoints[0], testPoints[1]))       //1 is bottom left
+										FixCollision((IMovable)o, 1);
+									else if (CheckIntersection(j.arrayPosition, testPoints[3], testPoints[4]))  //2 is upper left
+										FixCollision((IMovable)o, 2);
+									else if (CheckIntersection(j.arrayPosition, testPoints[6], testPoints[7]))  //3 is upper right
+										FixCollision((IMovable)o, 3);
+									else if (CheckIntersection(j.arrayPosition, testPoints[9], testPoints[10])) //4 is bottom right
+										FixCollision((IMovable)o, 4);
+								}
 							}
 						}
+
 					}
-						
 				}
+			}
 		}
 
 		/// <summary>

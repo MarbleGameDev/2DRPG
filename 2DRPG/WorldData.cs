@@ -16,9 +16,9 @@ namespace _2DRPG {
 		public static float CurrentX = 0;
 		public static float CurrentY = 0;
 		static Dictionary<string, IWorldRegion> regionFiles = new Dictionary<string, IWorldRegion>();
-		public static Dictionary<string, List<WorldObjectBase>> currentRegions = new Dictionary<string, List<WorldObjectBase>>();
+		public static Dictionary<string, HashSet<WorldObjectBase>> currentRegions = new Dictionary<string, HashSet<WorldObjectBase>>();
 
-		public static WorldObjectControllable controllableOBJ = new Player.MCObject();
+		public static WorldObjectControllable controllableOBJ;
 
 		/// <summary>
 		/// Adds the Region files to the directory
@@ -37,7 +37,6 @@ namespace _2DRPG {
 					LoadRegion(rx, ry);
 				}
 			}
-			//SetScreenCoords();
 		}
 
 		private static void LoadRegion(int rx, int ry) {
@@ -45,14 +44,12 @@ namespace _2DRPG {
 			System.Diagnostics.Debug.WriteLine("loaded: " + reg);
 			if (regionFiles.ContainsKey(reg) && !currentRegions.ContainsKey(reg)) {
 				regionFiles[reg].LoadTextures();
-				List<WorldObjectBase> tempReg = regionFiles[reg].LoadObjects();
+				HashSet<WorldObjectBase> tempReg = regionFiles[reg].LoadObjects();
 				foreach (WorldObjectBase b in tempReg) {
-					b.worldX += 100 * rx;
-					b.worldY += 100 * ry;
+					b.SetWorldPosition(b.worldX + 100 * rx, b.worldY + 100 * ry);
 				}
 				currentRegions.Add(reg, tempReg);
 			}
-			//SetScreenCoords();
 		}
 		private static void UnloadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
@@ -68,7 +65,8 @@ namespace _2DRPG {
 		/// </summary>
 		public static void WorldStartup() {
 			TextureManager.ClearTextures();
-
+			TextureManager.RegisterTextures(new string[] { "heart" });
+			controllableOBJ = new Player.MCObject();
 			LoadRegionObjects();
 		}
 
@@ -101,19 +99,6 @@ namespace _2DRPG {
 			CurrentX = x;
 			CurrentY = y;
 			Form1.SetOrtho(CurrentX, CurrentY);
-			//SetScreenCoords();
-		}
-
-		/// <summary>
-		/// Adjusts the world object coordinates to line up with the current center of the screen.
-		/// </summary>
-		///
-		static void SetScreenCoords() {
-			List<WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
-			foreach (List<WorldObjectBase> l in tobjects)
-				foreach (WorldObjectBase o in l) {
-				o.SetScreenPosition(o.worldX - CurrentX, o.worldY - CurrentY);
-			}
 		}
 
 	}

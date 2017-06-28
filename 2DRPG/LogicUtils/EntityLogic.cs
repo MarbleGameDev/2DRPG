@@ -10,12 +10,13 @@ namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 		//Logic for calculating entities
 		static void EntityLogic(object sender, ElapsedEventArgs e) {
-			List<WorldObjectBase>[] tobjects = WorldData.currentRegions.Values.ToArray();     //Render the World Objects
-			foreach (List<WorldObjectBase> l in tobjects)
-				foreach (WorldObjectBase o in l) {
-				if (o is Entities.IEffectable) {
-					((Entities.IEffectable)o).EffectTick();
-				}
+			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray())
+					foreach (WorldObjectBase o in l) {
+						if (o is Entities.IEffectable) {
+							((Entities.IEffectable)o).EffectTick();
+						}
+					}
 			}
 		}
 	}

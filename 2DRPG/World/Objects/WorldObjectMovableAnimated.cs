@@ -10,8 +10,7 @@ namespace _2DRPG.World.Objects {
 		public float MovementSpeed { get; set; }
 		public float VelocityX { get; set; }
 		public float VelocityY { get; set; }
-
-		public WorldObjectMovableAnimated() : base() { }
+		
 		public WorldObjectMovableAnimated(string textureName) : base(textureName) { }
 		public WorldObjectMovableAnimated(float x, float y, string textureName) : base(textureName) {
 			SetWorldPosition(x, y);

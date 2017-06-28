@@ -6,11 +6,30 @@ using System.Threading.Tasks;
 using OpenGL;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections.Specialized;
+using System.Collections;
 
 namespace _2DRPG {
 	public static class TextureManager {
+
 		private static Dictionary<string, uint> loadedTextureIDs = new Dictionary<string, uint>();
 
+		private static HybridDictionary texturePaths = new HybridDictionary() {
+			{"flower", "Sprites/SpriteSheets/Flowers.png" },
+			{"default", "Sprites/Default.png" },
+			{"heart", "Sprites/Heart.png" },
+			{"baseFont", "Sprites/SpriteSheets/BaseFont.png" },
+			{"button", "Sprites/Button.png" },
+			{"josh", "Sprites/josh.png" }
+		};
+
+		private static Dictionary<string, int> textureUses = new Dictionary<string, int>();
+
+		static TextureManager() {
+			foreach (string s in texturePaths.Keys) {
+				textureUses.Add(s, 0);
+			}
+		}
 		/// <summary>
 		/// Returns the Texture ID for the given textureName as set up earlier by LoadTexture
 		/// </summary>
@@ -27,10 +46,9 @@ namespace _2DRPG {
 		/// </summary>
 		/// <param name="path"></param>
 		/// <param name="textureName"></param>
-		public static void LoadTexture(string path, string textureName) {
-			if (!loadedTextureIDs.ContainsKey(textureName)) {
+		private static void LoadTexture(string textureName) {
 				try {
-					Bitmap texSource = new Bitmap(path);    //Graps the bitmap data from the path
+					Bitmap texSource = new Bitmap((string)texturePaths[textureName]);    //Graps the bitmap data from the path
 					texSource.RotateFlip(RotateFlipType.RotateNoneFlipY);
 					uint id = Gl.GenTexture();
 					Gl.BindTexture(TextureTarget.Texture2d, id);
@@ -47,15 +65,36 @@ namespace _2DRPG {
 					loadedTextureIDs.Add(textureName, id);
 					Gl.BindTexture(TextureTarget.Texture2d, 0);
 				} catch (System.ArgumentException) {
-					System.Diagnostics.Debug.WriteLine("Could not find file: " + path);
+					System.Diagnostics.Debug.WriteLine("Could not find file: " + textureName);
 				}
-	
-            }
+			System.Diagnostics.Debug.WriteLine("Loaded Texture: " + textureName);
         }
 
-        public static void UnloadTexture(string textureName) {
-			if (loadedTextureIDs.ContainsKey(textureName))
-				loadedTextureIDs.Remove(textureName);
+		public static void RegisterTextures(string[] textureNames) {
+			foreach (string s in textureNames) {
+				if (texturePaths.Contains(s) && textureUses.ContainsKey(s)) {
+					textureUses[s]++;
+					if (loadedTextureIDs.ContainsKey(s))
+						return;
+					else
+						LoadTexture(s);
+				}
+			}
+		}
+
+		public static void UnRegisterTextures(string[] textureNames) {
+			foreach (string s in textureNames) {
+				if (texturePaths.Contains(s) && textureUses.ContainsKey(s)) {
+					textureUses[s]--;
+					if (textureUses[s] <= 0) {
+						if (loadedTextureIDs.ContainsKey(s)) {
+							Gl.DeleteTextures(loadedTextureIDs[s]);
+							loadedTextureIDs.Remove(s);
+						}
+						textureUses[s] = 0;
+					}
+				}
+			}
 		}
 
 		public static void ClearTextures() {

@@ -12,7 +12,7 @@ namespace _2DRPG.GUI {
 		private float spacing = .05f; //gap between buttons displayed in the dropdown
 
 		public UIDropdownButton(float x, float y, float width, float height, UIButton[] dropdowns) : this(x, y, width, height, null, dropdowns) { }
-		public UIDropdownButton(float x, float y, float width, float height, string labelText, UIButton[] dropdowns) : base(x, y, width, height, 1, "Button") {
+		public UIDropdownButton(float x, float y, float width, float height, string labelText, UIButton[] dropdowns) : base(x, y, width, height, 1, "button") {
 			if (labelText != null)
 				displayLabel = new UIText(x, y, width, height, labelText);
 			int counter = 1;

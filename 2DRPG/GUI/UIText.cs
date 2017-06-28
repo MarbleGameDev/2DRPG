@@ -13,7 +13,7 @@ namespace _2DRPG.GUI {
 		private List<UIChar> chars = new List<UIChar>();
 		public Color textColor = Color.White;
 
-		public UIText(float x, float y, float width, float height, string text) : base(x, y, width, height, 1, "Button") {
+		public UIText(float x, float y, float width, float height, string text) : base(x, y, width, height, 1, "button") {
 			displayText = text;
 			SetupChars();
 		}

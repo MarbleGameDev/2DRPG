@@ -9,7 +9,7 @@ namespace _2DRPG.Entities {
 		public float entityHealth;
 		List<EntityEffect> effectList = new List<EntityEffect>();
 
-		public StandardMob() : base() {
+		public StandardMob() : base("default") {
 			entityHealth = 10;
 		}
 		public StandardMob(float x, float y, string textureName, float health = 10) : base(x, y, textureName) {

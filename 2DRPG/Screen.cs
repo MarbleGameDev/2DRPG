@@ -31,7 +31,7 @@ namespace _2DRPG {
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("2 Pressed"); }, "Button 2")
 			}));
 			UIObjects.Add(worldText);
-			UIObjects.Add(new UIBase(0f, 0f, .05f, .05f, 0, "default"));
+			UIObjects.Add(new UIBase(0f, 0f, .02f, .02f, 0, "default"));
 
 		}
 
@@ -54,12 +54,12 @@ namespace _2DRPG {
 			return value * windowRatio;
 		}
 
+		private static string[] textureNames = new string[] {
+			"button", "baseFont", "default"
+		};
+
 		public static void LoadGUITextures() {
-			TextureManager.LoadTexture("Sprites/Button.png", "Button");
-			TextureManager.LoadTexture("Sprites/Heart.png", "Heart");
-			TextureManager.LoadTexture("Sprites/SpriteSheets/CourierFont.png", "CourierFont");
-            TextureManager.LoadTexture("Sprites/SpriteSheets/BaseFont.png", "BaseFont");
-            TextureManager.LoadTexture("Sprites/Default.png", "Default");
+			TextureManager.RegisterTextures(textureNames);
 		}
 		/// <summary>
 		/// Takes a value either [0, 16/9] for width or [0, 1] for height and returns the pixel number

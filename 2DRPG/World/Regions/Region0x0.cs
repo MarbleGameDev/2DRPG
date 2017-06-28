@@ -14,11 +14,11 @@ namespace _2DRPG.World.Regions {
 		public int RegionX { get { return 0; } }
 		public int RegionY { get { return 0; } }
 
-		List<WorldObjectBase> regionObjects = new List<WorldObjectBase>();
+		HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
 
-		public List<WorldObjectBase> LoadObjects() {
+		public HashSet<WorldObjectBase> LoadObjects() {
 			regionObjects.Clear();
-			WorldObjectBase j = new WorldObjectBase();
+			WorldObjectBase j = new WorldObjectBase("default");
 			WorldObjectAnimated flower = new WorldObjectAnimated(-1f,.5f,1,4,16,16,10, "flower");
 			regionObjects.Add(j);
             regionObjects.Add(flower);
@@ -27,16 +27,15 @@ namespace _2DRPG.World.Regions {
 			return regionObjects;
 		}
 
+		string[] textureNames = new string[] {
+			"flower", "default", "heart", "josh"
+		};
+
 		public void LoadTextures() {
-            TextureManager.LoadTexture("Sprites/SpriteSheets/Flowers.png","flower");
-			TextureManager.LoadTexture("Sprites/Default.png", "default");
-			TextureManager.LoadTexture("Sprites/Heart.png", "heart");
-			TextureManager.LoadTexture("Sprites/josh.png", "josh");
+			TextureManager.RegisterTextures(textureNames);
 		}
 		public void UnloadTextures() {
-			TextureManager.UnloadTexture("default");
-			TextureManager.UnloadTexture("heart");
-			TextureManager.UnloadTexture("josh");
+			TextureManager.UnRegisterTextures(textureNames);
 		}
 
 	}
