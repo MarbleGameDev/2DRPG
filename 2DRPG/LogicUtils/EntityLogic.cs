@@ -10,6 +10,8 @@ namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 		//Logic for calculating entities
 		static void EntityLogic(object sender, ElapsedEventArgs e) {
+			if (GameState.CurrentState == GameState.GameStates.Paused)
+				return;
 			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray())
 					foreach (WorldObjectBase o in l) {

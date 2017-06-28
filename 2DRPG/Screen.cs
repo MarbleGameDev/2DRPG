@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using _2DRPG.GUI;
 using System.Drawing;
+using _2DRPG.GUI;
+using _2DRPG.GUI.Windows;
 
 namespace _2DRPG {
 	static class Screen {
@@ -18,21 +19,34 @@ namespace _2DRPG {
 		public static int pixelWidth = 496;
 		public static int pixelHeight = 279;
 
-		public static List<UIBase> UIObjects = new List<UIBase>();
+		private static Dictionary<string, IWindow> windowFiles = new Dictionary<string, IWindow>();
 
-		public static UIText worldText = new UIText(1.3f, .9f, .4f, .1f, "Coords: ") { textColor = Color.Black};
+		public static Dictionary<string, HashSet<UIBase>> currentWindows = new Dictionary<string, HashSet<UIBase>>();
+
+		static Screen() {
+			windowFiles.Add("pause", new PauseWindow());
+			windowFiles.Add("hud", new HUDWindow());
+		}
+
+		public static void AddWindow(string windowName) {
+			if (windowFiles.ContainsKey(windowName)) {
+				windowFiles[windowName].LoadTextures();
+				currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
+			}
+		}
+
+		public static void CloseWindow(string windowName) {
+			lock (currentWindows) {
+				if (windowFiles.ContainsKey(windowName)) {
+					windowFiles[windowName].UnloadTextures();
+					currentWindows.Remove(windowName);
+				}
+			}
+		}
+
 		public static void ScreenStartup() {
 			LoadGUITextures();
-			//UIButton b = new UIButton(-1.7f, .8f, .1f, .1f, () => { System.Diagnostics.Debug.WriteLine("ayo"); });
-			//UIObjects.Add(b);
-			UIObjects.Add(new UIText(1f, 0f, 1f, .2f, "0123456789") { textColor = Color.Black});
-			UIObjects.Add(new UIDropdownButton(-1.4f, .8f, .3f, .1f, "Dropdown", new UIButton[]{
-				new UIButton(() => { System.Diagnostics.Debug.WriteLine("1 Pressed"); }, "Button 1"),
-				new UIButton(() => { System.Diagnostics.Debug.WriteLine("2 Pressed"); }, "Button 2")
-			}));
-			UIObjects.Add(worldText);
-			UIObjects.Add(new UIBase(0f, 0f, .02f, .02f, 0, "default"));
-
+			AddWindow("hud");
 		}
 
 		public static void SetWindowDimensions(int width, int height) {

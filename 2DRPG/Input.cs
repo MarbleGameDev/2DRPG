@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using _2DRPG.GUI;
 
 namespace _2DRPG {
-	static class Input {
+	public static class Input {
 		public static event inputMethod InputCall;
 		public delegate void inputMethod(KeyInputs[] k);
 		//Dictionary that stores the game inputs and the current mapped Keycode for the input
@@ -24,28 +25,41 @@ namespace _2DRPG {
 			{KeyInputs.left, false },
 			{KeyInputs.right, false },
 			{KeyInputs.up, false },
-			{KeyInputs.down, false },
-			{KeyInputs.escape, false },
-			{KeyInputs.interact, false }
+			{KeyInputs.down, false }
 		};
+		private static HashSet<KeyInputs> ignoreKeys = new HashSet<KeyInputs>();
 
 		public static void KeyDown(object sender, KeyEventArgs e) {
 			//System.Diagnostics.Debug.WriteLine(e.KeyCode);
 			KeyInputs k =  keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
-			if (!keysHeld[k]) {
-				keysHeld[k] = true;
-				anyKeysHeld = true;
+			if (keysHeld.ContainsKey(k)) {
+				if (!keysHeld[k]) {
+					keysHeld[k] = true;
+					anyKeysHeld = true;
+				}
+			} else {
+				if (ignoreKeys.Contains(k))
+					return;
+				InputCall.Invoke(new KeyInputs[] { k });
+				ManualKeys(new KeyInputs[] { k });
+				ignoreKeys.Add(k);
+
 			}
 		}
 		public static void KeyUp(object sender, KeyEventArgs e) {
 			KeyInputs k = keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
-			if (keysHeld[k]) {
-				keysHeld[k] = false;
-				bool newKeys = false;
-				foreach (KeyInputs h in keysHeld.Keys) {
-					newKeys = newKeys | keysHeld[h];
+			if (keysHeld.ContainsKey(k)) {
+				if (keysHeld[k]) {
+					keysHeld[k] = false;
+					bool newKeys = false;
+					foreach (KeyInputs h in keysHeld.Keys) {
+						newKeys = newKeys | keysHeld[h];
+					}
+					anyKeysHeld = newKeys;
 				}
-				anyKeysHeld = newKeys;
+			} else {
+				if (ignoreKeys.Contains(k))
+					ignoreKeys.Remove(k);
 			}
 		}
 
@@ -63,20 +77,30 @@ namespace _2DRPG {
 
 		public static void MouseSent(object sender, MouseEventArgs e) {
 			if (e.Button.Equals(MouseButtons.Left)) {
-				GUI.UIBase[] guiObjects = Screen.UIObjects.ToArray();
+				HashSet<UIBase>[] windows;
+				lock (Screen.currentWindows) {
+					windows = Screen.currentWindows.Values.ToArray();
+				}
 				float checkX = Screen.windowRatio * 2 * ((float)e.X / Screen.WindowWidth - .5f);    //Convert from mouse coordinates to screen coordinates
 				float checkY = 2 * (.5f - (float)e.Y / Screen.WindowHeight);
-				foreach (GUI.UIBase u in guiObjects) {
-					if (u is GUI.UIButton)
-						((GUI.UIButton)u).CheckClick( checkX, checkY);
-				}
+				foreach(HashSet<UIBase> h in windows)
+					foreach (UIBase u in h) {
+						if (u is UIButton)
+							((UIButton)u).CheckClick(checkX, checkY);
+					}
 			}
 		}
 
 
 		private static void ManualKeys(KeyInputs[] keys) {
-			if (keys.Contains(KeyInputs.escape))
-				Application.Exit();
+			if (keys.Contains(KeyInputs.escape)) {
+				if (GameState.CurrentState == GameState.GameStates.Game)
+					Screen.AddWindow("pause");
+				else if (GameState.CurrentState == GameState.GameStates.Paused) {
+					Screen.CloseWindow("pause");
+					GameState.SetGameState(GameState.GameStates.Game);
+				}
+			}
 		}
 
 		/// <summary>

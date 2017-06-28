@@ -44,7 +44,7 @@ namespace _2DRPG {
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
 			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
-				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.ContextCreated();
 				}
@@ -63,7 +63,7 @@ namespace _2DRPG {
 
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
 			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
-				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.ContextUpdate();
 				}
@@ -74,7 +74,7 @@ namespace _2DRPG {
 		private void RenderControl_ContextDestroying(object sender, GlControlEventArgs e) {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
 			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
-				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.ContextDestroyed();
 				}
@@ -108,9 +108,12 @@ namespace _2DRPG {
 			Gl.ClearColor(36 / 255f, 71 / 255f, 143 / 255f, 1f);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+			if (GameState.CurrentState == GameState.GameStates.Paused || GameState.WindowOpen)
+				Gl.Color3(.5f, .5f, .5f);
+
 			//Render World Objects
 			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {
-				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.Render();
 				}
@@ -118,14 +121,19 @@ namespace _2DRPG {
 			oboe.Render();
 			WorldData.controllableOBJ.Render();
 
+			if (GameState.CurrentState == GameState.GameStates.Paused || GameState.WindowOpen)
+				Gl.Color3(1f, 1f, 1f);
+
 			//Load a separete projection for GUI rendering that doesn't move with the character
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
 			Gl.Ortho(-16d / 9, 16d / 9, -1.0, 1.0, -0.1, 10.0);
 
-			GUI.UIBase[] guiObjects = Screen.UIObjects.ToArray();   //Render the GUI Objects
-			foreach (GUI.UIBase u in guiObjects) {
-				u.Render();
+			lock (Screen.currentWindows) {
+				foreach(HashSet<GUI.UIBase> b in Screen.currentWindows.Values)   //Render the GUI Objects
+					foreach (GUI.UIBase u in b) {
+						u.Render();
+					}
 			}
 			Input.UpdateKeys();
 		}
