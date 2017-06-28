@@ -25,7 +25,7 @@ namespace _2DRPG {
 			LoadGUITextures();
 			//UIButton b = new UIButton(-1.7f, .8f, .1f, .1f, () => { System.Diagnostics.Debug.WriteLine("ayo"); });
 			//UIObjects.Add(b);
-			UIObjects.Add(new UIText(1f, 0f, 1f, .2f, "23 is #1!") { textColor = Color.Black});
+			UIObjects.Add(new UIText(1f, 0f, 1f, .2f, "0123456789") { textColor = Color.Black});
 			UIObjects.Add(new UIDropdownButton(-1.4f, .8f, .3f, .1f, "Dropdown", new UIButton[]{
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("1 Pressed"); }, "Button 1"),
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("2 Pressed"); }, "Button 2")

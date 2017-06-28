@@ -119,10 +119,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Sprites\GUI Texutures\Heart Gui.png" />
-    <Content Include="Sprites\GUI Texutures\Mana Gui.png" />
+    <Folder Include="Sprites\GUI Texutures\" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Sprites\SpriteSheets\BaseFont.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -130,9 +130,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sprites\Button.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Sprites\SpriteSheets\CourierFont.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sprites\Default.png">
