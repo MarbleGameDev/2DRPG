@@ -19,7 +19,7 @@ namespace _2DRPG.World.Regions {
 		public List<WorldObjectBase> LoadObjects() {
 			regionObjects.Clear();
 			WorldObjectBase j = new WorldObjectBase();
-			WorldObjectAnimated flower = new WorldObjectAnimated(-1f,.5f,1,4,16,16,5, "flower");
+			WorldObjectAnimated flower = new WorldObjectAnimated(-1f,.5f,1,4,16,16,10, "flower");
 			regionObjects.Add(j);
             regionObjects.Add(flower);
 			//regionObjects.Add(new WorldObjectAnimated("Heart"));

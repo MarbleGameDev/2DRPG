@@ -27,14 +27,12 @@ namespace _2DRPG.World.Objects {
 			SetWorldPosition(x, y);
 		}
 
-        
-		int counter = 0;
         int frameCount = 0;
         public void SpriteUpdate()
         {
 
             float sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
-            float sheetShiftVertical = 1f/((spritesAmount / 10) + 1);
+            float sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
 
             if (frameCount == 0)
             {
@@ -87,32 +85,5 @@ namespace _2DRPG.World.Objects {
 
 
         }
-
-        /*public void SpriteUpdate(int frameInterval)
-        {
-
-            if ((frameInterval == 0) ? (true) : counter % frameInterval == 0) {
-
-                if (counter == 15) {
-                    texturePosition[0] = 0f;
-                    texturePosition[2] = 0f;
-                    texturePosition[4] = 1f;
-                    texturePosition[6] = 1f;
-                    counter = 0;
-                }
-                else {
-                    texturePosition[0] = texturePosition[0] + 0.0625f;
-                    texturePosition[2] = texturePosition[2] + 0.0625f;
-                    texturePosition[4] = texturePosition[4] + 0.0625f;
-                    texturePosition[6] = texturePosition[6] + 0.0625f
-                        ;
-                    counter++;
-                }
-
-            } else
-                counter++;
-
-        }*/
-
 	}
 }
