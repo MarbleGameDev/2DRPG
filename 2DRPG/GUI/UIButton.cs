@@ -32,11 +32,13 @@ namespace _2DRPG.GUI {
 			buttonAction = click;
 		}
 
-		public virtual void CheckClick(float x, float y) {
+		public virtual bool CheckClick(float x, float y) {
+			bool check = LogicUtils.Logic.CheckIntersection(arrayPosition, x, y);
 			if (LogicUtils.Logic.CheckIntersection(arrayPosition, x, y)) {
 				if (buttonAction != null)
 					buttonAction.Invoke();
 			}
+			return check;
 		}
 
 		public void SetButtonAction(Action btn) {

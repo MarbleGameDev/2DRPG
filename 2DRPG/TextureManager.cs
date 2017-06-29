@@ -67,16 +67,14 @@ namespace _2DRPG {
 				} catch (System.ArgumentException) {
 					System.Diagnostics.Debug.WriteLine("Could not find file: " + textureName);
 				}
-			System.Diagnostics.Debug.WriteLine("Loaded Texture: " + textureName);
+			//System.Diagnostics.Debug.WriteLine("Loaded Texture: " + textureName);
         }
 
 		public static void RegisterTextures(string[] textureNames) {
 			foreach (string s in textureNames) {
 				if (texturePaths.Contains(s) && textureUses.ContainsKey(s)) {
 					textureUses[s]++;
-					if (loadedTextureIDs.ContainsKey(s))
-						return;
-					else
+					if (!loadedTextureIDs.ContainsKey(s))
 						LoadTexture(s);
 				}
 			}

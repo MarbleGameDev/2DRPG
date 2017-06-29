@@ -41,7 +41,6 @@ namespace _2DRPG {
 
 		private static void LoadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
-			System.Diagnostics.Debug.WriteLine("loaded: " + reg);
 			if (regionFiles.ContainsKey(reg) && !currentRegions.ContainsKey(reg)) {
 				regionFiles[reg].LoadTextures();
 				HashSet<WorldObjectBase> tempReg = regionFiles[reg].LoadObjects();
@@ -53,7 +52,6 @@ namespace _2DRPG {
 		}
 		private static void UnloadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
-			System.Diagnostics.Debug.WriteLine("unloaded: " + reg);
 			if (regionFiles.ContainsKey(reg)) {
 				regionFiles[reg].UnloadTextures();
 				currentRegions.Remove(reg);

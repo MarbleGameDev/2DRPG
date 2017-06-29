@@ -43,7 +43,7 @@ namespace _2DRPG {
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
-			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+			lock (WorldData.currentRegions) {     //Render the World Objects
 				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.ContextCreated();
@@ -62,7 +62,7 @@ namespace _2DRPG {
 		}
 
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
-			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+			lock (WorldData.currentRegions) {     //Render the World Objects
 				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.ContextUpdate();
@@ -73,7 +73,7 @@ namespace _2DRPG {
 
 		private void RenderControl_ContextDestroying(object sender, GlControlEventArgs e) {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
-			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+			lock (WorldData.currentRegions) {     //Render the World Objects
 				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.ContextDestroyed();
@@ -112,7 +112,7 @@ namespace _2DRPG {
 				Gl.Color3(.5f, .5f, .5f);
 
 			//Render World Objects
-			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {
+			lock (WorldData.currentRegions) {
 				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.Render();

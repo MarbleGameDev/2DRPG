@@ -28,7 +28,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		string[] textureNames = new string[] {
-			"button"
+			"button", "baseFont"
 		};
 
 		public void LoadTextures() {

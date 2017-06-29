@@ -25,11 +25,14 @@ namespace _2DRPG.GUI {
 			buttonAction = new Action(ToggleDropdowns);
 		}
 
-		public override void CheckClick(float x, float y) {
-			base.CheckClick(x, y);
+		public override bool CheckClick(float x, float y) {
+			if (base.CheckClick(x, y))
+				return true;
 			if (showDrops)
 				foreach (UIButton b in drops)
-					b.CheckClick(x, y);
+					if (b.CheckClick(x, y))
+						return true;
+			return false;
 		}
 
 		public override void Render() {

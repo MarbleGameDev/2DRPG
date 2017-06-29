@@ -44,8 +44,6 @@
 			this.RenderControl.ContextDestroying += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextDestroying);
 			this.RenderControl.Render += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_Render);
 			this.RenderControl.ContextUpdate += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextUpdate);
-			this.RenderControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownE);
-			this.RenderControl.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyUpE);
 			this.RenderControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MClick);
 			this.RenderControl.Resize += new System.EventHandler(this.ResizeE);
 			// 
@@ -55,8 +53,12 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(992, 558);
 			this.Controls.Add(this.RenderControl);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.KeyPreview = true;
 			this.Name = "Form1";
 			this.Text = "Test Form 1";
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownE);
+			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyUpE);
 			this.ResumeLayout(false);
 
 		}

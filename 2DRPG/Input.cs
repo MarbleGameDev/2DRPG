@@ -32,12 +32,12 @@ namespace _2DRPG {
 		public static void KeyDown(object sender, KeyEventArgs e) {
 			//System.Diagnostics.Debug.WriteLine(e.KeyCode);
 			KeyInputs k =  keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
-			if (keysHeld.ContainsKey(k)) {
+			if (keysHeld.ContainsKey(k)) {	//If it's a key that should be held with others
 				if (!keysHeld[k]) {
 					keysHeld[k] = true;
 					anyKeysHeld = true;
 				}
-			} else {
+			} else {	//If it's a one press key
 				if (ignoreKeys.Contains(k))
 					return;
 				InputCall.Invoke(new KeyInputs[] { k });
@@ -86,7 +86,8 @@ namespace _2DRPG {
 				foreach(HashSet<UIBase> h in windows)
 					foreach (UIBase u in h) {
 						if (u is UIButton)
-							((UIButton)u).CheckClick(checkX, checkY);
+							if (((UIButton)u).CheckClick(checkX, checkY))
+								return;
 					}
 			}
 		}

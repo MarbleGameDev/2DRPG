@@ -45,7 +45,6 @@ namespace _2DRPG {
 		}
 
 		public static void ScreenStartup() {
-			LoadGUITextures();
 			AddWindow("hud");
 		}
 
@@ -66,14 +65,6 @@ namespace _2DRPG {
 		/// <returns></returns>
 		public static float ConvertWidth(float value) {
 			return value * windowRatio;
-		}
-
-		private static string[] textureNames = new string[] {
-			"button", "baseFont", "default"
-		};
-
-		public static void LoadGUITextures() {
-			TextureManager.RegisterTextures(textureNames);
 		}
 		/// <summary>
 		/// Takes a value either [0, 16/9] for width or [0, 1] for height and returns the pixel number
