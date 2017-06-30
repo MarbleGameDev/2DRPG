@@ -150,7 +150,12 @@ namespace _2DRPG {
 			Input.KeyUp(sender, e);
 		}
 
+		private void LostFocusE(object sender, EventArgs e) {
+			Input.ClearKeys();
+		}
+
 		private void ResizeE(object sender, EventArgs e) {
+			Input.ClearKeys();
 			Control senderControl = (Control)sender;
 			int idealWidth = (int)(senderControl.ClientSize.Height * (16f / 9));        //Center the 16:9 Viewport in the middle of the window regardless of window dimensions
 			if (senderControl.ClientSize.Width > idealWidth) {

@@ -75,6 +75,11 @@ namespace _2DRPG {
 			}
 		}
 
+		public static void ClearKeys() {
+			foreach (KeyInputs k in keysHeld.Keys.ToList())
+				keysHeld[k] = false;
+		}
+
 		public static void MouseSent(object sender, MouseEventArgs e) {
 			if (e.Button.Equals(MouseButtons.Left)) {
 				HashSet<UIBase>[] windows;

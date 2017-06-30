@@ -12,6 +12,7 @@ namespace _2DRPG.GUI.Windows {
 
 		public HashSet<UIBase> LoadObjects() {
 			GameState.SetGameState(GameState.GameStates.Paused);
+			Input.ClearKeys();
 			UIObjects.Add(new UIButton(0f, .6f, .8f, .1f, () => {
 				GameState.SetGameState(GameState.GameStates.Game);
 				Screen.CloseWindow("pause");

@@ -53,10 +53,10 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(992, 558);
 			this.Controls.Add(this.RenderControl);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.KeyPreview = true;
 			this.Name = "Form1";
 			this.Text = "Test Form 1";
+			this.Deactivate += new System.EventHandler(this.LostFocusE);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownE);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyUpE);
 			this.ResumeLayout(false);
