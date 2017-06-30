@@ -12,24 +12,40 @@ namespace _2DRPG.GUI {
 		private string displayText;
 		private List<UIChar> chars = new List<UIChar>();
 		public Color textColor = Color.White;
+		public float textSize;
 
-		public UIText(float x, float y, float width, float height, string text) : base(x, y, width, height, 1, "button") {
+		/// <summary>
+		/// TextSize is multiplied by 16 to get the number of screen pixels each char is sized
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="textSize"></param>
+		/// <param name="text"></param>
+		public UIText(float x, float y, float textSize, string text) : base(x, y, textSize * 16 * text.Length, textSize * 16, 1, "button") {
 			displayText = text;
+			this.textSize = textSize;
 			SetupChars();
 		}
 
 		public override void Render() {
 			Gl.Color3(textColor.R, textColor.G, textColor.B);
 			lock (chars)
-			foreach (UIChar c in chars) {
-				if (c != null)
-					c.Render();
-			}
+				foreach (UIChar c in chars) {
+					if (c != null)
+						c.Render();
+				}
 			Gl.Color3(1f, 1f, 1f);
 		}
 
-		public void SetText(string text) {
+		public void SetText(string text, float textSize) {
 			displayText = text;
+			SetTextSize(textSize);
+			SetupChars();
+		}
+		public void SetTextSize(float textSize) {
+			this.textSize = textSize;
+			width = textSize * 16 * displayText.Length;
+			height = textSize * 16;
 			SetupChars();
 		}
 

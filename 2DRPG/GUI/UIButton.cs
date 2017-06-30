@@ -17,11 +17,11 @@ namespace _2DRPG.GUI {
 		}
 		public UIButton(Action click, string labelText) : base("button") {
 			buttonAction = click;
-			displayLabel = new UIText(0, 0, .1f, .1f, labelText);
+			displayLabel = new UIText(0, 0, 1f, labelText);
 		}
 		public UIButton(Action click, string labelText, string textureName) : base(textureName) {
 			buttonAction = click;
-			displayLabel = new UIText(0, 0, .1f, .1f, labelText);
+			displayLabel = new UIText(0, 0, 1f, labelText);
 		}
 		public UIButton(float x, float y, float width, float height, Action click, int layer, string textureName) : base(x, y, width, height, layer, textureName) {
 			buttonAction = click;
@@ -53,8 +53,6 @@ namespace _2DRPG.GUI {
 		public override void SetScreenPosition(float x, float y) {
 			base.SetScreenPosition(x, y);
 			if (displayLabel != null) {
-				displayLabel.width = width;
-				displayLabel.height = height;
 				displayLabel.SetScreenPosition(x, y);
 			}
 		}

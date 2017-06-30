@@ -13,23 +13,24 @@ namespace _2DRPG.GUI.Windows {
 		public HashSet<UIBase> LoadObjects() {
 			GameState.SetGameState(GameState.GameStates.Paused);
 			Input.ClearKeys();
-			UIObjects.Add(new UIButton(0f, .6f, .8f, .1f, () => {
+			UIObjects.Clear();
+			UIObjects.Add(new UIButton(0f, 80f, 80f, 10f, () => {
 				GameState.SetGameState(GameState.GameStates.Game);
 				Screen.CloseWindow("pause");
 			}, 1, "button") {
-				displayLabel = new UIText(0f, .6f, .8f, .1f, "Continue")
+				displayLabel = new UIText(0f, 80f, .5f, "Continue")
 			});
-			UIObjects.Add(new UIButton(0f, .4f, .8f, .1f, () => {
+			UIObjects.Add(new UIButton(0f, 50f, 80f, 10f, () => {
 				Application.Exit();
 			}, 1, "button") {
-				displayLabel = new UIText(0f, .4f, .8f, .1f, "Quit")
+				displayLabel = new UIText(0f, 50f, .5f, "Quit")
 			});
 
 			return UIObjects;
 		}
 
 		string[] textureNames = new string[] {
-			"button", "baseFont"
+			"button"
 		};
 
 		public void LoadTextures() {

@@ -24,14 +24,14 @@ namespace _2DRPG.GUI {
 		public override void SetScreenPosition(float x, float y) {
 			screenX = x;
 			screenY = y;
-			arrayPosition[0] = x - width;
-			arrayPosition[3] = x - width;
-			arrayPosition[6] = x + width;
-			arrayPosition[9] = x + width;
-			arrayPosition[1] = y - height;
-			arrayPosition[10] = y - height;
-			arrayPosition[4] = y + height;
-			arrayPosition[7] = y + height;
+			arrayPosition[0] = (screenX - width);
+			arrayPosition[3] = (screenX - width);
+			arrayPosition[6] = (screenX + width);
+			arrayPosition[9] = (screenX + width);
+			arrayPosition[1] = (screenY - height);
+			arrayPosition[10] = (screenY - height);
+			arrayPosition[4] = (screenY + height);
+			arrayPosition[7] = (screenY + height);
 		}
 		public override void SetScreenPosition(float x, float y, int layer) {
 			SetScreenPosition(x, y);

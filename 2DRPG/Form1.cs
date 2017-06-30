@@ -18,7 +18,14 @@ namespace _2DRPG {
 			InitializeComponent();
 		}
 
-		TexturedObject oboe = new GUI.UIChar(-1f, 0f, .08f, '2');
+		TexturedObject oboe = new TexturedObject("2") {
+			arrayPosition = new float[] {
+			0f, 0f, 0f,
+			0f, 16f, 0f,
+			16f, 16f, 0f,
+			16f, 0f, 0f
+			}
+		};
 
 		private void RenderControl_ContextCreated(object sender, GlControlEventArgs e) {
 			GlControl glControl = (GlControl)sender;
@@ -118,7 +125,7 @@ namespace _2DRPG {
 						o.Render();
 				}
 			}
-			oboe.Render();
+			
 			WorldData.controllableOBJ.Render();
 
 			if (GameState.CurrentState == GameState.GameStates.Paused || GameState.WindowOpen)
@@ -127,7 +134,7 @@ namespace _2DRPG {
 			//Load a separete projection for GUI rendering that doesn't move with the character
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
-			Gl.Ortho(-16d / 9, 16d / 9, -1.0, 1.0, -0.1, 10.0);
+			Gl.Ortho(-320, 320, -180, 180, -0.1, 10.0);
 
 			lock (Screen.currentWindows) {
 				foreach(HashSet<GUI.UIBase> b in Screen.currentWindows.Values)   //Render the GUI Objects

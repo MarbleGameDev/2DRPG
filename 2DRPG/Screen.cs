@@ -16,8 +16,8 @@ namespace _2DRPG {
 		public static int screenHeight;
 		public static int screenWidth;
 
-		public static int pixelWidth = 496;
-		public static int pixelHeight = 279;
+		public static int pixelWidth = 640;
+		public static int pixelHeight = 360;
 
 		private static Dictionary<string, IWindow> windowFiles = new Dictionary<string, IWindow>();
 
@@ -45,6 +45,7 @@ namespace _2DRPG {
 		}
 
 		public static void ScreenStartup() {
+			TextureManager.RegisterTextures(new string[] { "baseFont" });
 			AddWindow("hud");
 		}
 

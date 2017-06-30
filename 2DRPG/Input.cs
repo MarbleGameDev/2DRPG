@@ -86,8 +86,8 @@ namespace _2DRPG {
 				lock (Screen.currentWindows) {
 					windows = Screen.currentWindows.Values.ToArray();
 				}
-				float checkX = Screen.windowRatio * 2 * ((float)e.X / Screen.WindowWidth - .5f);    //Convert from mouse coordinates to screen coordinates
-				float checkY = 2 * (.5f - (float)e.Y / Screen.WindowHeight);
+				float checkX = ((float)e.X / Screen.WindowWidth - .5f) * Screen.pixelWidth;    //Convert from mouse coordinates to screen coordinates
+				float checkY = -((float)e.Y / Screen.WindowHeight - .5f) * Screen.pixelHeight;
 				foreach(HashSet<UIBase> h in windows)
 					foreach (UIBase u in h) {
 						if (u is UIButton)

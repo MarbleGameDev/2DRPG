@@ -52,11 +52,11 @@ namespace _2DRPG {
 					texSource.RotateFlip(RotateFlipType.RotateNoneFlipY);
 					uint id = Gl.GenTexture();
 					Gl.BindTexture(TextureTarget.Texture2d, id);
-					Gl.TexStorage2D(TextureTarget.Texture2d, 7, InternalFormat.Rgba, texSource.Width, texSource.Height);
+					Gl.TexStorage2D(TextureTarget.Texture2d, 12, InternalFormat.Rgba, texSource.Width, texSource.Height);
 					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest); //Mipmap options
-					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToBorder);
-					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToBorder);
+					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
+					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 					Gl.TexImage2D(TextureTarget.Texture2d, 0, InternalFormat.Rgba, texSource.Width, texSource.Height, 0, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);     //Sets up the blank GL 2d Texture
 					BitmapData bitmap_data = texSource.LockBits(new Rectangle(0, 0, texSource.Width, texSource.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);    //extracts the bitmap data
 					Gl.TexSubImage2D(TextureTarget.Texture2d, 0, 0, 0, texSource.Width, texSource.Height, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmap_data.Scan0);      //Adds the bitmap data to the texture
@@ -64,7 +64,7 @@ namespace _2DRPG {
 					texSource.UnlockBits(bitmap_data);
 					loadedTextureIDs.Add(textureName, id);
 					Gl.BindTexture(TextureTarget.Texture2d, 0);
-				} catch (System.ArgumentException) {
+				} catch (Exception) {
 					System.Diagnostics.Debug.WriteLine("Could not find file: " + textureName);
 				}
 			//System.Diagnostics.Debug.WriteLine("Loaded Texture: " + textureName);

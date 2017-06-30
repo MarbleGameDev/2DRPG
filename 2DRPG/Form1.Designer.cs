@@ -36,7 +36,7 @@
 			this.RenderControl.Location = new System.Drawing.Point(0, 0);
 			this.RenderControl.MultisampleBits = ((uint)(0u));
 			this.RenderControl.Name = "RenderControl";
-			this.RenderControl.Size = new System.Drawing.Size(992, 558);
+			this.RenderControl.Size = new System.Drawing.Size(1280, 720);
 			this.RenderControl.StencilBits = ((uint)(0u));
 			this.RenderControl.SwapInterval = 0;
 			this.RenderControl.TabIndex = 0;
@@ -51,7 +51,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(992, 558);
+			this.ClientSize = new System.Drawing.Size(1280, 720);
 			this.Controls.Add(this.RenderControl);
 			this.KeyPreview = true;
 			this.Name = "Form1";

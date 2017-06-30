@@ -11,8 +11,9 @@ namespace _2DRPG.GUI.Windows {
 		private HashSet<UIBase> UIObjects = new HashSet<UIBase>();
 
 		public HashSet<UIBase> LoadObjects() {
-			UIObjects.Add(new UIText(1f, 0f, 1f, .2f, "0123456789") { textColor = Color.Black });
-			UIObjects.Add(new UIDropdownButton(-1.4f, .8f, .3f, .1f, "Dropdown", new UIButton[]{
+			UIObjects.Clear();
+			UIObjects.Add(new UIText(100f, 80f, .5f, "0123456789") { textColor = Color.Black });
+			UIObjects.Add(new UIDropdownButton(-240, 140f, 60f, 15f, new UIText(-240f, 140f, .5f, "Dropdown"), new UIButton[]{
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("1 Pressed"); }, "Button 1"),
 				new UIButton(() => { System.Diagnostics.Debug.WriteLine("2 Pressed"); }, "Button 2")
 			}));
@@ -21,7 +22,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		string[] textureNames = new string[] {
-			"button", "baseFont"
+			"button"
 		};
 
 		public void LoadTextures() {
