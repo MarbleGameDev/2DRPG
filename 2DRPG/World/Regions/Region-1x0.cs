@@ -14,11 +14,11 @@ namespace _2DRPG.World.Regions {
 
 		public HashSet<WorldObjectBase> LoadObjects() {
 
-			Entities.StandardMob mob = new Entities.StandardMob(99, 1, "josh", 15);
+			Entities.StandardMob mob = new Entities.StandardMob(990, 100, "josh", 15);
 			//mob.ReceiveAttack(new EffectAttack(new Entities.EntityEffect(() => { System.Diagnostics.Debug.WriteLine("Test Effect"); }, 1)));    //Attack the mob with an attack that deals an effect for 5 seconds that just outputs "Test Effect"
 			regionObjects.Add(mob);
-			regionObjects.Add(new WorldObjectBase(98, 0, "default"));
-			regionObjects.Add(new WorldObjectBase(98, .25f, "default"));
+			regionObjects.Add(new WorldObjectBase(900, 0, "default"));
+			regionObjects.Add(new WorldObjectBase(900, 25f, "default"));
 
 			return regionObjects;
 		}

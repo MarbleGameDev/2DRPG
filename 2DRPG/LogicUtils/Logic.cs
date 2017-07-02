@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 
 namespace _2DRPG.LogicUtils {
-	public static partial class Logic {
+	static partial class Logic {
 		static double logicInterval = 1000d / 10;	//Logic is run 10 times per second
 		static double animationInterval = 1000d / 30;   //Animation calls are run 30 times per second
 		static double physicsInterval = 1000d / 60;

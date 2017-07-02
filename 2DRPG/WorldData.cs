@@ -8,6 +8,7 @@ using OpenGL;
 using System.Drawing.Imaging;
 using _2DRPG.World.Objects;
 using _2DRPG.World.Regions;
+using _2DRPG.GUI;
 
 namespace _2DRPG {
 	static class WorldData {
@@ -17,8 +18,12 @@ namespace _2DRPG {
 		public static float CurrentY = 0;
 		static Dictionary<string, IWorldRegion> regionFiles = new Dictionary<string, IWorldRegion>();
 		public static Dictionary<string, HashSet<WorldObjectBase>> currentRegions = new Dictionary<string, HashSet<WorldObjectBase>>();
-
+		public static HashSet<UIBase> worldUIs = new HashSet<UIBase>();
 		public static WorldObjectControllable controllableOBJ;
+
+		public static UIChar interChar = new UIChar(0, 0, 8f, '!') {
+			Visible = false
+		};
 
 		/// <summary>
 		/// Adds the Region files to the directory
@@ -45,7 +50,7 @@ namespace _2DRPG {
 				regionFiles[reg].LoadTextures();
 				HashSet<WorldObjectBase> tempReg = regionFiles[reg].LoadObjects();
 				foreach (WorldObjectBase b in tempReg) {
-					b.SetWorldPosition(b.worldX + 100 * rx, b.worldY + 100 * ry);
+					b.SetWorldPosition(b.worldX + 1000 * rx, b.worldY + 1000 * ry);
 				}
 				currentRegions.Add(reg, tempReg);
 			}
@@ -63,8 +68,9 @@ namespace _2DRPG {
 		/// </summary>
 		public static void WorldStartup() {
 			TextureManager.ClearTextures();
-			TextureManager.RegisterTextures(new string[] { "heart" });
+			TextureManager.RegisterTextures(new string[] { "heart", "baseFont" });
 			controllableOBJ = new Player.MCObject();
+			worldUIs.Add(interChar);
 			LoadRegionObjects();
 		}
 
@@ -78,8 +84,8 @@ namespace _2DRPG {
 			int oldY = CurrentRegionY;
 			CurrentX += x;
 			CurrentY += y;
-			CurrentRegionX = (int)Math.Ceiling(CurrentX / 100) - 1 ;
-			CurrentRegionY = (int)Math.Ceiling(CurrentY / 100) - 1;
+			CurrentRegionX = (int)Math.Ceiling(CurrentX / 1000) - 1 ;
+			CurrentRegionY = (int)Math.Ceiling(CurrentY / 1000) - 1;
 			oldX = CurrentRegionX - oldX;
 			oldY = CurrentRegionY - oldY;
 			if (oldX != 0) {

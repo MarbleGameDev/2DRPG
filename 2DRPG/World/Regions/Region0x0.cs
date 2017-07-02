@@ -19,11 +19,14 @@ namespace _2DRPG.World.Regions {
 		public HashSet<WorldObjectBase> LoadObjects() {
 			regionObjects.Clear();
 			WorldObjectBase j = new WorldObjectBase("default");
-			WorldObjectAnimated flower = new WorldObjectAnimated(-1f, .5f, 5, 4, 16, 16, 10, "flower") {
-				size = .18f
+			WorldObjectAnimated flower = new WorldObjectAnimated(70f, 0f, 5, 4, 16, 16, 10, "flower") {
+				size = 16f
 			};
 			regionObjects.Add(j);
             regionObjects.Add(flower);
+			regionObjects.Add(new WorldObjectInteractable(180f, 58f, 16f) {
+				interAction = () => { System.Diagnostics.Debug.WriteLine("Square One opened"); }
+			});
 			//regionObjects.Add(new WorldObjectAnimated("Heart"));
 
 			return regionObjects;

@@ -101,10 +101,10 @@ namespace _2DRPG {
 			OrthoTop = y;
 			OrthoBottom = y;
 		}
-		private static double OrthoLeft = -16d / 9;
-		private static double OrthoRight = 16d / 9;
-		private static double OrthoTop = 1.0;
-		private static double OrthoBottom = -1.0;
+		private static double OrthoLeft = -320;
+		private static double OrthoRight = 320;
+		private static double OrthoTop = 180;
+		private static double OrthoBottom = -180;
 
 
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
@@ -124,6 +124,9 @@ namespace _2DRPG {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.Render();
 				}
+
+				foreach (GUI.UIBase b in WorldData.worldUIs.ToArray())
+					b.Render();
 			}
 			
 			WorldData.controllableOBJ.Render();

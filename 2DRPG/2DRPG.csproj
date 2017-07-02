@@ -59,6 +59,7 @@
     <Compile Include="GUI\Windows\HUDWindow.cs" />
     <Compile Include="GUI\Windows\IWindow.cs" />
     <Compile Include="GUI\Windows\PauseWindow.cs" />
+    <Compile Include="World\Objects\WorldObjectInteractable.cs" />
     <Compile Include="World\Objects\WorldObjectControllable.cs" />
     <Compile Include="EffectAttack.cs" />
     <Compile Include="Entities\EntityEffect.cs" />

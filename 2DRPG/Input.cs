@@ -107,6 +107,10 @@ namespace _2DRPG {
 					GameState.SetGameState(GameState.GameStates.Game);
 				}
 			}
+			if (keys.Contains(KeyInputs.interact)) {
+				if (LogicUtils.Logic.interactableObject != null)
+					LogicUtils.Logic.interactableObject.Interact();
+			}
 		}
 
 		/// <summary>

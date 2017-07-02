@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG.World.Objects {
-	class WorldObjectBase : TexturedObject {
+	public class WorldObjectBase : TexturedObject {
 		public float worldX;
 		public float worldY;
 

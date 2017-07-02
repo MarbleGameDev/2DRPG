@@ -9,6 +9,8 @@ namespace _2DRPG.GUI {
 		public float width = .1f;
 		public float height = .1f;
 		protected int defaultLayer = 1;
+		public bool Visible = true;
+
 		public UIBase() : base() {
 			SetScreenPosition(screenX, screenY, defaultLayer);
 		}
@@ -36,6 +38,11 @@ namespace _2DRPG.GUI {
 		public override void SetScreenPosition(float x, float y, int layer) {
 			SetScreenPosition(x, y);
 			SetLayer(layer);
+		}
+
+		public override void Render() {
+			if (Visible)
+				base.Render();
 		}
 	}
 }

@@ -20,7 +20,6 @@ namespace _2DRPG.GUI {
 				b.height = height;
 				if (displayLabel != null && b.displayLabel != null) {
 					b.displayLabel.SetTextSize(displayLabel.textSize);
-					System.Diagnostics.Debug.WriteLine("g");
 				}
 				b.SetScreenPosition(x, y - counter++ * height * (2 + spacing));
 				

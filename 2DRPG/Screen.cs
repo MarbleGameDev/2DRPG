@@ -45,7 +45,6 @@ namespace _2DRPG {
 		}
 
 		public static void ScreenStartup() {
-			TextureManager.RegisterTextures(new string[] { "baseFont" });
 			AddWindow("hud");
 		}
 

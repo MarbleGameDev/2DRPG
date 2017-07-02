@@ -8,7 +8,7 @@ namespace _2DRPG {
 	/// <summary>
 	/// Interface allowing the player to interact with an object
 	/// </summary>
-	interface IInteractable {
-		
+	public interface IInteractable {
+		void Interact();
 	}
 }
