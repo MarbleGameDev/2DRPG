@@ -45,6 +45,8 @@
 			this.RenderControl.Render += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_Render);
 			this.RenderControl.ContextUpdate += new System.EventHandler<OpenGL.GlControlEventArgs>(this.RenderControl_ContextUpdate);
 			this.RenderControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MClick);
+			this.RenderControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MMove);
+			this.RenderControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MUp);
 			this.RenderControl.Resize += new System.EventHandler(this.ResizeE);
 			// 
 			// Form1

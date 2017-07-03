@@ -29,6 +29,9 @@ namespace _2DRPG {
 		};
 		private static HashSet<KeyInputs> ignoreKeys = new HashSet<KeyInputs>();
 
+		public static float MouseX, MouseY;
+		public static bool MouseHeld;
+
 		public static void KeyDown(object sender, KeyEventArgs e) {
 			//System.Diagnostics.Debug.WriteLine(e.KeyCode);
 			KeyInputs k =  keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
@@ -86,15 +89,19 @@ namespace _2DRPG {
 				lock (Screen.currentWindows) {
 					windows = Screen.currentWindows.Values.ToArray();
 				}
-				float checkX = ((float)e.X / Screen.WindowWidth - .5f) * Screen.pixelWidth;    //Convert from mouse coordinates to screen coordinates
-				float checkY = -((float)e.Y / Screen.WindowHeight - .5f) * Screen.pixelHeight;
+				
 				foreach(HashSet<UIBase> h in windows)
 					foreach (UIBase u in h) {
 						if (u is UIButton)
-							if (((UIButton)u).CheckClick(checkX, checkY))
+							if (((UIButton)u).CheckClick(MouseX, MouseY))
 								return;
 					}
 			}
+		}
+
+		public static void MouseMove(object sender, MouseEventArgs e) {
+			MouseX = ((float)e.X / Screen.WindowWidth - .5f) * Screen.pixelWidth;    //Convert from mouse coordinates to screen coordinates
+			MouseY = -((float)e.Y / Screen.WindowHeight - .5f) * Screen.pixelHeight;
 		}
 
 

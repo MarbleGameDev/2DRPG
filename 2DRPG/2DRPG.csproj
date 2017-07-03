@@ -54,8 +54,10 @@
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\UIButton.cs" />
     <Compile Include="GUI\UIChar.cs" />
+    <Compile Include="GUI\UIDraggable.cs" />
     <Compile Include="GUI\UIDropdownButton.cs" />
     <Compile Include="GUI\UIText.cs" />
+    <Compile Include="GUI\UITextBox.cs" />
     <Compile Include="GUI\Windows\HUDWindow.cs" />
     <Compile Include="GUI\Windows\IWindow.cs" />
     <Compile Include="GUI\Windows\PauseWindow.cs" />

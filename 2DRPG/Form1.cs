@@ -153,6 +153,7 @@ namespace _2DRPG {
 		}
 
 		private void MClick(object sender, MouseEventArgs e) {
+			Input.MouseHeld = true;
 			Input.MouseSent(sender, e);
 		}
 
@@ -185,9 +186,14 @@ namespace _2DRPG {
 			Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 		}
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+        private void Form1_Load(object sender, EventArgs e) { }
 
-        }
-    }
+		private void MMove(object sender, MouseEventArgs e) {
+			Input.MouseMove(sender, e);
+		}
+
+		private void MUp(object sender, MouseEventArgs e) {
+			Input.MouseHeld = false;
+		}
+	}
 }

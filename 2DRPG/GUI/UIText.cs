@@ -9,8 +9,8 @@ using System.Drawing;
 namespace _2DRPG.GUI {
 	class UIText : UIBase {
 
-		private string displayText;
-		private List<UIChar> chars = new List<UIChar>();
+		protected string displayText;
+		protected List<UIChar> chars = new List<UIChar>();
 		public Color textColor = Color.White;
 		public float textSize;
 
@@ -25,6 +25,11 @@ namespace _2DRPG.GUI {
 			displayText = text;
 			this.textSize = textSize;
 			SetupChars();
+		}
+
+		public UIText(float x, float y, float textSize, int charWidth, string text) : base(x, y, charWidth, textSize * 16, 1, "button") {
+			displayText = text;
+			this.textSize = textSize;
 		}
 
 		public override void Render() {
@@ -49,7 +54,7 @@ namespace _2DRPG.GUI {
 			SetupChars();
 		}
 
-		private void SetupChars() {
+		protected virtual void SetupChars() {
 			if (displayText == null)
 				return;
 			lock (chars) {
