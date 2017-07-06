@@ -13,7 +13,7 @@ namespace _2DRPG {
         protected float screenX;
         protected float screenY;
         protected int layer;
-        private String texName;
+        private string texName;
 
         public TexturedObject(float x, float y, int layer, string textureName)
         {

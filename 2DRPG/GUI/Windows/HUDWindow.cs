@@ -19,7 +19,7 @@ namespace _2DRPG.GUI.Windows {
 			}));
 			UIObjects.Add(new UIBase(0f, 0f, .02f, .02f, 0, "default"));
 			UIObjects.Add(new UIDraggable(-100, -100, 15f, 15f, 0, "button"));
-			UIObjects.Add(new UITextBox(-180, 80, .5f, 90, "What the fuck did you just fucking say about me, you little bitch? I'll have you know I graduated top of my class in the Navy Seals and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills."));
+			//UIObjects.Add(new UITextBox(-180, 80, .5f, 90, "What the fuck did you just fucking say about me, you little bitch? I'll have you know I graduated top of my class in the \nNavy Seals and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills."));
 			//UIObjects.Add(new UITextBox(-80, 80, 1f, 40, "Testing Testing"));
 			return UIObjects;
 		}

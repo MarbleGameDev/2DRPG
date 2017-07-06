@@ -195,5 +195,9 @@ namespace _2DRPG {
 		private void MUp(object sender, MouseEventArgs e) {
 			Input.MouseHeld = false;
 		}
+
+		private void Form1_KeyPress(object sender, KeyPressEventArgs e) {
+			Input.KeyPress(sender, e);
+		}
 	}
 }

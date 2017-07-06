@@ -11,11 +11,9 @@ namespace _2DRPG.GUI.Windows {
 		private HashSet<UIBase> UIObjects = new HashSet<UIBase>();
 
 		public HashSet<UIBase> LoadObjects() {
-			GameState.SetGameState(GameState.GameStates.Paused);
 			Input.ClearKeys();
 			UIObjects.Clear();
 			UIObjects.Add(new UIButton(0f, 80f, 80f, 10f, () => {
-				GameState.SetGameState(GameState.GameStates.Game);
 				Screen.CloseWindow("pause");
 			}, 1, "button") {
 				displayLabel = new UIText(0f, 80f, .5f, "Continue")
@@ -34,10 +32,12 @@ namespace _2DRPG.GUI.Windows {
 		};
 
 		public void LoadTextures() {
+			GameState.SetGameState(GameState.GameStates.Paused);
 			TextureManager.RegisterTextures(textureNames);
 		}
 
 		public void UnloadTextures() {
+			GameState.SetGameState(GameState.GameStates.Game);
 			TextureManager.UnRegisterTextures(textureNames);
 		}
 	}

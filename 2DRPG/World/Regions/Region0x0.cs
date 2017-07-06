@@ -27,6 +27,7 @@ namespace _2DRPG.World.Regions {
 			regionObjects.Add(new WorldObjectInteractable(180f, 58f, 16f) {
 				interAction = () => { System.Diagnostics.Debug.WriteLine("Square One opened"); }
 			});
+			regionObjects.Add(new WorldObjectCollidable(-200f, -10f));
 			//regionObjects.Add(new WorldObjectAnimated("Heart"));
 
 			return regionObjects;

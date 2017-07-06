@@ -9,7 +9,9 @@ using _2DRPG.GUI;
 namespace _2DRPG {
 	public static class Input {
 		public static event inputMethod InputCall;
+		public static event keyMethod DirectCall;
 		public delegate void inputMethod(KeyInputs[] k);
+		public delegate void keyMethod(char k);
 		//Dictionary that stores the game inputs and the current mapped Keycode for the input
 		private static Dictionary<KeyInputs, Keys> keycodes = new Dictionary<KeyInputs, Keys>() {
 			{KeyInputs.left, Keys.A },
@@ -17,7 +19,8 @@ namespace _2DRPG {
 			{KeyInputs.up, Keys.W },
 			{KeyInputs.down, Keys.S },
 			{KeyInputs.escape, Keys.Escape},
-			{KeyInputs.interact, Keys.E}
+			{KeyInputs.interact, Keys.E},
+			{KeyInputs.console, Keys.Oemtilde }
 		};
 		private static bool anyKeysHeld = false;
 		private static Dictionary<KeyInputs, bool> keysHeld = new Dictionary<KeyInputs, bool>() {
@@ -31,9 +34,11 @@ namespace _2DRPG {
 
 		public static float MouseX, MouseY;
 		public static bool MouseHeld;
+		public static bool RedirectKeys;
 
 		public static void KeyDown(object sender, KeyEventArgs e) {
-			//System.Diagnostics.Debug.WriteLine(e.KeyCode);
+			if (RedirectKeys && !e.KeyCode.Equals(Keys.Escape) && !e.KeyCode.Equals(Keys.Oemtilde))
+				return;
 			KeyInputs k =  keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
 			if (keysHeld.ContainsKey(k)) {	//If it's a key that should be held with others
 				if (!keysHeld[k]) {
@@ -49,7 +54,17 @@ namespace _2DRPG {
 
 			}
 		}
+
+		public static void KeyPress(object sender, KeyPressEventArgs e) {
+			if (!RedirectKeys || e.KeyChar.Equals((char)Keys.Escape) || e.KeyChar.Equals((char)Keys.Oemtilde))
+				return;
+			if (DirectCall != null)
+				DirectCall.Invoke(e.KeyChar);
+		}
+
 		public static void KeyUp(object sender, KeyEventArgs e) {
+			if (RedirectKeys && !e.KeyCode.Equals(Keys.Escape) && !e.KeyCode.Equals(Keys.Oemtilde))
+				return;
 			KeyInputs k = keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
 			if (keysHeld.ContainsKey(k)) {
 				if (keysHeld[k]) {
@@ -100,8 +115,8 @@ namespace _2DRPG {
 		}
 
 		public static void MouseMove(object sender, MouseEventArgs e) {
-			MouseX = ((float)e.X / Screen.WindowWidth - .5f) * Screen.pixelWidth;    //Convert from mouse coordinates to screen coordinates
-			MouseY = -((float)e.Y / Screen.WindowHeight - .5f) * Screen.pixelHeight;
+			MouseX = (e.X  - Screen.WindowWidth / 2f) / Screen.screenWidth * Screen.pixelWidth;    //Convert from mouse coordinates to screen coordinates
+			MouseY = -(e.Y - Screen.WindowHeight / 2f) / Screen.screenHeight * Screen.pixelHeight;
 		}
 
 
@@ -111,7 +126,14 @@ namespace _2DRPG {
 					Screen.AddWindow("pause");
 				else if (GameState.CurrentState == GameState.GameStates.Paused) {
 					Screen.CloseWindow("pause");
-					GameState.SetGameState(GameState.GameStates.Game);
+				}
+			}
+			if (keys.Contains(KeyInputs.console)) {
+				if (Screen.currentWindows.ContainsKey("console"))
+					Screen.CloseWindow("console");
+				else {
+					Screen.AddWindow("console");
+					ClearKeys();
 				}
 			}
 			if (keys.Contains(KeyInputs.interact)) {
@@ -123,7 +145,7 @@ namespace _2DRPG {
 		/// <summary>
 		/// Enum values for the game inputs
 		/// </summary>
-		public enum KeyInputs {none, left, right, up, down, escape, interact};
+		public enum KeyInputs {none, left, right, up, down, escape, interact, console};
 
 	}
 }

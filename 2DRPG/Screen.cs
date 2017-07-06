@@ -26,6 +26,7 @@ namespace _2DRPG {
 		static Screen() {
 			windowFiles.Add("pause", new PauseWindow());
 			windowFiles.Add("hud", new HUDWindow());
+			windowFiles.Add("console", new ConsoleWindow());
 		}
 
 		public static void AddWindow(string windowName) {

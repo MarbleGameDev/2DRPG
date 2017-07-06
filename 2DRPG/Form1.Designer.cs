@@ -60,6 +60,7 @@
 			this.Text = "Test Form 1";
 			this.Deactivate += new System.EventHandler(this.LostFocusE);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownE);
+			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyUpE);
 			this.ResumeLayout(false);
 

@@ -53,6 +53,9 @@ namespace _2DRPG.GUI {
 			height = textSize * 16;
 			SetupChars();
 		}
+		public string GetText() {
+			return displayText;
+		}
 
 		protected virtual void SetupChars() {
 			if (displayText == null)

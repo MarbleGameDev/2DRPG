@@ -11,15 +11,16 @@ namespace _2DRPG.LogicUtils {
 		public static void AnimationLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused)
 				return;
-			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {
+			lock (WorldData.currentRegions) {
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
 					foreach (WorldObjectBase o in l) {
-						if (o is WorldObjectAnimated)
-							((WorldObjectAnimated)o).SpriteUpdate();
+						WorldObjectAnimated an = o as WorldObjectAnimated;
+						if (an != null)
+							an.SpriteUpdate();
 					}
 				}
 			}
-			lock (Screen.currentWindows.ToArray().SyncRoot) {
+			lock (Screen.currentWindows) {
 				foreach (HashSet<GUI.UIBase> b in Screen.currentWindows.Values)   //Render the GUI Objects
 					foreach (GUI.UIBase u in b) {
 						if (u is GUI.UIAnimated)

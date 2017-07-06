@@ -26,14 +26,17 @@ namespace _2DRPG {
 			if (k.Contains(Input.KeyInputs.down))
 				movementY = -MovementSpeed;
 		}
-		float movementX;
-		float movementY;
+		public float movementX;
+		public float movementY;
 
 		public override void MoveRelative(float x = 0, float y = 0) {
+			WorldData.MoveCenter(x, y);
+			SetWorldPosition(worldX + x, worldY + y);
+		}
+
+		public void Position() {
 			WorldData.MoveCenter(movementX, movementY);
 			SetWorldPosition(worldX + movementX, worldY + movementY);
-			movementX = 0;
-			movementY = 0;
 		}
 
 	}

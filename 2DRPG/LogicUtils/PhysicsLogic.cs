@@ -11,29 +11,31 @@ namespace _2DRPG.LogicUtils {
 		static void PhysicsLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused)
 				return;
-			WorldData.controllableOBJ.MoveRelative();
-			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
-				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
+			WorldData.controllableOBJ.Position();
+			bool playerstuck = false;
+			WorldObjectControllable cont = WorldData.controllableOBJ;
+			lock (WorldData.currentRegions) {
+				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToList()) {
 					foreach (WorldObjectBase o in l) {
-						if (o is IMovable) {
-							float[] testPoints = o.arrayPosition;
-							foreach (WorldObjectBase j in l) {
-								if (j != o) {
-									if (CheckIntersection(j.arrayPosition, testPoints[0], testPoints[1]))       //1 is bottom left
-										FixCollision((IMovable)o, 1);
-									else if (CheckIntersection(j.arrayPosition, testPoints[3], testPoints[4]))  //2 is upper left
-										FixCollision((IMovable)o, 2);
-									else if (CheckIntersection(j.arrayPosition, testPoints[6], testPoints[7]))  //3 is upper right
-										FixCollision((IMovable)o, 3);
-									else if (CheckIntersection(j.arrayPosition, testPoints[9], testPoints[10])) //4 is bottom right
-										FixCollision((IMovable)o, 4);
-								}
+						if (o is ICollidable)
+							if (CheckIntersection(o.arrayPosition, cont.arrayPosition[0], cont.arrayPosition[1]) ||
+								CheckIntersection(o.arrayPosition, cont.arrayPosition[3], cont.arrayPosition[4]) ||
+								CheckIntersection(o.arrayPosition, cont.arrayPosition[6], cont.arrayPosition[7]) ||
+								CheckIntersection(o.arrayPosition, cont.arrayPosition[9], cont.arrayPosition[10]) ||
+								CheckIntersection(o.arrayPosition, (cont.arrayPosition[0] + cont.arrayPosition[9]) / 2, cont.arrayPosition[1]) ||
+								CheckIntersection(o.arrayPosition, cont.arrayPosition[0], (cont.arrayPosition[1] + cont.arrayPosition[4]) / 2) ||
+								CheckIntersection(o.arrayPosition, (cont.arrayPosition[3] + cont.arrayPosition[6]) / 2, cont.arrayPosition[4]) ||
+								CheckIntersection(o.arrayPosition, cont.arrayPosition[6], (cont.arrayPosition[7] + cont.arrayPosition[10]) / 2) ||
+								CheckIntersection(o.arrayPosition, (cont.arrayPosition[0] + cont.arrayPosition[9]) / 2, (cont.arrayPosition[1] + cont.arrayPosition[10]) / 2)) {
+								playerstuck = true;
 							}
-						}
-
 					}
 				}
 			}
+			if (playerstuck)
+				WorldData.controllableOBJ.MoveRelative(-WorldData.controllableOBJ.movementX, -WorldData.controllableOBJ.movementY);
+			WorldData.controllableOBJ.movementX = 0;
+			WorldData.controllableOBJ.movementY = 0;
 		}
 
 		/// <summary>
@@ -60,25 +62,10 @@ namespace _2DRPG.LogicUtils {
 		}
 
 		static bool fixCollisionEnabled = false;
-		private static void FixCollision(IMovable o, int direction) {
+		private static void FixCollision(ICollidable o, int direction) {
 			if (!fixCollisionEnabled)
 				return;
 			//System.Diagnostics.Debug.WriteLine("Collision: " + direction);
-			switch (direction) {
-				default:
-				case 1:
-					o.MoveRelative(.05f, .05f);
-					break;
-				case 2:
-					o.MoveRelative(.05f, -.05f);
-					break;
-				case 3:
-					o.MoveRelative(-.05f, -.05f);
-					break;
-				case 4:
-					o.MoveRelative(-.05f, .05f);
-					break;
-			}
 
 		}
 
