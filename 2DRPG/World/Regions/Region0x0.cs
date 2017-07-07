@@ -35,8 +35,9 @@ namespace _2DRPG.World.Regions {
 		}
 
 		string[] textureNames = new string[] {
-			"flower", "default", "heart", "josh"
-		};
+            "flower", "default", "heart", "josh", "character"
+
+        };
 
 		public void LoadTextures() {
 			SaveData.LoadRegion("0x0");

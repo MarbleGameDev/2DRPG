@@ -8,7 +8,7 @@ using _2DRPG.Entities;
 namespace _2DRPG.Player {
 	class MCObject : WorldObjectControllable, IDamagable, IEffectable {
 
-		public MCObject() : base("heart") {
+		public MCObject() : base("character") {
 			MovementSpeed = 2.5f;
 			size = 32f;
 		}

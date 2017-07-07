@@ -68,7 +68,7 @@ namespace _2DRPG {
 		/// </summary>
 		public static void WorldStartup() {
 			TextureManager.ClearTextures();
-			TextureManager.RegisterTextures(new string[] { "heart", "baseFont" });
+			TextureManager.RegisterTextures(new string[] { "character", "baseFont" });
 			controllableOBJ = new Player.MCObject();
 			worldUIs.Add(interChar);
 			LoadRegionObjects();

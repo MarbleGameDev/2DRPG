@@ -18,6 +18,7 @@ namespace _2DRPG {
 			{"flower", "Sprites/SpriteSheets/Flowers.png" },
 			{"default", "Sprites/Default.png" },
 			{"heart", "Sprites/Heart.png" },
+            {"character", "Sprites/SpriteSheets/Character.png" },
 			{"baseFont", "Sprites/SpriteSheets/BaseFont.png" },
 			{"button", "Sprites/Button.png" },
 			{"josh", "Sprites/josh.png" }
