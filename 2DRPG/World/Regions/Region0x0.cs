@@ -14,23 +14,23 @@ namespace _2DRPG.World.Regions {
 		public int RegionX { get { return 0; } }
 		public int RegionY { get { return 0; } }
 
-		HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
+		static WorldObjectInteractable inventory = new WorldObjectInteractable(180f, 58f, 16f) {
+			interAction = () => { System.Diagnostics.Debug.WriteLine("Square One opened"); }
+		};
+		static WorldObjectAnimated flower = new WorldObjectAnimated(70f, 0f, 5, 4, 16, 16, 10, "flower") {
+			size = 16f
+		};
 
-		public HashSet<WorldObjectBase> LoadObjects() {
-			regionObjects.Clear();
-			WorldObjectBase j = new WorldObjectBase("default");
-			WorldObjectAnimated flower = new WorldObjectAnimated(70f, 0f, 5, 4, 16, 16, 10, "flower") {
-				size = 16f
-			};
-			regionObjects.Add(j);
-            regionObjects.Add(flower);
-			regionObjects.Add(new WorldObjectInteractable(180f, 58f, 16f) {
-				interAction = () => { System.Diagnostics.Debug.WriteLine("Square One opened"); }
-			});
-			regionObjects.Add(new WorldObjectCollidable(-200f, -10f));
-			//regionObjects.Add(new WorldObjectAnimated("Heart"));
+		public HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>() {
+			inventory,
+			new WorldObjectCollidable(-200f, -10f),
+			flower
+		};
 
-			return regionObjects;
+		public ref HashSet<WorldObjectBase> LoadObjects() {
+			inventory.LoadSavedWorldPosition("0x0", 1);
+			flower.LoadSavedWorldPosition("0x0", 2);
+			return ref regionObjects;
 		}
 
 		string[] textureNames = new string[] {
@@ -38,10 +38,12 @@ namespace _2DRPG.World.Regions {
 		};
 
 		public void LoadTextures() {
+			SaveData.LoadRegion("0x0");
 			TextureManager.RegisterTextures(textureNames);
 		}
 		public void UnloadTextures() {
 			TextureManager.UnRegisterTextures(textureNames);
+			SaveData.UnloadRegion("0x0");
 		}
 
 	}

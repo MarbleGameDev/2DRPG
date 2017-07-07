@@ -21,13 +21,11 @@ namespace _2DRPG.LogicUtils {
 			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray())
 					foreach (WorldObjectBase o in l) {
-						Entities.IEffectable en = o as Entities.IEffectable;
-						if (en != null)
+						if (o is Entities.IEffectable en)
 							en.EffectTick();
 						float dist = ObjectDistance(o, WorldData.controllableOBJ);
 						if (dist <= interactionDistance) {
-							WorldObjectInteractable io = o as WorldObjectInteractable;
-							if (io != null) {
+							if (o is WorldObjectInteractable io) {
 								if (ObjectDistance(io, WorldData.controllableOBJ) < ObjectDistance(interactableObject, WorldData.controllableOBJ))
 									interactableObject = io;
 							}

@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OpenGL.Net, Version=0.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenGL.Net.0.5.1\lib\net35\OpenGL.Net.dll</HintPath>
     </Reference>
@@ -52,17 +55,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Console.cs" />
+    <Compile Include="RegionSave.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="GUI\IScrollable.cs" />
     <Compile Include="GUI\UIButton.cs" />
     <Compile Include="GUI\UIChar.cs" />
     <Compile Include="GUI\UIDraggable.cs" />
     <Compile Include="GUI\UIDropdownButton.cs" />
     <Compile Include="GUI\UIText.cs" />
     <Compile Include="GUI\UITextBox.cs" />
+    <Compile Include="GUI\Windows\BuilderWindow.cs" />
     <Compile Include="GUI\Windows\ConsoleWindow.cs" />
     <Compile Include="GUI\Windows\HUDWindow.cs" />
     <Compile Include="GUI\Windows\IWindow.cs" />
     <Compile Include="GUI\Windows\PauseWindow.cs" />
+    <Compile Include="SaveData.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="World\Objects\ICollidable.cs" />
     <Compile Include="World\Objects\WorldObjectCollidable.cs" />
     <Compile Include="World\Objects\WorldObjectInteractable.cs" />

@@ -21,13 +21,13 @@ namespace _2DRPG.GUI {
 		/// <param name="y"></param>
 		/// <param name="textSize"></param>
 		/// <param name="text"></param>
-		public UIText(float x, float y, float textSize, string text) : base(x, y, textSize * 16 * text.Length, textSize * 16, 1, "button") {
+		public UIText(float x, float y, float textSize, int layer, string text) : base(x, y, textSize * 16 * text.Length, textSize * 16, layer, "button") {
 			displayText = text;
 			this.textSize = textSize;
 			SetupChars();
 		}
 
-		public UIText(float x, float y, float textSize, int charWidth, string text) : base(x, y, charWidth, textSize * 16, 1, "button") {
+		public UIText(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, charWidth, textSize * 16, layer, "button") {
 			displayText = text;
 			this.textSize = textSize;
 		}
@@ -45,6 +45,10 @@ namespace _2DRPG.GUI {
 		public void SetText(string text, float textSize) {
 			displayText = text;
 			SetTextSize(textSize);
+			SetupChars();
+		}
+		public void SetText(string text) {
+			displayText = text;
 			SetupChars();
 		}
 		public void SetTextSize(float textSize) {
@@ -75,7 +79,7 @@ namespace _2DRPG.GUI {
 				}
 				int counter = 0;
 				foreach (char c in characters) {
-					chars.Add(new UIChar(startX + counter++ * charSize, startY, charSize, c));
+					chars.Add(new UIChar(startX + counter++ * charSize, startY, charSize, layer, c));
 				}
 			}
 		}

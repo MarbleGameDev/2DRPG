@@ -8,6 +8,6 @@ namespace _2DRPG.GUI.Windows {
 	interface IWindow {
 		void LoadTextures();
 		void UnloadTextures();
-		HashSet<UIBase> LoadObjects();
+		ref HashSet<UIBase> LoadObjects();
 	}
 }

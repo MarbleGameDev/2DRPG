@@ -17,28 +17,31 @@ namespace _2DRPG.GUI {
 		}
 		public UIButton(Action click, string labelText) : base("button") {
 			buttonAction = click;
-			displayLabel = new UIText(0, 0, 1f, labelText);
+			displayLabel = new UIText(0, 0, 1f, 1, labelText);
 		}
 		public UIButton(Action click, string labelText, string textureName) : base(textureName) {
 			buttonAction = click;
-			displayLabel = new UIText(0, 0, 1f, labelText);
+			displayLabel = new UIText(0, 0, 1f, 1, labelText);
 		}
 		public UIButton(float x, float y, float width, float height, Action click, int layer, string textureName) : base(x, y, width, height, layer, textureName) {
 			buttonAction = click;
 		}
 		public UIButton(float x, float y, float width, float height, int layer, string textureName) : base(x, y, width, height, layer, textureName) { }
-		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 1, "button") {
+		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 2, "button") {
 			SetLayer(defaultLayer);
 			buttonAction = click;
 		}
 
 		public virtual bool CheckClick(float x, float y) {
-			bool check = LogicUtils.Logic.CheckIntersection(arrayPosition, x, y);
-			if (LogicUtils.Logic.CheckIntersection(arrayPosition, x, y)) {
+			bool check = CheckCoords(x, y);
+			if (check) {
 				if (buttonAction != null)
 					buttonAction.Invoke();
 			}
 			return check;
+		}
+		public virtual bool CheckCoords(float x, float y) {
+			return LogicUtils.Logic.CheckIntersection(arrayPosition, x, y);
 		}
 
 		public void SetButtonAction(Action btn) {

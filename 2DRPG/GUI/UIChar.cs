@@ -22,7 +22,7 @@ namespace _2DRPG.GUI {
 									  4, 4, 3, 4, 4, 5, 5, 7, 4, 4,
 									  4, 3, 1, 3, 6};
 
-		public UIChar(float x, float y, float size, char ch) : base(x, y, size, size, 1, "baseFont") {
+		public UIChar(float x, float y, float size, int layer, char ch) : base(x, y, size, size, layer, "baseFont") {
 			charSize = size;
 			displayChar = ch;
 		}

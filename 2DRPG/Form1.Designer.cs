@@ -47,6 +47,7 @@
 			this.RenderControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MClick);
 			this.RenderControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MMove);
 			this.RenderControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MUp);
+			this.RenderControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.MScroll);
 			this.RenderControl.Resize += new System.EventHandler(this.ResizeE);
 			// 
 			// Form1

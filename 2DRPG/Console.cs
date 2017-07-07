@@ -12,10 +12,12 @@ namespace _2DRPG {
 		private static Dictionary<string, ConsoleCommand> commands = new Dictionary<string, ConsoleCommand>();
 
 		static Console() {
-			commands.Add("help", help);
-			commands.Add("getCoords", getCoords);
-			commands.Add("pauseGame", pauseGame);
-			commands.Add("quit", quitGame);
+			commands.Add("openBuilder", Builder);
+			commands.Add("help", Help);
+			commands.Add("getCoords", GetCoords);
+			commands.Add("pauseGame", PauseGame);
+			commands.Add("quit", QuitGame);
+			commands.Add("saveGame", SaveGame);
 		}
 
 
@@ -28,24 +30,32 @@ namespace _2DRPG {
 				return "command not found";
 		}
 
-		private static string help(string[] args) {
+		private static string Help(string[] args) {
 			string output = "Commands: ";
 			foreach (string s in commands.Keys)
 				output += s + " ";
 			return output;
 		}
-		private static string getCoords(string[] args) {
+		private static string GetCoords(string[] args) {
 			return "Coords: " + WorldData.CurrentX + ", " + WorldData.CurrentY;
 		}
-		private static string pauseGame(string[] args) {
+		private static string PauseGame(string[] args) {
 			if (GameState.CurrentState == GameState.GameStates.Game)
 				GameState.SetGameState(GameState.GameStates.Paused);
 			if (GameState.CurrentState == GameState.GameStates.Paused)
 				GameState.SetGameState(GameState.GameStates.Game);
 			return "Game Paused, execute again to resume";
 		}
-		private static string quitGame(string[] args) {
+		private static string QuitGame(string[] args) {
 			Application.Exit();
+			return "";
+		}
+		private static string SaveGame(string[] args) {
+			SaveData.SaveGame();
+			return "Game Saved";
+		}
+		private static string Builder(string[] args) {
+			Screen.AddWindow("worldBuilder");
 			return "";
 		}
 	}

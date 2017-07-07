@@ -8,23 +8,23 @@ using System.Windows.Forms;
 namespace _2DRPG.GUI.Windows {
 	class ConsoleWindow : IWindow {
 
-		HashSet<UIBase> UIObjects = new HashSet<UIBase>();
+		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
+			new UIBase(0, 150, 225, 20, 0, "button"),
+			input, output,
 
-		UITextBox input = new UITextBox(0, 100, .5f, 400, "");
-		UITextBox output = new UITextBox(0, 150, .5f, 400, "");
+		};
 
-		public HashSet<UIBase> LoadObjects() {
-			UIObjects.Clear();
-			UIObjects.Add(new UIBase(0, 150, 225, 20, 5, "button"));
-			UIObjects.Add(input);
+		static UITextBox input = new UITextBox(0, 100, .5f, 400, 0, "");
+		static UITextBox output = new UITextBox(0, 150, .5f, 400, 0, "");
+
+		public ref HashSet<UIBase> LoadObjects() {
 			input.SetText("");
-			UIObjects.Add(output);
-			return UIObjects;
+			return ref UIObjects;
 		}
 
-		public void getKey(char c) {
+		public void GetKey(char c) {
 			if (c.Equals((char)Keys.Enter)) {
-				submitInput();
+				SubmitInput();
 			} else if (c.Equals((char)Keys.Back)) {
 				input.SetText(input.GetText().Remove(input.GetText().Length - 1, 1));
 			} else {
@@ -32,23 +32,23 @@ namespace _2DRPG.GUI.Windows {
 			}
 		}
 
-		private void submitInput() {
+		private void SubmitInput() {
 			output.SetText(Console.ExecuteCommand(input.GetText().Substring(1)));
 			input.SetText("`");
 		}
 
 
-		private string[] textures = new string[] { "button" };
+		string[] textures = new string[] { "button" };
 
 		public void LoadTextures() {
 			TextureManager.RegisterTextures(textures);
-			Input.DirectCall += getKey;
+			Input.DirectCall += GetKey;
 			Input.RedirectKeys = true;
 		}
 
 		public void UnloadTextures() {
 			TextureManager.UnRegisterTextures(textures);
-			Input.DirectCall -= getKey;
+			Input.DirectCall -= GetKey;
 			Input.RedirectKeys = false;
 		}
 	}

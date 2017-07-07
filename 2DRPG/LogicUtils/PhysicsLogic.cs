@@ -61,14 +61,6 @@ namespace _2DRPG.LogicUtils {
 			return PnPoly(xCoords, yCoords, testX, testY);
 		}
 
-		static bool fixCollisionEnabled = false;
-		private static void FixCollision(ICollidable o, int direction) {
-			if (!fixCollisionEnabled)
-				return;
-			//System.Diagnostics.Debug.WriteLine("Collision: " + direction);
-
-		}
-
 		/**
 		 * Shamelessly stolen code from Randolph Franklin
 		 * https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html

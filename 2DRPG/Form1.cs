@@ -16,16 +16,8 @@ namespace _2DRPG {
 
 		public Form1() {
 			InitializeComponent();
+			SaveData.SaveGame();
 		}
-
-		TexturedObject oboe = new TexturedObject("2") {
-			arrayPosition = new float[] {
-			0f, 0f, 0f,
-			0f, 16f, 0f,
-			16f, 16f, 0f,
-			16f, 0f, 0f
-			}
-		};
 
 		private void RenderControl_ContextCreated(object sender, GlControlEventArgs e) {
 			GlControl glControl = (GlControl)sender;
@@ -56,10 +48,10 @@ namespace _2DRPG {
 						o.ContextCreated();
 				}
 			}
-			/*
-			FormBorderStyle = FormBorderStyle.None;
-			WindowState = FormWindowState.Maximized;
-			*/
+			if (SaveData.GameSettings.fullScreen) {
+				FormBorderStyle = FormBorderStyle.None;
+				WindowState = FormWindowState.Maximized;
+			}
 
 			Program.logic.Start();
 		}
@@ -148,23 +140,6 @@ namespace _2DRPG {
 			Input.UpdateKeys();
 		}
 
-		private void KeyDownE(object sender, KeyEventArgs e) {
-			Input.KeyDown(sender, e);
-		}
-
-		private void MClick(object sender, MouseEventArgs e) {
-			Input.MouseHeld = true;
-			Input.MouseSent(sender, e);
-		}
-
-		private void KeyUpE(object sender, KeyEventArgs e) {
-			Input.KeyUp(sender, e);
-		}
-
-		private void LostFocusE(object sender, EventArgs e) {
-			Input.ClearKeys();
-		}
-
 		private void ResizeE(object sender, EventArgs e) {
 			Input.ClearKeys();
 			Control senderControl = (Control)sender;
@@ -172,24 +147,41 @@ namespace _2DRPG {
 			if (senderControl.ClientSize.Width > idealWidth) {
 				Gl.Viewport((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
 				Gl.Scissor((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
-				Screen.SetScreenDimensions(idealWidth, senderControl.ClientSize.Height);
+				Screen.SetScreenDimensions((senderControl.ClientSize.Width - idealWidth) / 2, 0, idealWidth, senderControl.ClientSize.Height);
 			} else if (senderControl.ClientSize.Width < idealWidth) {
 				int idealheight = (int)(senderControl.ClientSize.Width * (9f / 16));
 				Gl.Viewport(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
 				Gl.Scissor(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
-				Screen.SetScreenDimensions(senderControl.ClientSize.Width, idealheight);
+				Screen.SetScreenDimensions(0, (senderControl.Height - idealheight) / 2, senderControl.ClientSize.Width, idealheight);
 			} else {
 				Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 				Gl.Scissor(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
-				Screen.SetScreenDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
+				Screen.SetScreenDimensions(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 			}
 			Screen.SetWindowDimensions(senderControl.ClientSize.Width, senderControl.ClientSize.Height);
 		}
 
         private void Form1_Load(object sender, EventArgs e) { }
 
+		private void KeyDownE(object sender, KeyEventArgs e) {
+			Input.KeyDown(e);
+		}
+
+		private void MClick(object sender, MouseEventArgs e) {
+			Input.MouseHeld = true;
+			Input.MouseSent(e);
+		}
+
+		private void KeyUpE(object sender, KeyEventArgs e) {
+			Input.KeyUp(e);
+		}
+
+		private void LostFocusE(object sender, EventArgs e) {
+			Input.ClearKeys();
+		}
+
 		private void MMove(object sender, MouseEventArgs e) {
-			Input.MouseMove(sender, e);
+			Input.MouseMove(e);
 		}
 
 		private void MUp(object sender, MouseEventArgs e) {
@@ -197,7 +189,11 @@ namespace _2DRPG {
 		}
 
 		private void Form1_KeyPress(object sender, KeyPressEventArgs e) {
-			Input.KeyPress(sender, e);
+			Input.KeyPress(e);
+		}
+
+		private void MScroll(object sender, MouseEventArgs e) {
+			Input.MouseScroll(e);
 		}
 	}
 }

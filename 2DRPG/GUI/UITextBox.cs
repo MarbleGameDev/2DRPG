@@ -10,13 +10,13 @@ namespace _2DRPG.GUI {
 		private int linespacing = 20;
 		private int charWidth;
 
-		public UITextBox(float x, float y, float textSize, int charWidth, string text) : base(x, y, textSize, charWidth, text) {
+		public UITextBox(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, textSize, charWidth, layer, text) {
 			this.charWidth = charWidth;
 			SetupChars();
 			SetLayer(1);
 		}
 
-		public void SetText(string text) {
+		public new void SetText(string text) {
 			displayText = text;
 			SetupChars();
 		}
@@ -48,7 +48,7 @@ namespace _2DRPG.GUI {
 							row++;
 						} else {
 							int chSpacing = UIChar.baseFontWidth[c - 32] + 2;
-							chars.Add(new UIChar(startX + col + chSpacing, startY - row * textSize * linespacing, textSize * 16, c));
+							chars.Add(new UIChar(startX + col + chSpacing, startY - row * textSize * linespacing, textSize * 16, layer, c));
 							col += chSpacing;
 						}
 					}

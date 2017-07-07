@@ -10,17 +10,14 @@ namespace _2DRPG.World.Regions {
 		public int RegionX { get { return -1; } }
 		public int RegionY { get { return 0; } }
 
-		HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
+		public HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>() {
+			new WorldObjectBase(900, 0, "default"),
+			new WorldObjectBase(900, 16f, "default")
+		};
 
-		public HashSet<WorldObjectBase> LoadObjects() {
+		public ref HashSet<WorldObjectBase> LoadObjects() {
 
-			Entities.StandardMob mob = new Entities.StandardMob(990, 100, "josh", 15);
-			//mob.ReceiveAttack(new EffectAttack(new Entities.EntityEffect(() => { System.Diagnostics.Debug.WriteLine("Test Effect"); }, 1)));    //Attack the mob with an attack that deals an effect for 5 seconds that just outputs "Test Effect"
-			regionObjects.Add(mob);
-			regionObjects.Add(new WorldObjectBase(900, 0, "default"));
-			regionObjects.Add(new WorldObjectBase(900, 25f, "default"));
-
-			return regionObjects;
+			return ref regionObjects;
 		}
 
 		string[] textureNames = new string[] {

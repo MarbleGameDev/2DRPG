@@ -8,7 +8,7 @@ namespace _2DRPG.GUI {
 	class UIBase : TexturedObject {
 		public float width = .1f;
 		public float height = .1f;
-		protected int defaultLayer = 1;
+		protected int defaultLayer = 2;
 		public bool Visible = true;
 
 		public UIBase() : base() {
@@ -20,7 +20,7 @@ namespace _2DRPG.GUI {
 		public UIBase(float x, float y, float width, float height, int layer, string textureName) : base(x, y, layer, textureName) {
 			this.width = width;
 			this.height = height;
-			SetScreenPosition(x, y, defaultLayer);
+			SetScreenPosition(x, y, layer);
 		}
 
 		public override void SetScreenPosition(float x, float y) {

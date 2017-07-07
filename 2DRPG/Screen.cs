@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 using System.Drawing;
 using _2DRPG.GUI;
 using _2DRPG.GUI.Windows;
-
+/// <summary>
+/// Standards for Layers:
+/// 5-10 world space
+/// 2 - Default GUI
+/// 1 - Default Text
+/// 0 - Reserved for crucial overlays (pause menu)
+/// </summary>
 namespace _2DRPG {
 	static class Screen {
 		public static int WindowHeight;
@@ -15,6 +21,8 @@ namespace _2DRPG {
 
 		public static int screenHeight;
 		public static int screenWidth;
+		public static int screenX;
+		public static int screenY;
 
 		public static int pixelWidth = 640;
 		public static int pixelHeight = 360;
@@ -27,6 +35,7 @@ namespace _2DRPG {
 			windowFiles.Add("pause", new PauseWindow());
 			windowFiles.Add("hud", new HUDWindow());
 			windowFiles.Add("console", new ConsoleWindow());
+			windowFiles.Add("worldBuilder", new BuilderWindow());
 		}
 
 		public static void AddWindow(string windowName) {
@@ -54,25 +63,18 @@ namespace _2DRPG {
 			WindowWidth = width;
 			windowRatio = (float)width / height;
 		}
-		public static void SetScreenDimensions(int width, int height) {
+		public static void SetScreenDimensions(int x, int y, int width, int height) {
 			screenHeight = height;
 			screenWidth = width;
+			screenX = x;
+			screenY = y;
 		}
-		/// <summary>
-		/// Converts the conventional -1 to 1 width coordinates for screen space into the correct values for the orthographic projection
-		/// Height is the same
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public static float ConvertWidth(float value) {
-			return value * windowRatio;
+
+		public static float PixeltoNormalizedWidth(float xCoord) {
+			return (float)(xCoord + pixelWidth / 2) / pixelWidth;
 		}
-		/// <summary>
-		/// Takes a value either [0, 16/9] for width or [0, 1] for height and returns the pixel number
-		/// </summary>
-		/// <returns></returns>
-		public static int NormalizedToScreen(float normalizedCoord) {
-			return (int)(normalizedCoord * 279);
+		public static float PixeltoNormalizedHeight(float yCoord) {
+			return (float)(yCoord + pixelHeight / 2) / pixelHeight;
 		}
 	}
 }

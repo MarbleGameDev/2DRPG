@@ -36,7 +36,7 @@ namespace _2DRPG {
 		public static bool MouseHeld;
 		public static bool RedirectKeys;
 
-		public static void KeyDown(object sender, KeyEventArgs e) {
+		public static void KeyDown(KeyEventArgs e) {
 			if (RedirectKeys && !e.KeyCode.Equals(Keys.Escape) && !e.KeyCode.Equals(Keys.Oemtilde))
 				return;
 			KeyInputs k =  keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
@@ -55,14 +55,14 @@ namespace _2DRPG {
 			}
 		}
 
-		public static void KeyPress(object sender, KeyPressEventArgs e) {
+		public static void KeyPress(KeyPressEventArgs e) {
 			if (!RedirectKeys || e.KeyChar.Equals((char)Keys.Escape) || e.KeyChar.Equals((char)Keys.Oemtilde))
 				return;
 			if (DirectCall != null)
 				DirectCall.Invoke(e.KeyChar);
 		}
 
-		public static void KeyUp(object sender, KeyEventArgs e) {
+		public static void KeyUp(KeyEventArgs e) {
 			if (RedirectKeys && !e.KeyCode.Equals(Keys.Escape) && !e.KeyCode.Equals(Keys.Oemtilde))
 				return;
 			KeyInputs k = keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
@@ -98,7 +98,7 @@ namespace _2DRPG {
 				keysHeld[k] = false;
 		}
 
-		public static void MouseSent(object sender, MouseEventArgs e) {
+		public static void MouseSent(MouseEventArgs e) {
 			if (e.Button.Equals(MouseButtons.Left)) {
 				HashSet<UIBase>[] windows;
 				lock (Screen.currentWindows) {
@@ -107,19 +107,37 @@ namespace _2DRPG {
 				
 				foreach(HashSet<UIBase> h in windows)
 					foreach (UIBase u in h) {
-						if (u is UIButton)
-							if (((UIButton)u).CheckClick(MouseX, MouseY))
+						if (u is UIButton bu)
+							if (bu.CheckClick(MouseX, MouseY))
 								return;
 					}
 			}
 		}
 
-		public static void MouseMove(object sender, MouseEventArgs e) {
+		public static void MouseScroll(MouseEventArgs e) {
+			int d = e.Delta / 120;
+			HashSet<UIBase>[] windows;
+			lock (Screen.currentWindows) {
+				windows = Screen.currentWindows.Values.ToArray();
+			}
+
+			foreach (HashSet<UIBase> h in windows)
+				foreach (UIBase u in h) {
+					if (u is IScrollable sc)
+						if (sc.CheckCoords(MouseX, MouseY))
+							sc.ScrollWheel(d);
+				}
+		}
+
+		public static void MouseMove(MouseEventArgs e) {
 			MouseX = (e.X  - Screen.WindowWidth / 2f) / Screen.screenWidth * Screen.pixelWidth;    //Convert from mouse coordinates to screen coordinates
 			MouseY = -(e.Y - Screen.WindowHeight / 2f) / Screen.screenHeight * Screen.pixelHeight;
 		}
 
-
+		/// <summary>
+		/// Manual key testing for key testing or global calls
+		/// </summary>
+		/// <param name="keys"></param>
 		private static void ManualKeys(KeyInputs[] keys) {
 			if (keys.Contains(KeyInputs.escape)) {
 				if (GameState.CurrentState == GameState.GameStates.Game)

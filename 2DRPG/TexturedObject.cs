@@ -12,7 +12,7 @@ namespace _2DRPG {
 
         protected float screenX;
         protected float screenY;
-        protected int layer;
+		protected int layer;
         private string texName;
 
         public TexturedObject(float x, float y, int layer, string textureName)
@@ -45,7 +45,7 @@ namespace _2DRPG {
 			0.75f, 0.75f, 0f, 
 			.75f, 0.25f, 0f
 		};
-		public float[] texturePosition = new float[] {
+		protected float[] texturePosition = new float[] {
 			0.0f, 0.0f,
 			0.0f, 1.0f,
 			1.0f, 1.0f,

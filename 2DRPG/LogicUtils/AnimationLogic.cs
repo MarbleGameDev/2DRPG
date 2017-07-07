@@ -14,8 +14,7 @@ namespace _2DRPG.LogicUtils {
 			lock (WorldData.currentRegions) {
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
 					foreach (WorldObjectBase o in l) {
-						WorldObjectAnimated an = o as WorldObjectAnimated;
-						if (an != null)
+						if (o is WorldObjectAnimated an)
 							an.SpriteUpdate();
 					}
 				}
@@ -23,8 +22,8 @@ namespace _2DRPG.LogicUtils {
 			lock (Screen.currentWindows) {
 				foreach (HashSet<GUI.UIBase> b in Screen.currentWindows.Values)   //Render the GUI Objects
 					foreach (GUI.UIBase u in b) {
-						if (u is GUI.UIAnimated)
-							((GUI.UIAnimated)u).SpriteUpdate();
+						if (u is GUI.UIAnimated am)
+							am.SpriteUpdate();
 				}
 			}
 

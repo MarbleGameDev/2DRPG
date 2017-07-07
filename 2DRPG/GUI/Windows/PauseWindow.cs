@@ -8,26 +8,26 @@ using System.Windows.Forms;
 namespace _2DRPG.GUI.Windows {
 	class PauseWindow : IWindow {
 
-		private HashSet<UIBase> UIObjects = new HashSet<UIBase>();
-
-		public HashSet<UIBase> LoadObjects() {
-			Input.ClearKeys();
-			UIObjects.Clear();
-			UIObjects.Add(new UIButton(0f, 80f, 80f, 10f, () => {
+		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
+			new UIButton(0f, 80f, 80f, 10f, () => {
 				Screen.CloseWindow("pause");
 			}, 1, "button") {
-				displayLabel = new UIText(0f, 80f, .5f, "Continue")
-			});
-			UIObjects.Add(new UIButton(0f, 50f, 80f, 10f, () => {
+				displayLabel = new UIText(0f, 80f, .5f, 0, "Continue")
+			},
+			new UIButton(0f, 50f, 80f, 10f, () => {
 				Application.Exit();
 			}, 1, "button") {
-				displayLabel = new UIText(0f, 50f, .5f, "Quit")
-			});
+				displayLabel = new UIText(0f, 50f, .5f, 0, "Quit")
+			}
+		};
 
-			return UIObjects;
+		public ref HashSet<UIBase> LoadObjects() {
+			Input.ClearKeys();
+
+			return ref UIObjects;
 		}
 
-		string[] textureNames = new string[] {
+		public string[] textureNames = new string[] {
 			"button"
 		};
 

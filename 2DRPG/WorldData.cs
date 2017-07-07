@@ -21,7 +21,7 @@ namespace _2DRPG {
 		public static HashSet<UIBase> worldUIs = new HashSet<UIBase>();
 		public static WorldObjectControllable controllableOBJ;
 
-		public static UIChar interChar = new UIChar(0, 0, 8f, '!') {
+		public static UIChar interChar = new UIChar(0, 0, 8f, 0, '!') {
 			Visible = false
 		};
 
