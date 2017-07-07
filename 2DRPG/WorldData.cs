@@ -16,7 +16,7 @@ namespace _2DRPG {
 		static int CurrentRegionY = 0;
 		public static float CurrentX = 0;
 		public static float CurrentY = 0;
-		static Dictionary<string, IWorldRegion> regionFiles = new Dictionary<string, IWorldRegion>();
+		public static Dictionary<string, IWorldRegion> regionFiles = new Dictionary<string, IWorldRegion>();
 		public static Dictionary<string, HashSet<WorldObjectBase>> currentRegions = new Dictionary<string, HashSet<WorldObjectBase>>();
 		public static HashSet<UIBase> worldUIs = new HashSet<UIBase>();
 		public static WorldObjectControllable controllableOBJ;

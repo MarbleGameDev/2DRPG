@@ -14,9 +14,7 @@ namespace _2DRPG.World.Regions {
 		public int RegionX { get { return 0; } }
 		public int RegionY { get { return 0; } }
 
-		static WorldObjectInteractable inventory = new WorldObjectInteractable(180f, 58f, 16f) {
-			interAction = () => { System.Diagnostics.Debug.WriteLine("Square One opened"); }
-		};
+		static WorldObjectInteractable inventory = new WorldObjectInteractable(180f, 58f);
 		static WorldObjectAnimated flower = new WorldObjectAnimated(70f, 0f, 5, 4, 16, 16, 10, "flower") {
 			size = 16f
 		};
@@ -28,8 +26,11 @@ namespace _2DRPG.World.Regions {
 		};
 
 		public ref HashSet<WorldObjectBase> LoadObjects() {
-			inventory.LoadSavedWorldPosition("0x0", 1);
-			flower.LoadSavedWorldPosition("0x0", 2);
+			if (SaveData.RegionData["0x0"] != null) {
+				regionObjects.Clear();
+				foreach (RegionSave.WorldObjectStorage st in SaveData.RegionData["0x0"].worldObjects)
+					regionObjects.Add(RegionSave.ConstructWorldObject(st));
+			}
 			return ref regionObjects;
 		}
 

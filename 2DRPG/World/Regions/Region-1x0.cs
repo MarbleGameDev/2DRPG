@@ -16,7 +16,11 @@ namespace _2DRPG.World.Regions {
 		};
 
 		public ref HashSet<WorldObjectBase> LoadObjects() {
-
+			if (SaveData.RegionData["-1x0"] != null) {
+				regionObjects.Clear();
+				foreach (RegionSave.WorldObjectStorage st in SaveData.RegionData["-1x0"].worldObjects)
+					regionObjects.Add(RegionSave.ConstructWorldObject(st));
+			}
 			return ref regionObjects;
 		}
 
@@ -25,10 +29,12 @@ namespace _2DRPG.World.Regions {
 		};
 
 		public void LoadTextures() {
+			SaveData.LoadRegion("-1x0");
 			TextureManager.RegisterTextures(textureNames);
 		}
 
 		public void UnloadTextures() {
+			SaveData.UnloadRegion("-1x0");
 			TextureManager.UnRegisterTextures(textureNames);
 		}
 	}

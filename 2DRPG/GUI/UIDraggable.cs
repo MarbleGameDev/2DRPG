@@ -10,7 +10,7 @@ namespace _2DRPG.GUI {
 		private float mouseX, mouseY;
 
 		public UIDraggable(float x, float y, float width, float height, int layer = 0, string textureName = "button") : base(x, y, width, height, layer, textureName) {
-			buttonAction = new Action(drag);
+			buttonAction = new Action(Drag);
 		}
 
 		public override bool CheckClick(float x, float y) {
@@ -19,10 +19,11 @@ namespace _2DRPG.GUI {
 			return base.CheckClick(x, y);
 		}
 
-		private void drag() {
+		private void Drag() {
 			Thread drag = new Thread(() => {
 				while (Input.MouseHeld) {
 					SetScreenPosition(Input.MouseX + mouseX, Input.MouseY + mouseY);
+					Thread.Sleep(10);
 				}
 			});
 			drag.Start();

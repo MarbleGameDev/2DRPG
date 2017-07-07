@@ -15,11 +15,21 @@ namespace _2DRPG.World.Objects {
 		public WorldObjectMovableAnimated(float x, float y, string textureName) : base(textureName) {
 			SetWorldPosition(x, y);
 		}
+		public WorldObjectMovableAnimated(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName) {
+			SetLayer(store.layer);
+		}
 
 		public virtual void MoveRelative(float x = 0, float y = 0) {
 			worldX += x;
 			worldY += y;
 			ShiftScreenPosition(x, y);
+		}
+
+		public override RegionSave.WorldObjectStorage StoreObject() {
+			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = RegionSave.WorldObjectType.MovableAnimated
+			};
+			return store;
 		}
 	}
 }

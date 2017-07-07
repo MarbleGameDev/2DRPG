@@ -19,12 +19,20 @@ namespace _2DRPG {
 
 		public static void LoadGame() {
 			GameSettings = DeSerializeObject<Settings>("Settings");
+			if (GameSettings == null)
+				GameSettings = new Settings();
 		}
 		public static void SaveGame() {
 			SerializeObject(GameSettings, "Settings");
 			lock (RegionData) {
-				foreach (string r in RegionData.Keys) {
-					SerializeObject(RegionData[r], r);
+				lock (WorldData.currentRegions) {
+					foreach (string r in WorldData.regionFiles.Keys) {
+						RegionSave s = new RegionSave();
+						foreach (World.Objects.WorldObjectBase b in WorldData.regionFiles[r].LoadObjects()) {
+							s.worldObjects.Add(b.StoreObject());
+						}
+						SerializeObject(s, r);
+					}
 				}
 			}
 		}

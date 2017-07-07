@@ -16,7 +16,7 @@ namespace _2DRPG {
 
 		public Form1() {
 			InitializeComponent();
-			SaveData.SaveGame();
+			SaveData.LoadGame();
 		}
 
 		private void RenderControl_ContextCreated(object sender, GlControlEventArgs e) {
@@ -38,11 +38,10 @@ namespace _2DRPG {
 			Wgl.SwapIntervalEXT(1);	//Swap Interval (V-Sync Enabled at 1 or -1)
 			ResizeE(sender, e);
 
-			// Uses multisampling, if available
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
-			lock (WorldData.currentRegions) {     //Render the World Objects
+			lock (WorldData.currentRegions) {
 				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
 						o.ContextCreated();

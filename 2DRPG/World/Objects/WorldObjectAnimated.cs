@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace _2DRPG.World.Objects {
 	class WorldObjectAnimated : WorldObjectBase {
@@ -31,6 +32,7 @@ namespace _2DRPG.World.Objects {
 		public WorldObjectAnimated(float x, float y, string textureName) : this(textureName) {
 			SetWorldPosition(x, y);
 		}
+		public WorldObjectAnimated(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, Convert.ToInt32(store.extraData[0]), Convert.ToInt32(store.extraData[1]), Convert.ToInt32(store.extraData[2]), Convert.ToInt32(store.extraData[3]), store.textureName) { }
 
         int frameCount = 0;
         public void SpriteUpdate() {
@@ -50,5 +52,12 @@ namespace _2DRPG.World.Objects {
 				frameCount = 0;
 			return;
         }
+
+		public override RegionSave.WorldObjectStorage StoreObject() {
+			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, extraData = new object[] { spritesAmount, spriteWidth, spriteHeight, frameInterval}, objectType = RegionSave.WorldObjectType.Animated
+			};
+			return store;
+		}
 	}
 }
