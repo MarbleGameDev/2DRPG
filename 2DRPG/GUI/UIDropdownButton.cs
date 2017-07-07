@@ -8,10 +8,13 @@ using OpenGL;
 namespace _2DRPG.GUI {
 	class UIDropdownButton : UIButton, IScrollable {
 
-		private List<UIButton> drops = new List<UIButton>();
-		private bool showDrops = false;
+		public List<UIButton> drops = new List<UIButton>();
+		public bool showDrops = false;
 		public float spacing = 1f; //gap between buttons displayed in the dropdown
-		public float displaySize = 1f;  //number of dropdown elements displayed at a time
+		/// <summary>
+		/// Number of dropdown elements displayed at a time
+		/// </summary>
+		public float displaySize = 2f;
 		private int[] scissorMask = new int[4];
 		private float scrollAmount = 0, scrollMax;
 
@@ -21,11 +24,14 @@ namespace _2DRPG.GUI {
 			SetDropdowns(dropdowns);
 			buttonAction = new Action(ToggleDropdowns);
 			SetScissorMask();
+			Screen.ResizeEvent += SetScissorMask;
 		}
+		public UIDropdownButton(float x, float y, float width, float height, UIText label) : this(x, y, width, height, label, null) { }
 
 		public void SetDropdowns(UIButton[] dropdowns) {
 			if (dropdowns == null)
 				return;
+			drops.Clear();
 			int counter = 1;
 			foreach (UIButton b in dropdowns) {
 				b.width = width;
@@ -38,6 +44,7 @@ namespace _2DRPG.GUI {
 				drops.Add(b);
 			}
 			scrollMax = (drops.Count - displaySize) * (height * 2 + spacing);
+			SetScissorMask();
 		}
 
 		public void SetScissorMask() {
@@ -63,7 +70,6 @@ namespace _2DRPG.GUI {
 
 		public override bool CheckClick(float x, float y) {
 			if (base.CheckClick(x, y)) {
-				SetScissorMask();
 				return true;
 			}
 			if (showDrops) {
@@ -102,6 +108,12 @@ namespace _2DRPG.GUI {
 
 		public void ToggleDropdowns() {
 			showDrops = !showDrops;
+		}
+
+		public override void Cleanup() {
+			foreach (UIButton b in drops)
+				b.Cleanup();
+			Screen.ResizeEvent -= SetScissorMask;
 		}
 	}
 }

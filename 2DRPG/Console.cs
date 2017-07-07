@@ -23,7 +23,6 @@ namespace _2DRPG {
 
 		public static string ExecuteCommand(string command) {
 			string[] args = command.Split(' ');
-			System.Diagnostics.Debug.WriteLine(args[0]);
 			if (commands.ContainsKey(args[0])) {
 				return commands[args[0]].Invoke(args.Skip(1).ToArray());
 			} else
@@ -55,7 +54,7 @@ namespace _2DRPG {
 			return "Game Saved";
 		}
 		private static string Builder(string[] args) {
-			Screen.AddWindow("worldBuilder");
+			Screen.OpenWindow("worldBuilder");
 			return "";
 		}
 	}

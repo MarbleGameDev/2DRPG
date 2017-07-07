@@ -1,0 +1,33 @@
+{
+  "worldObjects": [
+    {
+      "objectType": 4,
+      "worldX": 180.0,
+      "worldY": 58.0,
+      "layer": 5,
+      "textureName": "default",
+      "extraData": null
+    },
+    {
+      "objectType": 2,
+      "worldX": -200.0,
+      "worldY": -50.0,
+      "layer": 5,
+      "textureName": "default",
+      "extraData": null
+    },
+    {
+      "objectType": 0,
+      "worldX": 70.0,
+      "worldY": 0.0,
+      "layer": 5,
+      "textureName": "flower",
+      "extraData": [
+        4,
+        16,
+        16,
+        10
+      ]
+    }
+  ]
+}

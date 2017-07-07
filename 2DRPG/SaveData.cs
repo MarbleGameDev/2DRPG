@@ -7,15 +7,28 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace _2DRPG {
 	public static class SaveData {
 
+		//TODO: add folders for multiple saves that are copied from the embeded master
+#if DEBUG
+		private static string saveLocation = "../../SaveData/";
+#else
 		private static string saveLocation = "SaveData/";
+#endif
+
 		private static JsonSerializer serializer = new JsonSerializer();
 
 		public static Settings GameSettings = new Settings();
 		public static Dictionary<string, RegionSave> RegionData = new Dictionary<string, RegionSave>();
+
+		private static Assembly _assembly;
+
+		static SaveData() {
+			_assembly = Assembly.GetExecutingAssembly();
+		}
 
 		public static void LoadGame() {
 			GameSettings = DeSerializeObject<Settings>("Settings");
@@ -28,13 +41,14 @@ namespace _2DRPG {
 				lock (WorldData.currentRegions) {
 					foreach (string r in WorldData.regionFiles.Keys) {
 						RegionSave s = new RegionSave();
-						foreach (World.Objects.WorldObjectBase b in WorldData.regionFiles[r].LoadObjects()) {
+						foreach (World.Objects.WorldObjectBase b in WorldData.regionFiles[r].GetWorldObjects()) {
 							s.worldObjects.Add(b.StoreObject());
 						}
 						SerializeObject(s, r);
 					}
 				}
 			}
+			System.Diagnostics.Debug.WriteLine("Game Saved");
 		}
 		public static void LoadRegion(string s) {
 			lock (RegionData) {

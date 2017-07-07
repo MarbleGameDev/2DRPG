@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Console.cs" />
+    <Compile Include="GUI\UITypeBox.cs" />
     <Compile Include="RegionSave.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\IScrollable.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="GUI\Windows\PauseWindow.cs" />
     <Compile Include="SaveData.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="World\Editable.cs" />
     <Compile Include="World\Objects\ICollidable.cs" />
     <Compile Include="World\Objects\WorldObjectCollidable.cs" />
     <Compile Include="World\Objects\WorldObjectInteractable.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -134,6 +137,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="SaveData\Settings.rz" />
+    <None Include="SaveData\-1x0.rz" />
+    <None Include="SaveData\0x0.rz" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -142,6 +148,13 @@
     <Folder Include="Sprites\GUI Texutures\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Settings.rz.txt" />
+    <Content Include="Sprites\DarkBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\LightBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sprites\SpriteSheets\BaseFont.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

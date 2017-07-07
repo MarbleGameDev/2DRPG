@@ -15,6 +15,7 @@ namespace _2DRPG.World.Regions {
 		void LoadTextures();
 		void UnloadTextures();
 		ref HashSet<Objects.WorldObjectBase> LoadObjects();
+		ref HashSet<Objects.WorldObjectBase> GetWorldObjects();
 
 	}
 }

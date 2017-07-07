@@ -1,0 +1,20 @@
+{
+  "worldObjects": [
+    {
+      "objectType": 1,
+      "worldX": -100.0,
+      "worldY": 0.0,
+      "layer": 5,
+      "textureName": "default",
+      "extraData": null
+    },
+    {
+      "objectType": 1,
+      "worldX": -100.0,
+      "worldY": 16.0,
+      "layer": 5,
+      "textureName": "default",
+      "extraData": null
+    }
+  ]
+}

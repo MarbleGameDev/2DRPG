@@ -9,7 +9,7 @@ namespace _2DRPG.GUI.Windows {
 	class ConsoleWindow : IWindow {
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 150, 225, 20, 0, "button"),
+			new UIBase(0, 145, 205, 35, 0, "lightBack"),
 			input, output,
 
 		};
@@ -19,6 +19,10 @@ namespace _2DRPG.GUI.Windows {
 
 		public ref HashSet<UIBase> LoadObjects() {
 			input.SetText("");
+			output.SetText("");
+			return ref UIObjects;
+		}
+		public ref HashSet<UIBase> GetScreenObjects() {
 			return ref UIObjects;
 		}
 
@@ -27,6 +31,8 @@ namespace _2DRPG.GUI.Windows {
 				SubmitInput();
 			} else if (c.Equals((char)Keys.Back)) {
 				input.SetText(input.GetText().Remove(input.GetText().Length - 1, 1));
+				if (input.GetText().Length == 0)
+					input.SetText("`");
 			} else {
 				input.SetText(input.GetText() + c);
 			}
@@ -38,7 +44,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 
-		string[] textures = new string[] { "button" };
+		string[] textures = new string[] { "lightBack" };
 
 		public void LoadTextures() {
 			TextureManager.RegisterTextures(textures);

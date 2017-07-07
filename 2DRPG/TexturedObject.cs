@@ -13,7 +13,8 @@ namespace _2DRPG {
         protected float screenX;
         protected float screenY;
 		protected int layer;
-        protected string texName;
+		[_2DRPG.World.Editable]
+        public string texName;
 
         public TexturedObject(float x, float y, int layer, string textureName)
         {

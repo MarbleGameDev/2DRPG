@@ -9,5 +9,6 @@ namespace _2DRPG.GUI.Windows {
 		void LoadTextures();
 		void UnloadTextures();
 		ref HashSet<UIBase> LoadObjects();
+		ref HashSet<UIBase> GetScreenObjects();
 	}
 }

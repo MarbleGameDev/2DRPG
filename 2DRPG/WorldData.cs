@@ -48,11 +48,7 @@ namespace _2DRPG {
 			string reg = rx + "x" + ry;
 			if (regionFiles.ContainsKey(reg) && !currentRegions.ContainsKey(reg)) {
 				regionFiles[reg].LoadTextures();
-				HashSet<WorldObjectBase> tempReg = regionFiles[reg].LoadObjects();
-				foreach (WorldObjectBase b in tempReg) {
-					b.SetWorldPosition(b.worldX + 1000 * rx, b.worldY + 1000 * ry);
-				}
-				currentRegions.Add(reg, tempReg);
+				currentRegions.Add(reg, regionFiles[reg].LoadObjects());
 			}
 		}
 		private static void UnloadRegion(int rx, int ry) {

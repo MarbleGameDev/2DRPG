@@ -24,6 +24,10 @@ namespace _2DRPG.World.Regions {
 			return ref regionObjects;
 		}
 
+		public ref HashSet<WorldObjectBase> GetWorldObjects() {
+			return ref regionObjects;
+		}
+
 		string[] textureNames = new string[] {
 			"default", "josh"
 		};

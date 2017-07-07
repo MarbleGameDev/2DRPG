@@ -29,6 +29,9 @@ namespace _2DRPG.GUI.Windows {
 			//UIObjects.Add(new UITextBox(-80, 80, 1f, 40, "Testing Testing"));
 			return ref UIObjects;
 		}
+		public ref HashSet<UIBase> GetScreenObjects() {
+			return ref UIObjects;
+		}
 
 		string[] textureNames = new string[] {
 			"button"

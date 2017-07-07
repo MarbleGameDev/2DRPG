@@ -27,6 +27,8 @@ namespace _2DRPG {
 		public static int pixelWidth = 640;
 		public static int pixelHeight = 360;
 
+		public static event Action ResizeEvent;
+
 		private static Dictionary<string, IWindow> windowFiles = new Dictionary<string, IWindow>();
 
 		public static Dictionary<string, HashSet<UIBase>> currentWindows = new Dictionary<string, HashSet<UIBase>>();
@@ -38,7 +40,7 @@ namespace _2DRPG {
 			windowFiles.Add("worldBuilder", new BuilderWindow());
 		}
 
-		public static void AddWindow(string windowName) {
+		public static void OpenWindow(string windowName) {
 			if (windowFiles.ContainsKey(windowName)) {
 				windowFiles[windowName].LoadTextures();
 				currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
@@ -49,19 +51,24 @@ namespace _2DRPG {
 			lock (currentWindows) {
 				if (windowFiles.ContainsKey(windowName)) {
 					windowFiles[windowName].UnloadTextures();
+					foreach (UIBase b in windowFiles[windowName].GetScreenObjects())
+						b.Cleanup();
 					currentWindows.Remove(windowName);
 				}
 			}
 		}
 
 		public static void ScreenStartup() {
-			AddWindow("hud");
+			OpenWindow("hud");
 		}
 
 		public static void SetWindowDimensions(int width, int height) {
 			WindowHeight = height;
 			WindowWidth = width;
 			windowRatio = (float)width / height;
+
+			if (ResizeEvent != null)
+				ResizeEvent.Invoke();
 		}
 		public static void SetScreenDimensions(int x, int y, int width, int height) {
 			screenHeight = height;

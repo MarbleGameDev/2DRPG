@@ -7,11 +7,14 @@ using Newtonsoft.Json.Linq;
 
 namespace _2DRPG.World.Objects {
 	class WorldObjectAnimated : WorldObjectBase {
-
-        int spritesAmount = 1;
-        int spriteWidth = 16;
-        int spriteHeight = 16;
-        int frameInterval = 10;
+		[Editable]
+        public int spritesAmount = 1;
+		[Editable]
+        public int spriteWidth = 16;
+		[Editable]
+        public int spriteHeight = 16;
+		[Editable]
+        public int frameInterval = 10;
 		float sheetShiftHorizontal = 1f;
 		float sheetShiftVertical = 1f;
 
@@ -27,7 +30,6 @@ namespace _2DRPG.World.Objects {
 		public WorldObjectAnimated(string textureName) : base(textureName) {
 			sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
 			sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
-			SetLayer(layer);
 		}
 		public WorldObjectAnimated(float x, float y, string textureName) : this(textureName) {
 			SetWorldPosition(x, y);
@@ -58,6 +60,13 @@ namespace _2DRPG.World.Objects {
 				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, extraData = new object[] { spritesAmount, spriteWidth, spriteHeight, frameInterval}, objectType = RegionSave.WorldObjectType.Animated
 			};
 			return store;
+		}
+
+		public override Action ModificationAction() {
+			return new Action(() => { base.ModificationAction();
+				sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
+				sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
+			});
 		}
 	}
 }

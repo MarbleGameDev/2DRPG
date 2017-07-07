@@ -44,5 +44,9 @@ namespace _2DRPG.GUI {
 			if (Visible)
 				base.Render();
 		}
+
+		public virtual void Cleanup() {
+
+		}
 	}
 }

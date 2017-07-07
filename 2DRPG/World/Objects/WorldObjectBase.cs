@@ -7,7 +7,9 @@ using Newtonsoft.Json.Linq;
 
 namespace _2DRPG.World.Objects {
 	public class WorldObjectBase : TexturedObject {
+		[Editable]
 		public float worldX;
+		[Editable]
 		public float worldY;
 
 		public WorldObjectBase() : base() { }
@@ -29,6 +31,10 @@ namespace _2DRPG.World.Objects {
 		public void SetWorldPosition(float x, float y) {
 			worldX = x;
 			worldY = y;
+			UpdateWorldPosition();
+		}
+
+		public void UpdateWorldPosition() {
 			arrayPosition[0] = worldX - size / 2;
 			arrayPosition[3] = worldX - size / 2;
 			arrayPosition[6] = worldX + size / 2;
@@ -44,6 +50,21 @@ namespace _2DRPG.World.Objects {
 				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = RegionSave.WorldObjectType.Base
 			};
 			return store;
+		}
+
+		public bool CheckCoords(float x, float y){
+			bool b = LogicUtils.Logic.CheckIntersection(arrayPosition, x, y);
+			if (b)
+				GUI.Windows.BuilderWindow.SetCurrentObject(this);
+			return b;
+		}
+
+		public override string ToString() {
+			return GetType().Name + "\nCoords: \n" + worldX + "," + worldY;
+		}
+
+		public virtual Action ModificationAction() {
+			return new Action(() => { UpdateWorldPosition(); });
 		}
 	}
 }

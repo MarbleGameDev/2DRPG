@@ -26,6 +26,9 @@ namespace _2DRPG.GUI.Windows {
 
 			return ref UIObjects;
 		}
+		public ref HashSet<UIBase> GetScreenObjects() {
+			return ref UIObjects;
+		}
 
 		public string[] textureNames = new string[] {
 			"button"

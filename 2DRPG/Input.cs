@@ -100,11 +100,19 @@ namespace _2DRPG {
 
 		public static void MouseSent(MouseEventArgs e) {
 			if (e.Button.Equals(MouseButtons.Left)) {
+				if (GUI.Windows.BuilderWindow.checkWorldObjects) {
+					lock (WorldData.currentRegions) {
+						foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
+							foreach (World.Objects.WorldObjectBase o in l)
+								if (o.CheckCoords(MouseX + WorldData.CurrentX, MouseY + WorldData.CurrentY))
+									return;
+						}
+					}
+				}
 				HashSet<UIBase>[] windows;
 				lock (Screen.currentWindows) {
 					windows = Screen.currentWindows.Values.ToArray();
 				}
-				
 				foreach(HashSet<UIBase> h in windows)
 					foreach (UIBase u in h) {
 						if (u is UIButton bu)
@@ -141,7 +149,7 @@ namespace _2DRPG {
 		private static void ManualKeys(KeyInputs[] keys) {
 			if (keys.Contains(KeyInputs.escape)) {
 				if (GameState.CurrentState == GameState.GameStates.Game)
-					Screen.AddWindow("pause");
+					Screen.OpenWindow("pause");
 				else if (GameState.CurrentState == GameState.GameStates.Paused) {
 					Screen.CloseWindow("pause");
 				}
@@ -150,7 +158,7 @@ namespace _2DRPG {
 				if (Screen.currentWindows.ContainsKey("console"))
 					Screen.CloseWindow("console");
 				else {
-					Screen.AddWindow("console");
+					Screen.OpenWindow("console");
 					ClearKeys();
 				}
 			}
