@@ -20,14 +20,20 @@ namespace _2DRPG.GUI.Windows {
 			UpdateObjectInfo();
 		}
 
-		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 2, "button", new UIText(220, 100, .5f, 1, "No Object Selected"));
+		static RegionSave.WorldObjectType newType;
 
-		public HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
+		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 2, "button", new UIText(220, 100, .5f, 1, "No Object Selected")) { hideTop = true };
+		static UIDropdownButton newObjects = new UIDropdownButton(0, 100, 100, 20, 2, "button", new UIText(0, 100, .5f, 1, "Select Object Type")) { Visible = false, hideTop = true, showDrops = true, displaySize = 4 };
+		static UIButton applyBut = new UIButton(185, -140, 65, 8, () => { NewObject(); }, 1, "button") { displayLabel = new UIText(188, -140, .5f, 0, "Apply"), Visible = false };
+
+	public HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
 			new UIBase(220, 0, 100, 180, 3, "darkBack"),
 			new UIButton(310, 170, 10, 10, () => { Screen.CloseWindow("worldBuilder"); },1, "button"){ displayLabel = new UIText(317, 175, 1f, 0, "X") },
 			new UIButton(185, 140, 65, 8, () => { Screen.CloseWindow("worldBuilder");  checkWorldObjects = true; },1, "button"){ displayLabel = new UIText(188, 142, .5f, 0, "Select Object") },
-			new UIButton(185, -160, 65, 8, () => { SaveData.SaveGame(); }, 1, "button"){ displayLabel = new UIText(188, -160, .5f, 0, "Save Game")},
-			objectData,
+			new UIButton(165, -160, 45, 8, () => { SaveData.SaveGame(); }, 1, "button"){ displayLabel = new UIText(168, -160, .5f, 0, "Save Game")},
+			new UIButton(265, -160, 35, 8, () => { WorldData.RemoveObject(currentObject); }, 1, "button"){ displayLabel = new UIText(268, -160, .5f, 0, "Delete")},
+			new UIButton(185, 160, 65, 8, () => { newObjects.Visible = !newObjects.Visible; }, 1, "button"){ displayLabel = new UIText(188, 160, .5f, 0, "New Object")},
+			objectData, newObjects, applyBut
 		};
 
 		public ref HashSet<UIBase> LoadObjects() {
@@ -47,11 +53,17 @@ namespace _2DRPG.GUI.Windows {
 					tb.valueAction = () => {
 						string val = tb.text.GetText();
 						val = val.Substring(val.IndexOf(':')+1);
-						if (f.FieldType.Equals(typeof(String)))
-							f.SetValue(currentObject, val);
-						else
-							f.SetValue(currentObject, int.Parse(val));
-						currentObject.ModificationAction().Invoke();
+						try {
+							if (val.Length > 0) {
+								if (f.FieldType.Equals(typeof(String)))
+									f.SetValue(currentObject, val);
+								else
+									f.SetValue(currentObject, int.Parse(val));
+								currentObject.ModificationAction().Invoke();
+							}
+						} catch (FormatException) {
+							System.Diagnostics.Debug.WriteLine("Invalid Format, could not update Value");
+						}
 					};
 					b.Add(tb);
 				}
@@ -63,12 +75,99 @@ namespace _2DRPG.GUI.Windows {
 				objectData.displayLabel.SetText("No Object Currently Selected");
 			}
 		}
+		static Type nt;
+		static object[] ntParams;
+		static void SetupNewObject() {
+			if (newObjects != null) {
+				switch (newType) {
+					case RegionSave.WorldObjectType.Animated:
+						nt = typeof(WorldObjectAnimated);
+						break;
+					case RegionSave.WorldObjectType.Base:
+						nt = typeof(WorldObjectBase);
+						break;
+					case RegionSave.WorldObjectType.Collidable:
+						nt = typeof(WorldObjectCollidable);
+						break;
+					case RegionSave.WorldObjectType.Controllable:
+						nt = typeof(WorldObjectControllable);
+						break;
+					case RegionSave.WorldObjectType.Interactable:
+						nt = typeof(WorldObjectInteractable);
+						break;
+					case RegionSave.WorldObjectType.Movable:
+						nt = typeof(WorldObjectMovable);
+						break;
+					case RegionSave.WorldObjectType.MovableAnimated:
+						nt = typeof(WorldObjectMovableAnimated);
+						break;
+					default:
+						return;
+				}
+				List<UIButton> b = new List<UIButton>();
+				ParameterInfo[] parms = nt.GetConstructors()[0].GetParameters();
+				ntParams = new object[parms.Length];
+				int counter = 0;
+				foreach (ParameterInfo p in parms) {
+					UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, "button");
+					tb.text.SetText(p.Name + ":");
+					int i = counter++;
+					tb.valueAction = () => {
+						string val = tb.text.GetText();
+						val = val.Substring(val.IndexOf(':') + 1);
+						try {
+							if (val.Length > 0) {
+								if (p.ParameterType.Equals(typeof(String)))
+									ntParams[i] = val;
+								else
+									ntParams[i] = int.Parse(val);
+							}
+						} catch (FormatException) {
+							System.Diagnostics.Debug.WriteLine("Invalid Format");
+							ntParams[i] = null;
+						}
+					};
+					b.Add(tb);
+				}
+				objectData.displaySize = (b.Count > 5) ? 5 : b.Count;
+				objectData.SetDropdowns(b.ToArray());
+				objectData.displayLabel.SetText(nt.Name);
+				objectData.showDrops = true;
+				applyBut.Visible = true;
+			}
+		}
+
+		static void NewObject() {
+			foreach (UIButton b in objectData.drops) {
+				if (b is UITypeBox tb) {
+					tb.DisableTyping();
+				}
+			}
+			foreach (object o in ntParams)
+				if (o == null)
+					return;
+			try {
+				WorldObjectBase obj = (WorldObjectBase)Activator.CreateInstance(nt, ntParams);
+				WorldData.AddToRegion(WorldData.WorldToRegion(obj.worldX), WorldData.WorldToRegion(obj.worldY), obj);
+				applyBut.Visible = false;
+				SetCurrentObject(obj);
+			} catch (Exception e) {
+				System.Diagnostics.Debug.WriteLine(e.Message);
+			}
+		}
 
 		string[] textures = new string[] {
 			"button", "lightBack", "darkBack"
 		};
 
 		public void LoadTextures() {
+			List<UIButton> buts = new List<UIButton>();
+			foreach (RegionSave.WorldObjectType t in Enum.GetValues(typeof(RegionSave.WorldObjectType))) {
+				buts.Add(new UIButton(0, 0, newObjects.width, newObjects.height, () => { newType = t; SetupNewObject(); newObjects.Visible = false; }, 1, "button") {
+					displayLabel = new UIText(0, 0, .5f, 0, t.ToString())
+				});
+			}
+			newObjects.SetDropdowns(buts.ToArray());
 			TextureManager.RegisterTextures(textures);
 			Screen.CloseWindow("hud");
 		}

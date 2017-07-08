@@ -44,18 +44,41 @@ namespace _2DRPG {
 			}
 		}
 
+		public static void AddToRegion(float rx, float ry, WorldObjectBase b) {
+			currentRegions[rx + "x" + ry].Add(b);
+		}
+
+		public static void RemoveObject(WorldObjectBase b) {
+			if (b == null)
+				return;
+			lock (currentRegions) {
+				foreach (HashSet<WorldObjectBase> l in currentRegions.Values) {
+					if (l.Contains(b)) {
+						l.Remove(b);
+						return;
+					}
+				}
+			}
+		}
+
+		public static int WorldToRegion(float coord) {
+			return (int)coord / 1000;
+		}
+
 		private static void LoadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
 			if (regionFiles.ContainsKey(reg) && !currentRegions.ContainsKey(reg)) {
 				regionFiles[reg].LoadTextures();
-				currentRegions.Add(reg, regionFiles[reg].LoadObjects());
+				lock(currentRegions)
+					currentRegions.Add(reg, regionFiles[reg].LoadObjects());
 			}
 		}
 		private static void UnloadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
 			if (regionFiles.ContainsKey(reg)) {
 				regionFiles[reg].UnloadTextures();
-				currentRegions.Remove(reg);
+				lock(currentRegions)
+					currentRegions.Remove(reg);
 			}
 		}
 

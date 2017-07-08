@@ -43,6 +43,8 @@ namespace _2DRPG.World.Objects {
 
         int frameCount = 0;
         public void SpriteUpdate() {
+			if (frameInterval == 0)
+				return;
 			if (frameCount % frameInterval == 0) {
 				int frameNum = frameCount / frameInterval;
 				texturePosition[0] = 0 + sheetShiftHorizontal * (frameNum % 10);

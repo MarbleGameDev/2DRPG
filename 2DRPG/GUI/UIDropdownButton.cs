@@ -12,6 +12,7 @@ namespace _2DRPG.GUI {
 		/// </summary>
 		public List<UIButton> drops = new List<UIButton>();
 		public bool showDrops = false;
+		public bool hideTop = false;
 		private float spacing = 1f; //gap between buttons displayed in the dropdown
 		/// <summary>
 		/// Number of dropdown elements displayed at a time
@@ -21,6 +22,7 @@ namespace _2DRPG.GUI {
 		private float scrollAmount = 0, scrollMax;
 
 		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIButton[] dropdowns) : this(x, y, width, height, layer, texName, null, dropdowns) { }
+
 		/// <summary>
 		/// Complete Declaration for UIDropdownButton
 		/// </summary>
@@ -71,9 +73,9 @@ namespace _2DRPG.GUI {
 		public void ScrollWheel(int y) {
 			float temp = 0;
 			if (y > 0) {
-				temp = (scrollAmount > scrollMod) ? -scrollMod : -(scrollAmount % scrollMod);
+				temp = (scrollAmount >= scrollMod) ? -scrollMod : -(scrollAmount % scrollMod);
 			} else if (y < 0) {
-				temp = (scrollMax - scrollAmount > scrollMod) ? scrollMod : ((scrollMax - scrollAmount) % scrollMod);
+				temp = (scrollMax - scrollAmount >= scrollMod) ? scrollMod : ((scrollMax - scrollAmount) % scrollMod);
 			}
 			foreach (UIButton b in drops) {
 				b.ShiftScreenPosition(0, temp);
@@ -82,7 +84,9 @@ namespace _2DRPG.GUI {
 		}
 
 		public override bool CheckClick(float x, float y) {
-			if (base.CheckClick(x, y)) {
+			if (!Visible)
+				return false;
+			if (!hideTop && base.CheckClick(x, y)) {
 				return true;
 			}
 			if (showDrops) {
@@ -94,6 +98,8 @@ namespace _2DRPG.GUI {
 		}
 
 		public new bool CheckCoords(float x, float y) {
+			if (!Visible)
+				return false;
 			if (showDrops) {
 				float[] testCoords = new float[12];
 				arrayPosition.CopyTo(testCoords, 0);
@@ -101,13 +107,19 @@ namespace _2DRPG.GUI {
 				testCoords[10] -= displaySize * (height * 2 + spacing);
 				return LogicUtils.Logic.CheckIntersection(testCoords, x, y);
 			} else {
-				return base.CheckCoords(x, y);
+				if (!hideTop)
+					return base.CheckCoords(x, y);
+				else
+					return false;
 			}
 		}
 
 		public override void Render() {
-			base.Render();
-			if (displayLabel != null)
+			if (!Visible)
+				return;
+			if (!hideTop)
+				base.Render();
+			if (displayLabel != null && !hideTop)
 				displayLabel.Render();
 			if (showDrops) {
 				Gl.PushAttrib(AttribMask.ScissorBit);

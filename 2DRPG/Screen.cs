@@ -41,7 +41,7 @@ namespace _2DRPG {
 		}
 
 		public static void OpenWindow(string windowName) {
-			if (windowFiles.ContainsKey(windowName)) {
+			if (windowFiles.ContainsKey(windowName) && !currentWindows.ContainsKey(windowName)) {
 				windowFiles[windowName].LoadTextures();
 				currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
 			}

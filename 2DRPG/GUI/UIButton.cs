@@ -77,6 +77,8 @@ namespace _2DRPG.GUI {
 		}
 
 		public override void Render() {
+			if (!Visible)
+				return;
 			base.Render();
 			if (displayLabel != null)
 				displayLabel.Render();

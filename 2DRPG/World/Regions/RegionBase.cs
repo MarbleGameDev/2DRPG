@@ -14,7 +14,7 @@ namespace _2DRPG.World.Regions {
 		public abstract string[] TextureNames { get; }
 		protected HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
 
-		public ref HashSet<WorldObjectBase> LoadObjects() {
+		public virtual ref HashSet<WorldObjectBase> LoadObjects() {
 			if (SaveData.RegionData[RegionTag] != null) {
 				regionObjects.Clear();
 				foreach (RegionSave.WorldObjectStorage st in SaveData.RegionData[RegionTag].worldObjects)
@@ -22,7 +22,7 @@ namespace _2DRPG.World.Regions {
 			}
 			return ref regionObjects;
 		}
-		public ref HashSet<WorldObjectBase> GetWorldObjects() {
+		public virtual ref HashSet<WorldObjectBase> GetWorldObjects() {
 			return ref regionObjects;
 		}
 

@@ -11,16 +11,16 @@ namespace _2DRPG.World.Objects {
 		public float VelocityX { get; set; }
 		public float VelocityY { get; set; }
 
-		public WorldObjectMovable() : base() { }
-		public WorldObjectMovable(string textureName) : base(textureName) { }
-
 		/// <summary>
 		/// Complete Declaration for WorldObjectMovable
 		/// </summary>
 		/// <param name="x">X position in world</param>
 		/// <param name="y">Y position in world</param>
 		/// <param name="textureName">Name of the texture</param>
-		public WorldObjectMovable(float x, float y, string textureName) : base(x, y, textureName) {	}
+		public WorldObjectMovable(float x, float y, string textureName) : base(x, y, textureName) { }
+
+		public WorldObjectMovable() : base() { }
+		public WorldObjectMovable(string textureName) : base(textureName) { }
 
 		public WorldObjectMovable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName) {
 			SetLayer(store.layer);

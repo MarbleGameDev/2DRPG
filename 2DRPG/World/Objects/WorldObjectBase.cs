@@ -12,11 +12,7 @@ namespace _2DRPG.World.Objects {
 		[Editable]
 		public float worldY;
 
-		public WorldObjectBase() : base() { }
-		public WorldObjectBase(string textureName) : base(textureName) { }
-		public WorldObjectBase(float x, float y, string textureName) : base(textureName) {
-			SetWorldPosition(x, y);
-		}
+
 		/// <summary>
 		/// Complete Declaration for WorldObjectBase
 		/// </summary>
@@ -26,6 +22,12 @@ namespace _2DRPG.World.Objects {
 		/// <param name="textureName">Name of the texture</param>
 		public WorldObjectBase(float x, float y, int layer, string textureName) : this(x, y, textureName) {
 			SetLayer(layer);
+		}
+
+		public WorldObjectBase() : base() { }
+		public WorldObjectBase(string textureName) : base(textureName) { }
+		public WorldObjectBase(float x, float y, string textureName) : base(textureName) {
+			SetWorldPosition(x, y);
 		}
 
 		public WorldObjectBase(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
