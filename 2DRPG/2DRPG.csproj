@@ -148,7 +148,6 @@
     <Folder Include="Sprites\GUI Texutures\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Settings.rz.txt" />
     <Content Include="Sprites\DarkBackground.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

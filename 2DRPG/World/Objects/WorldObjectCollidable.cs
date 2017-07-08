@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace _2DRPG.World.Objects {
 	class WorldObjectCollidable : WorldObjectBase, ICollidable{
-		public WorldObjectCollidable(float x, float y, string textureName = "default") : base(x, y, textureName) {
 
-		}
-		public WorldObjectCollidable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName) {
-			SetLayer(store.layer);
-		}
+		/// <summary>
+		/// Complete Declaration for WorldObjectCollidable
+		/// </summary>
+		/// <param name="x">X position in the world</param>
+		/// <param name="y">Y position in the world</param>
+		/// <param name="layer">Render Layer</param>
+		/// <param name="textureName">Name of the texture</param>
+		public WorldObjectCollidable(float x, float y, int layer, string textureName = "default") : base(x, y, textureName) { }
+
+		public WorldObjectCollidable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
 
 		public override RegionSave.WorldObjectStorage StoreObject() {
 			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {

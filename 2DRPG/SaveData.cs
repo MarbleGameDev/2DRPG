@@ -29,12 +29,17 @@ namespace _2DRPG {
 		static SaveData() {
 			_assembly = Assembly.GetExecutingAssembly();
 		}
-
+		/// <summary>
+		/// Loads the game settings, but not world data
+		/// </summary>
 		public static void LoadGame() {
 			GameSettings = DeSerializeObject<Settings>("Settings");
 			if (GameSettings == null)
 				GameSettings = new Settings();
 		}
+		/// <summary>
+		/// Saves all game data, including settings and world data
+		/// </summary>
 		public static void SaveGame() {
 			SerializeObject(GameSettings, "Settings");
 			lock (RegionData) {
@@ -50,6 +55,7 @@ namespace _2DRPG {
 			}
 			System.Diagnostics.Debug.WriteLine("Game Saved");
 		}
+
 		public static void LoadRegion(string s) {
 			lock (RegionData) {
 				if (!RegionData.ContainsKey(s))

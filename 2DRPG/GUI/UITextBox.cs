@@ -9,13 +9,25 @@ namespace _2DRPG.GUI {
 
 		private int linespacing = 20;
 		private int charWidth;
-
+		/// <summary>
+		/// Complete Declaration for UITextBox,
+		/// Improves on UIText by allowing new lines and word wrapping
+		/// </summary>
+		/// <param name="x">X position on the screen</param>
+		/// <param name="y">Y position on the screen</param>
+		/// <param name="textSize">size of the text, multipled by 16 to get pixel counts</param>
+		/// <param name="charWidth">width of the text</param>
+		/// <param name="layer">Render layer</param>
+		/// <param name="text">text to be displayed</param>
 		public UITextBox(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, textSize, charWidth, layer, text) {
 			this.charWidth = charWidth;
 			SetupChars();
 			SetLayer(1);
 		}
-
+		/// <summary>
+		/// Sets the text to be displayed
+		/// </summary>
+		/// <param name="text"></param>
 		public new void SetText(string text) {
 			displayText = text;
 			SetupChars();

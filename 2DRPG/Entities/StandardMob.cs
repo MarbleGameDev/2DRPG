@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG.Entities {
-	class StandardMob : World.Objects.WorldObjectMovableAnimated, IEffectable, IDamagable {
+	class StandardMob : World.Objects.WorldObjectMovable, IEffectable, IDamagable {
 		public float entityHealth;
 		List<EntityEffect> effectList = new List<EntityEffect>();
 
+		/// <summary>
+		/// Not Correctly Implemented Yet
+		/// </summary>
 		public StandardMob() : base("default") {
 			entityHealth = 10;
 		}

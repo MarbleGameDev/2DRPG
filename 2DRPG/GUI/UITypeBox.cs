@@ -8,12 +8,28 @@ using System.Windows.Forms;
 namespace _2DRPG.GUI {
 	class UITypeBox : UIButton {
 
+		/// <summary>
+		/// value of the type box
+		/// </summary>
 		public UITextBox text;
 
 		private bool typingEnabled = false;
 
+		/// <summary>
+		/// Action to be performed when the value is set
+		/// </summary>
 		public Action valueAction = null;
 
+		/// <summary>
+		/// Complete Declaration for UITextBox,
+		/// Allows user input and typing
+		/// </summary>
+		/// <param name="x">X position on the screen</param>
+		/// <param name="y">Y position on the screen</param>
+		/// <param name="width">Distance to the left and right</param>
+		/// <param name="height">Distance to the top and bottom</param>
+		/// <param name="layer">Render layer</param>
+		/// <param name="textureName">Name of the texture</param>
 		public UITypeBox(float x, float y, float width, float height, int layer, string textureName) : base(x, y, width, height, layer, textureName) {
 			text = new UITextBox(x, y, .5f, (int)width * 2, layer - 1, "");
 			buttonAction = new Action(StartTyping);

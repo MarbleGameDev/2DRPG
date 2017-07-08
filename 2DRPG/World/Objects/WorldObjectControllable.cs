@@ -5,8 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG {
-	class WorldObjectControllable : World.Objects.WorldObjectMovableAnimated {
-		
+	class WorldObjectControllable : World.Objects.WorldObjectMovable {
+
+
+		/// <summary>
+		/// Not Correctly Implemented Yet
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="layer"></param>
+		/// <param name="textureName"></param>
 		public WorldObjectControllable(float x, float y, int layer, string textureName) : base(x, y, textureName) {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = .01f;

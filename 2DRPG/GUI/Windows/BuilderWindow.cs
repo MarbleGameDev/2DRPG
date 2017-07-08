@@ -20,7 +20,7 @@ namespace _2DRPG.GUI.Windows {
 			UpdateObjectInfo();
 		}
 
-		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, new UIText(220, 100, .5f, 1, "No Object Selected"));
+		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 2, "button", new UIText(220, 100, .5f, 1, "No Object Selected"));
 
 		public HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
 			new UIBase(220, 0, 100, 180, 3, "darkBack"),

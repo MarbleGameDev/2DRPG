@@ -18,14 +18,14 @@ namespace _2DRPG.World.Regions {
 			"flower", "default", "heart", "josh", "character"
 		};} }
 
-		static WorldObjectInteractable inventory = new WorldObjectInteractable(180f, 58f);
+		static WorldObjectInteractable inventory = new WorldObjectInteractable(180f, 58f, 5, "lightBack");
 		static WorldObjectAnimated flower = new WorldObjectAnimated(70f, 0f, 5, 4, 16, 16, 10, "flower") {
 			size = 16f
 		};
 
 		new HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>() {
 			inventory,
-			new WorldObjectCollidable(-200f, -10f),
+			new WorldObjectCollidable(-200f, -10f, 5, "default"),
 			flower
 		};
 

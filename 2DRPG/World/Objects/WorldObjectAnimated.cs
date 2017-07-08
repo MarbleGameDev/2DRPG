@@ -18,7 +18,18 @@ namespace _2DRPG.World.Objects {
 		float sheetShiftHorizontal = 1f;
 		float sheetShiftVertical = 1f;
 
-        public WorldObjectAnimated(float x, float y, int layer, int spritesAmt, int spriteWth, int spriteHt, int frameInt, string textureName) : this(x, y, textureName) {
+		/// <summary>
+		/// Complete Declaration for WorldObjectAnimated
+		/// </summary>
+		/// <param name="x">X position in the world</param>
+		/// <param name="y">Y position in the world</param>
+		/// <param name="layer">Render Layer</param>
+		/// <param name="spritesAmt">Number of sprites on the spriteSheet</param>
+		/// <param name="spriteWth">Width of each sprite</param>
+		/// <param name="spriteHt">Height of each sprite</param>
+		/// <param name="frameInt">Number of render calls between frame changes</param>
+		/// <param name="textureName">Name of the texture</param>
+        public WorldObjectAnimated(float x, float y, int layer, int spritesAmt, int spriteWth, int spriteHt, int frameInt, string textureName) : base(x, y, textureName) {
             spritesAmount = spritesAmt;
             spriteWidth = spriteWth;
             spriteHeight = spriteHt;
@@ -27,13 +38,7 @@ namespace _2DRPG.World.Objects {
 			sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
 			SetLayer(layer);
         }
-		public WorldObjectAnimated(string textureName) : base(textureName) {
-			sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
-			sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
-		}
-		public WorldObjectAnimated(float x, float y, string textureName) : this(textureName) {
-			SetWorldPosition(x, y);
-		}
+
 		public WorldObjectAnimated(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, Convert.ToInt32(store.extraData[0]), Convert.ToInt32(store.extraData[1]), Convert.ToInt32(store.extraData[2]), Convert.ToInt32(store.extraData[3]), store.textureName) { }
 
         int frameCount = 0;

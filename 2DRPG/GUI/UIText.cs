@@ -15,24 +15,34 @@ namespace _2DRPG.GUI {
 		public float textSize;
 
 		/// <summary>
-		/// TextSize is multiplied by 16 to get the number of screen pixels each char is sized
+		/// UIText with a default width of the length of the text string
 		/// </summary>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="textSize"></param>
-		/// <param name="text"></param>
+		/// <param name="x">X position on the screen</param>
+		/// <param name="y">Y position on the screen</param>
+		/// <param name="textSize">size of the text, multipled by 16 to get pixel counts</param>
+		/// <param name="text">text to be displayed</param>
 		public UIText(float x, float y, float textSize, int layer, string text) : base(x, y, textSize * 16 * text.Length, textSize * 16, layer, "button") {
 			displayText = text;
 			this.textSize = textSize;
 			SetupChars();
 		}
-
+		/// <summary>
+		/// Complete Declaration for UIText
+		/// </summary>
+		/// <param name="x">X position on the screen</param>
+		/// <param name="y">Y position on the screen</param>
+		/// <param name="textSize">size of the text, multipled by 16 to get pixel counts</param>
+		/// <param name="charWidth">width of the text</param>
+		/// <param name="layer">Render layer</param>
+		/// <param name="text">text to be displayed</param>
 		public UIText(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, charWidth, textSize * 16, layer, "button") {
 			displayText = text;
 			this.textSize = textSize;
 		}
 
 		public override void Render() {
+			if (!Visible)
+				return;
 			Gl.Color3(textColor.R, textColor.G, textColor.B);
 			lock (chars)
 				foreach (UIChar c in chars) {

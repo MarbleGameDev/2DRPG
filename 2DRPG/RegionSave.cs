@@ -10,6 +10,11 @@ namespace _2DRPG {
 	public class RegionSave {
 		public List<WorldObjectStorage> worldObjects = new List<WorldObjectStorage>();
 
+		/// <summary>
+		/// Constructs a WorldObject based on the storage object passed
+		/// </summary>
+		/// <param name="store">WorldObjectStorage object containing all data needed for the object</param>
+		/// <returns></returns>
 		public static WorldObjectBase ConstructWorldObject(WorldObjectStorage store) {
 			switch (store.objectType) {
 				case WorldObjectType.Base:

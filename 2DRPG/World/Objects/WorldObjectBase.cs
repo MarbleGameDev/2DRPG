@@ -17,6 +17,13 @@ namespace _2DRPG.World.Objects {
 		public WorldObjectBase(float x, float y, string textureName) : base(textureName) {
 			SetWorldPosition(x, y);
 		}
+		/// <summary>
+		/// Complete Declaration for WorldObjectBase
+		/// </summary>
+		/// <param name="x">X position in the world</param>
+		/// <param name="y">Y position in the world</param>
+		/// <param name="layer">Render Layer</param>
+		/// <param name="textureName">Name of the texture</param>
 		public WorldObjectBase(float x, float y, int layer, string textureName) : this(x, y, textureName) {
 			SetLayer(layer);
 		}
@@ -33,7 +40,9 @@ namespace _2DRPG.World.Objects {
 			worldY = y;
 			UpdateWorldPosition();
 		}
-
+		/// <summary>
+		/// Call when the WorldX and WorldY are updated outside of SetWorldPosition()
+		/// </summary>
 		public void UpdateWorldPosition() {
 			arrayPosition[0] = worldX - size / 2;
 			arrayPosition[3] = worldX - size / 2;
@@ -52,6 +61,12 @@ namespace _2DRPG.World.Objects {
 			return store;
 		}
 
+		/// <summary>
+		/// Checks if the coordinates given are within the world object
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
 		public bool CheckCoords(float x, float y){
 			bool b = LogicUtils.Logic.CheckIntersection(arrayPosition, x, y);
 			if (b)

@@ -47,8 +47,7 @@ namespace _2DRPG {
 		/// <summary>
 		/// Loads a texture from the file path specified into the manager for access via the textureName given
 		/// </summary>
-		/// <param name="path"></param>
-		/// <param name="textureName"></param>
+		/// <param name="textureName">Name of the texture as registed in TextureManager</param>
 		private static void LoadTexture(string textureName) {
 				try {
 					Bitmap texSource = new Bitmap((string)texturePaths[textureName]);    //Graps the bitmap data from the path
@@ -70,9 +69,12 @@ namespace _2DRPG {
 				} catch (Exception) {
 					System.Diagnostics.Debug.WriteLine("Could not find file: " + textureName);
 				}
-			//System.Diagnostics.Debug.WriteLine("Loaded Texture: " + textureName);
         }
 
+		/// <summary>
+		/// Registers all textures in the array if necessary
+		/// </summary>
+		/// <param name="textureNames"></param>
 		public static void RegisterTextures(string[] textureNames) {
 			foreach (string s in textureNames) {
 				if (texturePaths.Contains(s) && textureUses.ContainsKey(s)) {
@@ -82,7 +84,10 @@ namespace _2DRPG {
 				}
 			}
 		}
-
+		/// <summary>
+		/// Unregisters all textures in the array if necesary
+		/// </summary>
+		/// <param name="textureNames"></param>
 		public static void UnRegisterTextures(string[] textureNames) {
 			foreach (string s in textureNames) {
 				if (texturePaths.Contains(s) && textureUses.ContainsKey(s)) {

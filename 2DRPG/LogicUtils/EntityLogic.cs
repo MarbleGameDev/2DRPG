@@ -17,7 +17,7 @@ namespace _2DRPG.LogicUtils {
 			if (GameState.CurrentState == GameState.GameStates.Paused)
 				return;
 
-			interactableObject = new WorldObjectInteractable(float.MaxValue, float.MaxValue);
+			interactableObject = new WorldObjectInteractable(float.MaxValue, float.MaxValue, 5);
 			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray())
 					foreach (WorldObjectBase o in l) {

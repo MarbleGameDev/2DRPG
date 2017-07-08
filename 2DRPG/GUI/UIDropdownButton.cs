@@ -7,10 +7,12 @@ using OpenGL;
 
 namespace _2DRPG.GUI {
 	class UIDropdownButton : UIButton, IScrollable {
-
+		/// <summary>
+		/// List of UIButtons that make up the dropdown items
+		/// </summary>
 		public List<UIButton> drops = new List<UIButton>();
 		public bool showDrops = false;
-		public float spacing = 1f; //gap between buttons displayed in the dropdown
+		private float spacing = 1f; //gap between buttons displayed in the dropdown
 		/// <summary>
 		/// Number of dropdown elements displayed at a time
 		/// </summary>
@@ -18,15 +20,26 @@ namespace _2DRPG.GUI {
 		private int[] scissorMask = new int[4];
 		private float scrollAmount = 0, scrollMax;
 
-		public UIDropdownButton(float x, float y, float width, float height, UIButton[] dropdowns) : this(x, y, width, height, null, dropdowns) { }
-		public UIDropdownButton(float x, float y, float width, float height, UIText label, UIButton[] dropdowns) : base(x, y, width, height, 2, "button") {
+		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIButton[] dropdowns) : this(x, y, width, height, layer, texName, null, dropdowns) { }
+		/// <summary>
+		/// Complete Declaration for UIDropdownButton
+		/// </summary>
+		/// <param name="x">X position on the screen</param>
+		/// <param name="y">Y position on the screen</param>
+		/// <param name="width">Distance to the left and right</param>
+		/// <param name="height">Distance to the top and bottom</param>
+		/// <param name="layer">Render layer</param>
+		/// <param name="texName">Name of the texture</param>
+		/// <param name="label">UIText label to be displayed on the dropdown button</param>
+		/// <param name="dropdowns">array of UIButtons to consist of the dropdown options</param>
+		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIText label, UIButton[] dropdowns) : base(x, y, width, height, layer, texName) {
 			displayLabel = label;
 			SetDropdowns(dropdowns);
 			buttonAction = new Action(ToggleDropdowns);
 			SetScissorMask();
 			Screen.ResizeEvent += SetScissorMask;
 		}
-		public UIDropdownButton(float x, float y, float width, float height, UIText label) : this(x, y, width, height, label, null) { }
+		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIText label) : this(x, y, width, height, layer, texName, label, null) { }
 
 		public void SetDropdowns(UIButton[] dropdowns) {
 			if (dropdowns == null)
