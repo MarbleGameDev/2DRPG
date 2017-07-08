@@ -111,9 +111,9 @@
     <Compile Include="World\Objects\WorldObjectBase.cs" />
     <Compile Include="World\Objects\WorldObjectMovable.cs" />
     <Compile Include="World\Objects\WorldObjectMovableAnimated.cs" />
-    <Compile Include="World\Regions\IWorldRegion.cs" />
     <Compile Include="World\Regions\Region-1x0.cs" />
     <Compile Include="World\Regions\Region0x0.cs" />
+    <Compile Include="World\Regions\RegionBase.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
