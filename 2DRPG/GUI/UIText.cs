@@ -11,7 +11,7 @@ namespace _2DRPG.GUI {
 
 		protected string displayText;
 		protected List<UIChar> chars = new List<UIChar>();
-		public Color textColor = Color.White;
+		public Color textColor = Color.Black;
 		public float textSize;
 
 		/// <summary>
@@ -22,9 +22,7 @@ namespace _2DRPG.GUI {
 		/// <param name="textSize">size of the text, multipled by 16 to get pixel counts</param>
 		/// <param name="text">text to be displayed</param>
 		public UIText(float x, float y, float textSize, int layer, string text) : base(x, y, textSize * 16 * text.Length, textSize * 16, layer, "button") {
-			displayText = text;
-			this.textSize = textSize;
-			SetupChars();
+			SetText(text, textSize);
 		}
 		/// <summary>
 		/// Complete Declaration for UIText
@@ -36,8 +34,7 @@ namespace _2DRPG.GUI {
 		/// <param name="layer">Render layer</param>
 		/// <param name="text">text to be displayed</param>
 		public UIText(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, charWidth, textSize * 16, layer, "button") {
-			displayText = text;
-			this.textSize = textSize;
+			SetText(text, textSize);
 		}
 
 		public override void Render() {
@@ -52,12 +49,12 @@ namespace _2DRPG.GUI {
 			Gl.Color3(1f, 1f, 1f);
 		}
 
-		public void SetText(string text, float textSize) {
+		public virtual void SetText(string text, float textSize) {
 			displayText = text;
 			SetTextSize(textSize);
 			SetupChars();
 		}
-		public void SetText(string text) {
+		public virtual void SetText(string text) {
 			displayText = text;
 			SetupChars();
 		}

@@ -8,5 +8,6 @@ namespace _2DRPG.GUI {
 	interface IScrollable {
 		void ScrollWheel(int dir);
 		bool CheckCoords(float x, float y);
+		void ScrollTo(float amount);
 	}
 }

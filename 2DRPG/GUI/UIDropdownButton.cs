@@ -14,9 +14,9 @@ namespace _2DRPG.GUI {
 		public bool showDrops = false;
 		public bool hideTop = false;
 		private float spacing = 1f; //gap between buttons displayed in the dropdown
-		/// <summary>
-		/// Number of dropdown elements displayed at a time
-		/// </summary>
+									/// <summary>
+									/// Number of dropdown elements displayed at a time
+									/// </summary>
 		public float displaySize = 2f;
 		private int[] scissorMask = new int[4];
 		private float scrollAmount = 0, scrollMax;
@@ -69,7 +69,7 @@ namespace _2DRPG.GUI {
 			scissorMask[3] = (int)(Screen.PixeltoNormalizedHeight(screenY - height) * Screen.screenHeight) - (int)(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * (height * 2 + spacing)) * Screen.screenHeight);
 		}
 
-		private int scrollMod = 4;	//Amount of pixels each mouse turn moves
+		private int scrollMod = 4;  //Amount of pixels each mouse turn moves
 		public void ScrollWheel(int y) {
 			float temp = 0;
 			if (y > 0) {
@@ -81,6 +81,14 @@ namespace _2DRPG.GUI {
 				b.ShiftScreenPosition(0, temp);
 			}
 			scrollAmount += temp;
+		}
+
+		public void ScrollTo(float val) {
+			float desiredScroll = val * scrollMax;
+			desiredScroll = desiredScroll - scrollAmount;
+			foreach (UIButton b in drops)
+				b.ShiftScreenPosition(0, desiredScroll);
+			scrollAmount += desiredScroll;
 		}
 
 		public override bool CheckClick(float x, float y) {

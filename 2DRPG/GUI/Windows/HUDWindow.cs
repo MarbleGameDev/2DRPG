@@ -9,12 +9,14 @@ namespace _2DRPG.GUI.Windows {
 	class HUDWindow : IWindow {
 
 		static UIDropdownButton butt = new UIDropdownButton(-240, 140f, 60f, 15f, 2, "button", new UIText(-240f, 140f, .5f, 1, "Dropdown"), null);
+		static UITextBox copypasta = new UITextBox(-180, 80, .5f, 90, 2, 4, "What the fuck did you just fucking say about me, you little bitch? I'll have you know I graduated top of my class in the \nNavy Seals and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills.");
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			new UIText(100f, 80f, .5f, 2, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") { textColor = Color.Black },
 			butt,
 			new UIBase(0f, 0f, .02f, .02f, 0, "default"),
-			new UIDraggable(-100, -100, 15f, 15f, 2, "button")
-
+			new UIDraggable(-100, -100, 15f, 15f, 2, "button"),
+			copypasta,
+			new UIScrollBar(-100, 0, 5, 20, 2){ scrollTarget = copypasta}
 		};
 
 		static HUDWindow() {
@@ -25,8 +27,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		public ref HashSet<UIBase> LoadObjects() {
-			//UIObjects.Add(new UITextBox(-180, 80, .5f, 90, "What the fuck did you just fucking say about me, you little bitch? I'll have you know I graduated top of my class in the \nNavy Seals and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills."));
-			//UIObjects.Add(new UITextBox(-80, 80, 1f, 40, "Testing Testing"));
+			//UIObjects.Add(new UITextBox(-80, 80, 1f, 180, 2, "Testing Testing"));
 			return ref UIObjects;
 		}
 		public ref HashSet<UIBase> GetScreenObjects() {
@@ -34,7 +35,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		string[] textureNames = new string[] {
-			"button"
+			"button", "lightBack", "darkBack"
 		};
 
 		public void LoadTextures() {

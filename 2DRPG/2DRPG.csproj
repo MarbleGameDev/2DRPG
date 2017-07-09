@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Console.cs" />
+    <Compile Include="GUI\UIScrollBar.cs" />
     <Compile Include="GUI\UITypeBox.cs" />
     <Compile Include="RegionSave.cs" />
     <Compile Include="GameState.cs" />

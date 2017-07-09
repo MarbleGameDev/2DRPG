@@ -10,10 +10,10 @@ using System.Drawing.Imaging;
 namespace _2DRPG {
 	public class TexturedObject {
 
-        protected float screenX;
-        protected float screenY;
+        public float screenX;
+        public float screenY;
 		protected int layer;
-		[_2DRPG.World.Editable]
+		[World.Editable]
         public string texName;
 
         public TexturedObject(float x, float y, int layer, string textureName)

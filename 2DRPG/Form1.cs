@@ -33,11 +33,9 @@ namespace _2DRPG {
 			Gl.ClearDepth(10f);
 			Gl.Enable(EnableCap.AlphaTest);		//Set up Alpha tests for drawing pixels
 			Gl.AlphaFunc(AlphaFunction.Greater, .05f);  //Don't draw transparent pixels on polygons
-
 			Gl.Enable(EnableCap.ScissorTest);
 			Wgl.SwapIntervalEXT(1);	//Swap Interval (V-Sync Enabled at 1 or -1)
 			ResizeE(sender, e);
-
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();

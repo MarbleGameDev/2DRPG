@@ -22,18 +22,19 @@ namespace _2DRPG.GUI.Windows {
 
 		static RegionSave.WorldObjectType newType;
 
-		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 2, "button", new UIText(220, 100, .5f, 1, "No Object Selected")) { hideTop = true };
+		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 2, "button", null, null) { hideTop = true };
 		static UIDropdownButton newObjects = new UIDropdownButton(0, 100, 100, 20, 2, "button", new UIText(0, 100, .5f, 1, "Select Object Type")) { Visible = false, hideTop = true, showDrops = true, displaySize = 4 };
 		static UIButton applyBut = new UIButton(185, -140, 65, 8, () => { NewObject(); }, 1, "button") { displayLabel = new UIText(188, -140, .5f, 0, "Apply"), Visible = false };
+		static UIText objectName = new UIText(220, 100, .5f, 1, "No Object Selected") { textColor = System.Drawing.Color.Aqua};
 
-	public HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
+		public HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
 			new UIBase(220, 0, 100, 180, 3, "darkBack"),
 			new UIButton(310, 170, 10, 10, () => { Screen.CloseWindow("worldBuilder"); },1, "button"){ displayLabel = new UIText(317, 175, 1f, 0, "X") },
 			new UIButton(185, 140, 65, 8, () => { Screen.CloseWindow("worldBuilder");  checkWorldObjects = true; },1, "button"){ displayLabel = new UIText(188, 142, .5f, 0, "Select Object") },
 			new UIButton(165, -160, 45, 8, () => { SaveData.SaveGame(); }, 1, "button"){ displayLabel = new UIText(168, -160, .5f, 0, "Save Game")},
 			new UIButton(265, -160, 35, 8, () => { WorldData.RemoveObject(currentObject); }, 1, "button"){ displayLabel = new UIText(268, -160, .5f, 0, "Delete")},
 			new UIButton(185, 160, 65, 8, () => { newObjects.Visible = !newObjects.Visible; }, 1, "button"){ displayLabel = new UIText(188, 160, .5f, 0, "New Object")},
-			objectData, newObjects, applyBut
+			objectData, newObjects, applyBut, objectName
 		};
 
 		public ref HashSet<UIBase> LoadObjects() {
@@ -48,7 +49,7 @@ namespace _2DRPG.GUI.Windows {
 				List<UIButton> b = new List<UIButton>();
 				FieldInfo[] props = currentObject.GetType().GetFields().Where(prop => Attribute.IsDefined(prop, typeof(Editable))).ToArray();
 				foreach (FieldInfo f in props) {
-					UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, "button");
+					UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, 1, "button");
 					tb.text.SetText(f.Name + ":" + f.GetValue(currentObject).ToString());
 					tb.valueAction = () => {
 						string val = tb.text.GetText();
@@ -69,7 +70,7 @@ namespace _2DRPG.GUI.Windows {
 				}
 				objectData.displaySize = (b.Count > 5) ? 5 : b.Count;
 				objectData.SetDropdowns(b.ToArray());
-				objectData.displayLabel.SetText(currentObject.GetType().Name);
+				objectName.SetText(currentObject.GetType().Name);
 				objectData.showDrops = true;
 			} else {
 				objectData.displayLabel.SetText("No Object Currently Selected");
@@ -109,7 +110,7 @@ namespace _2DRPG.GUI.Windows {
 				ntParams = new object[parms.Length];
 				int counter = 0;
 				foreach (ParameterInfo p in parms) {
-					UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, "button");
+					UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, 1, "button");
 					tb.text.SetText(p.Name + ":");
 					int i = counter++;
 					tb.valueAction = () => {

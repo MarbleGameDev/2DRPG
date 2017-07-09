@@ -14,7 +14,8 @@ namespace _2DRPG.GUI {
 		public UITextBox text;
 
 		private bool typingEnabled = false;
-
+		private float maxRows;
+		public bool showBackground = true;
 		/// <summary>
 		/// Action to be performed when the value is set
 		/// </summary>
@@ -29,17 +30,20 @@ namespace _2DRPG.GUI {
 		/// <param name="width">Distance to the left and right</param>
 		/// <param name="height">Distance to the top and bottom</param>
 		/// <param name="layer">Render layer</param>
+		/// <param name="maxRows">Maximum number of rows enterable</param>
 		/// <param name="textureName">Name of the texture</param>
-		public UITypeBox(float x, float y, float width, float height, int layer, string textureName) : base(x, y, width, height, layer, textureName) {
-			text = new UITextBox(x, y, .5f, (int)width * 2, layer - 1, "");
+		public UITypeBox(float x, float y, float width, float height, int layer, float maxRows, string textureName) : base(x, y, width, height, layer, textureName) {
+			text = new UITextBox(x, y, .5f, (int)width * 2, layer - 1, maxRows, "");
+			this.maxRows = maxRows;
 			buttonAction = new Action(StartTyping);
 		}
 
 
-		void StartTyping() {
+		public void StartTyping() {
 			typingEnabled = !typingEnabled;
 			if (typingEnabled) {
 				lock (Screen.currentWindows) {
+					//TODO: clean up this garbage
 					foreach (HashSet<UIBase> b in Screen.currentWindows.Values)
 						foreach (UIBase u in b) {
 							if (u is UITypeBox box) {
@@ -67,16 +71,18 @@ namespace _2DRPG.GUI {
 
 		public void DisableTyping() {
 			if (typingEnabled) {
+				typingEnabled = false;
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
 				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1));
-				UpdatePublicVar();
-				typingEnabled = false;
 			}
 		}
 
 		public override void Render() {
-			base.Render();
+			if (!Visible)
+				return;
+			if (showBackground)
+				base.Render();
 			text.Render();
 
 		}
@@ -96,12 +102,15 @@ namespace _2DRPG.GUI {
 				StartTyping();
 			} else if (c.Equals((char)Keys.Back)) {
 				if (text.GetText().Length > 1) {
-					if (!text.GetText().EndsWith(":|")) {
+					if (!text.GetText().EndsWith(":|") && !text.GetText().EndsWith("`|")) {
 						text.SetText(text.GetText().Remove(text.GetText().Length - 2, 2) + "|");
 					}
 				}
 			} else {
 				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1) + c + "|");
+				if (text.rows + 1 > maxRows) {
+					GetKey((char)Keys.Back);
+				}
 			}
 		}
 
@@ -110,6 +119,7 @@ namespace _2DRPG.GUI {
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
 			}
+			text.Cleanup();
 		}
 
 	}

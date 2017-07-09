@@ -14,11 +14,13 @@ namespace _2DRPG.GUI.Windows {
 
 		};
 
-		static UITextBox input = new UITextBox(0, 100, .5f, 400, 0, "");
-		static UITextBox output = new UITextBox(0, 150, .5f, 400, 0, "");
+		static UITypeBox input = new UITypeBox(0, 100, 200, 20, 0, 1, "") { showBackground = false };
+		static UITextBox output = new UITextBox(0, 170, .5f, 400, 0, 5, "");
 
 		public ref HashSet<UIBase> LoadObjects() {
-			input.SetText("");
+			input.text.SetText("");
+			input.valueAction = SubmitInput;
+			input.StartTyping();
 			output.SetText("");
 			return ref UIObjects;
 		}
@@ -26,21 +28,13 @@ namespace _2DRPG.GUI.Windows {
 			return ref UIObjects;
 		}
 
-		public void GetKey(char c) {
-			if (c.Equals((char)Keys.Enter)) {
-				SubmitInput();
-			} else if (c.Equals((char)Keys.Back)) {
-				input.SetText(input.GetText().Remove(input.GetText().Length - 1, 1));
-				if (input.GetText().Length == 0)
-					input.SetText("`");
-			} else {
-				input.SetText(input.GetText() + c);
-			}
-		}
-
 		private void SubmitInput() {
-			output.SetText(Console.ExecuteCommand(input.GetText().Substring(1)));
-			input.SetText("`");
+			output.SetText(output.GetText() + "\n" + Console.ExecuteCommand(input.text.GetText().Substring(1)));
+			input.text.SetText("`");
+			input.StartTyping();
+			if (output.rows > 5)
+				output.ScrollTo(1f);
+				
 		}
 
 
@@ -48,14 +42,11 @@ namespace _2DRPG.GUI.Windows {
 
 		public void LoadTextures() {
 			TextureManager.RegisterTextures(textures);
-			Input.DirectCall += GetKey;
-			Input.RedirectKeys = true;
 		}
 
 		public void UnloadTextures() {
+			input.DisableTyping();
 			TextureManager.UnRegisterTextures(textures);
-			Input.DirectCall -= GetKey;
-			Input.RedirectKeys = false;
 		}
 	}
 }

@@ -76,10 +76,19 @@ namespace _2DRPG {
 			screenX = x;
 			screenY = y;
 		}
-
+		/// <summary>
+		/// Returns a value from 0 to 1 based on the width of the screen
+		/// </summary>
+		/// <param name="xCoord"></param>
+		/// <returns></returns>
 		public static float PixeltoNormalizedWidth(float xCoord) {
 			return (float)(xCoord + pixelWidth / 2) / pixelWidth;
 		}
+		/// <summary>
+		/// Returns a value from 0 to 1 based on the height of the screen
+		/// </summary>
+		/// <param name="yCoord"></param>
+		/// <returns></returns>
 		public static float PixeltoNormalizedHeight(float yCoord) {
 			return (float)(yCoord + pixelHeight / 2) / pixelHeight;
 		}

@@ -12,9 +12,10 @@ namespace _2DRPG {
 		private static Dictionary<string, ConsoleCommand> commands = new Dictionary<string, ConsoleCommand>();
 
 		static Console() {
-			commands.Add("openBuilder", Builder);
-			commands.Add("help", Help);
+			commands.Add("echo", Echo);
 			commands.Add("getCoords", GetCoords);
+			commands.Add("help", Help);
+			commands.Add("openBuilder", Builder);
 			commands.Add("pauseGame", PauseGame);
 			commands.Add("quit", QuitGame);
 			commands.Add("saveGame", SaveGame);
@@ -56,6 +57,13 @@ namespace _2DRPG {
 		private static string Builder(string[] args) {
 			Screen.OpenWindow("worldBuilder");
 			return "";
+		}
+		private static string Echo(string[] args) {
+			string tmp = "";
+			foreach (string s in args) {
+				tmp += s + " ";
+			}
+			return tmp;
 		}
 	}
 }
