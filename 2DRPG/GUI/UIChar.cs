@@ -28,6 +28,8 @@ namespace _2DRPG.GUI {
 		}
 
 		public override void Render() {
+			if (!Visible)
+				return;
 			int ch = displayChar - 32;
 			int col = ch % 10;
 			int row = 12 - (ch / 10);

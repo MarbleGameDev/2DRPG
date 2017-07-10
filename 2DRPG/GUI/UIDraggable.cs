@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading;
 
 namespace _2DRPG.GUI {
-	class UIDraggable : UIButton{
+	class UIDraggable : UIButton {
 
 		private float mouseX, mouseY;
-		
 
-		public Action positionUpdate;
+		//public Action positionUpdate;
 
 		/// <summary>
 		/// Complete Declaration for UIDraggable
@@ -35,8 +34,6 @@ namespace _2DRPG.GUI {
 			Thread drag = new Thread(() => {
 				while (Input.MouseHeld) {
 					SetScreenPosition(Input.MouseX + mouseX, Input.MouseY + mouseY);
-					if (positionUpdate != null)
-						positionUpdate.Invoke();
 					Thread.Sleep(10);
 				}
 			});

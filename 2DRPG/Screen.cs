@@ -29,6 +29,8 @@ namespace _2DRPG {
 
 		public static event Action ResizeEvent;
 
+		public static bool WindowOpen = false;
+
 		private static Dictionary<string, IWindow> windowFiles = new Dictionary<string, IWindow>();
 
 		public static Dictionary<string, HashSet<UIBase>> currentWindows = new Dictionary<string, HashSet<UIBase>>();
@@ -38,6 +40,7 @@ namespace _2DRPG {
 			windowFiles.Add("hud", new HUDWindow());
 			windowFiles.Add("console", new ConsoleWindow());
 			windowFiles.Add("worldBuilder", new BuilderWindow());
+			windowFiles.Add("interaction", new InteractionWindow());
 		}
 
 		public static void OpenWindow(string windowName) {

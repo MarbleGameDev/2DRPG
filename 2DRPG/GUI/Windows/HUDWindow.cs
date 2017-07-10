@@ -11,7 +11,7 @@ namespace _2DRPG.GUI.Windows {
 		static UIDropdownButton butt = new UIDropdownButton(-240, 140f, 60f, 15f, 2, "button", new UIText(-240f, 140f, .5f, 1, "Dropdown"), null);
 		static UITextBox copypasta = new UITextBox(-180, 80, .5f, 90, 2, 4, "What the fuck did you just fucking say about me, you little bitch? I'll have you know I graduated top of my class in the \nNavy Seals and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills.");
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIText(100f, 80f, .5f, 2, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") { textColor = Color.Black },
+			//new UIText(100f, 80f, .5f, 2, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") { textColor = Color.Black },
 			butt,
 			new UIBase(0f, 0f, .02f, .02f, 0, "default"),
 			new UIDraggable(-100, -100, 15f, 15f, 2, "button"),

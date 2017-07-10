@@ -40,7 +40,16 @@ namespace _2DRPG.GUI {
 		public void SetScroll() {
 			if (scrollTarget != null) {
 				if (newMouse <= maxY && newMouse >= minY) {
+					System.Diagnostics.Debug.WriteLine(newMouse);
 					scrollKnob.SetScreenPosition(scrollKnob.screenX, newMouse);
+					float scrollAmount = ((int)maxY - (int)scrollKnob.screenY) / (float)((int)maxY - (int)minY);
+					scrollTarget.ScrollTo(scrollAmount);
+				} else if (newMouse > maxY) {
+					scrollKnob.SetScreenPosition(scrollKnob.screenX, maxY);
+					float scrollAmount = ((int)maxY - (int)scrollKnob.screenY) / (float)((int)maxY - (int)minY);
+					scrollTarget.ScrollTo(scrollAmount);
+				} else if (newMouse < minY) {
+					scrollKnob.SetScreenPosition(scrollKnob.screenX, minY);
 					float scrollAmount = ((int)maxY - (int)scrollKnob.screenY) / (float)((int)maxY - (int)minY);
 					scrollTarget.ScrollTo(scrollAmount);
 				}

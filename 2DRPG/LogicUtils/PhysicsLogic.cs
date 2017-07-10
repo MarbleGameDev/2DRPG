@@ -9,7 +9,7 @@ using _2DRPG.World.Objects;
 namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
 		static void PhysicsLogic(object sender, ElapsedEventArgs e) {
-			if (GameState.CurrentState == GameState.GameStates.Paused)
+			if (GameState.CurrentState == GameState.GameStates.Paused || Screen.WindowOpen)
 				return;
 			WorldData.controllableOBJ.Position();
 			bool playerstuck = false;

@@ -2,7 +2,7 @@
   "worldObjects": [
     {
       "objectType": 4,
-      "worldX": 180.0,
+      "worldX": 50.0,
       "worldY": 58.0,
       "layer": 5,
       "textureName": "default",

@@ -148,9 +148,16 @@ namespace _2DRPG {
 		/// <param name="keys"></param>
 		private static void ManualKeys(KeyInputs[] keys) {
 			if (keys.Contains(KeyInputs.escape)) {
-				if (GameState.CurrentState == GameState.GameStates.Game)
-					Screen.OpenWindow("pause");
-				else if (GameState.CurrentState == GameState.GameStates.Paused) {
+				if (GameState.CurrentState == GameState.GameStates.Game) {
+					List<string> windows = Screen.currentWindows.Keys.ToList();
+					if (windows.Contains("hud"))
+						windows.Remove("hud");
+					foreach (string s in windows) {
+						Screen.CloseWindow(s);
+					}
+					if (windows.Count == 0)
+						Screen.OpenWindow("pause");
+				} else if (GameState.CurrentState == GameState.GameStates.Paused) {
 					Screen.CloseWindow("pause");
 				}
 			}

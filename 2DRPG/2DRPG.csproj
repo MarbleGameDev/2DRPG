@@ -55,8 +55,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Console.cs" />
+    <Compile Include="GUI\Interaction\InteractionBase.cs" />
+    <Compile Include="GUI\Interaction\InteractionChoice.cs" />
+    <Compile Include="GUI\Interaction\InteractionDialogue.cs" />
+    <Compile Include="GUI\Interaction\InteractionQuests.cs" />
+    <Compile Include="GUI\UIBlob.cs" />
     <Compile Include="GUI\UIScrollBar.cs" />
     <Compile Include="GUI\UITypeBox.cs" />
+    <Compile Include="GUI\Windows\InteractionWindow.cs" />
+    <Compile Include="Quests\ITask.cs" />
+    <Compile Include="Quests\QuestData.cs" />
     <Compile Include="RegionSave.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\IScrollable.cs" />

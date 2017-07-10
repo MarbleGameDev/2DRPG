@@ -12,12 +12,16 @@ namespace _2DRPG.LogicUtils {
 		public static float interactionDistance = 55f;
 
 		public static WorldObjectInteractable interactableObject;
-		
-		static void EntityLogic(object sender, ElapsedEventArgs e) {
-			if (GameState.CurrentState == GameState.GameStates.Paused)
-				return;
 
-			interactableObject = new WorldObjectInteractable(float.MaxValue, float.MaxValue, 5);
+		private static WorldObjectInteractable nulled = new WorldObjectInteractable(float.MaxValue, float.MaxValue, 5);
+
+
+		static void EntityLogic(object sender, ElapsedEventArgs e) {
+			if (GameState.CurrentState == GameState.GameStates.Paused || Screen.WindowOpen) {
+				WorldData.interChar.Visible = false;
+				return;
+			}
+			interactableObject = nulled;
 			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray())
 					foreach (WorldObjectBase o in l) {
@@ -32,6 +36,8 @@ namespace _2DRPG.LogicUtils {
 						}
 					}
 			}
+			if (interactableObject.Equals(nulled))
+				interactableObject = null;
 			if (interactableObject != null) {
 				WorldData.interChar.SetScreenPosition(interactableObject.worldX, interactableObject.worldY + 15f);
 				WorldData.interChar.Visible = true;
