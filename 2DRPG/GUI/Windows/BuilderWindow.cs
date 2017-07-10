@@ -132,7 +132,7 @@ namespace _2DRPG.GUI.Windows {
 				}
 				objectData.displaySize = (b.Count > 5) ? 5 : b.Count;
 				objectData.SetDropdowns(b.ToArray());
-				objectData.displayLabel.SetText(nt.Name);
+				objectName.SetText(nt.Name);
 				objectData.showDrops = true;
 				applyBut.Visible = true;
 			}
