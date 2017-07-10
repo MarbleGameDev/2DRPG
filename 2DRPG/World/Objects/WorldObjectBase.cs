@@ -30,7 +30,7 @@ namespace _2DRPG.World.Objects {
 			SetWorldPosition(x, y);
 		}
 
-		public WorldObjectBase(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
+		public WorldObjectBase(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
 	
 		/// <summary>
 		/// Sets the position of the object in the world
@@ -56,9 +56,9 @@ namespace _2DRPG.World.Objects {
 			arrayPosition[7] = worldY + size / 2;
 		}
 
-		public virtual RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = RegionSave.WorldObjectType.Base
+		public virtual GameSave.WorldObjectStorage StoreObject() {
+			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Base
 			};
 			return store;
 		}

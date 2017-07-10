@@ -12,12 +12,22 @@ namespace _2DRPG.GUI.Interaction {
 		public InteractionDialogue(string text) {
 			textBox.SetText(text);
 		}
+		public InteractionDialogue(GameSave.InteractionObjectStorage store) {
+			textBox.SetText(store.text);
+		}
 
 		public override void Render() {
 			textBox.Render();
 		}
 		public override void Setup() {
 
+		}
+
+		public override GameSave.InteractionObjectStorage StoreObject() {
+			GameSave.InteractionObjectStorage store = new GameSave.InteractionObjectStorage() {
+				objectType = GameSave.InteractionObjectType.Dialogue, text = textBox.GetText()
+			};
+			return store;
 		}
 	}
 }

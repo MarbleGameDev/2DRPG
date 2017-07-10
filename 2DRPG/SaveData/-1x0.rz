@@ -1,7 +1,7 @@
 {
   "worldObjects": [
     {
-      "objectType": 1,
+      "objectType": "Base",
       "worldX": -100.0,
       "worldY": 0.0,
       "layer": 5,
@@ -9,7 +9,7 @@
       "extraData": null
     },
     {
-      "objectType": 1,
+      "objectType": "Base",
       "worldX": -100.0,
       "worldY": 16.0,
       "layer": 5,

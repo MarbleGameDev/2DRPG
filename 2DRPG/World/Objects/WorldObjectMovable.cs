@@ -22,7 +22,7 @@ namespace _2DRPG.World.Objects {
 		public WorldObjectMovable() : base() { }
 		public WorldObjectMovable(string textureName) : base(textureName) { }
 
-		public WorldObjectMovable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName) {
+		public WorldObjectMovable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName) {
 			SetLayer(store.layer);
 		}
 
@@ -32,9 +32,9 @@ namespace _2DRPG.World.Objects {
 			ShiftScreenPosition(x, y);
 		}
 
-		public override RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = RegionSave.WorldObjectType.Movable
+		public override GameSave.WorldObjectStorage StoreObject() {
+			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Movable
 			};
 			return store;
 		}

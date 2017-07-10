@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace _2DRPG.GUI {
-	class UIScrollBar : UIButton {
+	class UIScrollBar : UIButton, IScrollable {
 
 		private float mouseY;
 		private float minY, maxY;
@@ -40,7 +40,6 @@ namespace _2DRPG.GUI {
 		public void SetScroll() {
 			if (scrollTarget != null) {
 				if (newMouse <= maxY && newMouse >= minY) {
-					System.Diagnostics.Debug.WriteLine(newMouse);
 					scrollKnob.SetScreenPosition(scrollKnob.screenX, newMouse);
 					float scrollAmount = ((int)maxY - (int)scrollKnob.screenY) / (float)((int)maxY - (int)minY);
 					scrollTarget.ScrollTo(scrollAmount);
@@ -63,8 +62,27 @@ namespace _2DRPG.GUI {
 					SetScroll();
 					Thread.Sleep(10);
 				}
-			});
+			}) {
+				Name = "Mouse Drag", IsBackground = true
+			};
 			drag.Start();
+		}
+		float scrollMod = .8f;
+		public void ScrollWheel(int y) {
+			float temp = 0;
+			if (y < 0) {
+				temp = (scrollKnob.screenY > (minY + scrollMod)) ? -scrollMod : -((scrollKnob.screenY - minY) % scrollMod);
+			} else if (y > 0) {
+				temp = (maxY - scrollKnob.screenY > scrollMod) ? scrollMod : ((maxY - scrollKnob.screenY) % scrollMod);
+			}
+			scrollKnob.ShiftScreenPosition(0, temp);
+			float scrollAmount = ((int)maxY - (int)scrollKnob.screenY) / (float)((int)maxY - (int)minY);
+			scrollTarget.ScrollTo(scrollAmount);
+		}
+
+		public void ScrollTo(float amount) {
+			newMouse = ((int)maxY - amount * ((int)maxY - (int)minY));
+			SetScroll();
 		}
 	}
 }

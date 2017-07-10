@@ -8,6 +8,10 @@ namespace _2DRPG.GUI {
 	interface IScrollable {
 		void ScrollWheel(int dir);
 		bool CheckCoords(float x, float y);
+		/// <summary>
+		/// Scrolls to a normalized value between 0 and 1
+		/// </summary>
+		/// <param name="amount"></param>
 		void ScrollTo(float amount);
 	}
 }

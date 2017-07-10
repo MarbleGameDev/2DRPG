@@ -17,15 +17,15 @@ namespace _2DRPG.GUI.Windows {
 		static UITypeBox input = new UITypeBox(0, 100, 200, 20, 0, 1, "") { showBackground = false };
 		static UITextBox output = new UITextBox(0, 170, .5f, 400, 0, 5, "");
 
-		public ref HashSet<UIBase> LoadObjects() {
+		public HashSet<UIBase> LoadObjects() {
 			input.text.SetText("");
 			input.valueAction = SubmitInput;
 			input.StartTyping();
 			output.SetText("");
-			return ref UIObjects;
+			return UIObjects;
 		}
-		public ref HashSet<UIBase> GetScreenObjects() {
-			return ref UIObjects;
+		public HashSet<UIBase> GetScreenObjects() {
+			return UIObjects;
 		}
 
 		private void SubmitInput() {

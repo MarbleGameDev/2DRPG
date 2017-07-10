@@ -39,7 +39,7 @@ namespace _2DRPG.World.Objects {
 			SetLayer(layer);
         }
 
-		public WorldObjectAnimated(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, Convert.ToInt32(store.extraData[0]), Convert.ToInt32(store.extraData[1]), Convert.ToInt32(store.extraData[2]), Convert.ToInt32(store.extraData[3]), store.textureName) { }
+		public WorldObjectAnimated(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, Convert.ToInt32(store.extraData[0]), Convert.ToInt32(store.extraData[1]), Convert.ToInt32(store.extraData[2]), Convert.ToInt32(store.extraData[3]), store.textureName) { }
 
         int frameCount = 0;
         public void SpriteUpdate() {
@@ -62,9 +62,9 @@ namespace _2DRPG.World.Objects {
 			return;
         }
 
-		public override RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, extraData = new object[] { spritesAmount, spriteWidth, spriteHeight, frameInterval}, objectType = RegionSave.WorldObjectType.Animated
+		public override GameSave.WorldObjectStorage StoreObject() {
+			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, extraData = new object[] { spritesAmount, spriteWidth, spriteHeight, frameInterval}, objectType = GameSave.WorldObjectType.Animated
 			};
 			return store;
 		}

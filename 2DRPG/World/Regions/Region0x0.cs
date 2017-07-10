@@ -8,7 +8,7 @@ using _2DRPG.Player;
 
 namespace _2DRPG.World.Regions {
 	/// <summary>
-	/// Region for 0x0 to 99x99
+	/// Region for 0x0 to 999x999
 	/// </summary>
 	class Region0x0 : RegionBase {
 		public override int RegionX { get { return 0; } }

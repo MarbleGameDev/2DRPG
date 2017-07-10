@@ -23,7 +23,7 @@ namespace _2DRPG {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = .01f;
 		}
-		public WorldObjectControllable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
+		public WorldObjectControllable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
 
 		private void MoveOnKeys(Input.KeyInputs[] k) {
 			if (k.Contains(Input.KeyInputs.left))
@@ -48,9 +48,9 @@ namespace _2DRPG {
 			SetWorldPosition(worldX + movementX, worldY + movementY);
 		}
 
-		public override RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = RegionSave.WorldObjectType.Controllable
+		public override GameSave.WorldObjectStorage StoreObject() {
+			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Controllable
 			};
 			return store;
 		}

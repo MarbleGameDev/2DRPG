@@ -17,6 +17,8 @@ namespace _2DRPG.GUI {
 		private float scrollAmount = 0, scrollMax;
 		public int rows;
 
+		public IScrollable scrollbar;
+
 		/// <summary>
 		/// Complete Declaration for UITextBox,
 		/// Improves on UIText by allowing new lines and word wrapping
@@ -48,6 +50,11 @@ namespace _2DRPG.GUI {
 
 		private int scrollMod = 4;
 		public void ScrollWheel(int y) {
+			if (scrollbar != null) {
+				scrollbar.ScrollWheel(y);
+				return;
+			} else
+				System.Diagnostics.Debug.WriteLine("Nope");
 			float temp = 0;
 			if (y > 0) {
 				temp = (scrollAmount >= scrollMod) ? -scrollMod : -(scrollAmount % scrollMod);

@@ -21,13 +21,13 @@ namespace _2DRPG.GUI.Windows {
 			}
 		};
 
-		public ref HashSet<UIBase> LoadObjects() {
+		public HashSet<UIBase> LoadObjects() {
 			Input.ClearKeys();
 
-			return ref UIObjects;
+			return UIObjects;
 		}
-		public ref HashSet<UIBase> GetScreenObjects() {
-			return ref UIObjects;
+		public HashSet<UIBase> GetScreenObjects() {
+			return UIObjects;
 		}
 
 		public string[] textureNames = new string[] {

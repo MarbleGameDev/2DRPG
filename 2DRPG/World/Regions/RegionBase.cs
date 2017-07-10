@@ -14,16 +14,16 @@ namespace _2DRPG.World.Regions {
 		public abstract string[] TextureNames { get; }
 		protected HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
 
-		public virtual ref HashSet<WorldObjectBase> LoadObjects() {
+		public virtual HashSet<WorldObjectBase> LoadObjects() {
 			if (SaveData.RegionData[RegionTag] != null) {
 				regionObjects.Clear();
-				foreach (RegionSave.WorldObjectStorage st in SaveData.RegionData[RegionTag].worldObjects)
-					regionObjects.Add(RegionSave.ConstructWorldObject(st));
+				foreach (GameSave.WorldObjectStorage st in SaveData.RegionData[RegionTag].worldObjects)
+					regionObjects.Add(GameSave.ConstructWorldObject(st));
 			}
-			return ref regionObjects;
+			return regionObjects;
 		}
-		public virtual ref HashSet<WorldObjectBase> GetWorldObjects() {
-			return ref regionObjects;
+		public virtual HashSet<WorldObjectBase> GetWorldObjects() {
+			return regionObjects;
 		}
 
 		public void LoadTextures() {

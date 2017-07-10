@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.World.Objects;
+using _2DRPG.GUI.Interaction;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace _2DRPG {
 	[Serializable]
-	public class RegionSave {
+	public class GameSave {
 		public List<WorldObjectStorage> worldObjects = new List<WorldObjectStorage>();
 
 		/// <summary>
@@ -37,8 +40,21 @@ namespace _2DRPG {
 
 			}
 		}
+		public static InteractionBase ConstructInteractionObject(InteractionObjectStorage store) {
+			switch (store.objectType) {
+				case InteractionObjectType.Choice:
+					return new InteractionChoice(store);
+				case InteractionObjectType.Dialogue:
+					return new InteractionDialogue(store);
+				case InteractionObjectType.Quests:
+					return new InteractionQuests(store);
+				default:
+					return null;
+			}
+		}
 
 		public class WorldObjectStorage {
+			[JsonConverter(typeof(StringEnumConverter))]
 			public WorldObjectType objectType;
 			public float worldX, worldY;
 			public int layer;
@@ -46,8 +62,17 @@ namespace _2DRPG {
 			public object[] extraData;
 		}
 
+		public class InteractionObjectStorage {
+			[JsonConverter(typeof(StringEnumConverter))]
+			public InteractionObjectType objectType;
+			public string text;
+			public List<InteractionObjectStorage>[] subObjects;
+			public object[] extraData;
+		}
+
 
 		public enum WorldObjectType { Animated, Base, Collidable, Controllable, Interactable, Movable, MovableAnimated};
+		public enum InteractionObjectType { Choice, Dialogue, Quests};
 
 	}
 }

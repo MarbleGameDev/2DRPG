@@ -20,7 +20,7 @@ namespace _2DRPG.GUI.Windows {
 			UpdateObjectInfo();
 		}
 
-		static RegionSave.WorldObjectType newType;
+		static GameSave.WorldObjectType newType;
 
 		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 2, "button", null, null) { hideTop = true };
 		static UIDropdownButton newObjects = new UIDropdownButton(0, 100, 100, 20, 2, "button", new UIText(0, 100, .5f, 1, "Select Object Type")) { Visible = false, hideTop = true, showDrops = true, displaySize = 4 };
@@ -37,11 +37,11 @@ namespace _2DRPG.GUI.Windows {
 			objectData, newObjects, applyBut, objectName
 		};
 
-		public ref HashSet<UIBase> LoadObjects() {
-			return ref screenObjects;
+		public HashSet<UIBase> LoadObjects() {
+			return screenObjects;
 		}
-		public ref HashSet<UIBase> GetScreenObjects() {
-			return ref screenObjects;
+		public HashSet<UIBase> GetScreenObjects() {
+			return screenObjects;
 		}
 
 		static void UpdateObjectInfo() {
@@ -81,25 +81,25 @@ namespace _2DRPG.GUI.Windows {
 		static void SetupNewObject() {
 			if (newObjects != null) {
 				switch (newType) {
-					case RegionSave.WorldObjectType.Animated:
+					case GameSave.WorldObjectType.Animated:
 						nt = typeof(WorldObjectAnimated);
 						break;
-					case RegionSave.WorldObjectType.Base:
+					case GameSave.WorldObjectType.Base:
 						nt = typeof(WorldObjectBase);
 						break;
-					case RegionSave.WorldObjectType.Collidable:
+					case GameSave.WorldObjectType.Collidable:
 						nt = typeof(WorldObjectCollidable);
 						break;
-					case RegionSave.WorldObjectType.Controllable:
+					case GameSave.WorldObjectType.Controllable:
 						nt = typeof(WorldObjectControllable);
 						break;
-					case RegionSave.WorldObjectType.Interactable:
+					case GameSave.WorldObjectType.Interactable:
 						nt = typeof(WorldObjectInteractable);
 						break;
-					case RegionSave.WorldObjectType.Movable:
+					case GameSave.WorldObjectType.Movable:
 						nt = typeof(WorldObjectMovable);
 						break;
-					case RegionSave.WorldObjectType.MovableAnimated:
+					case GameSave.WorldObjectType.MovableAnimated:
 						nt = typeof(WorldObjectMovableAnimated);
 						break;
 					default:
@@ -165,7 +165,7 @@ namespace _2DRPG.GUI.Windows {
 
 		public void LoadTextures() {
 			List<UIButton> buts = new List<UIButton>();
-			foreach (RegionSave.WorldObjectType t in Enum.GetValues(typeof(RegionSave.WorldObjectType))) {
+			foreach (GameSave.WorldObjectType t in Enum.GetValues(typeof(GameSave.WorldObjectType))) {
 				buts.Add(new UIButton(0, 0, newObjects.width, newObjects.height, () => { newType = t; SetupNewObject(); newObjects.Visible = false; }, 1, "button") {
 					displayLabel = new UIText(0, 0, .5f, 0, t.ToString())
 				});

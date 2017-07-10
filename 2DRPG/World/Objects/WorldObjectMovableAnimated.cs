@@ -25,7 +25,7 @@ namespace _2DRPG.World.Objects {
 		/// <param name="textureName">Name of the texture</param>
 		public WorldObjectMovableAnimated(float x, float y, int layer, int spritesAmt, int spriteWth, int spriteHt, int frameInt, string textureName) : base(x, y, layer, spritesAmt, spriteWth, spriteHt, frameInt, textureName) { }
 
-		public WorldObjectMovableAnimated(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, Convert.ToInt32(store.extraData[0]), Convert.ToInt32(store.extraData[1]), Convert.ToInt32(store.extraData[2]), Convert.ToInt32(store.extraData[3]), store.textureName) {	}
+		public WorldObjectMovableAnimated(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, Convert.ToInt32(store.extraData[0]), Convert.ToInt32(store.extraData[1]), Convert.ToInt32(store.extraData[2]), Convert.ToInt32(store.extraData[3]), store.textureName) {	}
 
 		public virtual void MoveRelative(float x = 0, float y = 0) {
 			worldX += x;
@@ -33,9 +33,9 @@ namespace _2DRPG.World.Objects {
 			ShiftScreenPosition(x, y);
 		}
 
-		public override RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, extraData = new object[] { spritesAmount, spriteWidth, spriteHeight, frameInterval}, objectType = RegionSave.WorldObjectType.MovableAnimated
+		public override GameSave.WorldObjectStorage StoreObject() {
+			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, extraData = new object[] { spritesAmount, spriteWidth, spriteHeight, frameInterval}, objectType = GameSave.WorldObjectType.MovableAnimated
 			};
 			return store;
 		}

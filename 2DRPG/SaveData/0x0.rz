@@ -1,15 +1,69 @@
 {
   "worldObjects": [
     {
-      "objectType": 4,
+      "objectType": "Interactable",
       "worldX": 50.0,
       "worldY": 58.0,
       "layer": 5,
       "textureName": "default",
-      "extraData": null
+      "extraData": [
+        "",
+        [
+          {
+            "objectType": "Dialogue",
+            "text": "Plenty 'O Peanuts, Eh?",
+            "subObjects": null,
+            "extraData": null
+          },
+          {
+            "objectType": "Dialogue",
+            "text": "So, what can I help you with?",
+            "subObjects": null,
+            "extraData": null
+          },
+          {
+            "objectType": "Choice",
+            "text": null,
+            "subObjects": [
+              [
+                {
+                  "objectType": "Dialogue",
+                  "text": "Blah Blah Blah",
+                  "subObjects": null,
+                  "extraData": null
+                },
+                {
+                  "objectType": "Dialogue",
+                  "text": "Well well well, what have we here...",
+                  "subObjects": null,
+                  "extraData": null
+                }
+              ],
+              [
+                {
+                  "objectType": "Dialogue",
+                  "text": "Interesting, but I'm afraid I can't help you",
+                  "subObjects": null,
+                  "extraData": null
+                },
+                {
+                  "objectType": "Dialogue",
+                  "text": "What you want is a fresh start on life",
+                  "subObjects": null,
+                  "extraData": null
+                }
+              ]
+            ],
+            "extraData": [
+              "choice A",
+              "choice B"
+            ]
+          }
+        ]
+      ]
     },
     {
-      "objectType": 2,
+      "objectType": "Collidable",
       "worldX": -200.0,
       "worldY": -50.0,
       "layer": 5,
@@ -17,7 +71,7 @@
       "extraData": null
     },
     {
-      "objectType": 0,
+      "objectType": "Animated",
       "worldX": 70.0,
       "worldY": 0.0,
       "layer": 5,

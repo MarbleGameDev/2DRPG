@@ -21,6 +21,8 @@ namespace _2DRPG.GUI {
 		private int[] scissorMask = new int[4];
 		private float scrollAmount = 0, scrollMax;
 
+		public UIScrollBar scrollbar = null;
+
 		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIButton[] dropdowns) : this(x, y, width, height, layer, texName, null, dropdowns) { }
 
 		/// <summary>
@@ -71,6 +73,10 @@ namespace _2DRPG.GUI {
 
 		private int scrollMod = 4;  //Amount of pixels each mouse turn moves
 		public void ScrollWheel(int y) {
+			if (scrollbar != null) {
+				scrollbar.ScrollWheel(y);
+				return;
+			}
 			float temp = 0;
 			if (y > 0) {
 				temp = (scrollAmount >= scrollMod) ? -scrollMod : -(scrollAmount % scrollMod);

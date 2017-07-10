@@ -15,6 +15,7 @@ namespace _2DRPG.LogicUtils {
 
 		private static WorldObjectInteractable nulled = new WorldObjectInteractable(float.MaxValue, float.MaxValue, 5);
 
+		internal static WorldObjectInteractable InteractableObject { get => interactableObject; set => interactableObject = value; }
 
 		static void EntityLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused || Screen.WindowOpen) {

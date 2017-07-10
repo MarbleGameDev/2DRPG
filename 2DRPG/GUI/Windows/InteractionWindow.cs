@@ -45,6 +45,7 @@ namespace _2DRPG.GUI.Windows {
 				currentInteraction.Setup();
 			} else {
 				Screen.CloseWindow("interaction");
+				elementNum = 0;
 			}
 		}
 		public static void InsertNodes(List<InteractionBase> items) {
@@ -52,6 +53,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		static void RenderCurrent() {
+			if (interactionElements.Count > 0)
 			if (interactionElements[elementNum] != null)
 				interactionElements[elementNum].Render();
 		}
@@ -59,10 +61,10 @@ namespace _2DRPG.GUI.Windows {
 		public static void SetInteractionElements(List<InteractionBase> elements) {
 			interactionElements.Clear();
 			elementNum = 0;
-			interactionElements = elements;
+			interactionElements.AddRange(elements);
 		}
 
-		public ref HashSet<UIBase> LoadObjects() {
+		public HashSet<UIBase> LoadObjects() {
 			blob.ClickAction = (float x, float y) => {
 				if (currentInteraction is InteractionChoice c)
 					return c.CheckClick(x, y);
@@ -73,11 +75,11 @@ namespace _2DRPG.GUI.Windows {
 				b.nextNode = NextNode;
 			advance.SetButtonAction(NextNode);
 			regress.SetButtonAction(PreviousNode);
-			return ref UIObjects;
+			return UIObjects;
 		}
 
-		public ref HashSet<UIBase> GetScreenObjects() {
-			return ref UIObjects;
+		public HashSet<UIBase> GetScreenObjects() {
+			return UIObjects;
 		}
 
 		private string[] textures = new string[] {

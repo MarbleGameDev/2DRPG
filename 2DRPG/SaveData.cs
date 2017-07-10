@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using System.Reflection;
 
@@ -22,7 +20,7 @@ namespace _2DRPG {
 		private static JsonSerializer serializer = new JsonSerializer();
 
 		public static Settings GameSettings = new Settings();
-		public static Dictionary<string, RegionSave> RegionData = new Dictionary<string, RegionSave>();
+		public static Dictionary<string, GameSave> RegionData = new Dictionary<string, GameSave>();
 
 		private static Assembly _assembly;
 
@@ -45,7 +43,7 @@ namespace _2DRPG {
 			lock (RegionData) {
 				lock (WorldData.currentRegions) {
 					foreach (string r in WorldData.regionFiles.Keys) {
-						RegionSave s = new RegionSave();
+						GameSave s = new GameSave();
 						foreach (World.Objects.WorldObjectBase b in WorldData.regionFiles[r].GetWorldObjects()) {
 							s.worldObjects.Add(b.StoreObject());
 						}
@@ -59,7 +57,7 @@ namespace _2DRPG {
 		public static void LoadRegion(string s) {
 			lock (RegionData) {
 				if (!RegionData.ContainsKey(s))
-					RegionData.Add(s, DeSerializeObject<RegionSave>(s));
+					RegionData.Add(s, DeSerializeObject<GameSave>(s));
 			}
 		}
 		public static void UnloadRegion(string s) {

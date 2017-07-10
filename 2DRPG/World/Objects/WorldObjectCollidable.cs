@@ -16,11 +16,11 @@ namespace _2DRPG.World.Objects {
 		/// <param name="textureName">Name of the texture</param>
 		public WorldObjectCollidable(float x, float y, int layer, string textureName = "default") : base(x, y, textureName) { }
 
-		public WorldObjectCollidable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
+		public WorldObjectCollidable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
 
-		public override RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, objectType = RegionSave.WorldObjectType.Collidable
+		public override GameSave.WorldObjectStorage StoreObject() {
+			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, objectType = GameSave.WorldObjectType.Collidable
 			};
 			return store;
 		}
