@@ -142,11 +142,13 @@ namespace _2DRPG.GUI.Windows {
 			foreach (UIButton b in objectData.drops) {
 				if (b is UITypeBox tb) {
 					tb.DisableTyping();
+					tb.UpdatePublicVar();
 				}
 			}
-			foreach (object o in ntParams)
+			foreach (object o in ntParams) {
 				if (o == null)
 					return;
+			}
 			try {
 				WorldObjectBase obj = (WorldObjectBase)Activator.CreateInstance(nt, ntParams);
 				WorldData.AddToRegion(WorldData.WorldToRegion(obj.worldX), WorldData.WorldToRegion(obj.worldY), obj);

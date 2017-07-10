@@ -92,7 +92,7 @@ namespace _2DRPG.GUI {
 				text.SetScreenPosition(x, y);
 		}
 
-		void UpdatePublicVar() {
+		public void UpdatePublicVar() {
 			if (valueAction != null)
 				valueAction.Invoke();
 		}
