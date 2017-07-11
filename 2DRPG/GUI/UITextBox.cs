@@ -21,7 +21,7 @@ namespace _2DRPG.GUI {
 
 		/// <summary>
 		/// Complete Declaration for UITextBox,
-		/// Improves on UIText by allowing new lines and word wrapping
+		/// Improves on UIText by allowing new lines, scrolling, and word wrapping
 		/// </summary>
 		/// <param name="x">X position on the screen</param>
 		/// <param name="y">Y position on the screen</param>
@@ -53,8 +53,8 @@ namespace _2DRPG.GUI {
 			if (scrollbar != null) {
 				scrollbar.ScrollWheel(y);
 				return;
-			} else
-				System.Diagnostics.Debug.WriteLine("Nope");
+			}
+
 			float temp = 0;
 			if (y > 0) {
 				temp = (scrollAmount >= scrollMod) ? -scrollMod : -(scrollAmount % scrollMod);
@@ -68,6 +68,8 @@ namespace _2DRPG.GUI {
 		}
 
 		public void ScrollTo(float val) {
+			if (rows < displaySize)
+				return;
 			float desiredScroll = val * scrollMax;
 			desiredScroll = desiredScroll - scrollAmount;
 			foreach (UIChar b in chars)

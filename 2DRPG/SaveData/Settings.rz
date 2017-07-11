@@ -1,4 +1,6 @@
 {
   "debugEnabled": true,
-  "fullScreen": false
+  "fullScreen": false,
+  "interactionEditor": true,
+  "worldBuilder": true
 }

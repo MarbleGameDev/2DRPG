@@ -41,24 +41,40 @@ namespace _2DRPG {
 			windowFiles.Add("console", new ConsoleWindow());
 			windowFiles.Add("worldBuilder", new BuilderWindow());
 			windowFiles.Add("interaction", new InteractionWindow());
+			windowFiles.Add("interactionEditor", new InteractionEditorWindow());
+			windowFiles.Add("notification", new NotificationWindow());
 		}
 
 		public static void OpenWindow(string windowName) {
-			if (windowFiles.ContainsKey(windowName) && !currentWindows.ContainsKey(windowName)) {
-				windowFiles[windowName].LoadTextures();
-				currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
-			}
+			lock(currentWindows)
+				if (windowFiles.ContainsKey(windowName) && !currentWindows.ContainsKey(windowName)) {
+					windowFiles[windowName].LoadTextures();
+					currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
+				}
 		}
 
 		public static void CloseWindow(string windowName) {
 			lock (currentWindows) {
-				if (windowFiles.ContainsKey(windowName)) {
+				if (windowFiles.ContainsKey(windowName) && currentWindows.ContainsKey(windowName)) {
 					windowFiles[windowName].UnloadTextures();
 					foreach (UIBase b in windowFiles[windowName].GetScreenObjects())
 						b.Cleanup();
 					currentWindows.Remove(windowName);
 				}
 			}
+		}
+
+		private static List<string> queuedWindows = new List<string>();
+
+		public static void QueueCloseWindow(string windowName) {
+			queuedWindows.Add(windowName);
+		}
+		public static void RunQueue() {
+			foreach (string s in queuedWindows) {
+				System.Diagnostics.Debug.WriteLine(s);
+				CloseWindow(s);
+			}
+			queuedWindows.Clear();
 		}
 
 		public static void ScreenStartup() {

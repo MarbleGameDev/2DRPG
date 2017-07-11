@@ -10,6 +10,11 @@ namespace _2DRPG.GUI.Windows {
 
 		static UIButton advance = new UIButton(0, -80, 20, 10, 2, "button") { displayLabel = new UIText(2, -80, .5f, 1, "Next")};
 		static UIButton regress = new UIButton(-50, -80, 20, 10, 2, "button") { displayLabel = new UIText(-48, -80, .5f, 1, "Back") };
+		static UIButton editButt = new UIButton(-150, 80, 30, 10, () => {
+			Screen.CloseWindow("interaction");
+			Screen.OpenWindow("interactionEditor");
+		}) { displayLabel = new UIText(-150, 82, .5f, 1, "Edit"), Visible = false };
+
 		static UIBlob blob = new UIBlob(() => { }) {
 			RenderAction = () => {
 				RenderCurrent();
@@ -18,7 +23,7 @@ namespace _2DRPG.GUI.Windows {
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			new UIBase(0, 0, 200, 100, 3, "darkBack"),
-			advance, regress, blob
+			advance, regress, blob, editButt	
 		};
 
 		static List<InteractionBase> interactionElements = new List<InteractionBase>();
@@ -75,6 +80,7 @@ namespace _2DRPG.GUI.Windows {
 				b.nextNode = NextNode;
 			advance.SetButtonAction(NextNode);
 			regress.SetButtonAction(PreviousNode);
+			editButt.Visible = SaveData.GameSettings.interactionEditor;
 			return UIObjects;
 		}
 

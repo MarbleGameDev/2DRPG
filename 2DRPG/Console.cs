@@ -19,6 +19,7 @@ namespace _2DRPG {
 			commands.Add("pauseGame", PauseGame);
 			commands.Add("quit", QuitGame);
 			commands.Add("saveGame", SaveGame);
+			commands.Add("setValue", SetValue);
 		}
 
 
@@ -55,8 +56,12 @@ namespace _2DRPG {
 			return "Game Saved";
 		}
 		private static string Builder(string[] args) {
-			Screen.OpenWindow("worldBuilder");
-			return "";
+			if (SaveData.GameSettings.worldBuilder) {
+				Screen.OpenWindow("worldBuilder");
+				return "";
+			} else {
+				return "World Builder not enabled";
+			}
 		}
 		private static string Echo(string[] args) {
 			string tmp = "";
@@ -64,6 +69,24 @@ namespace _2DRPG {
 				tmp += s + " ";
 			}
 			return tmp;
+		}
+		private static string SetValue(string[] args) {
+			if (args.Length > 1) {
+				switch (args[0]) {
+					case "debug":
+						return (bool.TryParse(args[1], out SaveData.GameSettings.debugEnabled)) ? "Set Value" : "Invalid Value";
+					case "fullScreen":
+						return (bool.TryParse(args[1], out SaveData.GameSettings.fullScreen)) ? "Set Value" : "Invalid Value";
+					case "interactionEditor":
+						return (bool.TryParse(args[1], out SaveData.GameSettings.interactionEditor)) ? "Set Value" : "Invalid Value";
+					case "worldBuilder":
+						return (bool.TryParse(args[1], out SaveData.GameSettings.worldBuilder)) ? "Set Value" : "Invalid Value";
+					default:
+						return "Invalid Setting. Options: debug, fullScreen, interactionEditor, worldBuilder";
+				}
+			} else {
+				return "Invalid Arguments";
+			}
 		}
 	}
 }

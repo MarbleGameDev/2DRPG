@@ -60,7 +60,7 @@ namespace _2DRPG.GUI.Windows {
 									f.SetValue(currentObject, val);
 								else
 									f.SetValue(currentObject, int.Parse(val));
-								currentObject.ModificationAction().Invoke();
+								currentObject.ModificationAction();
 							}
 						} catch (FormatException) {
 							System.Diagnostics.Debug.WriteLine("Invalid Format, could not update Value");

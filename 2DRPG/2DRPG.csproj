@@ -62,7 +62,9 @@
     <Compile Include="GUI\UIBlob.cs" />
     <Compile Include="GUI\UIScrollBar.cs" />
     <Compile Include="GUI\UITypeBox.cs" />
+    <Compile Include="GUI\Windows\InteractionEditorWindow.cs" />
     <Compile Include="GUI\Windows\InteractionWindow.cs" />
+    <Compile Include="GUI\Windows\NotificationWindow.cs" />
     <Compile Include="Quests\ITask.cs" />
     <Compile Include="Quests\QuestData.cs" />
     <Compile Include="GameSave.cs" />

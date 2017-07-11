@@ -69,11 +69,10 @@ namespace _2DRPG.World.Objects {
 			return store;
 		}
 
-		public override Action ModificationAction() {
-			return new Action(() => { base.ModificationAction();
-				sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
-				sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
-			});
+		public override void ModificationAction() {
+			base.ModificationAction();
+			sheetShiftHorizontal = ((spritesAmount > 10) ? .1f : (1f / spritesAmount));
+			sheetShiftVertical = 1f / ((spritesAmount / 10) + 1);
 		}
 	}
 }

@@ -58,7 +58,7 @@
 			this.Controls.Add(this.RenderControl);
 			this.KeyPreview = true;
 			this.Name = "Form1";
-			this.Text = "Test Form 1";
+			this.Text = "2D RPG";
 			this.Deactivate += new System.EventHandler(this.LostFocusE);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownE);
 			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);

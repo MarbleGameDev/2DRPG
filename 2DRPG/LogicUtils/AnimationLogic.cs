@@ -8,6 +8,7 @@ using _2DRPG.World.Objects;
 
 namespace _2DRPG.LogicUtils {
 	public static partial class Logic {
+
 		public static void AnimationLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused)
 				return;
@@ -26,7 +27,6 @@ namespace _2DRPG.LogicUtils {
 							am.SpriteUpdate();
 				}
 			}
-
 		}
 
 	}

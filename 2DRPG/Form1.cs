@@ -50,7 +50,7 @@ namespace _2DRPG {
 				WindowState = FormWindowState.Maximized;
 			}
 
-			Program.logic.Start();
+			LogicUtils.Logic.LogicStart();
 		}
 
 		private void RenderControl_Render(object sender, GlControlEventArgs e) {
@@ -127,6 +127,8 @@ namespace _2DRPG {
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
 			Gl.Ortho(-320, 320, -180, 180, -0.1, 10.0);
+
+			Screen.RunQueue();
 
 			lock (Screen.currentWindows) {
 				foreach(HashSet<GUI.UIBase> b in Screen.currentWindows.Values)   //Render the GUI Objects

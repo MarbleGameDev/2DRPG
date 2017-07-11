@@ -80,8 +80,8 @@ namespace _2DRPG.World.Objects {
 			return GetType().Name + "\nCoords: \n" + worldX + "," + worldY;
 		}
 
-		public virtual Action ModificationAction() {
-			return new Action(() => { UpdateWorldPosition(); });
+		public virtual void ModificationAction() {
+			UpdateWorldPosition();
 		}
 	}
 }

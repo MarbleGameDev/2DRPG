@@ -14,7 +14,7 @@ namespace _2DRPG.GUI.Windows {
 
 		};
 
-		static UITypeBox input = new UITypeBox(0, 100, 200, 20, 0, 1, "") { showBackground = false };
+		static UITypeBox input = new UITypeBox(0, 88, 200, 20, 0, 1, "") { showBackground = false };
 		static UITextBox output = new UITextBox(0, 170, .5f, 400, 0, 5, "");
 
 		public HashSet<UIBase> LoadObjects() {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _2DRPG.World;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 namespace _2DRPG.GUI.Interaction {
 	class InteractionQuests : InteractionBase {
 
+		[Editable]
 		public string questTag = "";
 
 		public override void Render() {
@@ -26,6 +28,10 @@ namespace _2DRPG.GUI.Interaction {
 				objectType = GameSave.InteractionObjectType.Quests, text = questTag
 			};
 			return store;
+		}
+
+		public override string ToString() {
+			return "Quest";
 		}
 	}
 }

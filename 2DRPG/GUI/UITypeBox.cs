@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace _2DRPG.GUI {
-	class UITypeBox : UIButton {
+	class UITypeBox : UIButton, IScrollable {
 
 		/// <summary>
 		/// value of the type box
@@ -16,6 +16,7 @@ namespace _2DRPG.GUI {
 		private bool typingEnabled = false;
 		private float maxRows;
 		public bool showBackground = true;
+		public bool LimitTyping = true;
 		/// <summary>
 		/// Action to be performed when the value is set
 		/// </summary>
@@ -30,10 +31,10 @@ namespace _2DRPG.GUI {
 		/// <param name="width">Distance to the left and right</param>
 		/// <param name="height">Distance to the top and bottom</param>
 		/// <param name="layer">Render layer</param>
-		/// <param name="maxRows">Maximum number of rows enterable</param>
+		/// <param name="maxRows">Maximum number of rows enterable, or scrollable if LimitTyping is set to false</param>
 		/// <param name="textureName">Name of the texture</param>
 		public UITypeBox(float x, float y, float width, float height, int layer, float maxRows, string textureName) : base(x, y, width, height, layer, textureName) {
-			text = new UITextBox(x, y, .5f, (int)width * 2, layer - 1, maxRows, "");
+			text = new UITextBox(x, y + height / 1.5f, .5f, (int)width * 2, layer - 1, maxRows, "");
 			this.maxRows = maxRows;
 			buttonAction = new Action(StartTyping);
 		}
@@ -41,6 +42,7 @@ namespace _2DRPG.GUI {
 
 		public void StartTyping() {
 			typingEnabled = !typingEnabled;
+			System.Diagnostics.Debug.WriteLine(typingEnabled);
 			if (typingEnabled) {
 				lock (Screen.currentWindows) {
 					//TODO: clean up this garbage
@@ -61,7 +63,9 @@ namespace _2DRPG.GUI {
 				Input.RedirectKeys = true;
 				Input.DirectCall += GetKey;
 				text.SetText(text.GetText() + "|");
+				text.ScrollTo(1f);
 			} else {
+				System.Diagnostics.Debug.WriteLine("b");
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
 				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1));
@@ -89,7 +93,7 @@ namespace _2DRPG.GUI {
 		public override void SetScreenPosition(float x, float y) {
 			base.SetScreenPosition(x, y);
 			if (text != null)
-				text.SetScreenPosition(x, y);
+				text.SetScreenPosition(x, y + height / 1.5f);
 		}
 
 		public void UpdatePublicVar() {
@@ -104,13 +108,15 @@ namespace _2DRPG.GUI {
 				if (text.GetText().Length > 1) {
 					if (!text.GetText().EndsWith(":|") && !text.GetText().EndsWith("`|")) {
 						text.SetText(text.GetText().Remove(text.GetText().Length - 2, 2) + "|");
+						text.ScrollTo(1f);
 					}
 				}
 			} else {
 				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1) + c + "|");
-				if (text.rows + 1 > maxRows) {
+				if (LimitTyping && text.rows + 1 > maxRows) {
 					GetKey((char)Keys.Back);
 				}
+				text.ScrollTo(1f);
 			}
 		}
 
@@ -118,9 +124,17 @@ namespace _2DRPG.GUI {
 			if (typingEnabled) {
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
+				typingEnabled = false;
 			}
 			text.Cleanup();
 		}
 
+		public void ScrollWheel(int dir) {
+			text.ScrollWheel(dir);
+		}
+
+		public void ScrollTo(float amount) {
+			text.ScrollTo(amount);
+		}
 	}
 }

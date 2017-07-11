@@ -51,6 +51,7 @@ namespace _2DRPG {
 					}
 				}
 			}
+			GUI.Windows.NotificationWindow.NewNotification("Game Saved", 190);
 			System.Diagnostics.Debug.WriteLine("Game Saved");
 		}
 

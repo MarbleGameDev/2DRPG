@@ -9,7 +9,7 @@ namespace _2DRPG {
 	public class Settings {
 		public bool debugEnabled = true;
 		public bool fullScreen = false;
-
-
+		public bool interactionEditor = true;
+		public bool worldBuilder = true;
 	}
 }

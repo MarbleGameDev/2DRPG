@@ -8,7 +8,7 @@ namespace _2DRPG.GUI.Interaction {
 	class InteractionChoice : InteractionBase {
 
 		Dictionary<UIButton, List<InteractionBase>> items = new Dictionary<UIButton, List<InteractionBase>>();
-		Dictionary<string, List<InteractionBase>> choices = new Dictionary<string, List<InteractionBase>>();
+		public Dictionary<string, List<InteractionBase>> choices = new Dictionary<string, List<InteractionBase>>();
 
 		public InteractionChoice(Dictionary<string, List<InteractionBase>> choices) {
 			this.choices = choices;
@@ -65,6 +65,10 @@ namespace _2DRPG.GUI.Interaction {
 				extraData = choices.Keys.ToArray(), subObjects = subs.ToArray(), objectType = GameSave.InteractionObjectType.Choice
 			};
 			return store;
+		}
+
+		public override string ToString() {
+			return "Choice";
 		}
 	}
 }

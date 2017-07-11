@@ -17,7 +17,7 @@
           },
           {
             "objectType": "Dialogue",
-            "text": "So, what can I help you with?",
+            "text": "So, what can I help you with? I'm sure a strapping young man like you can handle a big load of a woman like me, eh? No? Oh well I guess that's alright. I'll just be over here dealing with this on my own.",
             "subObjects": null,
             "extraData": null
           },
@@ -47,10 +47,42 @@
                   "extraData": null
                 },
                 {
-                  "objectType": "Dialogue",
-                  "text": "What you want is a fresh start on life",
-                  "subObjects": null,
-                  "extraData": null
+                  "objectType": "Choice",
+                  "text": null,
+                  "subObjects": [
+                    [
+                      {
+                        "objectType": "Dialogue",
+                        "text": "Pish Posh",
+                        "subObjects": null,
+                        "extraData": null
+                      },
+                      {
+                        "objectType": "Dialogue",
+                        "text": "Well well well, what have we here...",
+                        "subObjects": null,
+                        "extraData": null
+                      }
+                    ],
+                    [
+                      {
+                        "objectType": "Dialogue",
+                        "text": "Ho Hum, is that really so?",
+                        "subObjects": null,
+                        "extraData": null
+                      },
+                      {
+                        "objectType": "Dialogue",
+                        "text": "What you want is a fresh start on lying down I can't imagine why.",
+                        "subObjects": null,
+                        "extraData": null
+                      }
+                    ]
+                  ],
+                  "extraData": [
+                    "choice D",
+                    "choice E"
+                  ]
                 }
               ]
             ],
