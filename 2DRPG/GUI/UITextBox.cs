@@ -124,21 +124,21 @@ namespace _2DRPG.GUI {
 				float startX = screenX - width;
 				float startY = screenY;
                 float widthA = 6, widthB = 0;
-				int row = 0, col = 3;
+				int row = 0, col = 0;
 				foreach (string word in words) {
 					char[] characters = (word + " ").ToCharArray();
 					int summer = 0;
 					foreach (char c in characters) {
 						if (c != '\n')
-							summer += UIChar.baseFontWidth[c - 32] + 1;
-					}
+                            summer += UIChar.baseFontWidth[c - 32];
+                    }
 					if (charWidth < col + summer) {
-						col = 3;
+						col = 0;
 						row++;
 					}
 					foreach (char c in characters) {
 						if (c == '\n') {
-							col = 3;
+							col = 0;
                             row++;
 						} else {
 							widthB = UIChar.baseFontWidth[c - 32];

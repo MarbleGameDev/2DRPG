@@ -34,6 +34,18 @@ namespace _2DRPG.GUI {
 			int col = ch % 10;
 			int row = 12 - (ch / 10);
             float horizontal = 1/10f, vertical = 1/12f;
+
+            if (ch > 95 || ch < 0)
+            {
+                texturePosition = new float[] {
+                4/10f, 2/12f,
+                4/10f, 3/12f,
+                5/10f, 3/12f,
+                5/10f, 2/12f
+                };
+                base.Render();
+            }
+
             texturePosition = new float[] {
                 col * horizontal, vertical*(row - 1),
                 col * horizontal, vertical*(row),

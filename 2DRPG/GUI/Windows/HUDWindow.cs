@@ -9,7 +9,7 @@ namespace _2DRPG.GUI.Windows {
 	class HUDWindow : IWindow {
 
 		static UIDropdownButton butt = new UIDropdownButton(-240, 140f, 60f, 15f, 2, "button", new UIText(-240f, 140f, .5f, 1, "Dropdown"), null);
-		static UITextBox copypasta = new UITextBox(-180, 80, .5f, 200, 2, 4, "The quick brown cox jumped over the lazy doggo\n\nABCDEFGHIJKLMNOPQRSTUVWXYandZ\n\nabcdefghijklmnopqrstuvwxyandz\n\n!@#$%^&*()_-;'[]{}:<>,./?");
+		static UITextBox copypasta = new UITextBox(-180, 80, .5f, 200, 2, 4, "The quick brown cox jumped over the lazy doggo \n\nABCDEFGHIJKLMNOPQRSTUVWXYandZ\n\nabcdefghijklmnopqrstuvwxyandz\n\n!@#$%^&*()_-;'[]{}:<>,./?");
 		static UIScrollBar scroll = new UIScrollBar(-100, 0, 5, 20, 2) { scrollTarget = copypasta };
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			//new UIText(100f, 80f, .5f, 2, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") { textColor = Color.Black },
