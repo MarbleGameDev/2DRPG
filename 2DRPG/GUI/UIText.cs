@@ -95,6 +95,5 @@ namespace _2DRPG.GUI {
 			base.SetScreenPosition(x, y);
 			SetupChars();
 		}
-
 	}
 }
