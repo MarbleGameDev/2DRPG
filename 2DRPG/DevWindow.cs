@@ -85,9 +85,15 @@ namespace _2DRPG {
 					return;
 				if (currentObject != null)
 					SaveInteractionData();
-				if (!nodeBase.ContainsKey(e.Node))
+				if (!nodeBase.ContainsKey(e.Node) && !choices.Contains(e.Node))
 					return;
-				currentObject = nodeBase[e.Node];
+				if (choices.Contains(e.Node)) {
+					System.Diagnostics.Debug.WriteLine("choice");
+					currentObject = nodeBase[e.Node.Parent];
+				} else {
+					currentObject = nodeBase[e.Node];
+				}
+				displayTree.SelectedNode = e.Node;
 				SetupInteractionData();
 			}
 
@@ -106,6 +112,7 @@ namespace _2DRPG {
 					interactedObject.InterItems.Remove(nodeBase[displayTree.SelectedNode]);
 				}
 				displayTree.Nodes.Remove(displayTree.SelectedNode);
+				nodeBase.Remove(displayTree.SelectedNode);
 			}
 
 			public static TextBox[] pars;
@@ -148,11 +155,64 @@ namespace _2DRPG {
 				}
 			}
 
+			public static void ShiftNode(int dir) {
+				if (choices.Contains(displayTree.SelectedNode))
+					return;
+
+				if (displayTree.SelectedNode.Parent == null) {
+					//If on root
+					int ind = interactedObject.InterItems.IndexOf(nodeBase[displayTree.SelectedNode]);
+					if (ind - dir < 0 || ind - dir >= interactedObject.InterItems.Count) {
+						displayTree.Focus();
+						return;
+					}
+					interactedObject.InterItems.RemoveAt(ind);
+					interactedObject.InterItems.Insert(ind - dir, nodeBase[displayTree.SelectedNode]);
+					TreeNode n = displayTree.SelectedNode;
+					int ind2 = displayTree.Nodes.IndexOf(displayTree.SelectedNode);
+					displayTree.Nodes.Remove(n);
+					displayTree.Nodes.Insert(ind2 - dir, n);
+					displayTree.SelectedNode = n;
+					displayTree.Focus();
+				} else 
+				//If inside a choice
+				if (choices.Contains(displayTree.SelectedNode.Parent)) {
+					InteractionChoice choicePar = ((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent.Parent]);
+					int ind = choicePar.choices[displayTree.SelectedNode.Parent.Text].IndexOf(nodeBase[displayTree.SelectedNode]);
+					if (ind - dir < 0 || ind - dir >= choicePar.choices.Count) {
+						displayTree.Focus();
+						return;
+					}
+					choicePar.choices[displayTree.SelectedNode.Parent.Text].RemoveAt(ind);
+					choicePar.choices[displayTree.SelectedNode.Parent.Text].Insert(ind - dir, nodeBase[displayTree.SelectedNode]);
+					TreeNode n = displayTree.SelectedNode;
+					int ind2 = displayTree.SelectedNode.Parent.Nodes.IndexOf(displayTree.SelectedNode);
+					displayTree.SelectedNode.Parent.Nodes.Remove(n);
+					displayTree.SelectedNode.Parent.Nodes.Insert(ind2 - dir, n);
+					displayTree.SelectedNode = n;
+					displayTree.Focus();
+				}
+				SetupInteractionData();
+			}
+
 			private static void SetupInteractionData() {
 				text.Visible = false;
 				save.Visible = false;
 				if (currentObject.GetType().Equals(typeof(InteractionChoice))) {
-					
+					//Choice Path Name
+					if (choices.Contains(displayTree.SelectedNode)) {
+						group.Visible = true;
+						save.Visible = true;
+						pars = new TextBox[1];
+						TextBox val = new TextBox() {
+							Location = new Point(0, 35),
+							Size = new Size(200, 20),
+							Text = displayTree.SelectedNode.Text
+						};
+						group.Controls.Add(new Label() { Text = "Choice Name: ", Location = new Point(0, 15), Size = new Size(200, 20) });
+						group.Controls.Add(val);
+						pars[0] = val;
+					}
 				} else if (currentObject.GetType().Equals(typeof(InteractionDialogue))) {
 					text.Visible = true;
 					text.Text = ((InteractionDialogue)currentObject).displayText;
@@ -164,7 +224,24 @@ namespace _2DRPG {
 
 			public static void SaveInteractionData() {
 				if (currentObject.GetType().Equals(typeof(InteractionChoice))) {
-
+					if (choices.Contains(displayTree.SelectedNode) && pars != null) {
+						bool valsSet = true;
+						foreach (Control c in group.Controls) {
+							if (c is TextBox t)
+								if (t.TextLength == 0)
+									valsSet = false;
+						}
+						if (valsSet) {
+							InteractionChoice parentChoice = ((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent]);
+							List<InteractionBase> tmpList = parentChoice.choices[displayTree.SelectedNode.Text];
+							parentChoice.choices.Remove(displayTree.SelectedNode.Text);
+							displayTree.SelectedNode.Text = pars[0].Text;
+							parentChoice.choices.Add(pars[0].Text, tmpList);
+							group.Visible = false;
+							group.Controls.Clear();
+							pars = null;
+						}
+					}
 				} else if (currentObject.GetType().Equals(typeof(InteractionDialogue))) {
 					text.Visible = false;
 					((InteractionDialogue)currentObject).displayText = text.Text;
@@ -229,6 +306,14 @@ namespace _2DRPG {
 		private void UpdateButton_Click(object sender, EventArgs e) {
 			worldXLabel.Text = "World X: " + WorldData.CurrentX;
 			worldYLabel.Text = "World Y: " + WorldData.CurrentY;
+		}
+
+		private void UpButton_Click(object sender, EventArgs e) {
+			Interaction.ShiftNode(1);
+		}
+
+		private void DownButton_Click(object sender, EventArgs e) {
+			Interaction.ShiftNode(-1);
 		}
 	}
 }

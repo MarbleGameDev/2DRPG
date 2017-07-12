@@ -26,6 +26,9 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DevWindow));
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.Overview = new System.Windows.Forms.TabPage();
+			this.updateButton = new System.Windows.Forms.Button();
+			this.worldYLabel = new System.Windows.Forms.Label();
+			this.worldXLabel = new System.Windows.Forms.Label();
 			this.InteractionTree = new System.Windows.Forms.TabPage();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.delButt = new System.Windows.Forms.Button();
@@ -41,9 +44,9 @@
 			this.TextBox = new System.Windows.Forms.RichTextBox();
 			this.treeView = new System.Windows.Forms.TreeView();
 			this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-			this.worldXLabel = new System.Windows.Forms.Label();
-			this.worldYLabel = new System.Windows.Forms.Label();
-			this.updateButton = new System.Windows.Forms.Button();
+			this.UpButton = new System.Windows.Forms.Button();
+			this.DownButton = new System.Windows.Forms.Button();
+			this.label1 = new System.Windows.Forms.Label();
 			this.tabControl1.SuspendLayout();
 			this.Overview.SuspendLayout();
 			this.InteractionTree.SuspendLayout();
@@ -75,6 +78,34 @@
 			this.Overview.Text = "Overview";
 			this.Overview.UseVisualStyleBackColor = true;
 			// 
+			// updateButton
+			// 
+			this.updateButton.Location = new System.Drawing.Point(936, 7);
+			this.updateButton.Name = "updateButton";
+			this.updateButton.Size = new System.Drawing.Size(75, 23);
+			this.updateButton.TabIndex = 2;
+			this.updateButton.Text = "Update";
+			this.updateButton.UseVisualStyleBackColor = true;
+			this.updateButton.Click += new System.EventHandler(this.UpdateButton_Click);
+			// 
+			// worldYLabel
+			// 
+			this.worldYLabel.AutoSize = true;
+			this.worldYLabel.Location = new System.Drawing.Point(9, 20);
+			this.worldYLabel.Name = "worldYLabel";
+			this.worldYLabel.Size = new System.Drawing.Size(51, 13);
+			this.worldYLabel.TabIndex = 1;
+			this.worldYLabel.Text = "World Y: ";
+			// 
+			// worldXLabel
+			// 
+			this.worldXLabel.AutoSize = true;
+			this.worldXLabel.Location = new System.Drawing.Point(9, 7);
+			this.worldXLabel.Name = "worldXLabel";
+			this.worldXLabel.Size = new System.Drawing.Size(51, 13);
+			this.worldXLabel.TabIndex = 0;
+			this.worldXLabel.Text = "World X: ";
+			// 
 			// InteractionTree
 			// 
 			this.InteractionTree.Controls.Add(this.panel1);
@@ -89,6 +120,9 @@
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.label1);
+			this.panel1.Controls.Add(this.DownButton);
+			this.panel1.Controls.Add(this.UpButton);
 			this.panel1.Controls.Add(this.delButt);
 			this.panel1.Controls.Add(this.applyButt);
 			this.panel1.Controls.Add(this.groupBox);
@@ -104,8 +138,8 @@
 			// 
 			// delButt
 			// 
-			this.delButt.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.delButt.Location = new System.Drawing.Point(387, 508);
+			this.delButt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.delButt.Location = new System.Drawing.Point(407, 508);
 			this.delButt.Name = "delButt";
 			this.delButt.Size = new System.Drawing.Size(81, 25);
 			this.delButt.TabIndex = 7;
@@ -134,13 +168,14 @@
 			// 
 			// toolStrip1
 			// 
+			this.toolStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.toolStrip1.BackColor = System.Drawing.Color.Gainsboro;
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip1.GripMargin = new System.Windows.Forms.Padding(0);
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1});
-			this.toolStrip1.Location = new System.Drawing.Point(301, 508);
+			this.toolStrip1.Location = new System.Drawing.Point(332, 508);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
 			this.toolStrip1.Size = new System.Drawing.Size(72, 25);
@@ -231,33 +266,34 @@
 			this.printPreviewDialog1.Name = "printPreviewDialog1";
 			this.printPreviewDialog1.Visible = false;
 			// 
-			// worldXLabel
+			// UpButton
 			// 
-			this.worldXLabel.AutoSize = true;
-			this.worldXLabel.Location = new System.Drawing.Point(9, 7);
-			this.worldXLabel.Name = "worldXLabel";
-			this.worldXLabel.Size = new System.Drawing.Size(51, 13);
-			this.worldXLabel.TabIndex = 0;
-			this.worldXLabel.Text = "World X: ";
+			this.UpButton.Location = new System.Drawing.Point(7, 473);
+			this.UpButton.Name = "UpButton";
+			this.UpButton.Size = new System.Drawing.Size(75, 23);
+			this.UpButton.TabIndex = 8;
+			this.UpButton.Text = "Up";
+			this.UpButton.UseVisualStyleBackColor = true;
+			this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
 			// 
-			// worldYLabel
+			// DownButton
 			// 
-			this.worldYLabel.AutoSize = true;
-			this.worldYLabel.Location = new System.Drawing.Point(9, 20);
-			this.worldYLabel.Name = "worldYLabel";
-			this.worldYLabel.Size = new System.Drawing.Size(51, 13);
-			this.worldYLabel.TabIndex = 1;
-			this.worldYLabel.Text = "World Y: ";
+			this.DownButton.Location = new System.Drawing.Point(7, 503);
+			this.DownButton.Name = "DownButton";
+			this.DownButton.Size = new System.Drawing.Size(75, 23);
+			this.DownButton.TabIndex = 9;
+			this.DownButton.Text = "Down";
+			this.DownButton.UseVisualStyleBackColor = true;
+			this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
 			// 
-			// updateButton
+			// label1
 			// 
-			this.updateButton.Location = new System.Drawing.Point(936, 7);
-			this.updateButton.Name = "updateButton";
-			this.updateButton.Size = new System.Drawing.Size(75, 23);
-			this.updateButton.TabIndex = 2;
-			this.updateButton.Text = "Update";
-			this.updateButton.UseVisualStyleBackColor = true;
-			this.updateButton.Click += new System.EventHandler(this.UpdateButton_Click);
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(7, 454);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(76, 13);
+			this.label1.TabIndex = 10;
+			this.label1.Text = "Shift Selected:";
 			// 
 			// DevWindow
 			// 
@@ -301,5 +337,8 @@
 		private System.Windows.Forms.Label worldYLabel;
 		private System.Windows.Forms.Label worldXLabel;
 		private System.Windows.Forms.Button updateButton;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Button DownButton;
+		private System.Windows.Forms.Button UpButton;
 	}
 }
