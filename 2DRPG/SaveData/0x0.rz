@@ -11,7 +11,7 @@
         [
           {
             "objectType": "Dialogue",
-            "text": "Plenty 'O Peanuts, Eh?",
+            "text": "Plenty 'O Peanuts, Eh?\nThat must be nice",
             "subObjects": null,
             "extraData": null
           },
@@ -37,12 +37,18 @@
                   "text": "Well well well, what have we here...",
                   "subObjects": null,
                   "extraData": null
+                },
+                {
+                  "objectType": "Dialogue",
+                  "text": "Noot",
+                  "subObjects": null,
+                  "extraData": null
                 }
               ],
               [
                 {
                   "objectType": "Dialogue",
-                  "text": "Interesting, but I'm afraid I can't help you",
+                  "text": "Interesting, but I'm afraid I might not be able to help you",
                   "subObjects": null,
                   "extraData": null
                 },
@@ -65,12 +71,6 @@
                       }
                     ],
                     [
-                      {
-                        "objectType": "Dialogue",
-                        "text": "Ho Hum, is that really so?",
-                        "subObjects": null,
-                        "extraData": null
-                      },
                       {
                         "objectType": "Dialogue",
                         "text": "What you want is a fresh start on lying down I can't imagine why.",

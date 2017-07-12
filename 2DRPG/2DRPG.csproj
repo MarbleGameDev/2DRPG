@@ -55,6 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Console.cs" />
+    <Compile Include="DevWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DevWindow.Designer.cs">
+      <DependentUpon>DevWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Interaction\InteractionBase.cs" />
     <Compile Include="GUI\Interaction\InteractionChoice.cs" />
     <Compile Include="GUI\Interaction\InteractionDialogue.cs" />
@@ -62,7 +68,6 @@
     <Compile Include="GUI\UIBlob.cs" />
     <Compile Include="GUI\UIScrollBar.cs" />
     <Compile Include="GUI\UITypeBox.cs" />
-    <Compile Include="GUI\Windows\InteractionEditorWindow.cs" />
     <Compile Include="GUI\Windows\InteractionWindow.cs" />
     <Compile Include="GUI\Windows\NotificationWindow.cs" />
     <Compile Include="Quests\ITask.cs" />
@@ -125,6 +130,9 @@
     <Compile Include="World\Regions\Region-1x0.cs" />
     <Compile Include="World\Regions\Region0x0.cs" />
     <Compile Include="World\Regions\RegionBase.cs" />
+    <EmbeddedResource Include="DevWindow.resx">
+      <DependentUpon>DevWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

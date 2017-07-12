@@ -11,6 +11,8 @@ namespace _2DRPG.GUI.Interaction {
 		[Editable]
 		public string displayText;
 
+		public string DialogueText { get { return displayText; } set { displayText = value; } }
+
 		UITextBox textBox = new UITextBox(-100, 0, .5f, 200, 1, 6, "");
 
 		public InteractionDialogue(string text) {

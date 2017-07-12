@@ -20,8 +20,6 @@ namespace _2DRPG.GUI.Windows {
 			UpdateObjectInfo();
 		}
 
-		static GameSave.WorldObjectType newType;
-
 		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 2, "button", null, null) { hideTop = true };
 		static UIDropdownButton newObjects = new UIDropdownButton(0, 100, 100, 20, 2, "button", new UIText(0, 100, .5f, 1, "Select Object Type")) { Visible = false, hideTop = true, showDrops = true, displaySize = 4 };
 		static UIButton applyBut = new UIButton(185, -140, 65, 8, () => { NewObject(); }, 1, "button") { displayLabel = new UIText(188, -140, .5f, 0, "Apply"), Visible = false };
@@ -78,64 +76,62 @@ namespace _2DRPG.GUI.Windows {
 		}
 		static Type nt;
 		static object[] ntParams;
-		static void SetupNewObject() {
-			if (newObjects != null) {
-				switch (newType) {
-					case GameSave.WorldObjectType.Animated:
-						nt = typeof(WorldObjectAnimated);
-						break;
-					case GameSave.WorldObjectType.Base:
-						nt = typeof(WorldObjectBase);
-						break;
-					case GameSave.WorldObjectType.Collidable:
-						nt = typeof(WorldObjectCollidable);
-						break;
-					case GameSave.WorldObjectType.Controllable:
-						nt = typeof(WorldObjectControllable);
-						break;
-					case GameSave.WorldObjectType.Interactable:
-						nt = typeof(WorldObjectInteractable);
-						break;
-					case GameSave.WorldObjectType.Movable:
-						nt = typeof(WorldObjectMovable);
-						break;
-					case GameSave.WorldObjectType.MovableAnimated:
-						nt = typeof(WorldObjectMovableAnimated);
-						break;
-					default:
-						return;
-				}
-				List<UIButton> b = new List<UIButton>();
-				ParameterInfo[] parms = nt.GetConstructors()[0].GetParameters();
-				ntParams = new object[parms.Length];
-				int counter = 0;
-				foreach (ParameterInfo p in parms) {
-					UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, 1, "button");
-					tb.text.SetText(p.Name + ":");
-					int i = counter++;
-					tb.valueAction = () => {
-						string val = tb.text.GetText();
-						val = val.Substring(val.IndexOf(':') + 1);
-						try {
-							if (val.Length > 0) {
-								if (p.ParameterType.Equals(typeof(String)))
-									ntParams[i] = val;
-								else
-									ntParams[i] = int.Parse(val);
-							}
-						} catch (FormatException) {
-							System.Diagnostics.Debug.WriteLine("Invalid Format");
-							ntParams[i] = null;
-						}
-					};
-					b.Add(tb);
-				}
-				objectData.displaySize = (b.Count > 5) ? 5 : b.Count;
-				objectData.SetDropdowns(b.ToArray());
-				objectName.SetText(nt.Name);
-				objectData.showDrops = true;
-				applyBut.Visible = true;
+		static void SetupNewObject(GameSave.WorldObjectType newType) {
+			switch (newType) {
+				case GameSave.WorldObjectType.Animated:
+					nt = typeof(WorldObjectAnimated);
+					break;
+				case GameSave.WorldObjectType.Base:
+					nt = typeof(WorldObjectBase);
+					break;
+				case GameSave.WorldObjectType.Collidable:
+					nt = typeof(WorldObjectCollidable);
+					break;
+				case GameSave.WorldObjectType.Controllable:
+					nt = typeof(WorldObjectControllable);
+					break;
+				case GameSave.WorldObjectType.Interactable:
+					nt = typeof(WorldObjectInteractable);
+					break;
+				case GameSave.WorldObjectType.Movable:
+					nt = typeof(WorldObjectMovable);
+					break;
+				case GameSave.WorldObjectType.MovableAnimated:
+					nt = typeof(WorldObjectMovableAnimated);
+					break;
+				default:
+					return;
 			}
+			List<UIButton> b = new List<UIButton>();
+			ParameterInfo[] parms = nt.GetConstructors()[0].GetParameters();
+			ntParams = new object[parms.Length];
+			int counter = 0;
+			foreach (ParameterInfo p in parms) {
+				UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, 1, "button");
+				tb.text.SetText(p.Name + ":");
+				int i = counter++;
+				tb.valueAction = () => {
+					string val = tb.text.GetText();
+					val = val.Substring(val.IndexOf(':') + 1);
+					try {
+						if (val.Length > 0) {
+							if (p.ParameterType.Equals(typeof(String)))
+								ntParams[i] = val;
+							else
+								ntParams[i] = int.Parse(val);
+						}
+					} catch (FormatException) {
+						System.Diagnostics.Debug.WriteLine("Invalid Format");
+						ntParams[i] = null;
+					}
+				};
+				b.Add(tb);
+			}
+			objectData.displaySize = (b.Count > 5) ? 5 : b.Count;
+			objectData.SetDropdowns(b.ToArray());
+			objectName.SetText(nt.Name);
+			objectData.showDrops = true;
+			applyBut.Visible = true;
 		}
 
 		static void NewObject() {
@@ -166,17 +162,19 @@ namespace _2DRPG.GUI.Windows {
 		public void LoadTextures() {
 			List<UIButton> buts = new List<UIButton>();
 			foreach (GameSave.WorldObjectType t in Enum.GetValues(typeof(GameSave.WorldObjectType))) {
-				buts.Add(new UIButton(0, 0, newObjects.width, newObjects.height, () => { newType = t; SetupNewObject(); newObjects.Visible = false; }, 1, "button") {
+				buts.Add(new UIButton(0, 0, newObjects.width, newObjects.height, () => { SetupNewObject(t); newObjects.Visible = false; }, 1, "button") {
 					displayLabel = new UIText(0, 0, .5f, 0, t.ToString())
 				});
 			}
 			newObjects.SetDropdowns(buts.ToArray());
 			TextureManager.RegisterTextures(textures);
+			Screen.WindowOpen = true;
 			Screen.CloseWindow("hud");
 		}
 
 		public void UnloadTextures() {
 			TextureManager.UnRegisterTextures(textures);
+			Screen.WindowOpen = false;
 			Screen.OpenWindow("hud");
 		}
 	}

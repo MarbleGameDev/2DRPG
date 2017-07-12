@@ -42,7 +42,6 @@ namespace _2DRPG.GUI {
 
 		public void StartTyping() {
 			typingEnabled = !typingEnabled;
-			System.Diagnostics.Debug.WriteLine(typingEnabled);
 			if (typingEnabled) {
 				lock (Screen.currentWindows) {
 					//TODO: clean up this garbage
@@ -65,7 +64,6 @@ namespace _2DRPG.GUI {
 				text.SetText(text.GetText() + "|");
 				text.ScrollTo(1f);
 			} else {
-				System.Diagnostics.Debug.WriteLine("b");
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
 				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1));

@@ -41,7 +41,6 @@ namespace _2DRPG {
 			windowFiles.Add("console", new ConsoleWindow());
 			windowFiles.Add("worldBuilder", new BuilderWindow());
 			windowFiles.Add("interaction", new InteractionWindow());
-			windowFiles.Add("interactionEditor", new InteractionEditorWindow());
 			windowFiles.Add("notification", new NotificationWindow());
 		}
 

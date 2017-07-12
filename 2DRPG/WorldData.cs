@@ -116,7 +116,6 @@ namespace _2DRPG {
 				LoadRegion(CurrentRegionX, CurrentRegionY + oldY);
 			}
 			Form1.ShiftOrtho(x, y);
-			//Screen.worldText.SetText("Coords: " + CurrentRegionX + ", " + CurrentRegionY + " : " + CurrentX + ", " + CurrentY);
 		}
 		public static void SetCenter(float x, float y) {
 			CurrentX = x;

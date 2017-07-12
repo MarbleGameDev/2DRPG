@@ -12,6 +12,7 @@ namespace _2DRPG {
 		private static Dictionary<string, ConsoleCommand> commands = new Dictionary<string, ConsoleCommand>();
 
 		static Console() {
+			commands.Add("devWindow", DevWindow);
 			commands.Add("echo", Echo);
 			commands.Add("getCoords", GetCoords);
 			commands.Add("help", Help);
@@ -87,6 +88,10 @@ namespace _2DRPG {
 			} else {
 				return "Invalid Arguments";
 			}
+		}
+		private static string DevWindow(string[] args) {
+			Form1.devWin.Show();
+			return "Dev Window Opened";
 		}
 	}
 }

@@ -33,6 +33,15 @@ namespace _2DRPG.GUI.Interaction {
 			}
 		}
 
+		public void AddBase(string choice, InteractionBase b) {
+			if (choices.ContainsKey(choice))
+				choices[choice].Add(b);
+		}
+		public void AddChoice(string choice) {
+			if (!choices.ContainsKey(choice))
+				choices.Add(choice, new List<InteractionBase>() { });
+		}
+
 		public bool CheckClick(float x, float y) {
 			foreach (UIButton b in items.Keys)
 				if (b.CheckClick(x, y))

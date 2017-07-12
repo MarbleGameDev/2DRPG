@@ -14,9 +14,13 @@ namespace _2DRPG {
 
 		public static bool contextCreated = false;
 
+		public static DevWindow devWin = new DevWindow();
+
 		public Form1() {
 			InitializeComponent();
 			SaveData.LoadGame();
+			if (SaveData.GameSettings.interactionEditor)
+				devWin.Show();
 		}
 
 		private void RenderControl_ContextCreated(object sender, GlControlEventArgs e) {

@@ -54,8 +54,10 @@ namespace _2DRPG.World.Objects {
 			};
 			*/
 			GUI.Windows.InteractionWindow.SetInteractionElements(InterItems);
-			if (SaveData.GameSettings.interactionEditor)
-				GUI.Windows.InteractionEditorWindow.interactable = this;
+			if (SaveData.GameSettings.interactionEditor) {
+				DevWindow.Interaction.interactedObject = this;
+				DevWindow.Interaction.SetupTree();
+			}
 			Screen.OpenWindow("interaction");
 		}
 
