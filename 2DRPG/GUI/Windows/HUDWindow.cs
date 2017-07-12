@@ -9,7 +9,7 @@ namespace _2DRPG.GUI.Windows {
 	class HUDWindow : IWindow {
 
 		static UIDropdownButton butt = new UIDropdownButton(-240, 140f, 60f, 15f, 2, "button", new UIText(-240f, 140f, .5f, 1, "Dropdown"), null);
-		static UITextBox copypasta = new UITextBox(-180, 80, .5f, 90, 2, 4, "What the fuck did you just fucking say about me, you little bitch? I'll have you know I graduated top of my class in the \nNavy Seals and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills.");
+		static UITextBox copypasta = new UITextBox(-180, 80, .5f, 200, 2, 4, "The quick brown cox jumped over the lazy doggo\n\nABCDEFGHIJKLMNOPQRSTUVWXYandZ\n\nabcdefghijklmnopqrstuvwxyandz\n\n!@#$%^&*()_-;'[]{}:<>,./?");
 		static UIScrollBar scroll = new UIScrollBar(-100, 0, 5, 20, 2) { scrollTarget = copypasta };
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			//new UIText(100f, 80f, .5f, 2, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") { textColor = Color.Black },
@@ -29,7 +29,7 @@ namespace _2DRPG.GUI.Windows {
 
 		public HashSet<UIBase> LoadObjects() {
 			scroll.ScrollTo(0);
-			copypasta.scrollbar = scroll;
+			//copypasta.scrollbar = scroll;
 			return UIObjects;
 		}
 		public HashSet<UIBase> GetScreenObjects() {

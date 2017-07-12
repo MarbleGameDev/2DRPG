@@ -8,7 +8,7 @@ using OpenGL;
 namespace _2DRPG.GUI {
 	class UITextBox : UIText, IScrollable {
 
-		private int linespacing = 20;
+		private int linespacing = 21;
 		private int charWidth;
 
 
@@ -123,27 +123,29 @@ namespace _2DRPG.GUI {
 				
 				float startX = screenX - width;
 				float startY = screenY;
-				int row = 0, col = 0;
+                float widthA = 6, widthB = 0;
+				int row = 0, col = 3;
 				foreach (string word in words) {
 					char[] characters = (word + " ").ToCharArray();
 					int summer = 0;
 					foreach (char c in characters) {
 						if (c != '\n')
-							summer += UIChar.baseFontWidth[c - 32];
+							summer += UIChar.baseFontWidth[c - 32] + 1;
 					}
 					if (charWidth < col + summer) {
-						col = 0;
+						col = 3;
 						row++;
 					}
 					foreach (char c in characters) {
 						if (c == '\n') {
-							col = 0;
-							row++;
+							col = 3;
+                            row++;
 						} else {
-							int chSpacing = UIChar.baseFontWidth[c - 32] + 2;
-							chars.Add(new UIChar(startX + col + chSpacing, startY - row * textSize * linespacing, textSize * 16, layer, c));
-							col += chSpacing;
-						}
+							widthB = UIChar.baseFontWidth[c - 32];
+                            col += ((int)(widthA / 2 + .5) + (int)(widthB / 2)) + 1;
+                            chars.Add(new UIChar(startX + col, startY - row * textSize * linespacing, textSize * 16, layer, c));
+                            widthA = UIChar.baseFontWidth[c - 32];
+                        }
 					}
 				}
 				rows = row;
