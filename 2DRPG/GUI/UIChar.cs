@@ -11,7 +11,7 @@ namespace _2DRPG.GUI {
 
 		char displayChar;
 		float charSize;
-        public static int[] baseFontWidth = {7, 1, 3, 8, 5, 8, 5, 1, 3, 3,
+        public static int[] baseFontWidth = {6, 1, 3, 8, 5, 8, 5, 1, 3, 3,
                                       3, 5, 2, 4, 1, 4, 5, 3, 4, 4,
                                       5, 4, 5, 4, 5, 5, 1, 2, 3, 5,
                                       3, 4, 7, 6, 5, 5, 6, 5, 5, 5,

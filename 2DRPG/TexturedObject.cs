@@ -12,6 +12,8 @@ namespace _2DRPG {
 
         public float screenX;
         public float screenY;
+        public float width;
+        public float height;
 		protected int layer;
 		[World.Editable]
         public string texName;
@@ -23,8 +25,24 @@ namespace _2DRPG {
             screenY = y;
             this.layer = layer;
             texName = textureName;
+            height = 14;
+            width = 33;
 
             SetScreenPosition(x,y,layer);
+
+        }
+
+        public TexturedObject(float x, float y, int layer, float height, float width, string textureName)
+        {
+
+            screenX = x;
+            screenY = y;
+            this.layer = layer;
+            texName = textureName;
+            this.height = height;
+            this.width = width;
+
+            SetScreenPosition(x, y, layer);
 
         }
 
@@ -38,9 +56,9 @@ namespace _2DRPG {
 
 		public void ContextUpdate() { }
 
-		public float size = 16f;
+        public float size = 16f;
 
-		public float[] arrayPosition = new float[] {
+		public float[] quadPosition = new float[] {
 			0.25f, 0.25f, 0f,
 			0.25f, 0.75f, 0f,
 			0.75f, 0.75f, 0f, 
@@ -51,10 +69,10 @@ namespace _2DRPG {
 			0.0f, 1.0f,
 			1.0f, 1.0f,
 			1.0f, 0.0f
-		};
+		};  
 
 		public virtual void Render() {
-			using (MemoryLock vertexArrayLock = new MemoryLock(arrayPosition))
+			using (MemoryLock vertexArrayLock = new MemoryLock(quadPosition))
 			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
 				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				//Sets the texture used
@@ -80,14 +98,14 @@ namespace _2DRPG {
 		public virtual void SetScreenPosition(float x, float y) {
 			screenX = x;
 			screenY = y;
-			arrayPosition[0] = x - size;
-			arrayPosition[3] = x - size;
-			arrayPosition[6] = x + size;
-			arrayPosition[9] = x + size;
-			arrayPosition[1] = y - size;
-			arrayPosition[10] = y - size;
-			arrayPosition[4] = y + size;
-			arrayPosition[7] = y + size;
+			quadPosition[0] = x - width;
+			quadPosition[3] = x - width;
+			quadPosition[6] = x + width;
+			quadPosition[9] = x + width;
+			quadPosition[1] = y - height;
+			quadPosition[10] = y - height;
+			quadPosition[4] = y + height;
+			quadPosition[7] = y + height;
 		}
 		public virtual void SetScreenPosition(float x, float y, int layer) {
 			SetScreenPosition(x, y);
@@ -104,10 +122,10 @@ namespace _2DRPG {
 		}
 
 		public void SetLayer(int layer) {
-			arrayPosition[2] = -(float)layer / 10;
-			arrayPosition[5] = -(float)layer / 10;
-			arrayPosition[8] = -(float)layer / 10;
-			arrayPosition[11] = -(float)layer / 10;
+			quadPosition[2] = -(float)layer / 10;
+			quadPosition[5] = -(float)layer / 10;
+			quadPosition[8] = -(float)layer / 10;
+			quadPosition[11] = -(float)layer / 10;
 		}
 	}
 }

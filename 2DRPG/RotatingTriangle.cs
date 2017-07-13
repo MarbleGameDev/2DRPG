@@ -10,7 +10,7 @@ namespace _2DRPG {
 	/// Sample Code provided by OpenGL.NET, implemented with the current rendering system
 	/// </summary>
 	class RotatingTriangle {
-		public float[] arrayPosition = new float[] {
+		public float[] quadPosition = new float[] {
 			0.0f, 0.0f,
 			0.5f, 1.0f,
 			1.0f, 0.0f
@@ -25,7 +25,7 @@ namespace _2DRPG {
 
 		public void Render() {
 			//Gl.Rotate(angle, 0.0f, 0.0f, 1.0f);
-			using (MemoryLock vertexArrayLock = new MemoryLock(arrayPosition))
+			using (MemoryLock vertexArrayLock = new MemoryLock(quadPosition))
 			using (MemoryLock vertexColorLock = new MemoryLock(arrayColor)) {
 				// Note: the use of MemoryLock objects is necessary to pin vertex arrays since they can be reallocated by GC
 				// at any time between the Gl.VertexPointer execution and the Gl.DrawArrays execution

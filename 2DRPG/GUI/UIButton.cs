@@ -69,7 +69,7 @@ namespace _2DRPG.GUI {
 		public virtual bool CheckCoords(float x, float y) {
 			if (!Visible)
 				return false;
-			return LogicUtils.Logic.CheckIntersection(arrayPosition, x, y);
+			return LogicUtils.Logic.CheckIntersection(quadPosition, x, y);
 		}
 
 		public void SetButtonAction(Action btn) {

@@ -42,7 +42,7 @@ namespace _2DRPG.GUI {
 			if (!Visible)
 				return false;
 			float[] testCoords = new float[12];
-			arrayPosition.CopyTo(testCoords, 0);
+			quadPosition.CopyTo(testCoords, 0);
 			testCoords[1] -= displaySize * linespacing;
 			testCoords[10] -= displaySize * linespacing;
 			return LogicUtils.Logic.CheckIntersection(testCoords, x, y);

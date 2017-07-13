@@ -18,15 +18,15 @@ namespace _2DRPG.LogicUtils {
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToList()) {
 					foreach (WorldObjectBase o in l) {
 						if (o is ICollidable)
-							if (CheckIntersection(o.arrayPosition, cont.arrayPosition[0], cont.arrayPosition[1]) ||
-								CheckIntersection(o.arrayPosition, cont.arrayPosition[3], cont.arrayPosition[4]) ||
-								CheckIntersection(o.arrayPosition, cont.arrayPosition[6], cont.arrayPosition[7]) ||
-								CheckIntersection(o.arrayPosition, cont.arrayPosition[9], cont.arrayPosition[10]) ||
-								CheckIntersection(o.arrayPosition, (cont.arrayPosition[0] + cont.arrayPosition[9]) / 2, cont.arrayPosition[1]) ||
-								CheckIntersection(o.arrayPosition, cont.arrayPosition[0], (cont.arrayPosition[1] + cont.arrayPosition[4]) / 2) ||
-								CheckIntersection(o.arrayPosition, (cont.arrayPosition[3] + cont.arrayPosition[6]) / 2, cont.arrayPosition[4]) ||
-								CheckIntersection(o.arrayPosition, cont.arrayPosition[6], (cont.arrayPosition[7] + cont.arrayPosition[10]) / 2) ||
-								CheckIntersection(o.arrayPosition, (cont.arrayPosition[0] + cont.arrayPosition[9]) / 2, (cont.arrayPosition[1] + cont.arrayPosition[10]) / 2)) {
+							if (CheckIntersection(o.quadPosition, cont.quadPosition[0], cont.quadPosition[1]) ||
+								CheckIntersection(o.quadPosition, cont.quadPosition[3], cont.quadPosition[4]) ||
+								CheckIntersection(o.quadPosition, cont.quadPosition[6], cont.quadPosition[7]) ||
+								CheckIntersection(o.quadPosition, cont.quadPosition[9], cont.quadPosition[10]) ||
+								CheckIntersection(o.quadPosition, (cont.quadPosition[0] + cont.quadPosition[9]) / 2, cont.quadPosition[1]) ||
+								CheckIntersection(o.quadPosition, cont.quadPosition[0], (cont.quadPosition[1] + cont.quadPosition[4]) / 2) ||
+								CheckIntersection(o.quadPosition, (cont.quadPosition[3] + cont.quadPosition[6]) / 2, cont.quadPosition[4]) ||
+								CheckIntersection(o.quadPosition, cont.quadPosition[6], (cont.quadPosition[7] + cont.quadPosition[10]) / 2) ||
+								CheckIntersection(o.quadPosition, (cont.quadPosition[0] + cont.quadPosition[9]) / 2, (cont.quadPosition[1] + cont.quadPosition[10]) / 2)) {
 								playerstuck = true;
 							}
 					}

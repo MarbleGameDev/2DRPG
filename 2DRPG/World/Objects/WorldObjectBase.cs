@@ -11,6 +11,8 @@ namespace _2DRPG.World.Objects {
 		public float worldX;
 		[Editable]
 		public float worldY;
+        public float width = 16;
+        public float height = 16;
 
 
 		/// <summary>
@@ -25,7 +27,12 @@ namespace _2DRPG.World.Objects {
 		}
 
 		public WorldObjectBase() : base() { }
-		public WorldObjectBase(string textureName) : base(textureName) { }
+		public WorldObjectBase(string textureName) : base(textureName) {
+
+            width = 15;
+            height = 33;
+
+        }
 		public WorldObjectBase(float x, float y, string textureName) : base(textureName) {
 			SetWorldPosition(x, y);
 		}
@@ -46,14 +53,14 @@ namespace _2DRPG.World.Objects {
 		/// Call when the WorldX and WorldY are updated outside of SetWorldPosition()
 		/// </summary>
 		public void UpdateWorldPosition() {
-			arrayPosition[0] = worldX - size / 2;
-			arrayPosition[3] = worldX - size / 2;
-			arrayPosition[6] = worldX + size / 2;
-			arrayPosition[9] = worldX + size / 2;
-			arrayPosition[1] = worldY - size / 2;
-			arrayPosition[10] = worldY - size / 2;
-			arrayPosition[4] = worldY + size / 2;
-			arrayPosition[7] = worldY + size / 2;
+			quadPosition[0] = worldX - width / 2;
+			quadPosition[3] = worldX - width / 2;
+			quadPosition[6] = worldX + width / 2;
+			quadPosition[9] = worldX + width / 2;
+			quadPosition[1] = worldY - height / 2;
+			quadPosition[10] = worldY - height / 2;
+			quadPosition[4] = worldY + height / 2;
+			quadPosition[7] = worldY + height / 2;
 		}
 
 		public virtual GameSave.WorldObjectStorage StoreObject() {
@@ -70,7 +77,7 @@ namespace _2DRPG.World.Objects {
 		/// <param name="y"></param>
 		/// <returns></returns>
 		public bool CheckCoords(float x, float y){
-			bool b = LogicUtils.Logic.CheckIntersection(arrayPosition, x, y);
+			bool b = LogicUtils.Logic.CheckIntersection(quadPosition, x, y);
 			if (b)
 				GUI.Windows.BuilderWindow.SetCurrentObject(this);
 			return b;
