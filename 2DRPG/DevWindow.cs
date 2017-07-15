@@ -18,10 +18,12 @@ namespace _2DRPG {
 			Interaction.text = TextBox;
 			Interaction.save = save;
 			Interaction.group = groupBox;
+			Interaction.toolButton = (ToolStripDropDownButton)toolStrip1.Items[0];
 			TextBox.Visible = false;
 			save.Visible = false;
 			applyButt.Visible = false;
 			groupBox.Visible = false;
+			Interaction.toolButton.DropDown.Items[3].Visible = false;
 		}
 
 
@@ -32,16 +34,15 @@ namespace _2DRPG {
 			public static GroupBox group;
 			public static Button save;
 			static InteractionBase currentObject;
+			public static ToolStripDropDownButton toolButton;
 
 			static Dictionary<TreeNode, InteractionBase> nodeBase = new Dictionary<TreeNode, InteractionBase>();
-			static HashSet<TreeNode> choices = new HashSet<TreeNode>();
 
 			public static void SetupTree() {
 				if (displayTree == null)
 					return;
 				displayTree.Nodes.Clear();
 				nodeBase.Clear();
-				choices.Clear();
 				text.Visible = false;
 				save.Visible = false;
 				foreach (InteractionBase b in interactedObject.InterItems) {
@@ -58,11 +59,11 @@ namespace _2DRPG {
 			}
 
 			private static TreeNode[] GetTreeArray(InteractionChoice c) {
-				TreeNode[] nodes = new TreeNode[c.choices.Count];
+				TreeNode[] nodes = new TreeNode[c.paths.Count];
 				int count = 0;
-				foreach (KeyValuePair<string, List<InteractionBase>> keys in c.choices) {
+				foreach (InteractionPath  ic in c.paths) {
 					List<TreeNode> subNodes = new List<TreeNode>();
-					foreach (InteractionBase b in keys.Value) {
+					foreach (InteractionBase b in ic.items) {
 						if (b is InteractionChoice ch) {
 							TreeNode tn = new TreeNode(ch.ToString(), GetTreeArray(ch));
 							subNodes.Add(tn);
@@ -73,11 +74,11 @@ namespace _2DRPG {
 							nodeBase.Add(tn, b);
 						}
 					}
-					TreeNode choi = new TreeNode(keys.Key, subNodes.ToArray());
+					TreeNode choi = new TreeNode(ic.ToString(), subNodes.ToArray());
 					nodes[count++] = choi;
-					choices.Add(choi);
+					nodeBase.Add(choi, ic);
 				}
-				return nodes.ToArray();
+				return nodes;
 			}
 
 			public static void UpdateNodeData(object sender, TreeNodeMouseClickEventArgs e) {
@@ -85,14 +86,7 @@ namespace _2DRPG {
 					return;
 				if (currentObject != null)
 					SaveInteractionData();
-				if (!nodeBase.ContainsKey(e.Node) && !choices.Contains(e.Node))
-					return;
-				if (choices.Contains(e.Node)) {
-					System.Diagnostics.Debug.WriteLine("choice");
-					currentObject = nodeBase[e.Node.Parent];
-				} else {
-					currentObject = nodeBase[e.Node];
-				}
+				currentObject = nodeBase[e.Node];
 				displayTree.SelectedNode = e.Node;
 				SetupInteractionData();
 			}
@@ -101,12 +95,10 @@ namespace _2DRPG {
 				if (displayTree.SelectedNode == null)
 					return;
 				if (displayTree.SelectedNode.Parent != null) {
-					//If the node is a choice path, remove it from the choice
-					if (choices.Contains(displayTree.SelectedNode)) {
-						((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent]).choices.Remove(displayTree.SelectedNode.Text);
-					} else if (choices.Contains(displayTree.SelectedNode.Parent)){
-						//If the node is inside a choice path, remove it from the path in the choice
-						((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent.Parent]).choices[displayTree.SelectedNode.Parent.Text].Remove(nodeBase[displayTree.SelectedNode]);
+					if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionChoice)) {
+						((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent]).paths.Remove((InteractionPath)nodeBase[displayTree.SelectedNode]);
+					} else if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionPath)) {
+						((InteractionPath)nodeBase[displayTree.SelectedNode.Parent]).items.Remove(nodeBase[displayTree.SelectedNode]);
 					}
 				} else {
 					interactedObject.InterItems.Remove(nodeBase[displayTree.SelectedNode]);
@@ -117,35 +109,31 @@ namespace _2DRPG {
 
 			public static TextBox[] pars;
 			public static Type tempType;
+			//Creates a new object from type given and adds it to the tree
 			public static void SetupNewData(Type nt) {
 				InteractionBase news = new InteractionDialogue("");
-				if (nt.Equals(typeof(InteractionChoice))) {
-					news = new InteractionChoice(new Dictionary<string, List<InteractionBase>>() { });
+				if (nt == typeof(InteractionQuests)) {
+					news = new InteractionQuests(new List<InteractionPath>() { });
 				} else if (nt.Equals(typeof(InteractionDialogue))) {
 					news = new InteractionDialogue("");
-				} else if (nt.Equals(typeof(InteractionQuests))) {
-					//news = new InteractionQuests();
+				} else if (nt.Equals(typeof(InteractionChoice))) {
+					news = new InteractionChoice(new List<InteractionPath>() { });
+				} else if (nt.Equals(typeof(InteractionPath))) {
+					news = new InteractionPath();
 				}
 				TreeNode nod = new TreeNode(news.ToString());
 				if (displayTree.SelectedNode != null) {
-					if (choices.Contains(displayTree.SelectedNode)) {
-						//If the node is a choice option, then add the item to that option path
+					if (nodeBase[displayTree.SelectedNode].GetType() == typeof(InteractionPath)) {
+						//If the node is a path, then add the item to that path
 						((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent]).AddBase(displayTree.SelectedNode.Text, news);
 						displayTree.SelectedNode.Nodes.Add(nod);
 						nodeBase.Add(nod, news);
-					} else {
-						//Choice added to a choice makes a new option, not a new node/Interaction
-						if (nodeBase[displayTree.SelectedNode].GetType().Equals(typeof(InteractionChoice)) && nt.Equals(typeof(InteractionChoice))) {
-							((InteractionChoice)nodeBase[displayTree.SelectedNode]).AddChoice(pars[0].Text);
-							nod = new TreeNode(pars[0].Text);
-							displayTree.SelectedNode.Nodes.Add(nod);
-							choices.Add(nod);
-						} else {
-							//Default to the primary level
-							interactedObject.InterItems.Add(news);
-							displayTree.Nodes.Add(nod);
-							nodeBase.Add(nod, news);
-						}
+					} else if (nodeBase[displayTree.SelectedNode].GetType() == typeof(InteractionChoice)){
+						((InteractionChoice)nodeBase[displayTree.SelectedNode]).AddChoice(pars[0].Text);
+						nod.Text = pars[0].Text;
+						displayTree.SelectedNode.Nodes.Add(nod);
+						nodeBase.Add(nod, news);
+						pars = null;
 					}
 				} else {
 					//if nothing selected, then the primary level
@@ -156,7 +144,7 @@ namespace _2DRPG {
 			}
 
 			public static void ShiftNode(int dir) {
-				if (choices.Contains(displayTree.SelectedNode))
+				if (displayTree.SelectedNode == null)
 					return;
 
 				if (displayTree.SelectedNode.Parent == null) {
@@ -174,17 +162,34 @@ namespace _2DRPG {
 					displayTree.Nodes.Insert(ind2 - dir, n);
 					displayTree.SelectedNode = n;
 					displayTree.Focus();
-				} else 
-				//If inside a choice
-				if (choices.Contains(displayTree.SelectedNode.Parent)) {
-					InteractionChoice choicePar = ((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent.Parent]);
-					int ind = choicePar.choices[displayTree.SelectedNode.Parent.Text].IndexOf(nodeBase[displayTree.SelectedNode]);
-					if (ind - dir < 0 || ind - dir >= choicePar.choices.Count) {
+				} else
+				//If inside a path
+				if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionPath)) {
+					InteractionPath pathPar = ((InteractionPath)nodeBase[displayTree.SelectedNode.Parent]);
+					int ind = pathPar.items.IndexOf(nodeBase[displayTree.SelectedNode]);
+					if (ind - dir < 0 || ind - dir >= pathPar.items.Count) {
 						displayTree.Focus();
 						return;
 					}
-					choicePar.choices[displayTree.SelectedNode.Parent.Text].RemoveAt(ind);
-					choicePar.choices[displayTree.SelectedNode.Parent.Text].Insert(ind - dir, nodeBase[displayTree.SelectedNode]);
+					pathPar.items.RemoveAt(ind);
+					pathPar.items.Insert(ind - dir, nodeBase[displayTree.SelectedNode]);
+					TreeNode n = displayTree.SelectedNode;
+					int ind2 = displayTree.SelectedNode.Parent.Nodes.IndexOf(displayTree.SelectedNode);
+					displayTree.SelectedNode.Parent.Nodes.Remove(n);
+					displayTree.SelectedNode.Parent.Nodes.Insert(ind2 - dir, n);
+					displayTree.SelectedNode = n;
+					displayTree.Focus();
+				} else 
+				//If the node is a path
+				if (nodeBase[displayTree.SelectedNode].GetType() == typeof(InteractionPath)) {
+					InteractionChoice c = (InteractionChoice)nodeBase[displayTree.SelectedNode.Parent];
+					int ind = c.paths.IndexOf((InteractionPath)nodeBase[displayTree.SelectedNode]);
+					if (ind - dir < 0 || ind - dir >= c.paths.Count) {
+						displayTree.Focus();
+						return;
+					}
+					c.paths.RemoveAt(ind);
+					c.paths.Insert(ind - dir, (InteractionPath)nodeBase[displayTree.SelectedNode]);
 					TreeNode n = displayTree.SelectedNode;
 					int ind2 = displayTree.SelectedNode.Parent.Nodes.IndexOf(displayTree.SelectedNode);
 					displayTree.SelectedNode.Parent.Nodes.Remove(n);
@@ -198,11 +203,43 @@ namespace _2DRPG {
 			private static void SetupInteractionData() {
 				text.Visible = false;
 				save.Visible = false;
-				if (currentObject.GetType().Equals(typeof(InteractionChoice))) {
-					//Choice Path Name
-					if (choices.Contains(displayTree.SelectedNode)) {
-						group.Visible = true;
-						save.Visible = true;
+				group.Visible = false;
+				group.Controls.Clear();
+				toolButton.DropDown.Items[0].Visible = false;
+				toolButton.DropDown.Items[2].Visible = false;
+				toolButton.DropDown.Items[3].Visible = false;
+				if (currentObject.GetType() == typeof(InteractionChoice)) {
+					toolButton.DropDown.Items[3].Visible = true;
+
+				} else if (currentObject.GetType() == typeof(InteractionDialogue)) {
+					text.Visible = true;
+					text.Text = ((InteractionDialogue)currentObject).displayText;
+					save.Visible = true;
+				} else if (currentObject.GetType() == typeof(InteractionPath)) {
+					toolButton.DropDown.Items[0].Visible = true;
+					toolButton.DropDown.Items[2].Visible = true;
+					group.Visible = true;
+					save.Visible = true;
+					//If under a quest, set quest flags and stuff
+					if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionQuests)) {
+						pars = new TextBox[2];
+						TextBox val = new TextBox() {
+							Location = new Point(0, 35),
+							Size = new Size(200, 20),
+							Text = displayTree.SelectedNode.Text
+						};
+						group.Controls.Add(new Label() { Text = "Choice Name: ", Location = new Point(0, 15), Size = new Size(200, 20) });
+						group.Controls.Add(val);
+						TextBox vall = new TextBox() {
+							Location = new Point(0, 75),
+							Size = new Size(200, 20),
+							Text = "null"
+						};
+						group.Controls.Add(new Label() { Text = "Quest Flag: ", Location = new Point(0, 55), Size = new Size(200, 20) });
+						group.Controls.Add(vall);
+						pars[0] = val;
+						pars[1] = vall;
+					} else {
 						pars = new TextBox[1];
 						TextBox val = new TextBox() {
 							Location = new Point(0, 35),
@@ -213,41 +250,31 @@ namespace _2DRPG {
 						group.Controls.Add(val);
 						pars[0] = val;
 					}
-				} else if (currentObject.GetType().Equals(typeof(InteractionDialogue))) {
-					text.Visible = true;
-					text.Text = ((InteractionDialogue)currentObject).displayText;
-					save.Visible = true;
-				} else if (currentObject.GetType().Equals(typeof(InteractionQuests))) {
-
 				}
 			}
 
 			public static void SaveInteractionData() {
-				if (currentObject.GetType().Equals(typeof(InteractionChoice))) {
-					if (choices.Contains(displayTree.SelectedNode) && pars != null) {
-						bool valsSet = true;
-						foreach (Control c in group.Controls) {
-							if (c is TextBox t)
-								if (t.TextLength == 0)
-									valsSet = false;
-						}
-						if (valsSet) {
-							InteractionChoice parentChoice = ((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent]);
-							List<InteractionBase> tmpList = parentChoice.choices[displayTree.SelectedNode.Text];
-							parentChoice.choices.Remove(displayTree.SelectedNode.Text);
-							displayTree.SelectedNode.Text = pars[0].Text;
-							parentChoice.choices.Add(pars[0].Text, tmpList);
-							group.Visible = false;
-							group.Controls.Clear();
-							pars = null;
-						}
+				if (currentObject.GetType().Equals(typeof(InteractionQuests))) {
+
+				} else if (currentObject.GetType().Equals(typeof(InteractionChoice))) {
+					bool valsSet = true;
+					foreach (Control c in group.Controls) {
+						if (c is TextBox t)
+							if (t.TextLength == 0)
+								valsSet = false;
+					}
+					if (valsSet) {
+
 					}
 				} else if (currentObject.GetType().Equals(typeof(InteractionDialogue))) {
 					text.Visible = false;
+					save.Visible = false;
 					((InteractionDialogue)currentObject).displayText = text.Text;
-				} else if (currentObject.GetType().Equals(typeof(InteractionQuests))) {
-
+					System.Diagnostics.Debug.WriteLine(text.Text);
 				}
+				toolButton.DropDown.Items[0].Visible = false;
+				toolButton.DropDown.Items[2].Visible = false;
+				toolButton.DropDown.Items[3].Visible = false;
 				currentObject.ModificationAction();
 			}
 		}
@@ -262,17 +289,10 @@ namespace _2DRPG {
 		}
 
 		private void ChoiceToolStripMenuItem_Click(object sender, EventArgs e) {
-			Interaction.tempType = typeof(InteractionChoice);
-			applyButt.Visible = true;
-			groupBox.Visible = true;
-			Interaction.pars = new TextBox[1];
-			TextBox val = new TextBox() {
-				Location = new Point(0, 35),
-				Size = new Size(200, 20)
-			};
-			Interaction.group.Controls.Add(new Label() { Text = "Choice Name: ", Location = new Point(0, 15), Size = new Size(200, 20) });
-			Interaction.group.Controls.Add(val);
-			Interaction.pars[0] = val;
+			Interaction.SetupNewData(typeof(InteractionChoice));
+			/*
+			
+			*/
 		}
 
 		private void DialogueToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -281,6 +301,19 @@ namespace _2DRPG {
 
 		private void QuestToolStripMenuItem_Click(object sender, EventArgs e) {
 			Interaction.SetupNewData(typeof(InteractionQuests));
+		}
+		private void PathToolStripMenuItem_Click(object sender, EventArgs e) {
+			Interaction.tempType = typeof(InteractionPath);
+			applyButt.Visible = true;
+			groupBox.Visible = true;
+			Interaction.pars = new TextBox[1];
+			TextBox val = new TextBox() {
+				Location = new Point(0, 35),
+				Size = new Size(200, 20)
+			};
+			Interaction.group.Controls.Add(new Label() { Text = "Path Name: ", Location = new Point(0, 15), Size = new Size(200, 20) });
+			Interaction.group.Controls.Add(val);
+			Interaction.pars[0] = val;
 		}
 
 		private void ApplyButt_Click(object sender, EventArgs e) {

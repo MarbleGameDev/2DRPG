@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG.Quests {
-	interface ITask {
-		List<GUI.Interaction.InteractionBase> CheckQuestElements(string InteractableID);
+	interface IQuest {
+		bool CheckPaths(string interactionID, int pathNum);
 	}
 }

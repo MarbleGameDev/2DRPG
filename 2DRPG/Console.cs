@@ -90,7 +90,12 @@ namespace _2DRPG {
 			}
 		}
 		private static string DevWindow(string[] args) {
-			Form1.devWin.Show();
+			if (!Form1.devWin.IsDisposed) {
+				Form1.devWin.Show();
+			} else {
+				Form1.devWin = new DevWindow();
+				Form1.devWin.Show();
+			}
 			return "Dev Window Opened";
 		}
 	}

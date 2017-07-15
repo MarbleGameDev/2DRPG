@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace _2DRPG.Quests {
 	static class QuestData {
 
-		public static Dictionary<string, ITask> QuestDatabase = new Dictionary<string, ITask>();
+		public static Dictionary<string, IQuest> QuestDatabase = new Dictionary<string, IQuest>();
+
 	}
 }

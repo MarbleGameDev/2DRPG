@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,39 +8,44 @@ using System.Threading.Tasks;
 namespace _2DRPG.GUI.Interaction {
 	class InteractionChoice : InteractionBase {
 
-		Dictionary<UIButton, List<InteractionBase>> items = new Dictionary<UIButton, List<InteractionBase>>();
-		public Dictionary<string, List<InteractionBase>> choices = new Dictionary<string, List<InteractionBase>>();
+		protected Dictionary<UIButton, int> items = new Dictionary<UIButton, int>();
+		protected Dictionary<string, int> pathNames = new Dictionary<string, int>();
+		public List<InteractionPath> paths = new List<InteractionPath>();
+		/*
+		 *TODO: Use List of InteractionPaths to hold data instead of current choices solution
+		 * 
+		 */
 
-		public InteractionChoice(Dictionary<string, List<InteractionBase>> choices) {
-			this.choices = choices;
-			int counter = 0;
-			foreach (KeyValuePair<string, List<InteractionBase>> k in choices) {
-				items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "button") { displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, k.Key)}, k.Value);
-				counter++;
+		public InteractionChoice(List<InteractionPath> choices) {
+			PostConst(choices);
+		}
+
+		private void PostConst(List<InteractionPath> choices) {
+			int counter = paths.Count;
+			foreach (InteractionPath b in choices) {
+				paths.Add(b);
+				pathNames.Add(b.pathName, counter);
+				items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "button") { displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, b.pathName) }, counter++);
 			}
 		}
 
 		public InteractionChoice(GameSave.InteractionObjectStorage store) {
-			for (int i = 0; i < store.extraData.Length; i++) {
-				List<InteractionBase> d = new List<InteractionBase>();
-				foreach (GameSave.InteractionObjectStorage s in store.subObjects[i])
-					d.Add(GameSave.ConstructInteractionObject(s));
-				choices.Add((string)store.extraData[i], d);
+			List<InteractionPath> pa = new List<InteractionPath>();
+			foreach (GameSave.InteractionObjectStorage s in store.subObjects) {
+				if (s.objectType == GameSave.InteractionObjectType.Path)
+					pa.Add((InteractionPath)GameSave.ConstructInteractionObject(s));
 			}
-			int counter = 0;
-			foreach (KeyValuePair<string, List<InteractionBase>> k in choices) {
-				items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "button") { displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, k.Key) }, k.Value);
-				counter++;
-			}
+			PostConst(pa);
 		}
 
 		public void AddBase(string choice, InteractionBase b) {
-			if (choices.ContainsKey(choice))
-				choices[choice].Add(b);
+			if (pathNames.ContainsKey(choice))
+				paths[pathNames[choice]].items.Add(b);
 		}
+
 		public void AddChoice(string choice) {
-			if (!choices.ContainsKey(choice))
-				choices.Add(choice, new List<InteractionBase>() { });
+			if (!pathNames.ContainsKey(choice))
+				PostConst(new List<InteractionPath>() { new InteractionPath() { pathName = choice, items = new List<InteractionBase>() } });
 		}
 
 		public bool CheckClick(float x, float y) {
@@ -56,22 +62,19 @@ namespace _2DRPG.GUI.Interaction {
 		public override void Setup() {
 			foreach (UIButton b in items.Keys) {
 				b.SetButtonAction(() => {
-					Windows.InteractionWindow.InsertNodes(items[b]);
+					Windows.InteractionWindow.InsertNodes(paths[items[b]].items);
 					nextNode.Invoke();
 				});
 			}
 		}
 
 		public override GameSave.InteractionObjectStorage StoreObject() {
-			List<List<GameSave.InteractionObjectStorage>> subs = new List<List<GameSave.InteractionObjectStorage>>();
-			foreach (List<InteractionBase> b in choices.Values) {
-				List<GameSave.InteractionObjectStorage> s = new List<GameSave.InteractionObjectStorage>();
-				foreach(InteractionBase ba in b)
-					s.Add(ba.StoreObject());
-				subs.Add(s);
+			List<GameSave.InteractionObjectStorage> subs = new List<GameSave.InteractionObjectStorage>();
+			foreach (InteractionBase b in paths) {
+				subs.Add(b.StoreObject());
 			}
 			GameSave.InteractionObjectStorage store = new GameSave.InteractionObjectStorage() {
-				extraData = choices.Keys.ToArray(), subObjects = subs.ToArray(), objectType = GameSave.InteractionObjectType.Choice
+				subObjects = subs, objectType = GameSave.InteractionObjectType.Choice
 			};
 			return store;
 		}

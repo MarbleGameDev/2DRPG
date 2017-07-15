@@ -48,6 +48,8 @@ namespace _2DRPG {
 					return new InteractionDialogue(store);
 				case InteractionObjectType.Quests:
 					return new InteractionQuests(store);
+				case InteractionObjectType.Path:
+					return new InteractionPath(store);
 				default:
 					return null;
 			}
@@ -66,13 +68,13 @@ namespace _2DRPG {
 			[JsonConverter(typeof(StringEnumConverter))]
 			public InteractionObjectType objectType;
 			public string text;
-			public List<InteractionObjectStorage>[] subObjects;
+			public List<InteractionObjectStorage> subObjects;
 			public object[] extraData;
 		}
 
 
 		public enum WorldObjectType { Animated, Base, Collidable, Controllable, Interactable, Movable, MovableAnimated};
-		public enum InteractionObjectType { Choice, Dialogue, Quests};
+		public enum InteractionObjectType { Choice, Dialogue, Quests, Path};
 
 	}
 }
