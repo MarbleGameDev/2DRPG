@@ -15,7 +15,7 @@ namespace _2DRPG {
 		/// <param name="y"></param>
 		/// <param name="layer"></param>
 		/// <param name="textureName"></param>
-		public WorldObjectControllable(float x, float y, int layer, string textureName) : base(x, y, textureName) {
+		public WorldObjectControllable(float x, float y, int layer, string textureName, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = .01f;
 		}
@@ -23,7 +23,7 @@ namespace _2DRPG {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = .01f;
 		}
-		public WorldObjectControllable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
+		public WorldObjectControllable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) { }
 
 		private void MoveOnKeys(Input.KeyInputs[] k) {
 			if (k.Contains(Input.KeyInputs.left))
@@ -50,7 +50,7 @@ namespace _2DRPG {
 
 		public override GameSave.WorldObjectStorage StoreObject() {
 			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Controllable
+				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Controllable
 			};
 			return store;
 		}

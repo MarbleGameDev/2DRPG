@@ -17,7 +17,7 @@ namespace _2DRPG.GUI {
 		private float scrollAmount = 0, scrollMax;
 		public int rows;
 
-		public IScrollable scrollbar;
+		public IScrollable scrollbar = null;
 
 		/// <summary>
 		/// Complete Declaration for UITextBox,

@@ -11,13 +11,9 @@ namespace _2DRPG.GUI.Interaction {
 	class InteractionQuests : InteractionChoice {
 
 		[Editable]
-		public List<string> questTags;	//use dictionary to pair with path names
+		public List<string> questTags = new List<string>();	//use dictionary to pair with path names
 		public string interactionID;
 		public bool immediateMode = false;
-
-		public override void Render() {
-
-		}
 
 		public InteractionQuests(List<InteractionPath> choices) : base(choices) {
 
@@ -30,20 +26,27 @@ namespace _2DRPG.GUI.Interaction {
 		}
 
 		public override void Setup() {
-			base.Setup();
+			/*
 			for (int i = 0; i < questTags.Count; i++) {
 				if (QuestData.QuestDatabase.ContainsKey(questTags[i])) {
 					if (!QuestData.QuestDatabase[questTags[i]].CheckPaths(interactionID, i))
-						items.Remove(items.Keys.ElementAt(i));
+						items.Remove(items.Keys.ElementAt(i));	//TODO: Fix sync error in itteration
 				}
 			}
+			*/
+			base.Setup();
+			if (immediateMode) {
+				Windows.InteractionWindow.InsertNodes(paths[0].items);
+				nextNode.Invoke();
+			}
+
 		}
 
 		public override GameSave.InteractionObjectStorage StoreObject() {
 			GameSave.InteractionObjectStorage store = base.StoreObject();
 			store.objectType = GameSave.InteractionObjectType.Quests;
 			store.text = interactionID;
-			store.extraData = new object[]{ immediateMode, questTags.ToArray()};
+			store.extraData = new object[]{ immediateMode, questTags.ToArray() };
 			return store;
 		}
 

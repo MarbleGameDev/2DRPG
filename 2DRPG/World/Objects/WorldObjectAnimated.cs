@@ -29,7 +29,7 @@ namespace _2DRPG.World.Objects {
 		/// <param name="spriteHt">Height of each sprite</param>
 		/// <param name="frameInt">Number of render calls between frame changes</param>
 		/// <param name="textureName">Name of the texture</param>
-        public WorldObjectAnimated(float x, float y, int layer, int spritesAmt, int spriteWth, int spriteHt, int frameInt, string textureName) : base(x, y, textureName) {
+        public WorldObjectAnimated(float x, float y, int layer, int spritesAmt, int spriteWth, int spriteHt, int frameInt, string textureName, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
             spritesAmount = spritesAmt;
             spriteWidth = spriteWth;
             spriteHeight = spriteHt;
@@ -39,7 +39,7 @@ namespace _2DRPG.World.Objects {
 			SetLayer(layer);
         }
 
-		public WorldObjectAnimated(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, Convert.ToInt32(store.extraData[0]), Convert.ToInt32(store.extraData[1]), Convert.ToInt32(store.extraData[2]), Convert.ToInt32(store.extraData[3]), store.textureName) { }
+		public WorldObjectAnimated(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, Convert.ToInt32(store.extraData[0]), Convert.ToInt32(store.extraData[1]), Convert.ToInt32(store.extraData[2]), Convert.ToInt32(store.extraData[3]), store.textureName, store.width, store.height) { }
 
         int frameCount = 0;
         public void SpriteUpdate() {
@@ -64,7 +64,7 @@ namespace _2DRPG.World.Objects {
 
 		public override GameSave.WorldObjectStorage StoreObject() {
 			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, layer = layer, textureName = texName, extraData = new object[] { spritesAmount, spriteWidth, spriteHeight, frameInterval}, objectType = GameSave.WorldObjectType.Animated
+				worldX = worldX, worldY = worldY, layer = layer, width = width, height = height, textureName = texName, extraData = new object[] { spritesAmount, spriteWidth, spriteHeight, frameInterval}, objectType = GameSave.WorldObjectType.Animated
 			};
 			return store;
 		}

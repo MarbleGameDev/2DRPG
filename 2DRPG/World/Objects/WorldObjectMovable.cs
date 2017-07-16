@@ -17,12 +17,12 @@ namespace _2DRPG.World.Objects {
 		/// <param name="x">X position in world</param>
 		/// <param name="y">Y position in world</param>
 		/// <param name="textureName">Name of the texture</param>
-		public WorldObjectMovable(float x, float y, string textureName) : base(x, y, textureName) { }
+		public WorldObjectMovable(float x, float y, string textureName, float width = 16, float height = 16) : base(x, y, textureName, width, height) { }
 
 		public WorldObjectMovable() : base() { }
 		public WorldObjectMovable(string textureName) : base(textureName) { }
 
-		public WorldObjectMovable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName) {
+		public WorldObjectMovable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName, store.width, store.height) {
 			SetLayer(store.layer);
 		}
 
@@ -34,7 +34,7 @@ namespace _2DRPG.World.Objects {
 
 		public override GameSave.WorldObjectStorage StoreObject() {
 			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Movable
+				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Movable
 			};
 			return store;
 		}

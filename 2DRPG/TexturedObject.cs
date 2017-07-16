@@ -12,8 +12,8 @@ namespace _2DRPG {
 
         public float screenX;
         public float screenY;
-        public float width;
-        public float height;
+		public float width = 16;
+        public float height = 16;
 		protected int layer;
 		[World.Editable]
         public string texName;
@@ -25,8 +25,6 @@ namespace _2DRPG {
             screenY = y;
             this.layer = layer;
             texName = textureName;
-            height = 14;
-            width = 33;
 
             SetScreenPosition(x,y,layer);
 
@@ -55,8 +53,6 @@ namespace _2DRPG {
 		public void ContextDestroyed() { }
 
 		public void ContextUpdate() { }
-
-        public float size = 16f;
 
 		public float[] quadPosition = new float[] {
 			0.25f, 0.25f, 0f,

@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace _2DRPG.GUI {
 	class UIBase : TexturedObject {
-		public float width = .1f;
-		public float height = .1f;
 		protected int defaultLayer = 2;
 		public bool Visible = true;
 

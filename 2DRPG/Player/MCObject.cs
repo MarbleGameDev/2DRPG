@@ -10,7 +10,8 @@ namespace _2DRPG.Player {
 
 		public MCObject() : base("character") {
 			MovementSpeed = 2.5f;
-			size = 32f;
+			width = 15;
+			height = 33;
 		}
 		public void AddEffect(EntityEffect e) {
 			throw new NotImplementedException();

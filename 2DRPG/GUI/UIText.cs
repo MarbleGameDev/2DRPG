@@ -86,7 +86,6 @@ namespace _2DRPG.GUI {
 					startY = screenY - height / 3;
 					startX = screenX + (width - characters.Length * charSize) / 2 - width / 2;
 				}
-				int counter = 0;
 				foreach (char c in characters) {
                     widthB = UIChar.baseFontWidth[c - 32];
                     col += ((int)(widthA / 2 + .5) + (int)(widthB / 2)) + 1;

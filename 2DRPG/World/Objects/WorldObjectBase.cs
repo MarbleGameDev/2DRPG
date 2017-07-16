@@ -11,8 +11,6 @@ namespace _2DRPG.World.Objects {
 		public float worldX;
 		[Editable]
 		public float worldY;
-        public float width = 16;
-        public float height = 16;
 
 
 		/// <summary>
@@ -22,22 +20,21 @@ namespace _2DRPG.World.Objects {
 		/// <param name="y">Y position in the world</param>
 		/// <param name="layer">Render Layer</param>
 		/// <param name="textureName">Name of the texture</param>
-		public WorldObjectBase(float x, float y, int layer, string textureName) : this(x, y, textureName) {
+		public WorldObjectBase(float x, float y, int layer, string textureName, float width = 16, float height = 16) : this(x, y, textureName, width, height) {
 			SetLayer(layer);
 		}
 
 		public WorldObjectBase() : base() { }
 		public WorldObjectBase(string textureName) : base(textureName) {
 
-            width = 15;
-            height = 33;
-
         }
-		public WorldObjectBase(float x, float y, string textureName) : base(textureName) {
+		public WorldObjectBase(float x, float y, string textureName, float width = 16, float height = 16) : base(textureName) {
+			this.width = width;
+			this.height = height;
 			SetWorldPosition(x, y);
 		}
 
-		public WorldObjectBase(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) { }
+		public WorldObjectBase(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) { }
 	
 		/// <summary>
 		/// Sets the position of the object in the world
@@ -65,7 +62,7 @@ namespace _2DRPG.World.Objects {
 
 		public virtual GameSave.WorldObjectStorage StoreObject() {
 			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Base
+				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Base
 			};
 			return store;
 		}

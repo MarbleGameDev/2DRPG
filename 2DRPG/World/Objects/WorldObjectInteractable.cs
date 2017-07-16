@@ -22,10 +22,10 @@ namespace _2DRPG.World.Objects {
 		/// <param name="y">Y position in the world</param>
 		/// <param name="layer">Render Layer</param>
 		/// <param name="textureName">Name of the texture</param>
-		public WorldObjectInteractable(float x, float y, int layer, string textureName = "default") : base(x, y, layer, textureName) {
+		public WorldObjectInteractable(float x, float y, int layer, string textureName = "default", float width = 16, float height = 16) : base(x, y, layer, textureName, width, height) {
 			interAction = OpenDialogue;
 		}
-		public WorldObjectInteractable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName) {
+		public WorldObjectInteractable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
 			interAction = OpenDialogue;
 			InteractionTag = (string)store.extraData[0];
 			List<GameSave.InteractionObjectStorage> st = ((JArray)store.extraData[1]).ToObject<List<GameSave.InteractionObjectStorage>>();
@@ -72,7 +72,7 @@ namespace _2DRPG.World.Objects {
 				st.Add(b.StoreObject());
 			}
 			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Interactable, extraData = new object[] { InteractionTag, st}
+				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Interactable, extraData = new object[] { InteractionTag, st}
 			};
 			return store;
 		}

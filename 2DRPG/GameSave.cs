@@ -58,7 +58,7 @@ namespace _2DRPG {
 		public class WorldObjectStorage {
 			[JsonConverter(typeof(StringEnumConverter))]
 			public WorldObjectType objectType;
-			public float worldX, worldY;
+			public float worldX, worldY, width, height;
 			public int layer;
 			public string textureName;
 			public object[] extraData;

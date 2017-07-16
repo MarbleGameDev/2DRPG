@@ -4,6 +4,8 @@
       "objectType": "Collidable",
       "worldX": -200.0,
       "worldY": -50.0,
+      "width": 16.0,
+      "height": 16.0,
       "layer": 5,
       "textureName": "default",
       "extraData": null
@@ -12,6 +14,8 @@
       "objectType": "Animated",
       "worldX": 70.0,
       "worldY": 0.0,
+      "width": 16.0,
+      "height": 16.0,
       "layer": 5,
       "textureName": "flower",
       "extraData": [
@@ -25,6 +29,8 @@
       "objectType": "Interactable",
       "worldX": 60.0,
       "worldY": 50.0,
+      "width": 16.0,
+      "height": 16.0,
       "layer": 5,
       "textureName": "default",
       "extraData": [
@@ -55,13 +61,52 @@
               },
               {
                 "objectType": "Path",
-                "text": "Penis",
+                "text": "Path2",
                 "subObjects": [
                   {
                     "objectType": "Dialogue",
                     "text": "Welcome fan.",
                     "subObjects": null,
                     "extraData": null
+                  },
+                  {
+                    "objectType": "Quests",
+                    "text": null,
+                    "subObjects": [
+                      {
+                        "objectType": "Path",
+                        "text": "QuestTrue",
+                        "subObjects": [
+                          {
+                            "objectType": "Dialogue",
+                            "text": "Yes, dar dis be quested",
+                            "subObjects": null,
+                            "extraData": null
+                          }
+                        ],
+                        "extraData": null
+                      },
+                      {
+                        "objectType": "Path",
+                        "text": "Default",
+                        "subObjects": [
+                          {
+                            "objectType": "Dialogue",
+                            "text": "Nah man, no quest here, eh.",
+                            "subObjects": null,
+                            "extraData": null
+                          }
+                        ],
+                        "extraData": null
+                      }
+                    ],
+                    "extraData": [
+                      false,
+                      [
+                        "SampleQuest",
+                        ""
+                      ]
+                    ]
                   }
                 ],
                 "extraData": null

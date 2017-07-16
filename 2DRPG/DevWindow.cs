@@ -24,6 +24,7 @@ namespace _2DRPG {
 			applyButt.Visible = false;
 			groupBox.Visible = false;
 			Interaction.toolButton.DropDown.Items[3].Visible = false;
+			treeView.HideSelection = false;
 		}
 
 
@@ -42,6 +43,7 @@ namespace _2DRPG {
 				if (displayTree == null)
 					return;
 				displayTree.Nodes.Clear();
+				currentObject = null;
 				nodeBase.Clear();
 				text.Visible = false;
 				save.Visible = false;
@@ -82,9 +84,9 @@ namespace _2DRPG {
 			}
 
 			public static void UpdateNodeData(object sender, TreeNodeMouseClickEventArgs e) {
-				if (e.Button != MouseButtons.Left)
+				if (e.Button != MouseButtons.Left || !nodeBase.ContainsKey(e.Node))
 					return;
-				if (currentObject != null)
+				if (currentObject != null && nodeBase.ContainsValue(currentObject))
 					SaveInteractionData();
 				currentObject = nodeBase[e.Node];
 				displayTree.SelectedNode = e.Node;
@@ -99,12 +101,15 @@ namespace _2DRPG {
 						((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent]).paths.Remove((InteractionPath)nodeBase[displayTree.SelectedNode]);
 					} else if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionPath)) {
 						((InteractionPath)nodeBase[displayTree.SelectedNode.Parent]).items.Remove(nodeBase[displayTree.SelectedNode]);
+					} else if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionQuests)) {
+						((InteractionQuests)nodeBase[displayTree.SelectedNode.Parent]).paths.Remove((InteractionPath)nodeBase[displayTree.SelectedNode]);
 					}
 				} else {
 					interactedObject.InterItems.Remove(nodeBase[displayTree.SelectedNode]);
 				}
-				displayTree.Nodes.Remove(displayTree.SelectedNode);
 				nodeBase.Remove(displayTree.SelectedNode);
+				displayTree.Nodes.Remove(displayTree.SelectedNode);
+				SetupInteractionData();
 			}
 
 			public static TextBox[] pars;
@@ -127,11 +132,21 @@ namespace _2DRPG {
 						//If the node is a path, then add the item to that path
 						((InteractionChoice)nodeBase[displayTree.SelectedNode.Parent]).AddBase(displayTree.SelectedNode.Text, news);
 						displayTree.SelectedNode.Nodes.Add(nod);
+						displayTree.SelectedNode.Expand();
 						nodeBase.Add(nod, news);
-					} else if (nodeBase[displayTree.SelectedNode].GetType() == typeof(InteractionChoice)){
+					} else if (nodeBase[displayTree.SelectedNode].GetType() == typeof(InteractionChoice)) {
 						((InteractionChoice)nodeBase[displayTree.SelectedNode]).AddChoice(pars[0].Text);
 						nod.Text = pars[0].Text;
 						displayTree.SelectedNode.Nodes.Add(nod);
+						displayTree.SelectedNode.Expand();
+						nodeBase.Add(nod, news);
+						pars = null;
+					} else if (nodeBase[displayTree.SelectedNode].GetType() == typeof(InteractionQuests)) {
+						((InteractionQuests)nodeBase[displayTree.SelectedNode]).AddChoice(pars[0].Text);
+						((InteractionQuests)nodeBase[displayTree.SelectedNode]).questTags.Add("");
+						nod.Text = pars[0].Text;
+						displayTree.SelectedNode.Nodes.Add(nod);
+						displayTree.SelectedNode.Expand();
 						nodeBase.Add(nod, news);
 						pars = null;
 					}
@@ -200,6 +215,7 @@ namespace _2DRPG {
 				SetupInteractionData();
 			}
 
+			private static int tmpInt;
 			private static void SetupInteractionData() {
 				text.Visible = false;
 				save.Visible = false;
@@ -210,7 +226,18 @@ namespace _2DRPG {
 				toolButton.DropDown.Items[3].Visible = false;
 				if (currentObject.GetType() == typeof(InteractionChoice)) {
 					toolButton.DropDown.Items[3].Visible = true;
-
+				} else if (currentObject.GetType() == typeof(InteractionQuests)) {
+					toolButton.DropDown.Items[3].Visible = true;
+					group.Visible = true;
+					CheckBox bux = new CheckBox() {
+						Location = new Point(5, 15),
+						Text = "Immediate Mode",
+						Checked = ((InteractionQuests)currentObject).immediateMode
+					};
+					bux.CheckedChanged += new EventHandler((object sender, EventArgs e) => {
+						((InteractionQuests)currentObject).immediateMode = bux.Checked;
+					});
+					group.Controls.Add(bux);
 				} else if (currentObject.GetType() == typeof(InteractionDialogue)) {
 					text.Visible = true;
 					text.Text = ((InteractionDialogue)currentObject).displayText;
@@ -222,18 +249,20 @@ namespace _2DRPG {
 					save.Visible = true;
 					//If under a quest, set quest flags and stuff
 					if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionQuests)) {
+						InteractionQuests que = (InteractionQuests)nodeBase[displayTree.SelectedNode.Parent];
+						tmpInt = que.paths.IndexOf((InteractionPath)currentObject);
 						pars = new TextBox[2];
 						TextBox val = new TextBox() {
 							Location = new Point(0, 35),
 							Size = new Size(200, 20),
 							Text = displayTree.SelectedNode.Text
 						};
-						group.Controls.Add(new Label() { Text = "Choice Name: ", Location = new Point(0, 15), Size = new Size(200, 20) });
+						group.Controls.Add(new Label() { Text = "Path Name: ", Location = new Point(0, 15), Size = new Size(200, 20) });
 						group.Controls.Add(val);
 						TextBox vall = new TextBox() {
 							Location = new Point(0, 75),
 							Size = new Size(200, 20),
-							Text = "null"
+							Text = (que.questTags.Count > tmpInt && tmpInt != -1) ? que.questTags[tmpInt] : ""
 						};
 						group.Controls.Add(new Label() { Text = "Quest Flag: ", Location = new Point(0, 55), Size = new Size(200, 20) });
 						group.Controls.Add(vall);
@@ -246,7 +275,7 @@ namespace _2DRPG {
 							Size = new Size(200, 20),
 							Text = displayTree.SelectedNode.Text
 						};
-						group.Controls.Add(new Label() { Text = "Choice Name: ", Location = new Point(0, 15), Size = new Size(200, 20) });
+						group.Controls.Add(new Label() { Text = "Path Name: ", Location = new Point(0, 15), Size = new Size(200, 20) });
 						group.Controls.Add(val);
 						pars[0] = val;
 					}
@@ -254,23 +283,22 @@ namespace _2DRPG {
 			}
 
 			public static void SaveInteractionData() {
-				if (currentObject.GetType().Equals(typeof(InteractionQuests))) {
-
-				} else if (currentObject.GetType().Equals(typeof(InteractionChoice))) {
-					bool valsSet = true;
-					foreach (Control c in group.Controls) {
-						if (c is TextBox t)
-							if (t.TextLength == 0)
-								valsSet = false;
-					}
-					if (valsSet) {
-
-					}
-				} else if (currentObject.GetType().Equals(typeof(InteractionDialogue))) {
+				if (currentObject.GetType() == typeof(InteractionQuests)) {
+					
+				} else if (currentObject.GetType() == typeof(InteractionDialogue)) {
 					text.Visible = false;
 					save.Visible = false;
 					((InteractionDialogue)currentObject).displayText = text.Text;
-					System.Diagnostics.Debug.WriteLine(text.Text);
+				} else if (currentObject.GetType() == typeof(InteractionPath)) {
+					if (pars[0].Text.Length != 0) {
+						((InteractionPath)currentObject).pathName = pars[0].Text;
+						displayTree.SelectedNode.Text = pars[0].Text;
+					}
+					if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionQuests)) {
+						InteractionQuests que = (InteractionQuests)nodeBase[displayTree.SelectedNode.Parent];
+						if (que.questTags.Count > tmpInt && tmpInt != -1)
+							que.questTags[tmpInt] = pars[1].Text;
+					}
 				}
 				toolButton.DropDown.Items[0].Visible = false;
 				toolButton.DropDown.Items[2].Visible = false;
@@ -290,9 +318,6 @@ namespace _2DRPG {
 
 		private void ChoiceToolStripMenuItem_Click(object sender, EventArgs e) {
 			Interaction.SetupNewData(typeof(InteractionChoice));
-			/*
-			
-			*/
 		}
 
 		private void DialogueToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -306,6 +331,7 @@ namespace _2DRPG {
 			Interaction.tempType = typeof(InteractionPath);
 			applyButt.Visible = true;
 			groupBox.Visible = true;
+			Interaction.group.Controls.Clear();
 			Interaction.pars = new TextBox[1];
 			TextBox val = new TextBox() {
 				Location = new Point(0, 35),
@@ -330,6 +356,7 @@ namespace _2DRPG {
 				Interaction.group.Controls.Clear();
 				Interaction.pars = null;
 			}
+			treeView.Focus();
 		}
 
 		private void DelButt_Click(object sender, EventArgs e) {

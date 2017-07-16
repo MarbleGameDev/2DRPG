@@ -4,6 +4,8 @@
       "objectType": "Base",
       "worldX": -100.0,
       "worldY": 0.0,
+      "width": 16.0,
+      "height": 16.0,
       "layer": 5,
       "textureName": "default",
       "extraData": null
@@ -12,6 +14,8 @@
       "objectType": "Base",
       "worldX": -100.0,
       "worldY": 16.0,
+      "width": 16.0,
+      "height": 16.0,
       "layer": 5,
       "textureName": "default",
       "extraData": null
