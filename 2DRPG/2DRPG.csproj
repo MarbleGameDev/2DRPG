@@ -71,6 +71,7 @@
     <Compile Include="GUI\UITypeBox.cs" />
     <Compile Include="GUI\Windows\InteractionWindow.cs" />
     <Compile Include="GUI\Windows\NotificationWindow.cs" />
+    <Compile Include="GUI\Windows\OptionsWindow.cs" />
     <Compile Include="Quests\IQuest.cs" />
     <Compile Include="Quests\QuestData.cs" />
     <Compile Include="GameSave.cs" />

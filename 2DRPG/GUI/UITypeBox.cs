@@ -37,28 +37,16 @@ namespace _2DRPG.GUI {
 			text = new UITextBox(x, y + height / 1.5f, .5f, (int)width * 2, layer - 1, maxRows, "");
 			this.maxRows = maxRows;
 			buttonAction = new Action(StartTyping);
+			Screen.SelectionEvent += DisableTyping;
 		}
 
 
 		public void StartTyping() {
 			typingEnabled = !typingEnabled;
 			if (typingEnabled) {
-				lock (Screen.currentWindows) {
-					//TODO: clean up this garbage
-					foreach (HashSet<UIBase> b in Screen.currentWindows.Values)
-						foreach (UIBase u in b) {
-							if (u is UITypeBox box) {
-								if (box != this)
-									box.DisableTyping();
-							}
-							if (u is UIDropdownButton bex)
-								foreach (UIButton but in bex.drops) {
-									if (but is UITypeBox bax)
-										if (bax != this)
-											bax.DisableTyping();
-								}
-						}
-				}
+				Screen.SelectionEvent -= DisableTyping;
+				Screen.InvokeSelection();
+				Screen.SelectionEvent += DisableTyping;
 				Input.RedirectKeys = true;
 				Input.DirectCall += GetKey;
 				text.SetText(text.GetText() + "|");
@@ -125,6 +113,7 @@ namespace _2DRPG.GUI {
 				typingEnabled = false;
 			}
 			text.Cleanup();
+			Screen.SelectionEvent -= DisableTyping;
 		}
 
 		public void ScrollWheel(int dir) {

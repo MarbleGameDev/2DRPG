@@ -22,10 +22,8 @@ namespace _2DRPG {
 		public static Settings GameSettings = new Settings();
 		public static Dictionary<string, GameSave> RegionData = new Dictionary<string, GameSave>();
 
-		private static Assembly _assembly;
-
 		static SaveData() {
-			_assembly = Assembly.GetExecutingAssembly();
+			Directory.CreateDirectory(saveLocation);
 		}
 		/// <summary>
 		/// Loads the game settings, but not world data

@@ -15,9 +15,15 @@ namespace _2DRPG.GUI.Windows {
 				displayLabel = new UIText(0f, 80f, .5f, 0, "Continue")
 			},
 			new UIButton(0f, 50f, 80f, 10f, () => {
+				Screen.CloseWindow("pause");
+				Screen.OpenWindow("options");
+			}, 1, "button") {
+				displayLabel = new UIText(0f, 50f, .5f, 0, "Options")
+			},
+			new UIButton(0f, 20f, 80f, 10f, () => {
 				Application.Exit();
 			}, 1, "button") {
-				displayLabel = new UIText(0f, 50f, .5f, 0, "Quit")
+				displayLabel = new UIText(0f, 20f, .5f, 0, "Quit")
 			}
 		};
 

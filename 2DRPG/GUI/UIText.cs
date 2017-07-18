@@ -75,7 +75,7 @@ namespace _2DRPG.GUI {
 				chars.Clear();
 				char[] characters = displayText.ToCharArray();
 				float charSize, startX, startY;
-                float widthA = 6, widthB;
+                float widthA = 12 * textSize, widthB;
                 int col = 0;
 				if (width / characters.Length < height) {
 					charSize = width / characters.Length;
@@ -87,10 +87,10 @@ namespace _2DRPG.GUI {
 					startX = screenX + (width - characters.Length * charSize) / 2 - width / 2;
 				}
 				foreach (char c in characters) {
-                    widthB = UIChar.baseFontWidth[c - 32];
-                    col += ((int)(widthA / 2 + .5) + (int)(widthB / 2)) + 1;
+                    widthB = UIChar.baseFontWidth[c - 32] * textSize * 2;
+                    col += ((int)(widthA / 2 + .5) + (int)(widthB / 2)) + (int)(2 * textSize);
                     chars.Add(new UIChar(startX + col, startY, charSize, layer, c));
-                    widthA = UIChar.baseFontWidth[c - 32];
+                    widthA = UIChar.baseFontWidth[c - 32] * textSize * 2;
                 }
 			}
 		}

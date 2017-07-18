@@ -42,6 +42,7 @@ namespace _2DRPG.GUI {
 			buttonAction = new Action(ToggleDropdowns);
 			SetScissorMask();
 			Screen.ResizeEvent += SetScissorMask;
+			Screen.SelectionEvent += HideDropdowns;
 		}
 		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIText label) : this(x, y, width, height, layer, texName, label, null) { }
 
@@ -146,13 +147,20 @@ namespace _2DRPG.GUI {
 
 
 		public void ToggleDropdowns() {
+			Screen.SelectionEvent -= HideDropdowns;
+			Screen.InvokeSelection();
+			Screen.SelectionEvent += HideDropdowns;
 			showDrops = !showDrops;
+		}
+		public void HideDropdowns() {
+			showDrops = false;
 		}
 
 		public override void Cleanup() {
 			foreach (UIButton b in drops)
 				b.Cleanup();
 			Screen.ResizeEvent -= SetScissorMask;
+			Screen.SelectionEvent -= HideDropdowns;
 		}
 	}
 }

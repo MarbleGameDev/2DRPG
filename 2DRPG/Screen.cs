@@ -29,6 +29,8 @@ namespace _2DRPG {
 
 		public static event Action ResizeEvent;
 
+		public static event Action SelectionEvent;
+
 		public static bool WindowOpen = false;
 
 		private static Dictionary<string, IWindow> windowFiles = new Dictionary<string, IWindow>();
@@ -42,6 +44,7 @@ namespace _2DRPG {
 			windowFiles.Add("worldBuilder", new BuilderWindow());
 			windowFiles.Add("interaction", new InteractionWindow());
 			windowFiles.Add("notification", new NotificationWindow());
+			windowFiles.Add("options", new OptionsWindow());
 		}
 
 		public static void OpenWindow(string windowName) {
@@ -109,6 +112,11 @@ namespace _2DRPG {
 		/// <returns></returns>
 		public static float PixeltoNormalizedHeight(float yCoord) {
 			return (float)(yCoord + pixelHeight / 2) / pixelHeight;
+		}
+
+		public static void InvokeSelection() {
+			if (SelectionEvent != null)
+				SelectionEvent.Invoke();
 		}
 	}
 }
