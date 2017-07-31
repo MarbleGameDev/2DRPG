@@ -14,6 +14,9 @@ namespace _2DRPG {
 
 		public static bool contextCreated = false;
 
+		private static bool updateResize = false;
+		private static bool updateFullscreen = false;
+
 		public static DevWindow devWin = new DevWindow();
 
 		public Form1() {
@@ -39,7 +42,6 @@ namespace _2DRPG {
 			Gl.AlphaFunc(AlphaFunction.Greater, .05f);  //Don't draw transparent pixels on polygons
 			Gl.Enable(EnableCap.ScissorTest);
 			Wgl.SwapIntervalEXT(1);	//Swap Interval (V-Sync Enabled at 1 or -1)
-			ResizeE(sender, e);
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
@@ -53,8 +55,27 @@ namespace _2DRPG {
 				FormBorderStyle = FormBorderStyle.None;
 				WindowState = FormWindowState.Maximized;
 			}
+			ResizeWindow(SaveData.GameSettings.windowx, SaveData.GameSettings.windowy);
+			ResizeE(sender, e);
 
 			LogicUtils.Logic.LogicStart();
+		}
+
+		public static void ResizeWindow(int x, int y) {
+			if (SaveData.GameSettings.fullScreen) {
+				Program.mainForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+				Program.mainForm.WindowState = FormWindowState.Normal;
+				SaveData.GameSettings.fullScreen = false;
+			}
+			Program.mainForm.ClientSize = new Size(x, y);
+			Program.mainForm.CenterToScreen();
+			SaveData.GameSettings.windowx = x;
+			SaveData.GameSettings.windowy = y;
+			updateResize = true;
+		}
+		public static void SetFullscreen() {
+			SaveData.GameSettings.fullScreen = true;
+			updateFullscreen = true;
 		}
 
 		private void RenderControl_Render(object sender, GlControlEventArgs e) {
@@ -101,6 +122,14 @@ namespace _2DRPG {
 
 
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
+			if (updateFullscreen) {
+				FormBorderStyle = FormBorderStyle.None;
+				WindowState = FormWindowState.Maximized;
+				updateFullscreen = false;
+			} else if (updateResize) {
+				ResizeE(sender, e);
+				updateResize = false;
+			}
 			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
 			//Gl.Ortho(-Screen.screenWidth / 2 + OrthoLeft * Screen.screenHeight / 2, Screen.screenWidth / 2 + OrthoRight * Screen.screenHeight / 2, (-1 + OrthoBottom) * Screen.screenHeight / 2, (1 + OrthoTop) * Screen.screenHeight / 2, -0.1, 10.0);

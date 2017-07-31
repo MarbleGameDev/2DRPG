@@ -61,6 +61,7 @@ namespace _2DRPG.GUI {
 			} else if (y < 0) {
 				temp = (scrollMax - scrollAmount >= scrollMod) ? scrollMod : ((scrollMax - scrollAmount) % scrollMod);
 			}
+			System.Diagnostics.Debug.WriteLine(y + ", " + temp);
 			foreach (UIChar b in chars) {
 				b.ShiftScreenPosition(0, temp);
 			}

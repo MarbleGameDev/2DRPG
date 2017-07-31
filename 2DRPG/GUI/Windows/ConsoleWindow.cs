@@ -32,8 +32,7 @@ namespace _2DRPG.GUI.Windows {
 			output.SetText(output.GetText() + "\n" + Console.ExecuteCommand(input.text.GetText().Substring(1)));
 			input.text.SetText("`");
 			input.StartTyping();
-			if (output.rows > 5)
-				output.ScrollTo(1f);
+			output.ScrollTo(1f);
 				
 		}
 

@@ -57,7 +57,7 @@ namespace _2DRPG.GUI {
 				if (displayLabel != null && b.displayLabel != null) {
 					b.displayLabel.SetTextSize(displayLabel.textSize);
 				}
-				b.SetScreenPosition(screenX, screenY - counter++ * (height * 2 + spacing));
+				b.SetScreenPosition(screenX, screenY - counter++ * (height * 2 + spacing), layer - 2);
 
 				drops.Add(b);
 			}

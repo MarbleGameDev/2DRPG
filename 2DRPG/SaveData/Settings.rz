@@ -1,6 +1,8 @@
 {
   "debugEnabled": true,
   "fullScreen": false,
-  "interactionEditor": true,
-  "worldBuilder": true
+  "interactionEditor": false,
+  "worldBuilder": true,
+  "windowx": 1280,
+  "windowy": 720
 }

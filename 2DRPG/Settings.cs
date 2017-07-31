@@ -11,5 +11,6 @@ namespace _2DRPG {
 		public bool fullScreen = false;
 		public bool interactionEditor = true;
 		public bool worldBuilder = true;
+		public int windowx = 640, windowy = 360;
 	}
 }

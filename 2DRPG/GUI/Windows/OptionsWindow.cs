@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace _2DRPG.GUI.Windows {
 	class OptionsWindow : IWindow {
-
-		static UIDropdownButton fullscreen = new UIDropdownButton(60, 80, 40, 10, 2, "button", new UIText(60, 80, .5f, 1, "false"), null);
+		
+		static UIDropdownButton windowSize = new UIDropdownButton(60, 50, 40, 10, 3, "button", new UIText(60, 50, .5f, 3, "1920 x 1080"), null) { displaySize = 6};
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			new UIBase(0, 0, 120, 150, 4, "darkBack"),
+			new UIButton(110, 140, 10, 10, () => { Screen.CloseWindow("options"); },1, "button"){ displayLabel = new UIText(117, 143, 1f, 0, "X") },
 			new UIText(0, 140, 1f, 2, "Options"),
-			new UIText(-40, 80, .5f, 2, "FullScreen:"), fullscreen
+			new UIText(-40, 50, .5f, 2, "Resolution:"), windowSize
 		};
 
 		public HashSet<UIBase> GetScreenObjects() {
@@ -20,19 +21,25 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		public HashSet<UIBase> LoadObjects() {
-			fullscreen.SetDropdowns(new UIButton[] {
+			windowSize.SetDropdowns(new UIButton[] {
 				new UIButton(() => {
-					fullscreen.displayLabel.SetText("True");
-					fullscreen.ToggleDropdowns();
-					SaveData.GameSettings.fullScreen = true;
-				}){ displayLabel = new UIText(0, 0, .5f, 1, "True")},
+					windowSize.displayLabel.SetText("640 x 360");
+					windowSize.ToggleDropdowns();
+					Form1.ResizeWindow(640, 360);
+				}) { displayLabel = new UIText(0, 0, .5f, 1, "640 x 360")},
 				new UIButton(() => {
-					fullscreen.displayLabel.SetText("False");
-					fullscreen.ToggleDropdowns();
-					SaveData.GameSettings.fullScreen = false;
-				}){ displayLabel = new UIText(0, 0, .5f, 1, "False")}
+					windowSize.displayLabel.SetText("1280 x 720");
+					windowSize.ToggleDropdowns();
+					Form1.ResizeWindow(1280, 720);
+				}) { displayLabel = new UIText(0, 0, .5f, 1, "1280 x 720")},
+				new UIButton(() => {
+					windowSize.displayLabel.SetText("Fullscreen");
+					windowSize.ToggleDropdowns();
+					Form1.SetFullscreen();
+				}) { displayLabel = new UIText(0, 0, .5f, 1, "Fullscreen")}
 			});
-			fullscreen.displayLabel.SetText(SaveData.GameSettings.fullScreen.ToString());
+			windowSize.displayLabel.SetText(SaveData.GameSettings.windowx + " x " + SaveData.GameSettings.windowy);
+
 			return UIObjects;
 		}
 

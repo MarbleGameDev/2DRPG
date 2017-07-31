@@ -88,6 +88,8 @@ namespace _2DRPG.GUI {
 		}
 
 		void GetKey(char c) {
+			if (c.Equals(':'))
+				return;
 			if (c.Equals((char)Keys.Enter)) {
 				StartTyping();
 			} else if (c.Equals((char)Keys.Back)) {

@@ -19,6 +19,7 @@ namespace _2DRPG.GUI.Windows {
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			new UIBase(0, 0, 200, 100, 3, "darkBack"),
+			new UIButton(190, 90, 10, 10, () => { Screen.CloseWindow("interaction"); },1, "button"){ displayLabel = new UIText(197, 93, 1f, 0, "X") },
 			advance, regress, blob	
 		};
 

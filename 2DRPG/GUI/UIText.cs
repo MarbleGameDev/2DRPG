@@ -56,6 +56,7 @@ namespace _2DRPG.GUI {
 		}
 		public virtual void SetText(string text) {
 			displayText = text;
+			SetTextSize(textSize);
 			SetupChars();
 		}
 		public void SetTextSize(float textSize) {
@@ -75,16 +76,24 @@ namespace _2DRPG.GUI {
 				chars.Clear();
 				char[] characters = displayText.ToCharArray();
 				float charSize, startX, startY;
-                float widthA = 12 * textSize, widthB;
-                int col = 0;
+				float widthA = 0, widthB = 0;
+                int col = -2;
 				if (width / characters.Length < height) {
 					charSize = width / characters.Length;
 					startX = screenX - width / 2;
-					startY = screenY + (height - charSize) / 2 - height / 3;
+					startY = screenY + (height - charSize) / 2 - height / 4;
 				} else {
+					int count = 0;
+					foreach (char c in characters) {
+						count += (int)(UIChar.baseFontWidth[c - 32] * textSize * 2);
+					}
 					charSize = height;
-					startY = screenY - height / 3;
-					startX = screenX + (width - characters.Length * charSize) / 2 - width / 2;
+					startY = screenY - height / 4;
+					startX = screenX - count / 2;
+				}
+				if (characters.Length > 0) {
+					widthB = UIChar.baseFontWidth[characters[0] - 32] * textSize * 2;
+					col -= ((int)(widthA / 2 + .5) + (int)(widthB / 2)) + (int)(2 * textSize);
 				}
 				foreach (char c in characters) {
                     widthB = UIChar.baseFontWidth[c - 32] * textSize * 2;
