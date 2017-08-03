@@ -40,9 +40,6 @@ namespace _2DRPG.GUI {
 			displayLabel = label;
 			SetDropdowns(dropdowns);
 			buttonAction = new Action(ToggleDropdowns);
-			SetScissorMask();
-			Screen.ResizeEvent += SetScissorMask;
-			Screen.SelectionEvent += HideDropdowns;
 		}
 		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIText label) : this(x, y, width, height, layer, texName, label, null) { }
 
@@ -99,6 +96,7 @@ namespace _2DRPG.GUI {
 		}
 
 		public override bool CheckClick(float x, float y) {
+			System.Diagnostics.Debug.WriteLine("clack");
 			if (!Visible)
 				return false;
 			if (!hideTop && base.CheckClick(x, y)) {
@@ -137,6 +135,7 @@ namespace _2DRPG.GUI {
 			if (displayLabel != null && !hideTop)
 				displayLabel.Render();
 			if (showDrops) {
+				System.Diagnostics.Debug.WriteLine("Dropping");
 				Gl.PushAttrib(AttribMask.ScissorBit);
 				Gl.Scissor(scissorMask[0], scissorMask[1], scissorMask[2], scissorMask[3]);
 				foreach (UIButton b in drops)
@@ -161,6 +160,12 @@ namespace _2DRPG.GUI {
 				b.Cleanup();
 			Screen.ResizeEvent -= SetScissorMask;
 			Screen.SelectionEvent -= HideDropdowns;
+		}
+
+		public override void Setup() {
+			SetScissorMask();
+			Screen.ResizeEvent += SetScissorMask;
+			Screen.SelectionEvent += HideDropdowns;
 		}
 	}
 }

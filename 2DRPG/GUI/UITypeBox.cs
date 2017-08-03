@@ -37,7 +37,6 @@ namespace _2DRPG.GUI {
 			text = new UITextBox(x, y + height / 1.5f, .5f, (int)width * 2, layer - 1, maxRows, "");
 			this.maxRows = maxRows;
 			buttonAction = new Action(StartTyping);
-			Screen.SelectionEvent += DisableTyping;
 		}
 
 
@@ -116,6 +115,10 @@ namespace _2DRPG.GUI {
 			}
 			text.Cleanup();
 			Screen.SelectionEvent -= DisableTyping;
+		}
+		public override void Setup() {
+			text.Setup();
+			Screen.SelectionEvent += DisableTyping;
 		}
 
 		public void ScrollWheel(int dir) {

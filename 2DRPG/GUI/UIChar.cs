@@ -25,6 +25,7 @@ namespace _2DRPG.GUI {
         public UIChar(float x, float y, float size, int layer, char ch) : base(x, y, size, size, layer, "baseFont") {
 			charSize = size;
 			displayChar = ch;
+			NineSliceRendering = false;
 		}
 
 		public override void Render() {

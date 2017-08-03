@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace _2DRPG.GUI.Windows {
 	class OptionsWindow : IWindow {
 		
-		static UIDropdownButton windowSize = new UIDropdownButton(60, 50, 40, 10, 3, "button", new UIText(60, 50, .5f, 3, "1920 x 1080"), null) { displaySize = 6};
+		static UIDropdownButton windowSize = new UIDropdownButton(60, 50, 40, 10, 3, "button", new UIText(60, 50, .5f, 3, "1920 x 1080") { textColor = System.Drawing.Color.DarkBlue}, null) { displaySize = 6};
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			new UIBase(0, 0, 120, 150, 4, "darkBack"),

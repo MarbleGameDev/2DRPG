@@ -118,6 +118,7 @@ namespace _2DRPG {
 		}
 
 		public void SetLayer(int layer) {
+			this.layer = layer;
 			quadPosition[2] = -(float)layer / 10;
 			quadPosition[5] = -(float)layer / 10;
 			quadPosition[8] = -(float)layer / 10;

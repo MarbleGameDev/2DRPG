@@ -34,8 +34,6 @@ namespace _2DRPG.GUI {
 			this.charWidth = charWidth;
 			this.displaySize = displaySize;
 			SetText(text);
-			SetScissorMask();
-			Screen.ResizeEvent += SetScissorMask;
 		}
 
 		public bool CheckCoords(float x, float y) {
@@ -156,7 +154,10 @@ namespace _2DRPG.GUI {
 
 		public override void Cleanup() {
 			Screen.ResizeEvent -= SetScissorMask;
-			base.Cleanup();
+		}
+		public override void Setup() {
+			SetScissorMask();
+			Screen.ResizeEvent += SetScissorMask;
 		}
 	}
 }

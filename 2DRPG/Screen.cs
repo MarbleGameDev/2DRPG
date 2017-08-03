@@ -51,6 +51,8 @@ namespace _2DRPG {
 			lock(currentWindows)
 				if (windowFiles.ContainsKey(windowName) && !currentWindows.ContainsKey(windowName)) {
 					windowFiles[windowName].LoadTextures();
+					foreach (UIBase b in windowFiles[windowName].GetScreenObjects())
+						b.Setup();
 					currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
 				}
 		}
