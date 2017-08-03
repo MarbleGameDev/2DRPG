@@ -61,14 +61,13 @@ namespace _2DRPG.GUI {
 			if (NineSliceRendering) {
 				float[] tempTex = new float[8];
 				float[] tempQuad = new float[12];
-				quadPosition.CopyTo(tempQuad, 0);
-				texturePosition.CopyTo(tempTex, 0);
+				tempQuad[2] = quadPosition[2];
+				tempQuad[5] = quadPosition[5];
+				tempQuad[8] = quadPosition[8];
+				tempQuad[11] = quadPosition[11];
 				float boarder = NineSliceBoarder / 16f;
 
-				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID(texName));
-				Gl.EnableClientState(EnableCap.VertexArray);
-				Gl.EnableClientState(EnableCap.TextureCoordArray);
 				//Iterate clockwise from bottom left corner as 0
 				for (int i = 0; i < 9; i++) {
 					int row = i % 3;
@@ -97,8 +96,6 @@ namespace _2DRPG.GUI {
 						Gl.DrawArrays(PrimitiveType.Quads, 0, 4);   //Draw the quad
 					}
 				}
-				Gl.BindTexture(TextureTarget.Texture2d, 0);
-
 			} else {
 				base.Render();
 			}

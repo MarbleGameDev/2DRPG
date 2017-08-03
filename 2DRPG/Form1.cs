@@ -38,13 +38,19 @@ namespace _2DRPG {
 			Gl.DepthFunc(DepthFunction.Lequal);		//Only draw something new if its z value is closer to the 'camera'
 			Gl.DepthMask(true);
 			Gl.ClearDepth(10f);
+			Gl.ClearColor(36 / 255f, 71 / 255f, 143 / 255f, 1f);
 			Gl.Enable(EnableCap.AlphaTest);		//Set up Alpha tests for drawing pixels
 			Gl.AlphaFunc(AlphaFunction.Greater, .05f);  //Don't draw transparent pixels on polygons
 			Gl.Enable(EnableCap.ScissorTest);
-			Wgl.SwapIntervalEXT(1);	//Swap Interval (V-Sync Enabled at 1 or -1)
+			Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+			Gl.EnableClientState(EnableCap.VertexArray);
+			Gl.EnableClientState(EnableCap.TextureCoordArray);
 			contextCreated = true;
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
+
+			MaximizeBox = false;
+
 			lock (WorldData.currentRegions) {
 				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
 					foreach (World.Objects.WorldObjectBase o in l)
@@ -54,6 +60,11 @@ namespace _2DRPG {
 			if (SaveData.GameSettings.fullScreen) {
 				FormBorderStyle = FormBorderStyle.None;
 				WindowState = FormWindowState.Maximized;
+			}
+			if (SaveData.GameSettings.VSync) {
+				Wgl.SwapIntervalEXT(-1); //Swap Interval (V-Sync Enabled at 1 or -1)
+			} else {
+				Wgl.SwapIntervalEXT(0);
 			}
 			ResizeWindow(SaveData.GameSettings.windowx, SaveData.GameSettings.windowy);
 			ResizeE(sender, e);
@@ -130,11 +141,8 @@ namespace _2DRPG {
 				ResizeE(sender, e);
 				updateResize = false;
 			}
-			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
-			//Gl.Ortho(-Screen.screenWidth / 2 + OrthoLeft * Screen.screenHeight / 2, Screen.screenWidth / 2 + OrthoRight * Screen.screenHeight / 2, (-1 + OrthoBottom) * Screen.screenHeight / 2, (1 + OrthoTop) * Screen.screenHeight / 2, -0.1, 10.0);
 			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
-			Gl.ClearColor(36 / 255f, 71 / 255f, 143 / 255f, 1f);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 			if (GameState.CurrentState == GameState.GameStates.Paused || GameState.WindowOpen)
@@ -157,7 +165,6 @@ namespace _2DRPG {
 				Gl.Color3(1f, 1f, 1f);
 
 			//Load a separete projection for GUI rendering that doesn't move with the character
-			Gl.MatrixMode(MatrixMode.Projection);
 			Gl.LoadIdentity();
 			Gl.Ortho(-320, 320, -180, 180, -0.1, 10.0);
 
@@ -169,6 +176,7 @@ namespace _2DRPG {
 						u.Render();
 					}
 			}
+			Gl.BindTexture(TextureTarget.Texture2d, 0);
 			Input.UpdateKeys();
 		}
 

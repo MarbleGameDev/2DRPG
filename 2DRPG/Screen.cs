@@ -74,8 +74,9 @@ namespace _2DRPG {
 			queuedWindows.Add(windowName);
 		}
 		public static void RunQueue() {
+			if (queuedWindows.Count == 0)
+				return;
 			foreach (string s in queuedWindows) {
-				System.Diagnostics.Debug.WriteLine(s);
 				CloseWindow(s);
 			}
 			queuedWindows.Clear();

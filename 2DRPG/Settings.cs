@@ -9,7 +9,8 @@ namespace _2DRPG {
 	public class Settings {
 		public bool debugEnabled = true;
 		public bool fullScreen = false;
-		public bool interactionEditor = true;
+		public bool VSync = true;
+		public bool interactionEditor = false;
 		public bool worldBuilder = true;
 		public int windowx = 640, windowy = 360;
 	}

@@ -96,7 +96,6 @@ namespace _2DRPG.GUI {
 		}
 
 		public override bool CheckClick(float x, float y) {
-			System.Diagnostics.Debug.WriteLine("clack");
 			if (!Visible)
 				return false;
 			if (!hideTop && base.CheckClick(x, y)) {
@@ -135,7 +134,6 @@ namespace _2DRPG.GUI {
 			if (displayLabel != null && !hideTop)
 				displayLabel.Render();
 			if (showDrops) {
-				System.Diagnostics.Debug.WriteLine("Dropping");
 				Gl.PushAttrib(AttribMask.ScissorBit);
 				Gl.Scissor(scissorMask[0], scissorMask[1], scissorMask[2], scissorMask[3]);
 				foreach (UIButton b in drops)

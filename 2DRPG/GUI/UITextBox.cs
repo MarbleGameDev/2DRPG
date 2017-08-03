@@ -41,8 +41,8 @@ namespace _2DRPG.GUI {
 				return false;
 			float[] testCoords = new float[12];
 			quadPosition.CopyTo(testCoords, 0);
-			testCoords[1] -= displaySize * linespacing;
-			testCoords[10] -= displaySize * linespacing;
+			testCoords[1] = screenY - height - displaySize * linespacing * textSize;
+			testCoords[10] = testCoords[1];
 			return LogicUtils.Logic.CheckIntersection(testCoords, x, y);
 		}
 
@@ -59,7 +59,6 @@ namespace _2DRPG.GUI {
 			} else if (y < 0) {
 				temp = (scrollMax - scrollAmount >= scrollMod) ? scrollMod : ((scrollMax - scrollAmount) % scrollMod);
 			}
-			System.Diagnostics.Debug.WriteLine(y + ", " + temp);
 			foreach (UIChar b in chars) {
 				b.ShiftScreenPosition(0, temp);
 			}

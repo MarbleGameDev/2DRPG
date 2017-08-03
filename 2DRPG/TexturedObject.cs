@@ -70,19 +70,12 @@ namespace _2DRPG {
 		public virtual void Render() {
 			using (MemoryLock vertexArrayLock = new MemoryLock(quadPosition))
 			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
-				Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				//Sets the texture used
 				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID(texName));
 				Gl.VertexPointer(3, VertexPointerType.Float, 0, vertexArrayLock.Address);	//Use the vertex array for vertex information
-				Gl.EnableClientState(EnableCap.VertexArray);
-
 				Gl.TexCoordPointer(2, TexCoordPointerType.Float, 0, vertexTextureLock.Address);		//Use the texture array for texture coordinates
-				Gl.EnableClientState(EnableCap.TextureCoordArray);
-				
 				Gl.DrawArrays(PrimitiveType.Quads, 0, 4);   //Draw the quad
-				Gl.BindTexture(TextureTarget.Texture2d, 0);
 			}
-			//System.Diagnostics.Debug.WriteLine(Gl.GetError());
 		}
 
 		/// <summary>
