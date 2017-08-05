@@ -73,6 +73,7 @@
     <Compile Include="GUI\Windows\NotificationWindow.cs" />
     <Compile Include="GUI\Windows\OptionsWindow.cs" />
     <Compile Include="Quests\IQuest.cs" />
+    <Compile Include="Quests\ItemPickup.cs" />
     <Compile Include="Quests\QuestData.cs" />
     <Compile Include="GameSave.cs" />
     <Compile Include="GameState.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="GUI\Windows\HUDWindow.cs" />
     <Compile Include="GUI\Windows\IWindow.cs" />
     <Compile Include="GUI\Windows\PauseWindow.cs" />
+    <Compile Include="Quests\TaskBase.cs" />
     <Compile Include="SaveData.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="World\Editable.cs" />

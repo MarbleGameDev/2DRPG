@@ -20,13 +20,13 @@ namespace _2DRPG.GUI.Windows {
 			UpdateObjectInfo();
 		}
 
-		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 2, "button", null, null) { hideTop = true };
+		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 3, "button", null, null) { hideTop = true };
 		static UIDropdownButton newObjects = new UIDropdownButton(0, 100, 100, 20, 2, "button", new UIText(0, 100, .5f, 1, "Select Object Type")) { Visible = false, hideTop = true, showDrops = true, displaySize = 4 };
 		static UIButton applyBut = new UIButton(185, -140, 65, 8, () => { NewObject(); }, 1, "button") { displayLabel = new UIText(188, -140, .5f, 0, "Apply"), Visible = false };
 		static UIText objectName = new UIText(220, 100, .5f, 1, "No Object Selected") { textColor = System.Drawing.Color.Aqua};
 
 		public HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
-			new UIBase(220, 0, 100, 180, 3, "darkBack"),
+			new UIBase(220, 0, 100, 180, 4, "darkBack"),
 			new UIButton(310, 170, 10, 10, () => { Screen.CloseWindow("worldBuilder"); },1, "button"){ displayLabel = new UIText(317, 175, 1f, 0, "X") },
 			new UIButton(185, 140, 65, 8, () => { Screen.CloseWindow("worldBuilder");  checkWorldObjects = true; },1, "button"){ displayLabel = new UIText(188, 142, .5f, 0, "Select Object") },
 			new UIButton(165, -160, 45, 8, () => { SaveData.SaveGame(); }, 1, "button"){ displayLabel = new UIText(168, -160, .5f, 0, "Save Game")},
@@ -49,6 +49,7 @@ namespace _2DRPG.GUI.Windows {
 				foreach (FieldInfo f in props) {
 					UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, 1, "button");
 					tb.text.SetText(f.Name + ":" + f.GetValue(currentObject).ToString());
+					tb.text.SetLayer(1);
 					tb.valueAction = () => {
 						string val = tb.text.GetText();
 						val = val.Substring(val.IndexOf(':')+1);

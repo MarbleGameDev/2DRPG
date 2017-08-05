@@ -152,6 +152,8 @@ namespace _2DRPG {
 					List<string> windows = Screen.currentWindows.Keys.ToList();
 					if (windows.Contains("hud"))
 						windows.Remove("hud");
+					if (windows.Contains("notification"))
+						windows.Remove("notification");
 					foreach (string s in windows) {
 						Screen.CloseWindow(s);
 					}

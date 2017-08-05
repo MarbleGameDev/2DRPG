@@ -19,7 +19,7 @@ namespace _2DRPG.GUI.Windows {
 		private static UIText display = new UIText(272, 166, .5f, 0, "");
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(270, 165, 50, 15, 1, "lightBack"),
+			new UIBase(270, 165, 50, 15, 0, "lightBack"),
 			bl, display
 		};
 

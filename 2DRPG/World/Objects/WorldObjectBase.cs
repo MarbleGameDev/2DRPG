@@ -86,6 +86,7 @@ namespace _2DRPG.World.Objects {
 
 		public virtual void ModificationAction() {
 			UpdateWorldPosition();
+			SetLayer(layer);
 		}
 	}
 }

@@ -38,23 +38,8 @@ namespace _2DRPG.World.Objects {
 				Screen.CloseWindow("interaction");
 				return;
 			}
-			/*
-			InterItems = new List<InteractionBase>(){
-			new InteractionDialogue("Plenty 'O Peanuts, Eh?"),
-			new InteractionDialogue("So, what can I help you with?"),
-			new InteractionChoice(new Dictionary<string, List<InteractionBase>>{
-				{ "choice A", new List<InteractionBase> {
-					new InteractionDialogue("Blah Blah Blah"),
-					new InteractionDialogue("Ho Hum, fiddly dee")} }, 
-				{ "choice B", new List<InteractionBase>{
-					new InteractionDialogue("Interesting, but I'm afraid I can't help you"),
-					new InteractionDialogue("What you want is a fresh start on life")
-				} }
-			})
-			};
-			*/
 			GUI.Windows.InteractionWindow.SetInteractionElements(InterItems);
-			if (SaveData.GameSettings.interactionEditor) {
+			if (!Form1.devWin.IsDisposed) {
 				DevWindow.Interaction.interactedObject = this;
 				DevWindow.Interaction.SetupTree();
 			}

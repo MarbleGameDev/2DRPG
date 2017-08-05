@@ -10,45 +10,44 @@ using System.Drawing.Imaging;
 namespace _2DRPG {
 	public class TexturedObject {
 
-        public float screenX;
-        public float screenY;
+		public float screenX;
+		public float screenY;
 		public float width = 16;
-        public float height = 16;
-		protected int layer;
+		public float height = 16;
 		[World.Editable]
-        public string texName;
+		public int layer;
+		[World.Editable]
+		public string texName;
 
-        public TexturedObject(float x, float y, int layer, string textureName)
-        {
+		public TexturedObject(float x, float y, int layer, string textureName) {
 
-            screenX = x;
-            screenY = y;
-            this.layer = layer;
-            texName = textureName;
+			screenX = x;
+			screenY = y;
+			this.layer = layer;
+			texName = textureName;
 
-            SetScreenPosition(x,y,layer);
+			SetScreenPosition(x, y, layer);
 
-        }
+		}
 
-        public TexturedObject(float x, float y, int layer, float height, float width, string textureName)
-        {
+		public TexturedObject(float x, float y, int layer, float height, float width, string textureName) {
 
-            screenX = x;
-            screenY = y;
-            this.layer = layer;
-            texName = textureName;
-            this.height = height;
-            this.width = width;
+			screenX = x;
+			screenY = y;
+			this.layer = layer;
+			texName = textureName;
+			this.height = height;
+			this.width = width;
 
-            SetScreenPosition(x, y, layer);
+			SetScreenPosition(x, y, layer);
 
-        }
+		}
 
-        public TexturedObject() : this(0, 0, 5, "default") { }
+		public TexturedObject() : this(0, 0, 5, "default") { }
 
 		public TexturedObject(string textureName) : this(0, 0, 5, textureName) { }
 
-        public void ContextCreated() { }
+		public void ContextCreated() { }
 
 		public void ContextDestroyed() { }
 
@@ -57,19 +56,29 @@ namespace _2DRPG {
 		public float[] quadPosition = new float[] {
 			0.25f, 0.25f, 0f,
 			0.25f, 0.75f, 0f,
-			0.75f, 0.75f, 0f, 
+			0.75f, 0.75f, 0f,
 			.75f, 0.25f, 0f
 		};
-		protected float[] texturePosition = new float[] {
+
+		private static float[] texturePosition = new float[] {
 			0.0f, 0.0f,
 			0.0f, 1.0f,
 			1.0f, 1.0f,
 			1.0f, 0.0f
-		};  
+		};
+
+		protected virtual float[] TexturePosition {
+			get {
+				return texturePosition;
+			}
+			set {
+				texturePosition = value;
+			}
+		}
 
 		public virtual void Render() {
 			using (MemoryLock vertexArrayLock = new MemoryLock(quadPosition))
-			using (MemoryLock vertexTextureLock = new MemoryLock(texturePosition)) {
+			using (MemoryLock vertexTextureLock = new MemoryLock(TexturePosition)) {
 				//Sets the texture used
 				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID(texName));
 				Gl.VertexPointer(3, VertexPointerType.Float, 0, vertexArrayLock.Address);	//Use the vertex array for vertex information

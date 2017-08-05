@@ -149,8 +149,12 @@ namespace _2DRPG.GUI {
 			Screen.SelectionEvent += HideDropdowns;
 			showDrops = !showDrops;
 		}
+		/// <summary>
+		/// If the top is hidden, it won't ever be hidden by selections
+		/// </summary>
 		public void HideDropdowns() {
-			showDrops = false;
+			if (!hideTop)
+				showDrops = false;
 		}
 
 		public override void Cleanup() {

@@ -22,7 +22,23 @@ namespace _2DRPG.GUI {
                                       4, 4, 3, 4, 3, 5, 5, 7, 4, 4,
                                       4, 3, 1, 3, 6};
 
-        public UIChar(float x, float y, float size, int layer, char cha) : base(x, y, size, size, layer, "baseFont") {
+		private float[] texturePosition = new float[] {
+			0.0f, 0.0f,
+			0.0f, 1.0f,
+			1.0f, 1.0f,
+			1.0f, 0.0f
+		};
+
+		protected override float[] TexturePosition {
+			get {
+				return texturePosition;
+			}
+			set {
+				texturePosition = value;
+			}
+		}
+
+		public UIChar(float x, float y, float size, int layer, char cha) : base(x, y, size, size, layer, "baseFont") {
 			charSize = size;
 			displayChar = cha;
 			NineSliceRendering = false;
@@ -33,7 +49,7 @@ namespace _2DRPG.GUI {
 			float horizontal = 1 / 10f, vertical = 1 / 12f;
 
 			if (ch > 95 || ch < 0) {
-				texturePosition = new float[] {
+				TexturePosition = new float[] {
 				4/10f, 2/12f,
 				4/10f, 3/12f,
 				5/10f, 3/12f,
@@ -42,7 +58,7 @@ namespace _2DRPG.GUI {
 				base.Render();
 			}
 
-			texturePosition = new float[] {
+			TexturePosition = new float[] {
 				col * horizontal, vertical*(row - 1),
 				col * horizontal, vertical*(row),
 				(col + 1) * horizontal, vertical*(row),

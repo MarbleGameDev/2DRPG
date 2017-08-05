@@ -24,6 +24,7 @@ namespace _2DRPG {
 
 		static SaveData() {
 			Directory.CreateDirectory(saveLocation);
+			Directory.CreateDirectory(saveLocation + "Quests/");
 		}
 		/// <summary>
 		/// Loads the game settings, but not world data
@@ -32,6 +33,8 @@ namespace _2DRPG {
 			GameSettings = DeSerializeObject<Settings>("Settings");
 			if (GameSettings == null)
 				GameSettings = new Settings();
+
+			LoadTasks();
 		}
 		/// <summary>
 		/// Saves all game data, including settings and world data
@@ -50,8 +53,27 @@ namespace _2DRPG {
 				}
 			}
 			GUI.Windows.NotificationWindow.NewNotification("Game Saved", 190);
-			System.Diagnostics.Debug.WriteLine("Game Saved");
+
+
+			//Test Code
+
+			Quests.TaskBase tb = new Quests.TaskBase() {
+				taskName = "Tample",
+				taskItems = new List<Quests.ItemPickup>() {
+					new Quests.ItemPickup{ itemName = "beer", itemQuantity = 3},
+					new Quests.ItemPickup{ itemName = "wine", itemQuantity = 2}
+				}
+			};
+			SerializeObject(tb, "Quests/" + tb.taskName);
 		}
+
+		public static void LoadTasks() {
+			foreach (string path in Directory.EnumerateFiles(saveLocation + "Quests/")) {
+				Quests.TaskBase q = DeSerializeObject<Quests.TaskBase>(path.TrimEnd(".rz".ToCharArray()).Replace(saveLocation, ""));
+				Quests.QuestData.QuestDatabase.Add(q.taskName, q);
+			}
+		}
+
 
 		public static void LoadRegion(string s) {
 			lock (RegionData) {
