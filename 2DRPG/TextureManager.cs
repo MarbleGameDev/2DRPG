@@ -22,8 +22,9 @@ namespace _2DRPG {
 			{"baseFont", "Sprites/SpriteSheets/BaseFont.png" },
 			{"button", "Sprites/Button.png" },
 			{"josh", "Sprites/josh.png" },
-			{ "lightBack", "Sprites/LightBackground.png"},
-			{ "darkBack", "Sprites/DarkBackground.png"}
+			{"lightBack", "Sprites/LightBackground.png"},
+			{"darkBack", "Sprites/DarkBackground.png"},
+			{"textBox", "Sprites/TextBox.png"}
 		};
 
 		private static Dictionary<string, int> textureUses = new Dictionary<string, int>();

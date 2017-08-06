@@ -10,8 +10,8 @@ namespace _2DRPG.GUI {
 		protected int defaultLayer = 2;
 		public bool Visible = true;
 		public bool NineSliceRendering = true;
-		public int NineSliceBoarder = 2;
-		public int TextureSize = 16;
+		public int NineSliceBoarder = 5;
+		public int TextureSize = 15;
 
 		public UIBase() : base() {
 			SetScreenPosition(screenX, screenY, defaultLayer);
@@ -65,7 +65,8 @@ namespace _2DRPG.GUI {
 				tempQuad[5] = quadPosition[5];
 				tempQuad[8] = quadPosition[8];
 				tempQuad[11] = quadPosition[11];
-				float boarder = NineSliceBoarder / 16f;
+
+				float boarder = NineSliceBoarder / (float)TextureSize;
 
 				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID(texName));
 				//Iterate clockwise from bottom left corner as 0

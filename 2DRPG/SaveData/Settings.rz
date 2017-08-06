@@ -1,6 +1,6 @@
 {
   "debugEnabled": true,
-  "fullScreen": false,
+  "fullScreen": true,
   "VSync": true,
   "interactionEditor": false,
   "worldBuilder": true,

@@ -9,7 +9,7 @@ namespace _2DRPG.GUI.Windows {
 	class ConsoleWindow : IWindow {
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 145, 205, 35, 0, "lightBack"),
+			new UIBase(0, 145, 205, 35, 0, "textBox"),
 			input, output,
 
 		};
@@ -37,7 +37,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 
-		string[] textures = new string[] { "lightBack" };
+		string[] textures = new string[] { "textBox" };
 
 		public void LoadTextures() {
 			TextureManager.RegisterTextures(textures);

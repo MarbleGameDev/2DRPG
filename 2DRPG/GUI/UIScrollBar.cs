@@ -13,8 +13,8 @@ namespace _2DRPG.GUI {
 		private UIDraggable scrollKnob;
 		public IScrollable scrollTarget;
 
-		public UIScrollBar(float x, float y, float width, float height, int layer) : base(x, y, width, height, layer, "darkBack") {
-			scrollKnob = new UIDraggable(x, y, width + 2, width + 2, 1, "lightBack");
+		public UIScrollBar(float x, float y, float width, float height, int layer) : base(x, y, width, height, layer, "textBox") {
+			scrollKnob = new UIDraggable(x, y, width + 2, width + 2, 1, "textBox");
 			scrollKnob.SetButtonAction(Drag);
 			buttonAction = new Action(SetScroll);
 			maxY = y + height;
