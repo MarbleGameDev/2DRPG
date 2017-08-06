@@ -103,8 +103,12 @@
                     "extraData": [
                       false,
                       [
-                        "SampleQuest",
+                        "Tample",
                         ""
+                      ],
+                      [
+                        1,
+                        0
                       ]
                     ]
                   }

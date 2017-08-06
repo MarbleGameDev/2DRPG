@@ -14,14 +14,16 @@ namespace _2DRPG.Quests {
 		public List<ItemPickup> taskItems = new List<ItemPickup>();
 
 		/// <summary>
-		/// It's assumed that tasks will only involve 1 person for checking dialogue, therefore all interactionID and pathNum return task logic
+		/// Returns 0 for fresh quest, -1 for completed, otherwise the number of ItemPickups completed
 		/// </summary>
-		public bool CheckPaths(string interactionID, int pathNum) {
-			bool check = true;
+		public int CheckStatus() {
+			int i = 0;
 			foreach (ItemPickup p in taskItems)
-				if (!p.complete)
-					check = false;
-			return check;
+				if (p.complete)
+					i++;
+			if (completed)
+				i = -1;
+			return i;
 		}
 
 		public void UpdateItem(string itemName, int quantity) {

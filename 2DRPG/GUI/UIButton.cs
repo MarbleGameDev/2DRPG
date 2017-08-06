@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace _2DRPG.GUI {
 	class UIButton : UIBase {
 
-		protected Action buttonAction;
+		public Action buttonAction;
 		/// <summary>
 		/// Text displayed on the button
 		/// </summary>

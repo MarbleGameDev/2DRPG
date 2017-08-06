@@ -251,7 +251,7 @@ namespace _2DRPG {
 					if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionQuests)) {
 						InteractionQuests que = (InteractionQuests)nodeBase[displayTree.SelectedNode.Parent];
 						tmpInt = que.paths.IndexOf((InteractionPath)currentObject);
-						pars = new TextBox[2];
+						pars = new TextBox[3];
 						TextBox val = new TextBox() {
 							Location = new Point(0, 35),
 							Size = new Size(200, 20),
@@ -264,10 +264,18 @@ namespace _2DRPG {
 							Size = new Size(200, 20),
 							Text = (que.questTags.Count > tmpInt && tmpInt != -1) ? que.questTags[tmpInt] : ""
 						};
-						group.Controls.Add(new Label() { Text = "Quest Flag: ", Location = new Point(0, 55), Size = new Size(200, 20) });
+						group.Controls.Add(new Label() { Text = "Quest Name: ", Location = new Point(0, 55), Size = new Size(200, 20) });
 						group.Controls.Add(vall);
+						TextBox valll = new TextBox() {
+							Location = new Point(0, 115),
+							Size = new Size(200, 20),
+							Text = (que.questInts.Count > tmpInt && tmpInt != -1) ? que.questInts[tmpInt].ToString() : "0"
+						};
+						group.Controls.Add(new Label() { Text = "Checked Int: ", Location = new Point(0, 95), Size = new Size(200, 20) });
+						group.Controls.Add(valll);
 						pars[0] = val;
 						pars[1] = vall;
+						pars[2] = valll;
 					} else {
 						pars = new TextBox[1];
 						TextBox val = new TextBox() {
@@ -296,8 +304,16 @@ namespace _2DRPG {
 					}
 					if (nodeBase[displayTree.SelectedNode.Parent].GetType() == typeof(InteractionQuests)) {
 						InteractionQuests que = (InteractionQuests)nodeBase[displayTree.SelectedNode.Parent];
-						if (que.questTags.Count > tmpInt && tmpInt != -1)
-							que.questTags[tmpInt] = pars[1].Text;
+						if (tmpInt != -1) {
+							if (que.questTags.Count > tmpInt)
+								que.questTags[tmpInt] = pars[1].Text;
+							if (que.questInts.Count > tmpInt) {
+								if (!int.TryParse(pars[2].Text, out int vbs))
+									vbs = 0;
+								que.questInts[tmpInt] = vbs;
+							}
+						}
+						
 					}
 				}
 				toolButton.DropDown.Items[0].Visible = false;

@@ -25,7 +25,7 @@ namespace _2DRPG.GUI.Interaction {
 			foreach (InteractionPath b in choices) {
 				paths.Add(b);
 				pathNames.Add(b.pathName, counter);
-				items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "button") { displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, b.pathName) }, counter++);
+				
 			}
 		}
 
@@ -60,11 +60,13 @@ namespace _2DRPG.GUI.Interaction {
 				b.Render();
 		}
 		public override void Setup() {
-			foreach (UIButton b in items.Keys) {
-				b.SetButtonAction(() => {
-					Windows.InteractionWindow.InsertNodes(paths[items[b]].items);
+			int counter = 0;
+			for (int i = 0; i < paths.Count; i++) {
+				InteractionPath p = paths[i];
+				items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "button") { displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, p.pathName), buttonAction = () => {
+					Windows.InteractionWindow.InsertNodes(p.items);
 					nextNode.Invoke();
-				});
+				} }, counter++);
 			}
 		}
 

@@ -42,11 +42,11 @@
 			this.choiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dialogueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.questToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.pathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.save = new System.Windows.Forms.Button();
 			this.SaveButton = new System.Windows.Forms.Button();
 			this.TextBox = new System.Windows.Forms.RichTextBox();
 			this.treeView = new System.Windows.Forms.TreeView();
-			this.pathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.Overview.SuspendLayout();
 			this.InteractionTree.SuspendLayout();
@@ -190,7 +190,7 @@
 			// 
 			this.groupBox.Location = new System.Drawing.Point(7, 151);
 			this.groupBox.Name = "groupBox";
-			this.groupBox.Size = new System.Drawing.Size(200, 100);
+			this.groupBox.Size = new System.Drawing.Size(200, 279);
 			this.groupBox.TabIndex = 5;
 			this.groupBox.TabStop = false;
 			this.groupBox.Text = "Item Properties";
@@ -204,10 +204,10 @@
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1});
-			this.toolStrip1.Location = new System.Drawing.Point(301, 508);
+			this.toolStrip1.Location = new System.Drawing.Point(332, 508);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.toolStrip1.Size = new System.Drawing.Size(103, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(72, 25);
 			this.toolStrip1.TabIndex = 4;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -229,23 +229,30 @@
 			// choiceToolStripMenuItem
 			// 
 			this.choiceToolStripMenuItem.Name = "choiceToolStripMenuItem";
-			this.choiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.choiceToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
 			this.choiceToolStripMenuItem.Text = "Choice";
 			this.choiceToolStripMenuItem.Click += new System.EventHandler(this.ChoiceToolStripMenuItem_Click);
 			// 
 			// dialogueToolStripMenuItem
 			// 
 			this.dialogueToolStripMenuItem.Name = "dialogueToolStripMenuItem";
-			this.dialogueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.dialogueToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
 			this.dialogueToolStripMenuItem.Text = "Dialogue";
 			this.dialogueToolStripMenuItem.Click += new System.EventHandler(this.DialogueToolStripMenuItem_Click);
 			// 
 			// questToolStripMenuItem
 			// 
 			this.questToolStripMenuItem.Name = "questToolStripMenuItem";
-			this.questToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.questToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
 			this.questToolStripMenuItem.Text = "Quest";
 			this.questToolStripMenuItem.Click += new System.EventHandler(this.QuestToolStripMenuItem_Click);
+			// 
+			// pathToolStripMenuItem
+			// 
+			this.pathToolStripMenuItem.Name = "pathToolStripMenuItem";
+			this.pathToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+			this.pathToolStripMenuItem.Text = "Path";
+			this.pathToolStripMenuItem.Click += new System.EventHandler(this.PathToolStripMenuItem_Click);
 			// 
 			// save
 			// 
@@ -285,13 +292,6 @@
 			this.treeView.Name = "treeView";
 			this.treeView.Size = new System.Drawing.Size(337, 535);
 			this.treeView.TabIndex = 0;
-			// 
-			// pathToolStripMenuItem
-			// 
-			this.pathToolStripMenuItem.Name = "pathToolStripMenuItem";
-			this.pathToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.pathToolStripMenuItem.Text = "Path";
-			this.pathToolStripMenuItem.Click += new System.EventHandler(this.PathToolStripMenuItem_Click);
 			// 
 			// DevWindow
 			// 
