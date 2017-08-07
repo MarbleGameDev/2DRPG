@@ -22,8 +22,8 @@ namespace _2DRPG.GUI.Windows {
 
 		static HUDWindow() {
 			butt.SetDropdowns(new UIButton[]{
-				new UIButton(() => { butt.displayLabel.SetText("Button 1"); butt.ToggleDropdowns(); }, "Button 1"),
-				new UIButton(() => { butt.displayLabel.SetText("Button 2"); butt.ToggleDropdowns(); }, "Button 2")
+				new UIButton(() => { butt.displayLabel.SetText("Button 1"); butt.ToggleDropdowns(); }, "Emoji crying fa", "textBox"),
+				new UIButton(() => { butt.displayLabel.SetText("Button 2"); butt.ToggleDropdowns(); }, "Click me", "textBox")
 			});
 		}
 

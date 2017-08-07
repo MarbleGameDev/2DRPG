@@ -21,7 +21,6 @@ namespace _2DRPG {
             {"character", "Sprites/SpriteSheets/MainCharacter.png" },
 			{"baseFont", "Sprites/SpriteSheets/BaseFont.png" },
 			{"button", "Sprites/Button.png" },
-			{"josh", "Sprites/josh.png" },
 			{"lightBack", "Sprites/LightBackground.png"},
 			{"darkBack", "Sprites/DarkBackground.png"},
 			{"textBox", "Sprites/TextBox.png"}

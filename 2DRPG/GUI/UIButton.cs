@@ -40,7 +40,7 @@ namespace _2DRPG.GUI {
 			buttonAction = click;
 		}
 		public UIButton(float x, float y, float width, float height, int layer, string textureName) : base(x, y, width, height, layer, textureName) { }
-		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 2, "button") {
+		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 2, "textBox") {
 			SetLayer(defaultLayer);
 			buttonAction = click;
 		}

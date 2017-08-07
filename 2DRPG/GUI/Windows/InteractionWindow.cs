@@ -8,8 +8,8 @@ using _2DRPG.GUI.Interaction;
 namespace _2DRPG.GUI.Windows {
 	class InteractionWindow : IWindow {
 
-		static UIButton advance = new UIButton(0, -80, 20, 10, 2, "button") { displayLabel = new UIText(2, -80, .5f, 1, "Next")};
-		static UIButton regress = new UIButton(-50, -80, 20, 10, 2, "button") { displayLabel = new UIText(-48, -80, .5f, 1, "Back") };
+		static UIButton advance = new UIButton(0, -80, 20, 10, 2, "textBox") { displayLabel = new UIText(2, -78, .5f, 1, "Next")};
+		static UIButton regress = new UIButton(-50, -80, 20, 10, 2, "textBox") { displayLabel = new UIText(-48, -78, .5f, 1, "Back") };
 
 		static UIBlob blob = new UIBlob(() => { }) {
 			RenderAction = () => {
@@ -18,7 +18,7 @@ namespace _2DRPG.GUI.Windows {
 		};
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 0, 200, 100, 3, "darkBack"),
+			new UIBase(0, 0, 200, 100, 3, "textBox"),
 			new UIButton(190, 90, 10, 10, () => { Screen.CloseWindow("interaction"); },1, "button"){ displayLabel = new UIText(197, 93, 1f, 0, "X") },
 			advance, regress, blob	
 		};
@@ -35,6 +35,10 @@ namespace _2DRPG.GUI.Windows {
 				currentInteraction = interactionElements[elementNum];
 				currentInteraction.nextNode = NextNode;
 				currentInteraction.Setup();
+				if (currentInteraction is InteractionChoice)
+					advance.Visible = false;
+				else
+					advance.Visible = true;
 			} else {
 				Screen.CloseWindow("interaction");
 			}
@@ -85,7 +89,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		private string[] textures = new string[] {
-			"darkBack", "button"
+			"darkBack", "button", "textBox"
 		};
 
 		public void LoadTextures() {

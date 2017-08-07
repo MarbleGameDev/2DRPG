@@ -60,10 +60,11 @@ namespace _2DRPG.GUI.Interaction {
 				b.Render();
 		}
 		public override void Setup() {
+			items.Clear();
 			int counter = 0;
 			for (int i = 0; i < paths.Count; i++) {
 				InteractionPath p = paths[i];
-				items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "button") { displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, p.pathName), buttonAction = () => {
+				items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "textBox") { displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, p.pathName), buttonAction = () => {
 					Windows.InteractionWindow.InsertNodes(p.items);
 					nextNode.Invoke();
 				} }, counter++);

@@ -27,6 +27,7 @@ namespace _2DRPG.GUI.Interaction {
 		}
 
 		public override void Setup() {
+			items.Clear();
 			int counter = 0;
 			for (int i = 0; i < paths.Count; i++) {
 				InteractionPath p = paths[i];

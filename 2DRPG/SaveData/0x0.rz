@@ -38,7 +38,7 @@
         [
           {
             "objectType": "Dialogue",
-            "text": "I Uhhhh",
+            "text": "What is up fam. Have anything for sell?",
             "subObjects": null,
             "extraData": null
           },
@@ -48,11 +48,11 @@
             "subObjects": [
               {
                 "objectType": "Path",
-                "text": "Noot",
+                "text": "Yes",
                 "subObjects": [
                   {
                     "objectType": "Dialogue",
-                    "text": "Uh Huhhhhhh.",
+                    "text": "K just place it in the box over there.",
                     "subObjects": null,
                     "extraData": null
                   }
@@ -61,11 +61,11 @@
               },
               {
                 "objectType": "Path",
-                "text": "Path2",
+                "text": "Indeed",
                 "subObjects": [
                   {
                     "objectType": "Dialogue",
-                    "text": "Welcome fan.",
+                    "text": "What kind of high rollin city folk do you think we are using that uppity language. Get the hell out of my pink and black face.",
                     "subObjects": null,
                     "extraData": null
                   },

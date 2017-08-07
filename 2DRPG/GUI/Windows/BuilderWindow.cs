@@ -157,7 +157,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		string[] textures = new string[] {
-			"button", "lightBack", "darkBack"
+			"button", "lightBack", "darkBack", "textBox"
 		};
 
 		public void LoadTextures() {
