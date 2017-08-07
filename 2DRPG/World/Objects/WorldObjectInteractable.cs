@@ -9,8 +9,6 @@ using Newtonsoft.Json.Linq;
 namespace _2DRPG.World.Objects {
 	public class WorldObjectInteractable : WorldObjectBase, IInteractable {
 
-		public Action interAction;
-
 		public string InteractionTag = "";
 
 		public List<InteractionBase> InterItems = new List<InteractionBase>();
@@ -23,10 +21,9 @@ namespace _2DRPG.World.Objects {
 		/// <param name="layer">Render Layer</param>
 		/// <param name="textureName">Name of the texture</param>
 		public WorldObjectInteractable(float x, float y, int layer, string textureName = "default", float width = 16, float height = 16) : base(x, y, layer, textureName, width, height) {
-			interAction = OpenDialogue;
+
 		}
 		public WorldObjectInteractable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
-			interAction = OpenDialogue;
 			InteractionTag = (string)store.extraData[0];
 			List<GameSave.InteractionObjectStorage> st = ((JArray)store.extraData[1]).ToObject<List<GameSave.InteractionObjectStorage>>();
 			foreach (GameSave.InteractionObjectStorage s in st)
@@ -34,10 +31,6 @@ namespace _2DRPG.World.Objects {
 		}
 
 		void OpenDialogue() {
-			if (Screen.currentWindows.ContainsKey("interaction")) {
-				Screen.CloseWindow("interaction");
-				return;
-			}
 			GUI.Windows.InteractionWindow.SetInteractionElements(InterItems);
 			if (!Form1.devWin.IsDisposed) {
 				DevWindow.Interaction.interactedObject = this;
@@ -47,8 +40,7 @@ namespace _2DRPG.World.Objects {
 		}
 
 		public void Interact() {
-			if (interAction != null)
-				interAction.Invoke();
+			OpenDialogue();
 		}
 
 		public override GameSave.WorldObjectStorage StoreObject() {

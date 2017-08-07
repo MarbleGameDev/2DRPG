@@ -8,8 +8,7 @@ using _2DRPG.GUI.Interaction;
 namespace _2DRPG.GUI.Windows {
 	class InteractionWindow : IWindow {
 
-		static UIButton advance = new UIButton(0, -80, 20, 10, 2, "textBox") { displayLabel = new UIText(2, -78, .5f, 1, "Next")};
-		static UIButton regress = new UIButton(-50, -80, 20, 10, 2, "textBox") { displayLabel = new UIText(-48, -78, .5f, 1, "Back") };
+		public static bool holdInput = false;
 
 		static UIBlob blob = new UIBlob(() => { }) {
 			RenderAction = () => {
@@ -18,9 +17,9 @@ namespace _2DRPG.GUI.Windows {
 		};
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 0, 200, 100, 3, "textBox"),
-			new UIButton(190, 90, 10, 10, () => { Screen.CloseWindow("interaction"); },1, "button"){ displayLabel = new UIText(197, 93, 1f, 0, "X") },
-			advance, regress, blob	
+			new UIBase(0, -120, 150, 40, 3, "textBox"),
+			//new UIButton(188, 88, 12, 12, () => { Screen.CloseWindow("interaction"); },1, "textBox"){ displayLabel = new UIText(195, 92, 1f, 0, "X") },
+			blob	
 		};
 
 		static List<InteractionBase> interactionElements = new List<InteractionBase>();
@@ -35,10 +34,6 @@ namespace _2DRPG.GUI.Windows {
 				currentInteraction = interactionElements[elementNum];
 				currentInteraction.nextNode = NextNode;
 				currentInteraction.Setup();
-				if (currentInteraction is InteractionChoice)
-					advance.Visible = false;
-				else
-					advance.Visible = true;
 			} else {
 				Screen.CloseWindow("interaction");
 			}
@@ -49,6 +44,7 @@ namespace _2DRPG.GUI.Windows {
 				currentInteraction = interactionElements[elementNum];
 				currentInteraction.nextNode = NextNode;
 				currentInteraction.Setup();
+
 			} else {
 				Screen.CloseWindow("interaction");
 				elementNum = 0;
@@ -71,16 +67,18 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		public HashSet<UIBase> LoadObjects() {
-			blob.ClickAction = (float x, float y) => {
+			blob.ClickAction = (x, y) => {
 				if (currentInteraction is InteractionChoice c)
 					return c.CheckClick(x, y);
-				else return false;
+				else {
+					NextNode();
+					return true;
+				}
 			};
 			elementNum = 0;
 			foreach (InteractionBase b in interactionElements)
 				b.nextNode = NextNode;
-			advance.SetButtonAction(NextNode);
-			regress.SetButtonAction(PreviousNode);
+			currentInteraction = interactionElements[elementNum];
 			return UIObjects;
 		}
 
@@ -96,12 +94,27 @@ namespace _2DRPG.GUI.Windows {
 			Screen.CloseWindow("hud");
 			Screen.WindowOpen = true;
 			TextureManager.RegisterTextures(textures);
+			Input.InputCall += InputCall;
+		}
+
+		private void InputCall(Input.KeyInputs[] k) {
+			if (k.Contains(Input.KeyInputs.interact)) {
+				if (holdInput) {
+					holdInput = false;
+					return;
+				}
+				if (!(currentInteraction is InteractionChoice)) {
+					NextNode();
+				}
+			}
 		}
 
 		public void UnloadTextures() {
 			Screen.OpenWindow("hud");
 			Screen.WindowOpen = false;
 			TextureManager.UnRegisterTextures(textures);
+			Input.InputCall -= InputCall;
 		}
+
 	}
 }

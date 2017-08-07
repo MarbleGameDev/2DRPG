@@ -36,13 +36,13 @@ namespace _2DRPG.GUI.Interaction {
 					if (questInts[i] != QuestData.QuestDatabase[questTags[i]].CheckStatus())
 						check = false;
 				if (check)
-					items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "button") {
-						displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, p.pathName),
+					items.Add(new UIButton(0, -100 - counter * 21, 30, 10, 2, "textBox") {
+						displayLabel = new UIText(0, -98 - counter++ * 21, .5f, 1, p.pathName),
 						buttonAction = () => {
 							Windows.InteractionWindow.InsertNodes(p.items);
 							nextNode.Invoke();
 						}
-					}, counter++);
+					});
 			}
 			if (immediateMode) {
 				Windows.InteractionWindow.InsertNodes(paths[0].items);

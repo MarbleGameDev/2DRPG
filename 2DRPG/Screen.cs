@@ -46,7 +46,10 @@ namespace _2DRPG {
 			windowFiles.Add("notification", new NotificationWindow());
 			windowFiles.Add("options", new OptionsWindow());
 		}
-
+		/// <summary>
+		/// Opens a window by name if it isn't already open
+		/// </summary>
+		/// <param name="windowName"></param>
 		public static void OpenWindow(string windowName) {
 			lock(currentWindows)
 				if (windowFiles.ContainsKey(windowName) && !currentWindows.ContainsKey(windowName)) {
@@ -56,7 +59,10 @@ namespace _2DRPG {
 					currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
 				}
 		}
-
+		/// <summary>
+		/// Closes a window by name if it's currently open
+		/// </summary>
+		/// <param name="windowName"></param>
 		public static void CloseWindow(string windowName) {
 			lock (currentWindows) {
 				if (windowFiles.ContainsKey(windowName) && currentWindows.ContainsKey(windowName)) {

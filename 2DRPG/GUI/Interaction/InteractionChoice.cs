@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace _2DRPG.GUI.Interaction {
 	class InteractionChoice : InteractionBase {
 
-		protected Dictionary<UIButton, int> items = new Dictionary<UIButton, int>();
+		protected List<UIButton> items = new List<UIButton>();
 		protected Dictionary<string, int> pathNames = new Dictionary<string, int>();
 		public List<InteractionPath> paths = new List<InteractionPath>();
 		/*
@@ -49,14 +49,14 @@ namespace _2DRPG.GUI.Interaction {
 		}
 
 		public bool CheckClick(float x, float y) {
-			foreach (UIButton b in items.Keys)
+			foreach (UIButton b in items)
 				if (b.CheckClick(x, y))
 					return true;
 			return false;
 		}
 
 		public override void Render() {
-			foreach (UIButton b in items.Keys)
+			foreach (UIButton b in items)
 				b.Render();
 		}
 		public override void Setup() {
@@ -64,10 +64,13 @@ namespace _2DRPG.GUI.Interaction {
 			int counter = 0;
 			for (int i = 0; i < paths.Count; i++) {
 				InteractionPath p = paths[i];
-				items.Add(new UIButton(0, 50 - counter * 20, 30, 10, 2, "textBox") { displayLabel = new UIText(0, 50 - counter * 20, .5f, 1, p.pathName), buttonAction = () => {
-					Windows.InteractionWindow.InsertNodes(p.items);
-					nextNode.Invoke();
-				} }, counter++);
+				items.Add(new UIButton(0, -100 - counter * 21, 30, 10, 2, "textBox") {
+					displayLabel = new UIText(0, -98 - counter++ * 21, .5f, 1, p.pathName),
+					buttonAction = () => {
+						Windows.InteractionWindow.InsertNodes(p.items);
+						nextNode.Invoke();
+					}
+				});
 			}
 		}
 

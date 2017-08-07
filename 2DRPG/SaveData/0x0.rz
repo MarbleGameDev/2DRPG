@@ -98,12 +98,26 @@
                           }
                         ],
                         "extraData": null
+                      },
+                      {
+                        "objectType": "Path",
+                        "text": "Meh",
+                        "subObjects": [
+                          {
+                            "objectType": "Dialogue",
+                            "text": "What did you expect?",
+                            "subObjects": null,
+                            "extraData": null
+                          }
+                        ],
+                        "extraData": null
                       }
                     ],
                     "extraData": [
                       false,
                       [
                         "Tample",
+                        "",
                         ""
                       ],
                       [

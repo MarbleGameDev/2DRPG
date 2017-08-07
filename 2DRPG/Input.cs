@@ -8,7 +8,13 @@ using _2DRPG.GUI;
 
 namespace _2DRPG {
 	public static class Input {
+		/// <summary>
+		/// Event call for KeyCode enums
+		/// </summary>
 		public static event inputMethod InputCall;
+		/// <summary>
+		/// Event call for direct char input
+		/// </summary>
 		public static event keyMethod DirectCall;
 		public delegate void inputMethod(KeyInputs[] k);
 		public delegate void keyMethod(char k);
@@ -48,8 +54,8 @@ namespace _2DRPG {
 			} else {	//If it's a one press key
 				if (ignoreKeys.Contains(k))
 					return;
-				InputCall.Invoke(new KeyInputs[] { k });
 				ManualKeys(new KeyInputs[] { k });
+				InputCall.Invoke(new KeyInputs[] { k });
 				ignoreKeys.Add(k);
 
 			}
@@ -172,8 +178,10 @@ namespace _2DRPG {
 				}
 			}
 			if (keys.Contains(KeyInputs.interact)) {
-				if (LogicUtils.Logic.interactableObject != null)
+				if (LogicUtils.Logic.interactableObject != null && !Screen.WindowOpen) {
+					GUI.Windows.InteractionWindow.holdInput = true;
 					LogicUtils.Logic.interactableObject.Interact();
+				}
 			}
 		}
 
