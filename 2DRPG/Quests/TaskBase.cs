@@ -9,7 +9,9 @@ namespace _2DRPG.Quests {
 
 		public string taskName = "default";
 
-		public bool completed = false;
+		private bool _comp = false;
+
+		public bool Completed { get { return _comp; } set { _comp = value; } }
 
 		public List<ItemPickup> taskItems = new List<ItemPickup>();
 
@@ -21,7 +23,7 @@ namespace _2DRPG.Quests {
 			foreach (ItemPickup p in taskItems)
 				if (p.complete)
 					i++;
-			if (completed)
+			if (Completed)
 				i = -1;
 			return i;
 		}

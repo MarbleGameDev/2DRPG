@@ -1,8 +1,8 @@
 {
   "debugEnabled": true,
-  "fullScreen": true,
+  "fullScreen": false,
   "VSync": true,
-  "interactionEditor": false,
+  "interactionEditor": true,
   "worldBuilder": true,
   "windowx": 1280,
   "windowy": 720

@@ -29,6 +29,8 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		private void SubmitInput() {
+			if (input.text.GetText().Substring(1).Length == 0)
+				return;
 			output.SetText(output.GetText() + "\n" + Console.ExecuteCommand(input.text.GetText().Substring(1)));
 			input.text.SetText("`");
 			input.StartTyping();

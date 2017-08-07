@@ -52,26 +52,25 @@ namespace _2DRPG {
 					}
 				}
 			}
+			SaveTasks();
 			GUI.Windows.NotificationWindow.NewNotification("Game Saved", 190);
-
-
-			//Test Code
-
-			Quests.TaskBase tb = new Quests.TaskBase() {
-				taskName = "Tample",
-				taskItems = new List<Quests.ItemPickup>() {
-					new Quests.ItemPickup{ itemName = "beer", itemQuantity = 3},
-					new Quests.ItemPickup{ itemName = "wine", itemQuantity = 2}
-				}
-			};
-			SerializeObject(tb, "Quests/" + tb.taskName);
 		}
 
-		public static void LoadTasks() {
+		private static void LoadTasks() {
 			foreach (string path in Directory.EnumerateFiles(saveLocation + "Quests/")) {
 				Quests.TaskBase q = DeSerializeObject<Quests.TaskBase>(path.TrimEnd(".rz".ToCharArray()).Replace(saveLocation, ""));
 				Quests.QuestData.QuestDatabase.Add(q.taskName, q);
 			}
+			if (!Form1.devWin.IsDisposed)
+				DevWindow.Quest.UpdateQuests();
+			Quests.QuestData.ActiveQuests = DeSerializeObject<HashSet<string>>("PlayerQuests");
+		}
+
+		private static void SaveTasks() {
+			foreach (KeyValuePair<string, Quests.IQuest> q in Quests.QuestData.QuestDatabase) {
+				SerializeObject(q.Value, "Quests/" + q.Key);
+			}
+			SerializeObject(Quests.QuestData.ActiveQuests, "PlayerQuests");
 		}
 
 

@@ -1,6 +1,5 @@
 {
   "taskName": "Tample",
-  "completed": false,
   "taskItems": [
     {
       "itemName": "beer",
@@ -11,6 +10,12 @@
       "itemName": "wine",
       "itemQuantity": 2,
       "complete": false
+    },
+    {
+      "itemName": "Mead",
+      "itemQuantity": 5,
+      "complete": false
     }
-  ]
+  ],
+  "Completed": false
 }

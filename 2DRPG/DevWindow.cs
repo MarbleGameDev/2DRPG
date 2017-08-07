@@ -8,11 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using _2DRPG.GUI.Interaction;
+using _2DRPG.Quests;
 
 namespace _2DRPG {
 	public partial class DevWindow : Form {
 		public DevWindow() {
 			InitializeComponent();
+
+			//Interaction Tab
 			Interaction.displayTree = treeView;
 			Interaction.displayTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(Interaction.UpdateNodeData);
 			Interaction.text = TextBox;
@@ -25,6 +28,19 @@ namespace _2DRPG {
 			groupBox.Visible = false;
 			Interaction.toolButton.DropDown.Items[3].Visible = false;
 			treeView.HideSelection = false;
+
+			//Quest Tab
+			Quest.list = listBox1;
+			Quest.items = panel2;
+			Quest.grp = groupBox1;
+			Quest.active = checkBox1;
+			Quest.completed = checkBox2;
+			Quest.addButt = button4;
+			Quest.active.Visible = false;
+			Quest.completed.Visible = false;
+			Quest.grp.Visible = false;
+			Quest.items.Visible = false;
+			Quest.addButt.Visible = false;
 		}
 
 
@@ -390,6 +406,139 @@ namespace _2DRPG {
 
 		private void DownButton_Click(object sender, EventArgs e) {
 			Interaction.ShiftNode(-1);
+		}
+
+		public static class Quest {
+			public static ListBox list;
+			public static GroupBox grp;
+			public static Panel items;
+			public static CheckBox active;
+			public static CheckBox completed;
+			public static Button addButt;
+
+			public static IQuest selectedQuest;
+
+			public static void UpdateQuests() {
+				list.Items.Clear();
+				foreach (KeyValuePair<string, IQuest> q in QuestData.QuestDatabase) {
+					list.Items.Add((QuestData.ActiveQuests.Contains(q.Key) ? "*" : "") + q.Key);
+				}
+			}
+
+			public static TextBox[] pars;
+			public static List<TextBox> itemPars;
+
+			public static void UpdateSelected() {
+				grp.Visible = false;
+				active.Visible = false;
+				completed.Visible = false;
+				items.Visible = false;
+				addButt.Visible = false;
+				if (list.SelectedItem == null || !QuestData.QuestDatabase.ContainsKey(((string)list.SelectedItem).Replace("*", "")))
+					return;
+				selectedQuest = QuestData.QuestDatabase[((string)list.SelectedItem).Replace("*", "")];
+				grp.Visible = true;
+				active.Visible = true;
+				completed.Visible = true;
+				completed.Checked = selectedQuest.Completed;
+				if (QuestData.ActiveQuests.Contains(selectedQuest.ToString()))
+					active.Checked = true;
+				if (selectedQuest.GetType() == typeof(TaskBase)) {
+					TaskBase bas = (TaskBase)selectedQuest;
+					grp.Controls.Clear();
+					items.Visible = true;
+					addButt.Visible = true;
+					pars = new TextBox[1];
+					TextBox val = new TextBox() {
+						Location = new Point(0, 35),
+						Size = new Size(200, 20)
+					};
+					val.Text = bas.taskName;
+					grp.Controls.Add(new Label() { Text = "Task Name (Requires Restart): ", Location = new Point(0, 15), Size = new Size(200, 20) });
+					grp.Controls.Add(val);
+					pars[0] = val;
+
+					itemPars = new List<TextBox>();
+					items.Controls.Clear();
+					int counter = 0;
+					foreach (ItemPickup p in bas.taskItems) {
+						TextBox vab = new TextBox() {
+							Location = new Point(0, 35 + 10 * counter),
+							Size = new Size(100, 20)
+						};
+						vab.Text = p.itemName;
+						TextBox vad = new TextBox() {
+							Location = new Point(100, 35 + 10 * counter),
+							Size = new Size(100, 20)
+						};
+						vad.Text = p.itemQuantity.ToString();
+						items.Controls.Add(vab);
+						items.Controls.Add(vad);
+						counter += 2;
+						itemPars.Add(vab);
+						itemPars.Add(vad);
+					}
+					items.Controls.Add(new Label() { Text = "Item Name: ", Location = new Point(10, 15), Size = new Size(90, 20) });
+					items.Controls.Add(new Label() { Text = "Item Quantity: ", Location = new Point(110, 15), Size = new Size(90, 20) });
+				}
+
+
+			}
+
+			public static void SaveSelected() {
+				if (selectedQuest == null || pars.Length == 0)
+					return;
+				if (selectedQuest.GetType() == typeof(TaskBase)) {
+					TaskBase tmp = (TaskBase)selectedQuest;
+					tmp.taskName = pars[0].Text;
+					tmp.taskItems.Clear();
+					for (int i = 0; i < itemPars.Count; i += 2) {
+						if (itemPars[i].Text.Length > 0)
+							tmp.taskItems.Add(new ItemPickup { itemName = itemPars[i].Text, itemQuantity = int.Parse(itemPars[i + 1].Text) });
+					}
+				}
+			}
+		}
+
+		private void IndexChanged(object sender, EventArgs e) {
+			Quest.UpdateSelected();
+		}
+
+		private void UpdateQuestClick(object sender, EventArgs e) {
+			Quest.UpdateQuests();
+		}
+
+		private void ActiveCheckChanged(object sender, EventArgs e) {
+			QuestData.SetQuestActive(Quest.selectedQuest.ToString(), Quest.active.Checked);
+			Quest.UpdateQuests();
+		}
+
+		private void SaveClick(object sender, EventArgs e) {
+			Quest.SaveSelected();
+		}
+
+		private void CompletedCheckChanged(object sender, EventArgs e) {
+			Quest.selectedQuest.Completed = Quest.completed.Checked;
+		}
+
+		private void SaveGameClick(object sender, EventArgs e) {
+			Quest.SaveSelected();
+			SaveData.SaveGame();
+		}
+
+		private void AddItemClick(object sender, EventArgs e) {
+			TextBox vab = new TextBox() {
+				Location = new Point(0, 35 + 10 * Quest.itemPars.Count),
+				Size = new Size(100, 20)
+			};
+			TextBox vad = new TextBox() {
+				Location = new Point(100, 35 + 10 * Quest.itemPars.Count),
+				Size = new Size(100, 20)
+			};
+			Quest.items.Controls.Add(vab);
+			Quest.items.Controls.Add(vad);
+			Quest.itemPars.Add(vab);
+			Quest.itemPars.Add(vad);
 		}
 	}
 }

@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG.Quests {
-	interface IQuest {
+	public interface IQuest {
 		int CheckStatus();
+		string ToString();
+		bool Completed { get; set; }
 	}
 }
