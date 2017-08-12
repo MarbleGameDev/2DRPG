@@ -79,6 +79,7 @@ namespace _2DRPG.GUI.Windows {
 			foreach (InteractionBase b in interactionElements)
 				b.nextNode = NextNode;
 			currentInteraction = interactionElements[elementNum];
+			currentInteraction.Setup();
 			return UIObjects;
 		}
 

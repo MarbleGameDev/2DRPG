@@ -10,12 +10,14 @@ using System.Windows.Forms;
 using OpenGL;
 
 namespace _2DRPG {
-    public partial class Form1 : Form {
+    partial class Form1 : Form {
 
 		public static bool contextCreated = false;
 
 		private static bool updateResize = false;
 		private static bool updateFullscreen = false;
+
+		public static GUI.UIDraggable dragged;
 
 		public static DevWindow devWin = new DevWindow();
 
@@ -178,6 +180,9 @@ namespace _2DRPG {
 			}
 			Gl.BindTexture(TextureTarget.Texture2d, 0);
 			Input.UpdateKeys();
+			if (dragged != null)
+				if (Math.Abs(Input.MouseX) < 320f && Math.Abs(Input.MouseY) < 180f)
+					dragged.positionUpdate.Invoke();
 		}
 
 		private void ResizeE(object sender, EventArgs e) {
@@ -226,6 +231,7 @@ namespace _2DRPG {
 
 		private void MUp(object sender, MouseEventArgs e) {
 			Input.MouseHeld = false;
+			dragged = null;
 		}
 
 		private void Form1_KeyPress(object sender, KeyPressEventArgs e) {

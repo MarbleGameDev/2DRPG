@@ -13,14 +13,12 @@ namespace _2DRPG.GUI.Interaction {
 
 		public string DialogueText { get { return displayText; } set { displayText = value; } }
 
-		UITextBox textBox = new UITextBox(0, -94, .5f, 280, 1, 6, "");
+		static UITextBox textBox = new UITextBox(0, -94, .5f, 280, 1, 6, "");
 
 		public InteractionDialogue(string text) {
-			textBox.SetText(text);
 			displayText = text;
 		}
 		public InteractionDialogue(GameSave.InteractionObjectStorage store) {
-			textBox.SetText(store.text);
 			displayText = store.text;
 		}
 
@@ -28,7 +26,7 @@ namespace _2DRPG.GUI.Interaction {
 			textBox.Render();
 		}
 		public override void Setup() {
-
+			textBox.SetText(displayText);
 		}
 
 		public override GameSave.InteractionObjectStorage StoreObject() {

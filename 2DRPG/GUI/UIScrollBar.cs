@@ -14,8 +14,12 @@ namespace _2DRPG.GUI {
 		public IScrollable scrollTarget;
 
 		public UIScrollBar(float x, float y, float width, float height, int layer) : base(x, y, width, height, layer, "textBox") {
-			scrollKnob = new UIDraggable(x, y, width + 2, width + 2, 1, "textBox");
-			scrollKnob.SetButtonAction(Drag);
+			scrollKnob = new UIDraggable(x, y, width + 2, width + 2, 1, "textBox") {
+				positionUpdate = () => {
+					newMouse = Input.MouseY + mouseY;
+					SetScroll();
+				}
+			};
 			buttonAction = new Action(SetScroll);
 			maxY = y + height;
 			minY = y - height;
@@ -55,25 +59,13 @@ namespace _2DRPG.GUI {
 			}
 		}
 
-		private void Drag() {
-			Thread drag = new Thread(() => {
-				while (Input.MouseHeld) {
-					newMouse = Input.MouseY + mouseY;
-					SetScroll();
-					Thread.Sleep(10);
-				}
-			}) {
-				Name = "Mouse Drag", IsBackground = true
-			};
-			drag.Start();
-		}
-		float scrollMod = .8f;
+		float scrollMod = 4f;
 		public void ScrollWheel(int y) {
 			float temp = 0;
 			if (y < 0) {
-				temp = (scrollKnob.screenY > (minY + scrollMod)) ? -scrollMod : -((scrollKnob.screenY - minY) % scrollMod);
+				temp = (scrollKnob.screenY >= (minY + scrollMod)) ? -scrollMod : -((scrollKnob.screenY - minY) % scrollMod);
 			} else if (y > 0) {
-				temp = (maxY - scrollKnob.screenY > scrollMod) ? scrollMod : ((maxY - scrollKnob.screenY) % scrollMod);
+				temp = ((maxY - scrollKnob.screenY) >= scrollMod) ? scrollMod : ((maxY - scrollKnob.screenY) % scrollMod);
 			}
 			scrollKnob.ShiftScreenPosition(0, temp);
 			float scrollAmount = ((int)maxY - (int)scrollKnob.screenY) / (float)((int)maxY - (int)minY);

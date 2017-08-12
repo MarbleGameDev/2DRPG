@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace _2DRPG.GUI.Interaction {
 	class InteractionChoice : InteractionBase {
 
-		protected List<UIButton> items = new List<UIButton>();
+		protected static List<UIButton> items = new List<UIButton>();
 		protected Dictionary<string, int> pathNames = new Dictionary<string, int>();
 		public List<InteractionPath> paths = new List<InteractionPath>();
 		/*

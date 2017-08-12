@@ -20,21 +20,13 @@ namespace _2DRPG {
 		public string texName;
 
 		public TexturedObject(float x, float y, int layer, string textureName) {
-
-			screenX = x;
-			screenY = y;
-			this.layer = layer;
 			texName = textureName;
 
 			SetScreenPosition(x, y, layer);
 
 		}
 
-		public TexturedObject(float x, float y, int layer, float height, float width, string textureName) {
-
-			screenX = x;
-			screenY = y;
-			this.layer = layer;
+		public TexturedObject(float x, float y, int layer, float width, float height, string textureName) {
 			texName = textureName;
 			this.height = height;
 			this.width = width;

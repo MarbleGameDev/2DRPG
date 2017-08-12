@@ -8,7 +8,7 @@ using OpenGL;
 namespace _2DRPG.GUI {
 	class UITextBox : UIText, IScrollable {
 
-		private int linespacing = 21;
+		private int linespacing = 32;
 		private int charWidth;
 
 
@@ -57,7 +57,7 @@ namespace _2DRPG.GUI {
 			if (y > 0) {
 				temp = (scrollAmount >= scrollMod) ? -scrollMod : -(scrollAmount % scrollMod);
 			} else if (y < 0) {
-				temp = (scrollMax - scrollAmount >= scrollMod) ? scrollMod : ((scrollMax - scrollAmount) % scrollMod);
+				temp = ((scrollMax - scrollAmount) >= scrollMod) ? scrollMod : ((scrollMax - scrollAmount) % scrollMod);
 			}
 			foreach (UIChar b in chars) {
 				b.ShiftScreenPosition(0, temp);
@@ -75,9 +75,9 @@ namespace _2DRPG.GUI {
 			scrollAmount += desiredScroll;
 		}
 
-		public void SetScissorMask() {
+		private void SetScissorMask() {
 			scissorMask[0] = (int)(Screen.PixeltoNormalizedWidth(screenX - width) * Screen.screenWidth) + Screen.screenX;
-			scissorMask[1] = (int)(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * linespacing * textSize) * Screen.screenHeight) + Screen.screenY;
+			scissorMask[1] = (int)Math.Round(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * linespacing * textSize) * Screen.screenHeight) + Screen.screenY;
 			scissorMask[2] = -(int)(Screen.PixeltoNormalizedWidth(screenX - width) * Screen.screenWidth) + (int)(Screen.PixeltoNormalizedWidth(screenX + width + 2) * Screen.screenWidth);
 			scissorMask[3] = (int)(Screen.PixeltoNormalizedHeight(screenY + height) * Screen.screenHeight) - (int)(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * linespacing * textSize) * Screen.screenHeight);
 		}

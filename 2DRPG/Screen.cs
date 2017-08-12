@@ -97,8 +97,10 @@ namespace _2DRPG {
 			WindowWidth = width;
 			windowRatio = (float)width / height;
 
-			if (ResizeEvent != null)
+			if (ResizeEvent != null) {
+				System.Diagnostics.Debug.WriteLine("resizeE");
 				ResizeEvent.Invoke();
+			}
 		}
 		public static void SetScreenDimensions(int x, int y, int width, int height) {
 			screenHeight = height;

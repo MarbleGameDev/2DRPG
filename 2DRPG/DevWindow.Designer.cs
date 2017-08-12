@@ -48,6 +48,8 @@
 			this.TextBox = new System.Windows.Forms.RichTextBox();
 			this.treeView = new System.Windows.Forms.TreeView();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.button4 = new System.Windows.Forms.Button();
+			this.panel2 = new System.Windows.Forms.Panel();
 			this.button3 = new System.Windows.Forms.Button();
 			this.checkBox2 = new System.Windows.Forms.CheckBox();
 			this.button2 = new System.Windows.Forms.Button();
@@ -56,8 +58,6 @@
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.listBox1 = new System.Windows.Forms.ListBox();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.button4 = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Overview.SuspendLayout();
 			this.InteractionTree.SuspendLayout();
@@ -326,6 +326,26 @@
 			this.tabPage1.Text = "Quest";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
+			// button4
+			// 
+			this.button4.Location = new System.Drawing.Point(394, 506);
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size(59, 23);
+			this.button4.TabIndex = 14;
+			this.button4.Text = "AddItem";
+			this.button4.UseVisualStyleBackColor = true;
+			this.button4.Click += new System.EventHandler(this.AddItemClick);
+			// 
+			// panel2
+			// 
+			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.panel2.AutoScroll = true;
+			this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.panel2.Location = new System.Drawing.Point(187, 318);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(204, 212);
+			this.panel2.TabIndex = 13;
+			// 
 			// button3
 			// 
 			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -411,25 +431,6 @@
 			this.listBox1.Size = new System.Drawing.Size(172, 498);
 			this.listBox1.TabIndex = 0;
 			this.listBox1.SelectedIndexChanged += new System.EventHandler(this.IndexChanged);
-			// 
-			// panel2
-			// 
-			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.panel2.AutoScroll = true;
-			this.panel2.Location = new System.Drawing.Point(187, 318);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(200, 212);
-			this.panel2.TabIndex = 13;
-			// 
-			// button4
-			// 
-			this.button4.Location = new System.Drawing.Point(394, 506);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(59, 23);
-			this.button4.TabIndex = 14;
-			this.button4.Text = "AddItem";
-			this.button4.UseVisualStyleBackColor = true;
-			this.button4.Click += new System.EventHandler(this.AddItemClick);
 			// 
 			// DevWindow
 			// 

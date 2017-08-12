@@ -64,6 +64,8 @@ namespace _2DRPG {
 			if (!Form1.devWin.IsDisposed)
 				DevWindow.Quest.UpdateQuests();
 			Quests.QuestData.ActiveQuests = DeSerializeObject<HashSet<string>>("PlayerQuests");
+			if (!Form1.devWin.IsDisposed)
+				DevWindow.Quest.UpdateQuests();
 		}
 
 		private static void SaveTasks() {
