@@ -2,8 +2,17 @@
   "debugEnabled": true,
   "fullScreen": false,
   "VSync": true,
-  "interactionEditor": true,
+  "interactionEditor": false,
   "worldBuilder": true,
   "windowx": 1280,
-  "windowy": 720
+  "windowy": 720,
+  "keys": {
+    "left": "A",
+    "right": "D",
+    "up": "W",
+    "down": "S",
+    "escape": "Escape",
+    "interact": "E",
+    "console": "Oemtilde"
+  }
 }

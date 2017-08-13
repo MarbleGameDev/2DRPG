@@ -340,7 +340,7 @@
 			// 
 			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.panel2.AutoScroll = true;
-			this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.panel2.Location = new System.Drawing.Point(187, 318);
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(204, 212);
@@ -406,7 +406,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.groupBox1.Location = new System.Drawing.Point(186, 32);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(200, 279);
+			this.groupBox1.Size = new System.Drawing.Size(204, 279);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Quest Data";

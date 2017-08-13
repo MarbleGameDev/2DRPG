@@ -26,7 +26,11 @@ namespace _2DRPG.GUI.Interaction {
 			textBox.Render();
 		}
 		public override void Setup() {
+			textBox.Setup();
 			textBox.SetText(displayText);
+		}
+		public override void Takedown() {
+			textBox.Cleanup();
 		}
 
 		public override GameSave.InteractionObjectStorage StoreObject() {

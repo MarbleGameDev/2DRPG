@@ -61,6 +61,7 @@
     <Compile Include="DevWindow.Designer.cs">
       <DependentUpon>DevWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="DictionaryConverter.cs" />
     <Compile Include="GUI\Interaction\InteractionBase.cs" />
     <Compile Include="GUI\Interaction\InteractionChoice.cs" />
     <Compile Include="GUI\Interaction\InteractionDialogue.cs" />

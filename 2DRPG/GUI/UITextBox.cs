@@ -47,9 +47,9 @@ namespace _2DRPG.GUI {
 		}
 
 		private int scrollMod = 4;
-		public void ScrollWheel(int y) {
+		public void ScrollWheel(int y, object sender) {
 			if (scrollbar != null) {
-				scrollbar.ScrollWheel(y);
+				scrollbar.ScrollWheel(y, this);
 				return;
 			}
 

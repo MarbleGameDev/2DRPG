@@ -34,7 +34,7 @@ namespace _2DRPG.GUI {
 		/// <param name="maxRows">Maximum number of rows enterable, or scrollable if LimitTyping is set to false</param>
 		/// <param name="textureName">Name of the texture</param>
 		public UITypeBox(float x, float y, float width, float height, int layer, float maxRows, string textureName) : base(x, y, width, height, layer, textureName) {
-			text = new UITextBox(x, y + height / 1.5f, .5f, (int)width * 2, layer - 1, maxRows, "");
+			text = new UITextBox(x, y, .5f, (int)width * 2, layer - 1, maxRows, "");
 			this.maxRows = maxRows;
 			buttonAction = new Action(StartTyping);
 		}
@@ -54,6 +54,7 @@ namespace _2DRPG.GUI {
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
 				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1));
+				Screen.SelectionEvent -= DisableTyping;
 				UpdatePublicVar();
 			}
 		}
@@ -78,7 +79,7 @@ namespace _2DRPG.GUI {
 		public override void SetScreenPosition(float x, float y) {
 			base.SetScreenPosition(x, y);
 			if (text != null)
-				text.SetScreenPosition(x, y + height / 1.5f);
+				text.SetScreenPosition(x, y);
 		}
 
 		public void UpdatePublicVar() {
@@ -121,8 +122,8 @@ namespace _2DRPG.GUI {
 			Screen.SelectionEvent += DisableTyping;
 		}
 
-		public void ScrollWheel(int dir) {
-			text.ScrollWheel(dir);
+		public void ScrollWheel(int dir, object sender) {
+			text.ScrollWheel(dir, this);
 		}
 
 		public void ScrollTo(float amount) {

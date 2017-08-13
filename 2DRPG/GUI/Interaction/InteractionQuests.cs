@@ -50,6 +50,8 @@ namespace _2DRPG.GUI.Interaction {
 			}
 
 		}
+		public override void Takedown() {
+		}
 
 		public override GameSave.InteractionObjectStorage StoreObject() {
 			GameSave.InteractionObjectStorage store = base.StoreObject();

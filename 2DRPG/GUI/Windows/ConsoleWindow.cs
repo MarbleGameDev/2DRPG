@@ -35,18 +35,20 @@ namespace _2DRPG.GUI.Windows {
 			input.text.SetText("`");
 			input.StartTyping();
 			output.ScrollTo(1f);
-				
 		}
 
 
 		string[] textures = new string[] { "textBox" };
 
 		public void LoadTextures() {
+			input.Setup();
+			output.Setup();
 			TextureManager.RegisterTextures(textures);
 		}
 
 		public void UnloadTextures() {
-			input.DisableTyping();
+			input.Cleanup();
+			output.Cleanup();
 			TextureManager.UnRegisterTextures(textures);
 		}
 	}

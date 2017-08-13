@@ -60,7 +60,7 @@ namespace _2DRPG.GUI {
 		}
 
 		float scrollMod = 4f;
-		public void ScrollWheel(int y) {
+		public void ScrollWheel(int y, object sender) {
 			float temp = 0;
 			if (y < 0) {
 				temp = (scrollKnob.screenY >= (minY + scrollMod)) ? -scrollMod : -((scrollKnob.screenY - minY) % scrollMod);

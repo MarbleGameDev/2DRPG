@@ -20,6 +20,7 @@ namespace _2DRPG {
 			Interaction.displayTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(Interaction.UpdateNodeData);
 			Interaction.text = TextBox;
 			Interaction.save = save;
+			Interaction.del = delButt;
 			Interaction.group = groupBox;
 			Interaction.toolButton = (ToolStripDropDownButton)toolStrip1.Items[0];
 			TextBox.Visible = false;
@@ -50,8 +51,11 @@ namespace _2DRPG {
 			public static RichTextBox text;
 			public static GroupBox group;
 			public static Button save;
+			public static Button del;
 			static InteractionBase currentObject;
 			public static ToolStripDropDownButton toolButton;
+
+			public static bool DeleteOnce = false;
 
 			static Dictionary<TreeNode, InteractionBase> nodeBase = new Dictionary<TreeNode, InteractionBase>();
 
@@ -106,6 +110,8 @@ namespace _2DRPG {
 					SaveInteractionData();
 				currentObject = nodeBase[e.Node];
 				displayTree.SelectedNode = e.Node;
+				DeleteOnce = false;
+				del.Text = "Delete Item";
 				SetupInteractionData();
 			}
 
@@ -392,7 +398,13 @@ namespace _2DRPG {
 		}
 
 		private void DelButt_Click(object sender, EventArgs e) {
-			Interaction.DeleteNodeData();
+			if (Interaction.DeleteOnce) {
+				Interaction.DeleteNodeData();
+				delButt.Text = "Delete Item";
+			} else {
+				Interaction.DeleteOnce = true;
+				delButt.Text = "Confirm";
+			}
 		}
 
 		private void UpdateButton_Click(object sender, EventArgs e) {

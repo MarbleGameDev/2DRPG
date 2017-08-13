@@ -12,6 +12,7 @@ namespace _2DRPG.GUI.Interaction {
 		public abstract void Render();
 
 		public abstract void Setup();
+		public abstract void Takedown();
 
 		public abstract GameSave.InteractionObjectStorage StoreObject();
 

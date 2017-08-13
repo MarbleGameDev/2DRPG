@@ -16,10 +16,12 @@ namespace _2DRPG {
 		/// Event call for direct char input
 		/// </summary>
 		public static event keyMethod DirectCall;
+		public static event KeysMethod DirectKeyCode;
 		public delegate void inputMethod(KeyInputs[] k);
 		public delegate void keyMethod(char k);
+		public delegate void KeysMethod(Keys k);
 		//Dictionary that stores the game inputs and the current mapped Keycode for the input
-		private static Dictionary<KeyInputs, Keys> keycodes = new Dictionary<KeyInputs, Keys>() {
+		public static Dictionary<KeyInputs, Keys> keycodes = new Dictionary<KeyInputs, Keys>() {
 			{KeyInputs.left, Keys.A },
 			{KeyInputs.right, Keys.D },
 			{KeyInputs.up, Keys.W },
@@ -43,8 +45,12 @@ namespace _2DRPG {
 		public static bool RedirectKeys;
 
 		public static void KeyDown(KeyEventArgs e) {
-			if (RedirectKeys && !e.KeyCode.Equals(Keys.Escape) && !e.KeyCode.Equals(Keys.Oemtilde))
+			if (RedirectKeys && !e.KeyCode.Equals(keycodes[KeyInputs.escape]) && !e.KeyCode.Equals(keycodes[KeyInputs.console])) {
+				if (DirectKeyCode != null) {
+					DirectKeyCode.Invoke(e.KeyCode);
+				}
 				return;
+			}
 			KeyInputs k =  keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
 			if (keysHeld.ContainsKey(k)) {	//If it's a key that should be held with others
 				if (!keysHeld[k]) {
@@ -62,7 +68,7 @@ namespace _2DRPG {
 		}
 
 		public static void KeyPress(KeyPressEventArgs e) {
-			if (!RedirectKeys || e.KeyChar.Equals((char)Keys.Escape) || e.KeyChar.Equals((char)Keys.Oemtilde))
+			if (!RedirectKeys || e.KeyChar.Equals((char)keycodes[KeyInputs.escape]) || e.KeyChar.Equals((char)keycodes[KeyInputs.console]))
 				return;
 			if (DirectCall != null)
 				DirectCall.Invoke(e.KeyChar);
@@ -139,7 +145,7 @@ namespace _2DRPG {
 				foreach (UIBase u in h) {
 					if (u is IScrollable sc)
 						if (sc.CheckCoords(MouseX, MouseY))
-							sc.ScrollWheel(d);
+							sc.ScrollWheel(d, null);
 				}
 		}
 
@@ -183,6 +189,10 @@ namespace _2DRPG {
 					LogicUtils.Logic.interactableObject.Interact();
 				}
 			}
+		}
+
+		public static void ClearDirectKeyCode() {
+			DirectKeyCode = null;
 		}
 
 		/// <summary>

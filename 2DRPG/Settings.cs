@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace _2DRPG {
 	[Serializable()]
@@ -13,5 +16,7 @@ namespace _2DRPG {
 		public bool interactionEditor = false;
 		public bool worldBuilder = true;
 		public int windowx = 640, windowy = 360;
+		[JsonConverter(typeof(DictionaryConverter))]
+		public Dictionary<Input.KeyInputs, Keys> keys = Input.keycodes;
 	}
 }

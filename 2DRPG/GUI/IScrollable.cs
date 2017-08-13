@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _2DRPG.GUI {
 	interface IScrollable {
-		void ScrollWheel(int dir);
+		void ScrollWheel(int dir, object sender);
 		bool CheckCoords(float x, float y);
 		/// <summary>
 		/// Scrolls to a normalized value between 0 and 1

@@ -54,9 +54,9 @@ namespace _2DRPG {
 			lock(currentWindows)
 				if (windowFiles.ContainsKey(windowName) && !currentWindows.ContainsKey(windowName)) {
 					windowFiles[windowName].LoadTextures();
+					currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
 					foreach (UIBase b in windowFiles[windowName].GetScreenObjects())
 						b.Setup();
-					currentWindows.Add(windowName, windowFiles[windowName].LoadObjects());
 				}
 		}
 		/// <summary>
@@ -98,7 +98,6 @@ namespace _2DRPG {
 			windowRatio = (float)width / height;
 
 			if (ResizeEvent != null) {
-				System.Diagnostics.Debug.WriteLine("resizeE");
 				ResizeEvent.Invoke();
 			}
 		}
@@ -126,8 +125,10 @@ namespace _2DRPG {
 		}
 
 		public static void InvokeSelection() {
-			if (SelectionEvent != null)
+			if (SelectionEvent != null) {
+				System.Diagnostics.Debug.WriteLine(SelectionEvent.GetInvocationList().Length);
 				SelectionEvent.Invoke();
+			}
 		}
 	}
 }
