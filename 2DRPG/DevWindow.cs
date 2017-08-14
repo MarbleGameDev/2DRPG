@@ -347,7 +347,7 @@ namespace _2DRPG {
 
 		private void SaveButton_Click(object sender, EventArgs e) {
 			Interaction.SaveInteractionData();
-			SaveData.SaveGame();
+			SaveData.SaveGameData();
 		}
 
 		private void Save_Click(object sender, EventArgs e) {
@@ -535,7 +535,7 @@ namespace _2DRPG {
 
 		private void SaveGameClick(object sender, EventArgs e) {
 			Quest.SaveSelected();
-			SaveData.SaveGame();
+			SaveData.SaveGameData();
 		}
 
 		private void AddItemClick(object sender, EventArgs e) {

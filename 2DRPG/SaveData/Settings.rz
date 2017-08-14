@@ -2,7 +2,7 @@
   "debugEnabled": true,
   "fullScreen": false,
   "VSync": true,
-  "interactionEditor": false,
+  "devWindow": false,
   "worldBuilder": true,
   "windowx": 1280,
   "windowy": 720,

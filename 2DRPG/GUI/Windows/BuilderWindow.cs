@@ -29,7 +29,7 @@ namespace _2DRPG.GUI.Windows {
 			new UIBase(220, 0, 100, 180, 4, "darkBack"),
 			new UIButton(310, 170, 10, 10, () => { Screen.CloseWindow("worldBuilder"); },1, "button"){ displayLabel = new UIText(317, 175, 1f, 0, "X") },
 			new UIButton(185, 140, 65, 8, () => { Screen.CloseWindow("worldBuilder");  checkWorldObjects = true; },1, "button"){ displayLabel = new UIText(188, 142, .5f, 0, "Select Object") },
-			new UIButton(165, -160, 45, 8, () => { SaveData.SaveGame(); }, 1, "button"){ displayLabel = new UIText(168, -160, .5f, 0, "Save Game")},
+			new UIButton(165, -160, 45, 8, () => { SaveData.SaveGameData(); }, 1, "button"){ displayLabel = new UIText(168, -160, .5f, 0, "Save Game")},
 			new UIButton(265, -160, 35, 8, () => { WorldData.RemoveObject(currentObject); }, 1, "button"){ displayLabel = new UIText(268, -160, .5f, 0, "Delete")},
 			new UIButton(185, 160, 65, 8, () => { newObjects.Visible = !newObjects.Visible; }, 1, "button"){ displayLabel = new UIText(188, 160, .5f, 0, "New Object")},
 			objectData, newObjects, applyBut, objectName

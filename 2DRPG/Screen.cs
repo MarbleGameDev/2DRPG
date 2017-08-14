@@ -126,7 +126,6 @@ namespace _2DRPG {
 
 		public static void InvokeSelection() {
 			if (SelectionEvent != null) {
-				System.Diagnostics.Debug.WriteLine(SelectionEvent.GetInvocationList().Length);
 				SelectionEvent.Invoke();
 			}
 		}

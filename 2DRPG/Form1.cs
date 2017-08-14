@@ -23,8 +23,9 @@ namespace _2DRPG {
 
 		public Form1() {
 			InitializeComponent();
+			SaveData.LoadGameData();
 			SaveData.LoadGame();
-			if (SaveData.GameSettings.interactionEditor)
+			if (SaveData.GameSettings.devWindow)
 				devWin.Show();
 		}
 

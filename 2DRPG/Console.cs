@@ -20,6 +20,8 @@ namespace _2DRPG {
 			commands.Add("pauseGame", PauseGame);
 			commands.Add("quit", QuitGame);
 			commands.Add("saveGame", SaveGame);
+			commands.Add("saveGameData", SaveGameData);
+			commands.Add("saveAll", SaveAll);
 			commands.Add("setValue", SetValue);
 		}
 
@@ -56,6 +58,15 @@ namespace _2DRPG {
 			SaveData.SaveGame();
 			return "Game Saved";
 		}
+		private static string SaveGameData(string[] args) {
+			SaveData.SaveGameData();
+			return "Game Data Saved";
+		}
+		private static string SaveAll(string[] args) {
+			SaveData.SaveGameData();
+			SaveData.SaveGame();
+			return "All Data Saved";
+		}
 		private static string Builder(string[] args) {
 			if (SaveData.GameSettings.worldBuilder) {
 				Screen.OpenWindow("worldBuilder");
@@ -78,12 +89,12 @@ namespace _2DRPG {
 						return (bool.TryParse(args[1], out SaveData.GameSettings.debugEnabled)) ? "Set Value" : "Invalid Value";
 					case "fullScreen":
 						return (bool.TryParse(args[1], out SaveData.GameSettings.fullScreen)) ? "Set Value" : "Invalid Value";
-					case "interactionEditor":
-						return (bool.TryParse(args[1], out SaveData.GameSettings.interactionEditor)) ? "Set Value" : "Invalid Value";
+					case "devWindow":
+						return (bool.TryParse(args[1], out SaveData.GameSettings.devWindow)) ? "Set Value" : "Invalid Value";
 					case "worldBuilder":
 						return (bool.TryParse(args[1], out SaveData.GameSettings.worldBuilder)) ? "Set Value" : "Invalid Value";
 					default:
-						return "Invalid Setting. Options: debug, fullScreen, interactionEditor, worldBuilder";
+						return "Invalid Setting. Options: debug, fullScreen, devWindow, worldBuilder";
 				}
 			} else {
 				return "Invalid Arguments";

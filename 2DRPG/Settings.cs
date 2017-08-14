@@ -13,7 +13,7 @@ namespace _2DRPG {
 		public bool debugEnabled = true;
 		public bool fullScreen = false;
 		public bool VSync = true;
-		public bool interactionEditor = false;
+		public bool devWindow = false;
 		public bool worldBuilder = true;
 		public int windowx = 640, windowy = 360;
 		[JsonConverter(typeof(DictionaryConverter))]
