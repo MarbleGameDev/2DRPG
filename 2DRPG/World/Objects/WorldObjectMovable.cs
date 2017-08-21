@@ -8,8 +8,6 @@ namespace _2DRPG.World.Objects {
 	class WorldObjectMovable : WorldObjectBase, IMovable {
 
 		public float MovementSpeed { get; set; }
-		public float VelocityX { get; set; }
-		public float VelocityY { get; set; }
 
 		/// <summary>
 		/// Complete Declaration for WorldObjectMovable
@@ -32,9 +30,19 @@ namespace _2DRPG.World.Objects {
 			ShiftScreenPosition(x, y);
 		}
 
+		public float movementQueueX;
+		public float movementQueueY;
+
+		public virtual void UpdatePosition() {
+			SetWorldPosition(worldX + movementQueueX, worldY + movementQueueY);
+			movementQueueX = 0;
+			movementQueueY = 0;
+		}
+
+
 		public override GameSave.WorldObjectStorage StoreObject() {
 			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Movable
+				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Movable, extraData = new object[] { MovementSpeed}
 			};
 			return store;
 		}

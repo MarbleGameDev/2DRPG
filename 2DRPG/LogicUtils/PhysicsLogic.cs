@@ -11,7 +11,7 @@ namespace _2DRPG.LogicUtils {
 		static void PhysicsLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused || Screen.WindowOpen)
 				return;
-			WorldData.controllableOBJ.Position();
+			WorldData.controllableOBJ.UpdatePosition();
 			bool playerstuck = false;
 			WorldObjectControllable cont = WorldData.controllableOBJ;
 			lock (WorldData.currentRegions) {
@@ -32,10 +32,13 @@ namespace _2DRPG.LogicUtils {
 					}
 				}
 			}
-			if (playerstuck)
-				WorldData.controllableOBJ.MoveRelative(-WorldData.controllableOBJ.movementX, -WorldData.controllableOBJ.movementY);
-			WorldData.controllableOBJ.movementX = 0;
-			WorldData.controllableOBJ.movementY = 0;
+			if (playerstuck) {
+				WorldData.controllableOBJ.MoveRelative(-WorldData.controllableOBJ.movementQueueX, -WorldData.controllableOBJ.movementQueueY);
+			} else{
+				WorldData.MoveCenter(WorldData.controllableOBJ.movementQueueX, WorldData.controllableOBJ.movementQueueY);
+			}
+			WorldData.controllableOBJ.movementQueueX = 0;
+			WorldData.controllableOBJ.movementQueueY = 0;
 		}
 
 		/// <summary>

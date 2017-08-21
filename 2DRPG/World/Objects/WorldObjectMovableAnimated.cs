@@ -8,8 +8,6 @@ namespace _2DRPG.World.Objects {
 	class WorldObjectMovableAnimated : WorldObjectAnimated, IMovable {
 
 		public float MovementSpeed { get; set; }
-		public float VelocityX { get; set; }
-		public float VelocityY { get; set; }
 
 
 		/// <summary>

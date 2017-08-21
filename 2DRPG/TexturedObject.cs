@@ -12,7 +12,9 @@ namespace _2DRPG {
 
 		public float screenX;
 		public float screenY;
+		[World.Editable]
 		public float width = 16;
+		[World.Editable]
 		public float height = 16;
 		[World.Editable]
 		public int layer;

@@ -47,6 +47,14 @@ namespace _2DRPG.World.Objects {
 			UpdateWorldPosition();
 		}
 		/// <summary>
+		/// Returns the location of the object as a Point
+		/// </summary>
+		/// <returns></returns>
+		public System.Drawing.Point GetPointLocation() {
+			return new System.Drawing.Point((int)worldX, (int)worldY);
+		}
+
+		/// <summary>
 		/// Call when the WorldX and WorldY are updated outside of SetWorldPosition()
 		/// </summary>
 		public void UpdateWorldPosition() {
@@ -68,7 +76,7 @@ namespace _2DRPG.World.Objects {
 		}
 
 		/// <summary>
-		/// Checks if the coordinates given are within the world object
+		/// Checks if the coordinates given are within the world object, sets up the worldBuilder window
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
@@ -87,6 +95,16 @@ namespace _2DRPG.World.Objects {
 		public virtual void ModificationAction() {
 			UpdateWorldPosition();
 			SetLayer(layer);
+			//Moves the world object to the correct region if it's misplaced
+			Regions.RegionBase bs = WorldData.GetRegion((int)worldX, (int)worldY);
+			if (!bs.GetWorldObjects().Contains(this)) {
+				lock (WorldData.currentRegions) {
+					foreach (HashSet<WorldObjectBase> hsh in WorldData.currentRegions.Values)
+						if (hsh.Contains(this))
+							hsh.Remove(this);
+					bs.GetWorldObjects().Add(this);
+				}
+			}
 		}
 	}
 }

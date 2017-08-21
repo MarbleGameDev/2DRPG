@@ -58,6 +58,8 @@ namespace _2DRPG {
 						foreach (World.Objects.WorldObjectBase b in WorldData.regionFiles[r].GetWorldObjects()) {
 							s.worldObjects.Add(b.StoreObject());
 						}
+						WorldData.regionFiles[r].CompileCollisionHash();
+						s.CollisionPoints = WorldData.regionFiles[r].CollisionPoints;
 						SerializeObjectToZip(s, r, "Package_01");
 					}
 				}
@@ -102,11 +104,6 @@ namespace _2DRPG {
 			lock (RegionData) {
 				if (RegionData.ContainsKey(s))
 					RegionData.Remove(s);
-			}
-		}
-		public static void SaveRegion(string s) {
-			lock (RegionData) {
-				SerializeObjectToZip(RegionData[s], s, "Package_01");
 			}
 		}
 
@@ -158,8 +155,10 @@ namespace _2DRPG {
 		}
 		public static T DeSerializeObjectFromZip<T>(string fileName, string zipName) {
 			using (ZipFile zip = ZipFile.Read(gameDataLocation + zipName + ".rzz")) {
-				if (!zip.ContainsEntry(fileName + ".rz"))
-					throw new IOException("File does not exist");
+				if (!zip.ContainsEntry(fileName + ".rz")) {
+					System.Diagnostics.Debug.WriteLine("File does not exist: " + fileName);
+					return default(T);
+				}
 				using (StreamReader sw = new StreamReader(zip[fileName + ".rz"].OpenReader()))
 				using (JsonReader reader = new JsonTextReader(sw)) {
 					return serializer.Deserialize<T>(reader);

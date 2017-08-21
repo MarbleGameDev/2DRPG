@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using _2DRPG.Entities;
 
 namespace _2DRPG.Player {
-	class MCObject : WorldObjectControllable, IDamagable, IEffectable {
+	class MCObject : World.Objects.WorldObjectControllable, IDamagable, IEffectable {
 
 		public MCObject() : base("character") {
 			MovementSpeed = 2.5f;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.World.Objects;
 using _2DRPG.Player;
+using System.Drawing;
 
 namespace _2DRPG.World.Regions {
 	/// <summary>

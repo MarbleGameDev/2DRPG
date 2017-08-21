@@ -7,11 +7,14 @@ using _2DRPG.World.Objects;
 using _2DRPG.GUI.Interaction;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Drawing;
 
 namespace _2DRPG {
 	[Serializable]
 	public class GameSave {
 		public List<WorldObjectStorage> worldObjects = new List<WorldObjectStorage>();
+
+		public HashSet<Point> CollisionPoints = new HashSet<Point>();
 
 		/// <summary>
 		/// Constructs a WorldObject based on the storage object passed
@@ -34,6 +37,8 @@ namespace _2DRPG {
 					return new WorldObjectMovable(store);
 				case WorldObjectType.MovableAnimated:
 					return new WorldObjectMovableAnimated(store);
+				case WorldObjectType.StandardMob:
+					return new Entities.StandardMob(store);
 				default:
 					return null;
 
@@ -73,7 +78,7 @@ namespace _2DRPG {
 		}
 
 
-		public enum WorldObjectType { Animated, Base, Collidable, Controllable, Interactable, Movable, MovableAnimated};
+		public enum WorldObjectType { Animated, Base, Collidable, Controllable, Interactable, Movable, MovableAnimated, StandardMob};
 		public enum InteractionObjectType { Choice, Dialogue, Quests, Path};
 
 	}

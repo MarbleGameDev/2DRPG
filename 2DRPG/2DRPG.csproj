@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -65,6 +66,7 @@
       <DependentUpon>DevWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="DictionaryConverter.cs" />
+    <Compile Include="Entities\AIBase.cs" />
     <Compile Include="GUI\Interaction\InteractionBase.cs" />
     <Compile Include="GUI\Interaction\InteractionChoice.cs" />
     <Compile Include="GUI\Interaction\InteractionDialogue.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="GUI\Windows\InteractionWindow.cs" />
     <Compile Include="GUI\Windows\NotificationWindow.cs" />
     <Compile Include="GUI\Windows\OptionsWindow.cs" />
+    <Compile Include="LogicUtils\PathLogic.cs" />
     <Compile Include="Quests\IQuest.cs" />
     <Compile Include="Quests\ItemPickup.cs" />
     <Compile Include="Quests\QuestData.cs" />
@@ -135,7 +138,11 @@
     <Compile Include="World\Objects\WorldObjectBase.cs" />
     <Compile Include="World\Objects\WorldObjectMovable.cs" />
     <Compile Include="World\Objects\WorldObjectMovableAnimated.cs" />
+    <Compile Include="World\Regions\Node.cs" />
+    <Compile Include="World\Regions\NodeGrid.cs" />
+    <Compile Include="World\Regions\Region-1x-1.cs" />
     <Compile Include="World\Regions\Region-1x0.cs" />
+    <Compile Include="World\Regions\Region0x-1.cs" />
     <Compile Include="World\Regions\Region0x0.cs" />
     <Compile Include="World\Regions\RegionBase.cs" />
     <EmbeddedResource Include="DevWindow.resx">

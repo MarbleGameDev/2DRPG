@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _2DRPG {
-	class WorldObjectControllable : World.Objects.WorldObjectMovable {
+namespace _2DRPG.World.Objects {
+	class WorldObjectControllable : WorldObjectMovable {
 
 
 		/// <summary>
@@ -27,25 +27,23 @@ namespace _2DRPG {
 
 		private void MoveOnKeys(Input.KeyInputs[] k) {
 			if (k.Contains(Input.KeyInputs.left))
-				movementX = -MovementSpeed;
+				movementQueueX = -MovementSpeed;
 			if (k.Contains(Input.KeyInputs.right))
-				movementX = MovementSpeed;
+				movementQueueX = MovementSpeed;
 			if (k.Contains(Input.KeyInputs.up))
-				movementY = MovementSpeed;
+				movementQueueY = MovementSpeed;
 			if (k.Contains(Input.KeyInputs.down))
-				movementY = -MovementSpeed;
+				movementQueueY = -MovementSpeed;
 		}
-		public float movementX;
-		public float movementY;
 
 		public override void MoveRelative(float x = 0, float y = 0) {
-			WorldData.MoveCenter(x, y);
+			//WorldData.MoveCenter(x, y);
 			SetWorldPosition(worldX + x, worldY + y);
 		}
 
-		public void Position() {
-			WorldData.MoveCenter(movementX, movementY);
-			SetWorldPosition(worldX + movementX, worldY + movementY);
+		public override void UpdatePosition() {
+			//WorldData.MoveCenter(movementQueueX, movementQueueY);
+			SetWorldPosition(worldX + movementQueueX, worldY + movementQueueY);
 		}
 
 		public override GameSave.WorldObjectStorage StoreObject() {

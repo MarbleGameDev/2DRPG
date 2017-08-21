@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using _2DRPG.World.Objects;
+using System.Diagnostics;
 
 namespace _2DRPG.LogicUtils {
 	static partial class Logic {
@@ -22,12 +23,18 @@ namespace _2DRPG.LogicUtils {
 				WorldData.interChar.Visible = false;
 				return;
 			}
+
 			interactableObject = nulled;
-			lock (WorldData.currentRegions.Values.ToArray().SyncRoot) {     //Render the World Objects
+			lock (WorldData.currentRegions) {     //Render the World Objects
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray())
 					foreach (WorldObjectBase o in l) {
+
 						if (o is Entities.IEffectable en)
 							en.EffectTick();
+						if (o is Entities.StandardMob sn) {
+							sn.AITick();
+						}
+
 						float dist = ObjectDistance(o, WorldData.controllableOBJ);
 						if (dist <= interactionDistance) {
 							if (o is WorldObjectInteractable io) {
@@ -37,7 +44,7 @@ namespace _2DRPG.LogicUtils {
 						}
 					}
 			}
-			if (interactableObject.Equals(nulled))
+			if (interactableObject == null || interactableObject.Equals(nulled))
 				interactableObject = null;
 			if (interactableObject != null) {
 				WorldData.interChar.SetScreenPosition(interactableObject.worldX, interactableObject.worldY + 15f);
@@ -52,7 +59,7 @@ namespace _2DRPG.LogicUtils {
 		/// <param name="o"></param>
 		/// <param name="p"></param>
 		/// <returns></returns>
-		private static float ObjectDistance(WorldObjectBase o, WorldObjectBase p) {
+		public static float ObjectDistance(WorldObjectBase o, WorldObjectBase p) {
 			return (float)Math.Sqrt(Math.Pow(p.worldX - o.worldX, 2f) + Math.Pow(p.worldY - o.worldY, 2f));
 		}
 	}

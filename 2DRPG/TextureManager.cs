@@ -19,12 +19,15 @@ namespace _2DRPG {
 			{"default", "Sprites/Default.png" },
 			{"heart", "Sprites/Heart.png" },
             {"character", "Sprites/SpriteSheets/MainCharacter.png" },
+			{"tempCharacter", "Sprites/SpriteSheets/Character.png" },
 			{"baseFont", "Sprites/SpriteSheets/BaseFont.png" },
 			{"button", "Sprites/Button.png" },
 			{"lightBack", "Sprites/LightBackground.png"},
 			{"darkBack", "Sprites/DarkBackground.png"},
 			{"textBox", "Sprites/TextBox.png"}
 		};
+
+		private static string spriteLocation = "../../";
 
 		private static Dictionary<string, int> textureUses = new Dictionary<string, int>();
 
@@ -50,7 +53,7 @@ namespace _2DRPG {
 		/// <param name="textureName">Name of the texture as registed in TextureManager</param>
 		private static void LoadTexture(string textureName) {
 				try {
-					Bitmap texSource = new Bitmap((string)texturePaths[textureName]);    //Graps the bitmap data from the path
+					Bitmap texSource = new Bitmap(spriteLocation + (string)texturePaths[textureName]);    //Graps the bitmap data from the path
 					texSource.RotateFlip(RotateFlipType.RotateNoneFlipY);
 					uint id = Gl.GenTexture();
 					Gl.BindTexture(TextureTarget.Texture2d, id);

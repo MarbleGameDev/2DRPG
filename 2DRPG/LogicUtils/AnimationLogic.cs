@@ -15,6 +15,8 @@ namespace _2DRPG.LogicUtils {
 			lock (WorldData.currentRegions) {
 				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
 					foreach (WorldObjectBase o in l) {
+						if (o is Entities.StandardMob sn)
+							sn.UpdatePosition();
 						if (o is WorldObjectAnimated an)
 							an.SpriteUpdate();
 					}

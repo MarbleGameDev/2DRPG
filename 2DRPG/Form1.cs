@@ -152,17 +152,7 @@ namespace _2DRPG {
 				Gl.Color3(.5f, .5f, .5f);
 
 			//Render World Objects
-			lock (WorldData.currentRegions) {
-				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
-					foreach (World.Objects.WorldObjectBase o in l)
-						o.Render();
-				}
-
-				foreach (GUI.UIBase b in WorldData.worldUIs.ToArray())
-					b.Render();
-			}
-			
-			WorldData.controllableOBJ.Render();
+			WorldData.WorldRender();
 
 			if (GameState.CurrentState == GameState.GameStates.Paused || GameState.WindowOpen)
 				Gl.Color3(1f, 1f, 1f);
