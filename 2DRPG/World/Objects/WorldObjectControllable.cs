@@ -17,11 +17,11 @@ namespace _2DRPG.World.Objects {
 		/// <param name="textureName"></param>
 		public WorldObjectControllable(float x, float y, int layer, string textureName, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
 			Input.InputCall += MoveOnKeys;
-			MovementSpeed = .01f;
+			MovementSpeed = 2f;
 		}
 		public WorldObjectControllable(String textureName) : base(textureName) {
 			Input.InputCall += MoveOnKeys;
-			MovementSpeed = .01f;
+			MovementSpeed = 2f;
 		}
 		public WorldObjectControllable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) { }
 

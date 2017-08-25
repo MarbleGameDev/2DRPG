@@ -26,8 +26,8 @@ namespace _2DRPG.LogicUtils {
 
 			interactableObject = nulled;
 			lock (WorldData.currentRegions) {     //Render the World Objects
-				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray())
-					foreach (WorldObjectBase o in l) {
+				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
+					foreach (WorldObjectBase o in l.GetWorldObjects()) {
 
 						if (o is Entities.IEffectable en)
 							en.EffectTick();
@@ -43,6 +43,7 @@ namespace _2DRPG.LogicUtils {
 							}
 						}
 					}
+				}
 			}
 			if (interactableObject == null || interactableObject.Equals(nulled))
 				interactableObject = null;

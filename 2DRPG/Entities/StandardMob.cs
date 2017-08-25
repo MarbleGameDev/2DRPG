@@ -42,11 +42,22 @@ namespace _2DRPG.Entities {
 			lock (navigationPath) {
 				if (navigationPath.Count == 0)
 					return;
-				float dx = navigationPath[navigationPath.Count - 1].Location.X - worldX;
-				float dy = navigationPath[navigationPath.Count - 1].Location.Y - worldY;
+				float dx, dy;
+				if (navigationPath.Count > 1) {
+					dx = (navigationPath[navigationPath.Count - 1].Location.X + navigationPath[navigationPath.Count - 2].Location.X) / 2f - worldX;
+					dy = (navigationPath[navigationPath.Count - 1].Location.Y + navigationPath[navigationPath.Count - 2].Location.Y) / 2f - worldY;
+				} else {
+					dx = navigationPath[navigationPath.Count - 1].Location.X - worldX;
+					dy = navigationPath[navigationPath.Count - 1].Location.Y - worldY;
+				}
+				if (Math.Abs(dx) < MovementSpeed / 2f)
+					dx = 0;
+				if (Math.Abs(dy) < MovementSpeed / 2f)
+					dy = 0;
+
 				if (Math.Abs(dx) < MovementSpeed && Math.Abs(dy) < MovementSpeed) {
-					movementQueueX = dx;
-					movementQueueY = dy;
+					movementQueueX = 0;
+					movementQueueY = 0;
 					navigationPath.RemoveAt(navigationPath.Count - 1);
 				} else {
 					movementQueueX = (dx == 0) ? (0) : (dx / Math.Abs(dx) * MovementSpeed);
@@ -63,6 +74,8 @@ namespace _2DRPG.Entities {
 			lock (navigationPath) {
 				navigationPath = points;
 				navigationPath.Reverse();
+				if (navigationPath.Count > 2)
+					navigationPath.RemoveAt(navigationPath.Count - 1);
 
 			}
 		}

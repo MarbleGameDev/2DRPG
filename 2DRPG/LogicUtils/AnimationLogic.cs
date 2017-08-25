@@ -13,8 +13,8 @@ namespace _2DRPG.LogicUtils {
 			if (GameState.CurrentState == GameState.GameStates.Paused)
 				return;
 			lock (WorldData.currentRegions) {
-				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToArray()) {
-					foreach (WorldObjectBase o in l) {
+				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
+					foreach (WorldObjectBase o in l.GetWorldObjects()) {
 						if (o is Entities.StandardMob sn)
 							sn.UpdatePosition();
 						if (o is WorldObjectAnimated an)

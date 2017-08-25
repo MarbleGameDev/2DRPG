@@ -114,8 +114,8 @@ namespace _2DRPG {
 			if (e.Button.Equals(MouseButtons.Left)) {
 				if (GUI.Windows.BuilderWindow.checkWorldObjects) {
 					lock (WorldData.currentRegions) {
-						foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
-							foreach (World.Objects.WorldObjectBase o in l)
+						foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
+							foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects())
 								if (o.CheckCoords(MouseX + WorldData.CurrentX, MouseY + WorldData.CurrentY))
 									return;
 						}

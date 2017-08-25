@@ -15,8 +15,8 @@ namespace _2DRPG.LogicUtils {
 			bool playerstuck = false;
 			WorldObjectControllable cont = WorldData.controllableOBJ;
 			lock (WorldData.currentRegions) {
-				foreach (HashSet<WorldObjectBase> l in WorldData.currentRegions.Values.ToList()) {
-					foreach (WorldObjectBase o in l) {
+				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
+					foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects()) {
 						if (o is ICollidable)
 							if (CheckIntersection(o.quadPosition, cont.quadPosition[0], cont.quadPosition[1]) ||
 								CheckIntersection(o.quadPosition, cont.quadPosition[3], cont.quadPosition[4]) ||

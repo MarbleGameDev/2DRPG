@@ -99,9 +99,9 @@ namespace _2DRPG.World.Objects {
 			Regions.RegionBase bs = WorldData.GetRegion((int)worldX, (int)worldY);
 			if (!bs.GetWorldObjects().Contains(this)) {
 				lock (WorldData.currentRegions) {
-					foreach (HashSet<WorldObjectBase> hsh in WorldData.currentRegions.Values)
-						if (hsh.Contains(this))
-							hsh.Remove(this);
+					foreach (Regions.RegionBase hsh in WorldData.currentRegions.Values)
+						if (hsh.GetWorldObjects().Contains(this))
+							hsh.GetWorldObjects().Remove(this);
 					bs.GetWorldObjects().Add(this);
 				}
 			}

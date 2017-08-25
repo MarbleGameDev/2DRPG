@@ -36,7 +36,7 @@ namespace _2DRPG.Entities {
 
 		protected virtual void AggressiveTick() {
 			float dist = LogicUtils.Logic.ObjectDistance(attachedObject, WorldData.controllableOBJ);
-			if (dist < 150) {
+			if (dist < 200) {
 				attachedObject.SetPath(LogicUtils.PathLogic.PathFind(attachedObject.GetPointLocation(), WorldData.controllableOBJ.GetPointLocation()));
 			} else {
 				attachedObject.SetPath(new List<World.Regions.Node>());
@@ -46,7 +46,16 @@ namespace _2DRPG.Entities {
 
 		}
 		protected virtual void NeutralTick() {
-
+			float dist = LogicUtils.Logic.ObjectDistance(attachedObject, WorldData.controllableOBJ);
+			if (dist > 350)
+				return;
+			Random rnd = new Random();
+			double d = rnd.NextDouble();
+			if (d < .05f) {
+				int x = (int)((rnd.NextDouble()- .5d) * 48);
+				int y = (int)((rnd.NextDouble() - .5d) * 48);
+				attachedObject.SetPath(LogicUtils.PathLogic.PathFind(attachedObject.GetPointLocation(), new System.Drawing.Point(x + (int)attachedObject.worldX, y + (int)attachedObject.worldY)));
+			}
 		}
 
 		public enum AIType { Passive, Aggressive, Neutral};

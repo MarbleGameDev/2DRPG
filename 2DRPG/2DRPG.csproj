@@ -140,10 +140,6 @@
     <Compile Include="World\Objects\WorldObjectMovableAnimated.cs" />
     <Compile Include="World\Regions\Node.cs" />
     <Compile Include="World\Regions\NodeGrid.cs" />
-    <Compile Include="World\Regions\Region-1x-1.cs" />
-    <Compile Include="World\Regions\Region-1x0.cs" />
-    <Compile Include="World\Regions\Region0x-1.cs" />
-    <Compile Include="World\Regions\Region0x0.cs" />
     <Compile Include="World\Regions\RegionBase.cs" />
     <EmbeddedResource Include="DevWindow.resx">
       <DependentUpon>DevWindow.cs</DependentUpon>

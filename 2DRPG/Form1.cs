@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenGL;
+using System.Diagnostics;
 
 namespace _2DRPG {
     partial class Form1 : Form {
@@ -22,6 +23,7 @@ namespace _2DRPG {
 		public static DevWindow devWin = new DevWindow();
 
 		public Form1() {
+
 			InitializeComponent();
 			SaveData.LoadGameData();
 			SaveData.LoadGame();
@@ -55,8 +57,8 @@ namespace _2DRPG {
 			MaximizeBox = false;
 
 			lock (WorldData.currentRegions) {
-				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
-					foreach (World.Objects.WorldObjectBase o in l)
+				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
+					foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects())
 						o.ContextCreated();
 				}
 			}
@@ -98,8 +100,8 @@ namespace _2DRPG {
 
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
 			lock (WorldData.currentRegions) {     //Render the World Objects
-				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
-					foreach (World.Objects.WorldObjectBase o in l)
+				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
+					foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects())
 						o.ContextUpdate();
 				}
 			}
@@ -109,8 +111,8 @@ namespace _2DRPG {
 		private void RenderControl_ContextDestroying(object sender, GlControlEventArgs e) {
 			// Here you can dispose resources allocated in RenderControl_ContextCreated
 			lock (WorldData.currentRegions) {     //Render the World Objects
-				foreach (HashSet<World.Objects.WorldObjectBase> l in WorldData.currentRegions.Values) {
-					foreach (World.Objects.WorldObjectBase o in l)
+				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
+					foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects())
 						o.ContextDestroyed();
 				}
 			}
@@ -134,7 +136,11 @@ namespace _2DRPG {
 		private static double OrthoTop = 180;
 		private static double OrthoBottom = -180;
 
-
+		/// <summary>
+		/// Method that gets called to render each frame
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
 			if (updateFullscreen) {
 				FormBorderStyle = FormBorderStyle.None;
@@ -144,25 +150,21 @@ namespace _2DRPG {
 				ResizeE(sender, e);
 				updateResize = false;
 			}
+
 			Gl.LoadIdentity();
 			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
 			if (GameState.CurrentState == GameState.GameStates.Paused || GameState.WindowOpen)
 				Gl.Color3(.5f, .5f, .5f);
-
 			//Render World Objects
 			WorldData.WorldRender();
 
 			if (GameState.CurrentState == GameState.GameStates.Paused || GameState.WindowOpen)
 				Gl.Color3(1f, 1f, 1f);
-
 			//Load a separete projection for GUI rendering that doesn't move with the character
 			Gl.LoadIdentity();
 			Gl.Ortho(-320, 320, -180, 180, -0.1, 10.0);
-
 			Screen.RunQueue();
-
 			lock (Screen.currentWindows) {
 				foreach(HashSet<GUI.UIBase> b in Screen.currentWindows.Values)   //Render the GUI Objects
 					foreach (GUI.UIBase u in b) {
@@ -170,10 +172,13 @@ namespace _2DRPG {
 					}
 			}
 			Gl.BindTexture(TextureTarget.Texture2d, 0);
+
+			//Other updates needed each frame
 			Input.UpdateKeys();
 			if (dragged != null)
 				if (Math.Abs(Input.MouseX) < 320f && Math.Abs(Input.MouseY) < 180f)
 					dragged.positionUpdate.Invoke();
+			
 		}
 
 		private void ResizeE(object sender, EventArgs e) {

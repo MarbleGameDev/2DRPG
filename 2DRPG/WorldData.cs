@@ -9,15 +9,15 @@ using System.Drawing.Imaging;
 using _2DRPG.World.Objects;
 using _2DRPG.World.Regions;
 using _2DRPG.GUI;
+using System.Diagnostics;
 
 namespace _2DRPG {
 	static class WorldData {
 		static int CurrentRegionX = 0;
 		static int CurrentRegionY = 0;
-		public static float CurrentX = 0;
-		public static float CurrentY = 0;
-		public static Dictionary<string, RegionBase> regionFiles = new Dictionary<string, RegionBase>();
-		public static Dictionary<string, HashSet<WorldObjectBase>> currentRegions = new Dictionary<string, HashSet<WorldObjectBase>>();
+		public static float CurrentX = 1;
+		public static float CurrentY = 1;
+		public static Dictionary<string, RegionBase> currentRegions = new Dictionary<string, RegionBase>();
 		public static HashSet<UIBase> worldUIs = new HashSet<UIBase>();
 		public static HashSet<WorldObjectBase> tempRender = new HashSet<WorldObjectBase>();
 		public static WorldObjectControllable controllableOBJ;
@@ -33,21 +33,18 @@ namespace _2DRPG {
 
 		}
 
-
 		/// <summary>
-		/// Adds the Region files to the directory
-		/// </summary>
-		static WorldData() {
-			regionFiles.Add("0x0", new Region0x0());
-			regionFiles.Add("-1x0", new Region_1x0());
-			regionFiles.Add("-1x-1", new Region_1x_1());
-			regionFiles.Add("0x-1", new Region0x_1());
-		}
-
-		/// <summary>
-		/// Loads the objects and their data into the currentObjects list
+		/// Loads the regions surrounding the current region
 		/// </summary>
 		public static void LoadRegionObjects() {
+			List<string> removeList = new List<string>();
+			foreach (RegionBase b in currentRegions.Values) {
+				if (Math.Sqrt(Math.Pow(b.RegionX, 2) + Math.Pow(b.RegionY, 2)) > 1.5d) {
+					removeList.Add(b.RegionTag);
+				}
+			}
+			foreach (string s in removeList)
+				currentRegions.Remove(s);
 			for (int rx = CurrentRegionX - 1; rx <= CurrentRegionX + 1; rx++) {
 				for (int ry = CurrentRegionY - 1; ry <= CurrentRegionY + 1; ry++) {
 					LoadRegion(rx, ry);
@@ -56,45 +53,48 @@ namespace _2DRPG {
 		}
 
 		public static void AddToRegion(float rx, float ry, WorldObjectBase b) {
-			currentRegions[rx + "x" + ry].Add(b);
+			currentRegions[rx + "x" + ry].GetWorldObjects().Add(b);
 		}
 
 		public static void RemoveObject(WorldObjectBase b) {
 			if (b == null)
 				return;
 			lock (currentRegions) {
-				foreach (HashSet<WorldObjectBase> l in currentRegions.Values) {
-					if (l.Contains(b)) {
-						l.Remove(b);
-						return;
-					}
-				}
+				currentRegions[WorldToRegion(b.worldX) + "x" + WorldToRegion(b.worldY)].GetWorldObjects().Remove(b);
 			}
 		}
-
+		/// <summary>
+		/// Converts a world coordinate to the correct region coordinate
+		/// </summary>
+		/// <param name="coord"></param>
+		/// <returns></returns>
 		public static int WorldToRegion(float coord) {
 			return (int)Math.Ceiling(coord / 1000f) - 1;
 		}
 
 		private static void LoadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
-			if (regionFiles.ContainsKey(reg) && !currentRegions.ContainsKey(reg)) {
-				regionFiles[reg].LoadTextures();
-				lock(currentRegions)
-					currentRegions.Add(reg, regionFiles[reg].LoadObjects());
-			}
+			if (currentRegions.ContainsKey(reg))
+				return;
+			GameSave s = SaveData.LoadRegion(reg);
+			if (s == null)
+				s = new GameSave();
+			RegionBase ba = new RegionBase(reg, s);
+			ba.Load();
+			lock (currentRegions)
+				currentRegions.Add(reg, ba);
 		}
 		private static void UnloadRegion(int rx, int ry) {
 			string reg = rx + "x" + ry;
-			if (regionFiles.ContainsKey(reg)) {
-				regionFiles[reg].UnloadTextures();
+			if (currentRegions.ContainsKey(reg)) {
+				currentRegions[reg].Unload();
 				lock(currentRegions)
 					currentRegions.Remove(reg);
 			}
 		}
 
 		/// <summary>
-		/// Returns the region file responsible for the passed world coordinates
+		/// Returns the region file responsible for the passed world coordinates if loaded, null if not
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
@@ -103,8 +103,8 @@ namespace _2DRPG {
 			int rx = (int)Math.Ceiling(x / 1000f) - 1;
 			int ry = (int)Math.Ceiling(y / 1000f) - 1;
 			string reg = rx + "x" + ry;
-			if (regionFiles.ContainsKey(reg))
-				return regionFiles[reg];
+			if (currentRegions.ContainsKey(reg))
+				return currentRegions[reg];
 			else
 				return null;
 		}
@@ -116,6 +116,7 @@ namespace _2DRPG {
 			TextureManager.ClearTextures();
 			TextureManager.RegisterTextures(new string[] { "character", "baseFont", "tempCharacter" });
 			controllableOBJ = new Player.MCObject();
+			controllableOBJ.SetWorldPosition(CurrentX, CurrentY);
 			worldUIs.Add(interChar);
 			LoadRegionObjects();
 			AddObjects();
@@ -123,8 +124,8 @@ namespace _2DRPG {
 
 		public static void WorldRender() {
 			lock (currentRegions) {
-				foreach (HashSet<WorldObjectBase> l in currentRegions.Values) {
-					foreach (WorldObjectBase o in l)
+				foreach (RegionBase l in currentRegions.Values) {
+					foreach (WorldObjectBase o in l.GetWorldObjects())
 						o.Render();
 				}
 
@@ -151,13 +152,8 @@ namespace _2DRPG {
 			CurrentRegionY = (int)Math.Ceiling(CurrentY / 1000) - 1;
 			oldX = CurrentRegionX - oldX;
 			oldY = CurrentRegionY - oldY;
-			if (oldX != 0) {
-				UnloadRegion(CurrentRegionX - (oldX * 2), CurrentRegionY);
-				LoadRegion(CurrentRegionX + oldX, CurrentRegionY);
-			}
-			if (oldY != 0) {
-				UnloadRegion(CurrentRegionX, CurrentRegionY - (oldY * 2));
-				LoadRegion(CurrentRegionX, CurrentRegionY + oldY);
+			if (oldX != 0 || oldY != 0) {
+				LoadRegionObjects();
 			}
 			Form1.ShiftOrtho(x, y);
 		}
@@ -167,15 +163,25 @@ namespace _2DRPG {
 			Form1.SetOrtho(CurrentX, CurrentY);
 		}
 
+		/// <summary>
+		/// Returns a directionless 600x600 navigation grid centered on the point given
+		/// </summary>
+		/// <param name="center"></param>
+		/// <returns></returns>
 		public static NodeGrid GetNodeGrid(Point center) {
+			Stopwatch s = new Stopwatch();
 			NodeGrid grid = new NodeGrid();
 			Node[,] nodes = new Node[150, 150];
+			Point t = new Point();
+			float tempx, tempy;
+			bool open;
+			s.Start();
 			for (int x = -75; x < 75; x++) {
 				for (int y = -75; y < 75; y++) {
-					float tempx = center.X + x*4;
-					float tempy = center.Y + y*4;
-					bool open = true;
-					Point t = new Point((int)tempx, (int)tempy);
+					tempx = center.X + x*4;
+					tempy = center.Y + y*4;
+					open = true;
+					t = new Point((int)tempx, (int)tempy);
 					open = !GetRegion((int)tempx, (int)tempy).CollisionPoints.Contains(t);
 					nodes[x + 75, y + 75] = new Node() { IsOpen = open, Location = t };
 				}

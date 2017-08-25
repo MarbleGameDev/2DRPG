@@ -108,7 +108,12 @@ namespace _2DRPG.LogicUtils {
 				}
 			return path;
 		}
-
+		/// <summary>
+		/// Adds the boarder amount to each side of the quad array passed
+		/// </summary>
+		/// <param name="quadPosition"></param>
+		/// <param name="boarder"></param>
+		/// <returns></returns>
 		public static float[] ExpandPosition(float[] quadPosition, float boarder) {
 			float[] tempPos = new float[12];
 			quadPosition.CopyTo(tempPos, 0);

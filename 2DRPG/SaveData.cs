@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Reflection;
 using Ionic.Zip;
+using System.Windows.Forms;
 
 namespace _2DRPG {
 	public static class SaveData {
@@ -21,7 +22,7 @@ namespace _2DRPG {
 		private static JsonSerializer serializer = new JsonSerializer();
 
 		public static Settings GameSettings = new Settings();
-		public static Dictionary<string, GameSave> RegionData = new Dictionary<string, GameSave>();
+		//public static Dictionary<string, GameSave> RegionData = new Dictionary<string, GameSave>();
 
 		static SaveData() {
 			Directory.CreateDirectory(saveLocation);
@@ -48,20 +49,29 @@ namespace _2DRPG {
 		}
 
 		/// <summary>
-		/// Saves the game data to the packages
+		/// Checks that the Game Data directory is intact, will probably add zip verification later
+		/// </summary>
+		/// <returns></returns>
+		public static bool CheckSaveState() {
+			if (!Directory.Exists(gameDataLocation)) {
+				return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Saves the open game data to the packages
 		/// </summary>
 		public static void SaveGameData() {
-			lock (RegionData) {
-				lock (WorldData.currentRegions) {
-					foreach (string r in WorldData.regionFiles.Keys) {
-						GameSave s = new GameSave();
-						foreach (World.Objects.WorldObjectBase b in WorldData.regionFiles[r].GetWorldObjects()) {
-							s.worldObjects.Add(b.StoreObject());
-						}
-						WorldData.regionFiles[r].CompileCollisionHash();
-						s.CollisionPoints = WorldData.regionFiles[r].CollisionPoints;
-						SerializeObjectToZip(s, r, "Package_01");
+			lock (WorldData.currentRegions) {
+				foreach (string r in WorldData.currentRegions.Keys) {
+					GameSave s = new GameSave();
+					foreach (World.Objects.WorldObjectBase b in WorldData.currentRegions[r].GetWorldObjects()) {
+						s.worldObjects.Add(b.StoreObject());
 					}
+					WorldData.currentRegions[r].CompileCollisionHash();
+					s.CollisionPoints = WorldData.currentRegions[r].CollisionPoints;
+					SerializeObjectToZip(s, r, "Package_01");
 				}
 			}
 			SaveTasks();
@@ -94,17 +104,9 @@ namespace _2DRPG {
 		}
 
 
-		public static void LoadRegion(string s) {
-			lock (RegionData) {
-				if (!RegionData.ContainsKey(s))
-					RegionData.Add(s, DeSerializeObjectFromZip<GameSave>(s, "Package_01"));
-			}
-		}
-		public static void UnloadRegion(string s) {
-			lock (RegionData) {
-				if (RegionData.ContainsKey(s))
-					RegionData.Remove(s);
-			}
+		public static GameSave LoadRegion(string regionTag) {
+
+			return DeSerializeObjectFromZip<GameSave>(regionTag, "Package_01");
 		}
 
 
@@ -137,7 +139,7 @@ namespace _2DRPG {
 		//Package_01: Region Data
 		//Package_02: Tasks Data
 
-		public static void SerializeObjectToZip(object obj, string fileName, string zipName) {
+		private static void SerializeObjectToZip(object obj, string fileName, string zipName) {
 			using (ZipFile zip = ZipFile.Read(gameDataLocation + zipName + ".rzz"))
 			using (Stream st = new MemoryStream())
 			using (StreamWriter sw = new StreamWriter(st))
@@ -153,7 +155,7 @@ namespace _2DRPG {
 				zip.Save();
 			}
 		}
-		public static T DeSerializeObjectFromZip<T>(string fileName, string zipName) {
+		private static T DeSerializeObjectFromZip<T>(string fileName, string zipName) {
 			using (ZipFile zip = ZipFile.Read(gameDataLocation + zipName + ".rzz")) {
 				if (!zip.ContainsEntry(fileName + ".rz")) {
 					System.Diagnostics.Debug.WriteLine("File does not exist: " + fileName);
@@ -163,6 +165,12 @@ namespace _2DRPG {
 				using (JsonReader reader = new JsonTextReader(sw)) {
 					return serializer.Deserialize<T>(reader);
 				}
+			}
+		}
+
+		private static bool CheckObjectInZip(string fileName, string zipName) {
+			using (ZipFile zip = ZipFile.Read(gameDataLocation + zipName + ".rzz")) {
+				return zip.ContainsEntry(fileName + ".rz");
 			}
 		}
 
