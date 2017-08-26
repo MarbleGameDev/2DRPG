@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using _2DRPG.World.Objects;
 using _2DRPG.World;
 using System.Reflection;
+using _2DRPG.Entities;
 
 namespace _2DRPG.GUI.Windows {
 	class BuilderWindow : IWindow {
 
 		private static WorldObjectBase currentObject;
+		private static StandardMob currentMob;
 		public static bool checkWorldObjects = false;
+		//private static bool isEntity = false;
 
 		public static void SetCurrentObject(WorldObjectBase obj) {
 			currentObject = obj;
@@ -23,19 +26,58 @@ namespace _2DRPG.GUI.Windows {
 		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 3, "button", null, null) { hideTop = true };
 		static UIDropdownButton newObjects = new UIDropdownButton(0, 100, 100, 20, 2, "button", new UIText(0, 100, .5f, 1, "Select Object Type")) { Visible = false, hideTop = true, showDrops = true, displaySize = 4 };
 		static UIButton applyBut = new UIButton(185, -140, 65, 8, () => { NewObject(); }, 1, "button") { displayLabel = new UIText(188, -140, .5f, 0, "Apply"), Visible = false };
-		static UIText objectName = new UIText(220, 100, .5f, 1, "No Object Selected") { textColor = System.Drawing.Color.Aqua};
+		static UIText objectName = new UIText(220, 125, .5f, 1, "No Object Selected") { textColor = System.Drawing.Color.Aqua};
+		static UIText entityName = new UIText(220, 125, .5f, 1, "Selected Object is not Entity") { textColor = System.Drawing.Color.Aqua };
 
-		public HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
-			new UIBase(220, 0, 100, 180, 4, "darkBack"),
-			new UIButton(310, 170, 10, 10, () => { Screen.CloseWindow("worldBuilder"); },1, "button"){ displayLabel = new UIText(317, 175, 1f, 0, "X") },
-			new UIButton(185, 140, 65, 8, () => { Screen.CloseWindow("worldBuilder");  checkWorldObjects = true; },1, "button"){ displayLabel = new UIText(188, 142, .5f, 0, "Select Object") },
-			new UIButton(165, -160, 45, 8, () => { SaveData.SaveGameData(); }, 1, "button"){ displayLabel = new UIText(168, -160, .5f, 0, "Save Game")},
-			new UIButton(265, -160, 35, 8, () => { WorldData.RemoveObject(currentObject); }, 1, "button"){ displayLabel = new UIText(268, -160, .5f, 0, "Delete")},
-			new UIButton(185, 160, 65, 8, () => { newObjects.Visible = !newObjects.Visible; }, 1, "button"){ displayLabel = new UIText(188, 160, .5f, 0, "New Object")},
+		static UIDropdownButton AIType = new UIDropdownButton(240, 100, 40, 10, 3, "button", new UIText(240, 100, .5f, 2, ""), null) { Visible = false };
+		static UIDropdownButton AIActive = new UIDropdownButton(240, 70, 40, 10, 3, "button", new UIText(240, 70, .5f, 2, ""), new UIButton[] {
+			new UIButton(() => {
+				currentMob.mobAI.active = true;
+				AIActive.displayLabel.SetText("True");
+				AIActive.ToggleDropdowns();
+			}){ displayLabel = new UIText(0, 0, .5f, 1, "True")}, 
+			new UIButton(() => {
+				currentMob.mobAI.active = false;
+				AIActive.displayLabel.SetText("False");
+				AIActive.ToggleDropdowns();
+			}){ displayLabel = new UIText(0, 0, .5f, 1, "False")}
+		}) { Visible = false };
+
+		static UITab tabs = new UITab(190, 170, 35, 10, 3, new List<UIButton> {
+			new UIButton("textBox") { displayLabel = new UIText(0, 0, .5f, 1, "Objects")},
+			new UIButton("textBox") { displayLabel = new UIText(0, 0, .5f, 1, "Entities")}
+		}, new HashSet<UIBase>[] {
+			new HashSet<UIBase> {
+			new UIButton(155, 140, 35, 8, () => { Screen.CloseWindow("worldBuilder");  checkWorldObjects = true; },1, "button"){ displayLabel = new UIText(155, 142, .5f, 0, "Select Object") },
+			new UIButton(300, 140, 20, 8, () => { WorldData.RemoveObject(currentObject); }, 1, "button"){ displayLabel = new UIText(300, 142, .5f, 0, "Delete")},
+			new UIButton(235, 140, 35, 8, () => { newObjects.Visible = !newObjects.Visible; }, 1, "button"){ displayLabel = new UIText(235, 142, .5f, 0, "New Object")},
 			objectData, newObjects, applyBut, objectName
+			},
+			new HashSet<UIBase> {
+				new UIText(160, 100, .5f, 3, "AI Type: "), AIType,
+				new UIText(160, 70, .5f, 3, "AI Active: "), AIActive, 
+				entityName
+			}
+		});
+
+		HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
+			new UIBase(220, 0, 100, 180, 4, "darkBack"),
+			new UIButton(312, 172, 8, 8, () => { Screen.CloseWindow("worldBuilder"); },1, "exit"),
+			new UIButton(288, -170, 30, 8, () => { SaveData.SaveGameData(); }, 1, "button"){ displayLabel = new UIText(288, -168, .5f, 0, "Save Game")},
+			tabs
 		};
 
 		public HashSet<UIBase> LoadObjects() {
+			List<UIButton> tempbuts = new List<UIButton>();
+			foreach(AIBase.AIType s in Enum.GetValues(typeof(AIBase.AIType))) {
+				tempbuts.Add(new UIButton("button") { displayLabel = new UIText(0, 0, .5f, 1, s.ToString()), buttonAction = () => {
+					AIType.displayLabel.SetText(s.ToString());
+					currentMob.mobAI.type = s;
+				} });
+			}
+			AIType.SetDropdowns(tempbuts.ToArray());
+			AIType.displaySize = (tempbuts.Count > 3) ? 3.5f : tempbuts.Count;
+
 			return screenObjects;
 		}
 		public HashSet<UIBase> GetScreenObjects() {
@@ -43,6 +85,22 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		static void UpdateObjectInfo() {
+
+			if (currentObject is StandardMob s) {
+				//isEntity = true;
+				AIType.Visible = true;
+				AIActive.Visible = true;
+				tabs.SetTab(1);
+				currentMob = s;
+				entityName.SetText(currentObject.GetType().Name);
+				AIType.displayLabel.SetText(currentMob.mobAI.type.ToString());
+				AIActive.displayLabel.SetText(currentMob.mobAI.active.ToString());
+			} else {
+				AIType.Visible = false;
+				AIActive.Visible = false;
+				entityName.SetText("Selected Object is not Entity");
+			}
+
 			if (objectData != null) {
 				List<UIButton> b = new List<UIButton>();
 				FieldInfo[] props = currentObject.GetType().GetFields().Where(prop => Attribute.IsDefined(prop, typeof(Editable))).ToArray();
@@ -67,12 +125,13 @@ namespace _2DRPG.GUI.Windows {
 					};
 					b.Add(tb);
 				}
-				objectData.displaySize = (b.Count > 5) ? 5 : b.Count;
+				objectData.displaySize = (b.Count > 5) ? 5.5f : b.Count;
 				objectData.SetDropdowns(b.ToArray());
 				objectName.SetText(currentObject.GetType().Name);
 				objectData.showDrops = true;
 			} else {
-				objectData.displayLabel.SetText("No Object Currently Selected");
+				objectData.displayLabel.SetText("No Object Selected");
+
 			}
 		}
 		static Type nt;
@@ -157,7 +216,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		string[] textures = new string[] {
-			"button", "lightBack", "darkBack", "textBox"
+			"button", "lightBack", "darkBack", "textBox", "exit"
 		};
 
 		public void LoadTextures() {

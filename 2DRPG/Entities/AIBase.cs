@@ -12,6 +12,8 @@ namespace _2DRPG.Entities {
 
 		public AIType type;
 
+		public bool active = true;
+
 		private StandardMob attachedObject;
 
 		public AIBase(StandardMob obj) {
@@ -19,6 +21,8 @@ namespace _2DRPG.Entities {
 		}
 
 		public void AITick() {
+			if (!active)
+				return;
 			switch (type) {
 				case AIType.Aggressive:
 					AggressiveTick();

@@ -150,7 +150,7 @@ namespace _2DRPG {
 			CurrentY += y;
 			CurrentRegionX = (int)Math.Ceiling(CurrentX / 1000) - 1 ;
 			CurrentRegionY = (int)Math.Ceiling(CurrentY / 1000) - 1;
-			oldX = CurrentRegionX - oldX;
+			oldX = CurrentRegionX - oldX; 
 			oldY = CurrentRegionY - oldY;
 			if (oldX != 0 || oldY != 0) {
 				LoadRegionObjects();

@@ -94,6 +94,14 @@ namespace _2DRPG.GUI {
 			scrollAmount += desiredScroll;
 		}
 
+		public bool CheckScrollWheel(float x, float y, int dir, object sender) {
+			if (CheckCoords(x, y)) {
+				ScrollWheel(dir, sender);
+				return true;
+			}
+			return false;
+		}
+
 		public override bool CheckClick(float x, float y) {
 			if (!Visible)
 				return false;

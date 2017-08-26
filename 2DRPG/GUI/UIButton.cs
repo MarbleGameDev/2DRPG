@@ -86,7 +86,7 @@ namespace _2DRPG.GUI {
 		public override void SetScreenPosition(float x, float y) {
 			base.SetScreenPosition(x, y);
 			if (displayLabel != null) {
-				displayLabel.SetScreenPosition(x, y);
+				displayLabel.SetScreenPosition(x, y + (int)(height / 8));
 			}
 		}
 

@@ -24,7 +24,8 @@ namespace _2DRPG {
 			{"button", "Sprites/Button.png" },
 			{"lightBack", "Sprites/LightBackground.png"},
 			{"darkBack", "Sprites/DarkBackground.png"},
-			{"textBox", "Sprites/TextBox.png"}
+			{"textBox", "Sprites/TextBox.png"},
+			{"exit", "Sprites/Exit.png" }
 		};
 
 		private static string spriteLocation = "../../";

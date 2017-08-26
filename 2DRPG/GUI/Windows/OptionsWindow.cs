@@ -8,23 +8,16 @@ using System.Windows.Forms;
 namespace _2DRPG.GUI.Windows {
 	class OptionsWindow : IWindow {
 		
-		static UIDropdownButton windowSize = new UIDropdownButton(60, 50, 40, 10, 3, "button", new UIText(60, 50, .5f, 3, "1920 x 1080") { textColor = System.Drawing.Color.DarkBlue}, null) { displaySize = 6};
-		static UIDropdownButton vSync = new UIDropdownButton(60, 30, 40, 10, 3, "button", new UIText(60, 30, .5f, 3, "True") { textColor = System.Drawing.Color.DarkBlue }, null) { displaySize = 2 };
+		static UIDropdownButton windowSize = new UIDropdownButton(60, 50, 40, 10, 3, "button", new UIText(60, 51, .5f, 3, "1920 x 1080") { textColor = System.Drawing.Color.DarkBlue}, null) { displaySize = 6};
+		static UIDropdownButton vSync = new UIDropdownButton(60, 30, 40, 10, 3, "button", new UIText(60, 31, .5f, 3, "True") { textColor = System.Drawing.Color.DarkBlue }, null) { displaySize = 2 };
+
 		static UIDropdownButton controls = new UIDropdownButton(40, 30, 40, 10, 3, "button", new UIButton[] { }) { displaySize = 4, hideTop = true, showDrops = true, displayLabel = new UIText(0, 0, .5f, 1, "")};
 		static UIDropdownButton controlNames = new UIDropdownButton(-40, 30, 40, 10, 3, "button", new UIButton[] { }) { displaySize = 4, hideTop = true, showDrops = true, displayLabel = new UIText(0, 0, .5f, 1, "")};
-		static int displayNum = -1;
-		static UIButton graphicsButton = new UIButton(-30, 110, 30, 10, () => { UpdateUIObjects(0); graphicsButton.displayLabel.textColor = System.Drawing.Color.BlueViolet; controlsButton.displayLabel.textColor = System.Drawing.Color.Black; }) { displayLabel = new UIText(-30, 112, .5f, 1, "Graphics") };
-		static UIButton controlsButton = new UIButton(30, 110, 30, 10, () => { UpdateUIObjects(1); graphicsButton.displayLabel.textColor = System.Drawing.Color.Black; controlsButton.displayLabel.textColor = System.Drawing.Color.BlueViolet; }) { displayLabel = new UIText(30, 112, .5f, 1, "Controls") };
 
-		static HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 0, 120, 150, 4, "darkBack"),
-			new UIButton(110, 140, 10, 10, () => { Screen.CloseWindow("options"); },1, "button"){ displayLabel = new UIText(117, 143, 1f, 0, "X") },
-			new UIText(0, 140, 1f, 2, "Options"),
-			graphicsButton, controlsButton
-			
-		};
-
-		static HashSet<UIBase>[] tabs = new HashSet<UIBase>[] {
+		static UITab tabs = new UITab(-30, 110, 30, 10, 3, new List<UIButton> {
+			new UIButton("textBox"){ displayLabel = new UIText(-30, 112, .5f, 1, "Graphics") },
+			new UIButton("textBox"){ displayLabel = new UIText(30, 112, .5f, 1, "Controls") }
+		}, new HashSet<UIBase>[] {
 			//Graphics
 			new HashSet<UIBase>() {
 				new UIText(-40, 50, .5f, 2, "Resolution:"), windowSize,
@@ -34,29 +27,21 @@ namespace _2DRPG.GUI.Windows {
 			new HashSet<UIBase>() {
 				new UIText(0, 40, .5f, 2, "Key Bindings:"), controls, controlNames
 			}
+		});
+
+
+		static HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
+			new UIBase(0, 0, 120, 150, 4, "darkBack"),
+			new UIButton(110, 140, 8, 8, () => { Screen.CloseWindow("options"); },1, "exit"),
+			new UIText(0, 140, 1f, 2, "Options"),
+			tabs
 		};
 
 		public HashSet<UIBase> GetScreenObjects() {
 			return UIObjects;
 		}
 
-		private static void UpdateUIObjects(int newDisplayNum) {
-			if (newDisplayNum == displayNum)
-				return;
-			if (displayNum >= 0)
-				foreach (UIBase b in tabs[displayNum]) {
-					UIObjects.Remove(b);
-				}
-			foreach (UIBase b in tabs[newDisplayNum]) {
-				UIObjects.Add(b);
-			}
-			displayNum = newDisplayNum;
-		}
-
 		public HashSet<UIBase> LoadObjects() {
-			UpdateUIObjects(0);
-			graphicsButton.displayLabel.textColor = System.Drawing.Color.BlueViolet;
-			controlsButton.displayLabel.textColor = System.Drawing.Color.Black;
 
 			//Graphics Options
 			windowSize.SetDropdowns(new UIButton[] {
@@ -119,7 +104,7 @@ namespace _2DRPG.GUI.Windows {
 			return UIObjects;
 		}
 
-		string[] textures = new string[] { "button", "darkBack", "textBox" };
+		string[] textures = new string[] { "button", "darkBack", "textBox", "exit" };
 
 		public void LoadTextures() {
 			TextureManager.RegisterTextures(textures);

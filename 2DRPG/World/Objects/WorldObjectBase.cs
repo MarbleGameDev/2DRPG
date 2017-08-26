@@ -47,6 +47,16 @@ namespace _2DRPG.World.Objects {
 			UpdateWorldPosition();
 		}
 		/// <summary>
+		/// Adjusts the dimensions of the world object
+		/// </summary>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		public override void SetScreenDimensions(float width, float height) {
+			this.width = width;
+			this.height = height;
+			UpdateWorldPosition();
+		}
+		/// <summary>
 		/// Returns the location of the object as a Point
 		/// </summary>
 		/// <returns></returns>

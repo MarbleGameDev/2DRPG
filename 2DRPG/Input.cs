@@ -128,8 +128,9 @@ namespace _2DRPG {
 				foreach(HashSet<UIBase> h in windows)
 					foreach (UIBase u in h) {
 						if (u is UIButton bu)
-							if (bu.CheckClick(MouseX, MouseY))
+							if (bu.CheckClick(MouseX, MouseY)) {
 								return;
+							}
 					}
 			}
 		}
@@ -144,8 +145,8 @@ namespace _2DRPG {
 			foreach (HashSet<UIBase> h in windows)
 				foreach (UIBase u in h) {
 					if (u is IScrollable sc)
-						if (sc.CheckCoords(MouseX, MouseY))
-							sc.ScrollWheel(d, null);
+						if (sc.CheckScrollWheel(MouseX, MouseY, d, null))
+							return;
 				}
 		}
 

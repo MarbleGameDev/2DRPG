@@ -75,6 +75,14 @@ namespace _2DRPG.GUI {
 			scrollAmount += desiredScroll;
 		}
 
+		public bool CheckScrollWheel(float x, float y, int dir, object sender) {
+			if (CheckCoords(x, y)) {
+				ScrollWheel(dir, sender);
+				return true;
+			}
+			return false;
+		}
+
 		private void SetScissorMask() {
 			scissorMask[0] = (int)(Screen.PixeltoNormalizedWidth(screenX - width) * Screen.screenWidth) + Screen.screenX;
 			scissorMask[1] = (int)Math.Round(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * linespacing * textSize) * Screen.screenHeight) + Screen.screenY;

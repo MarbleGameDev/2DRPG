@@ -62,7 +62,7 @@ namespace _2DRPG.LogicUtils {
 				}
 		}
 
-		static bool showPath = true;
+		static bool showPath = false;
 
 		public static List<Node> PathFind(Point start, Point end) {
 			List<Node> path = new List<Node>();

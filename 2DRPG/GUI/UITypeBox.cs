@@ -129,5 +129,13 @@ namespace _2DRPG.GUI {
 		public void ScrollTo(float amount) {
 			text.ScrollTo(amount);
 		}
+
+		public bool CheckScrollWheel(float x, float y, int dir, object sender) {
+			if (CheckCoords(x, y)) {
+				ScrollWheel(dir, sender);
+				return true;
+			}
+			return false;
+		}
 	}
 }

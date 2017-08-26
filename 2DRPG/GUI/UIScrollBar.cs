@@ -72,6 +72,14 @@ namespace _2DRPG.GUI {
 			scrollTarget.ScrollTo(scrollAmount);
 		}
 
+		public bool CheckScrollWheel(float x, float y, int dir, object sender) {
+			if (CheckCoords(x, y)) {
+				ScrollWheel(dir, sender);
+				return true;
+			}
+			return false;
+		}
+
 		public void ScrollTo(float amount) {
 			newMouse = ((int)maxY - amount * ((int)maxY - (int)minY));
 			SetScroll();

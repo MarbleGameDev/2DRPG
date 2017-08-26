@@ -74,6 +74,7 @@
     <Compile Include="GUI\Interaction\InteractionQuests.cs" />
     <Compile Include="GUI\UIBlob.cs" />
     <Compile Include="GUI\UIScrollBar.cs" />
+    <Compile Include="GUI\UITab.cs" />
     <Compile Include="GUI\UITypeBox.cs" />
     <Compile Include="GUI\Windows\InteractionWindow.cs" />
     <Compile Include="GUI\Windows\NotificationWindow.cs" />

@@ -103,6 +103,23 @@ namespace _2DRPG {
 			SetScreenPosition(x, y);
 			SetLayer(layer);
 		}
+		public virtual void SetScreenDimensions(float width, float height) {
+			this.width = width;
+			this.height = height;
+			SetScreenPosition(screenX, screenY);
+		}
+		/// <summary>
+		/// Sets the location and dimensions of the object
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		public virtual void SetScreenDimensions(float x, float y, float width, float height) {
+			this.width = width;
+			this.height = height;
+			SetScreenPosition(x, y);
+		}
 
 		/// <summary>
 		/// Moves the Screen Position by the floats passed
