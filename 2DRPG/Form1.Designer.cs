@@ -1,4 +1,6 @@
-﻿namespace _2DRPG {
+﻿using System.Windows.Forms;
+
+namespace _2DRPG {
 	partial class Form1 {
 		/// <summary>
 		/// Required designer variable.
@@ -70,6 +72,12 @@
 
 		#endregion;
 		private OpenGL.GlControl RenderControl;
+
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+			if (keyData == Keys.Left || keyData == Keys.Right)
+				KeyDownE(this, new KeyEventArgs(keyData));
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
 	}
 }
 

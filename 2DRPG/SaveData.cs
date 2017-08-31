@@ -26,6 +26,7 @@ namespace _2DRPG {
 
 		static SaveData() {
 			Directory.CreateDirectory(saveLocation);
+			serializer.ObjectCreationHandling = ObjectCreationHandling.Replace;
 		}
 		/// <summary>
 		/// Loads the player settings, creating new copies if there doesn't exist others
@@ -34,6 +35,9 @@ namespace _2DRPG {
 			GameSettings = DeSerializeObject<Settings>("Settings");
 			if (GameSettings == null)
 				GameSettings = new Settings();
+			Player.MCObject.Data = DeSerializeObject<Player.PlayerData>("Player");
+			if (Player.MCObject.Data == null)
+				Player.MCObject.Data = new Player.PlayerData();
 			Quests.QuestData.ActiveQuests = DeSerializeObject<HashSet<string>>("PlayerQuests");
 			if (Quests.QuestData.ActiveQuests == null)
 				Quests.QuestData.ActiveQuests = new HashSet<string>();
@@ -43,6 +47,7 @@ namespace _2DRPG {
 		/// </summary>
 		public static void SaveGame() {
 			SerializeObject(GameSettings, "Settings");
+			SerializeObject(Player.MCObject.Data, "Player");
 			SerializeObject(Quests.QuestData.ActiveQuests, "PlayerQuests");
 
 			GUI.Windows.NotificationWindow.NewNotification("Game Saved", 190);

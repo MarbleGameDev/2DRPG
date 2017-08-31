@@ -77,6 +77,14 @@ namespace _2DRPG {
 			public object[] extraData;
 		}
 
+		public class ItemStorage {
+			public Type type;
+			public string Name;
+			public int Quantity;
+			public bool Stackable;
+			public object[] extraData;
+		}
+
 
 		public enum WorldObjectType { Animated, Base, Collidable, Controllable, Interactable, Movable, MovableAnimated, StandardMob};
 		public enum InteractionObjectType { Choice, Dialogue, Quests, Path};

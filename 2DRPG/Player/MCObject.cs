@@ -8,6 +8,8 @@ using _2DRPG.Entities;
 namespace _2DRPG.Player {
 	class MCObject : World.Objects.WorldObjectControllable, IDamagable, IEffectable {
 
+		public static PlayerData Data = new PlayerData();
+
 		public MCObject() : base("character") {
 			MovementSpeed = 2.5f;
 			width = 15;

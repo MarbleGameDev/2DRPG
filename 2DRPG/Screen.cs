@@ -45,6 +45,7 @@ namespace _2DRPG {
 			windowFiles.Add("interaction", new InteractionWindow());
 			windowFiles.Add("notification", new NotificationWindow());
 			windowFiles.Add("options", new OptionsWindow());
+			windowFiles.Add("inventory", new InventoryWindow());
 		}
 		/// <summary>
 		/// Opens a window by name if it isn't already open

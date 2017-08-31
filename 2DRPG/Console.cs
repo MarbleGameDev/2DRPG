@@ -12,6 +12,7 @@ namespace _2DRPG {
 		private static Dictionary<string, ConsoleCommand> commands = new Dictionary<string, ConsoleCommand>();
 
 		static Console() {
+			commands.Add("addItem", AddItem);
 			commands.Add("devWindow", DevWindow);
 			commands.Add("echo", Echo);
 			commands.Add("getCoords", GetCoords);
@@ -108,6 +109,30 @@ namespace _2DRPG {
 				Form1.devWin.Show();
 			}
 			return "Dev Window Opened";
+		}
+		private static string AddItem(string[] args) {
+			if (args.Length > 0) {
+				Items.Item n = null;
+				if (args.Length > 1) {
+					List<object> obs = new List<object>();
+					if (int.TryParse(args[1], out int quant)) {
+						obs.Add(quant);
+					} else {
+						return "Invalid item quantity";
+					}
+					if (args.Length > 2) {
+						obs.Add(args[2]);
+					}
+					n = Items.ItemDictionary.GetItem(args[0], obs.ToArray());
+				} else {
+					n = Items.ItemDictionary.GetItem(args[0], null);
+				}
+				if (n == null)
+					return "Invalid item name / arguments";
+				Player.MCObject.Data.inventory.AddItem(n);
+				return "Item added to inventory";
+			}
+			return "Invalid Arguments. Usage: addItem 'item name' [quantity] [custom name]";
 		}
 	}
 }

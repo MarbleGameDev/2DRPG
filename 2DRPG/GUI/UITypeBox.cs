@@ -48,11 +48,13 @@ namespace _2DRPG.GUI {
 				Screen.SelectionEvent += DisableTyping;
 				Input.RedirectKeys = true;
 				Input.DirectCall += GetKey;
+				Input.DirectKeyCode += GetKeyCode;
 				text.SetText(text.GetText() + "|");
 				text.ScrollTo(1f);
 			} else {
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
+				Input.DirectKeyCode -= GetKeyCode;
 				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1));
 				Screen.SelectionEvent -= DisableTyping;
 				UpdatePublicVar();
@@ -64,6 +66,7 @@ namespace _2DRPG.GUI {
 				typingEnabled = false;
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
+				Input.DirectKeyCode -= GetKeyCode;
 				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1));
 			}
 		}
@@ -88,19 +91,19 @@ namespace _2DRPG.GUI {
 		}
 
 		void GetKey(char c) {
-			if (c.Equals(':'))
+			if (c.Equals(':') || c.Equals('|'))
 				return;
 			if (c.Equals((char)Keys.Enter)) {
 				StartTyping();
 			} else if (c.Equals((char)Keys.Back)) {
-				if (text.GetText().Length > 1) {
-					if (!text.GetText().EndsWith(":|") && !text.GetText().EndsWith("`|")) {
-						text.SetText(text.GetText().Remove(text.GetText().Length - 2, 2) + "|");
-						text.ScrollTo(1f);
-					}
+				int index = text.GetText().IndexOf('|');
+				if (index > 0 && !text.GetText().ElementAt(index - 1).Equals(':') && !text.GetText().ElementAt(index - 1).Equals('`')) {
+					text.SetText(text.GetText().Remove(index - 1, 1));
+					text.ScrollTo(1f);
 				}
 			} else {
-				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1) + c + "|");
+				int index = text.GetText().IndexOf("|");
+				text.SetText(text.GetText().Insert(index, c.ToString()));
 				if (LimitTyping && text.rows + 1 > maxRows) {
 					GetKey((char)Keys.Back);
 				}
@@ -108,10 +111,30 @@ namespace _2DRPG.GUI {
 			}
 		}
 
+		void GetKeyCode(Keys k) {
+			int index;
+			switch (k) {
+				case Keys.Left:
+					index = text.GetText().IndexOf('|');
+					if (index == 0 || text.GetText().ElementAt(index - 1).Equals('`') || text.GetText().ElementAt(index - 1).Equals(':'))
+						break;
+					text.SetText(text.GetText().Remove(index, 1).Insert(index - 1, "|"));
+					break;
+				case Keys.Right:
+					index = text.GetText().IndexOf('|');
+					if (index == text.GetText().Length - 1)
+						break;
+					text.SetText(text.GetText().Remove(index, 1).Insert(index + 1, "|"));
+					break;
+			}
+
+		}
+
 		public override void Cleanup() {
 			if (typingEnabled) {
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
+				Input.DirectKeyCode -= GetKeyCode;
 				typingEnabled = false;
 			}
 			text.Cleanup();

@@ -28,7 +28,8 @@ namespace _2DRPG {
 			{KeyInputs.down, Keys.S },
 			{KeyInputs.escape, Keys.Escape},
 			{KeyInputs.interact, Keys.E},
-			{KeyInputs.console, Keys.Oemtilde }
+			{KeyInputs.console, Keys.Oemtilde },
+			{KeyInputs.inventory, Keys.I }
 		};
 		private static bool anyKeysHeld = false;
 		private static Dictionary<KeyInputs, bool> keysHeld = new Dictionary<KeyInputs, bool>() {
@@ -105,6 +106,9 @@ namespace _2DRPG {
 			}
 		}
 
+		/// <summary>
+		/// Clears the list of keys held
+		/// </summary>
 		public static void ClearKeys() {
 			foreach (KeyInputs k in keysHeld.Keys.ToList())
 				keysHeld[k] = false;
@@ -175,19 +179,25 @@ namespace _2DRPG {
 				} else if (GameState.CurrentState == GameState.GameStates.Paused) {
 					Screen.CloseWindow("pause");
 				}
-			}
-			if (keys.Contains(KeyInputs.console)) {
+			} else if (keys.Contains(KeyInputs.console)) {
 				if (Screen.currentWindows.ContainsKey("console"))
 					Screen.CloseWindow("console");
 				else {
 					Screen.OpenWindow("console");
 					ClearKeys();
 				}
-			}
-			if (keys.Contains(KeyInputs.interact)) {
+			} else if (keys.Contains(KeyInputs.interact)) {
 				if (LogicUtils.Logic.interactableObject != null && !Screen.WindowOpen) {
 					GUI.Windows.InteractionWindow.holdInput = true;
-					LogicUtils.Logic.interactableObject.Interact();
+					if (GameState.CurrentState == GameState.GameStates.Game)
+						LogicUtils.Logic.interactableObject.Interact();
+				}
+			} else if (keys.Contains(KeyInputs.inventory)) {
+				if (Screen.currentWindows.ContainsKey("inventory"))
+					Screen.CloseWindow("inventory");
+				else {
+					if (!Screen.WindowOpen && GameState.CurrentState == GameState.GameStates.Game)
+						Screen.OpenWindow("inventory");
 				}
 			}
 		}
@@ -199,7 +209,7 @@ namespace _2DRPG {
 		/// <summary>
 		/// Enum values for the game inputs
 		/// </summary>
-		public enum KeyInputs {none, left, right, up, down, escape, interact, console};
+		public enum KeyInputs {none, left, right, up, down, escape, interact, console, inventory};
 
 	}
 }

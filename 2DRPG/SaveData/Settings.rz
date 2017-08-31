@@ -13,6 +13,7 @@
     "down": "S",
     "escape": "Escape",
     "interact": "E",
-    "console": "Oemtilde"
+    "console": "Oemtilde",
+    "inventory": "I"
   }
 }
