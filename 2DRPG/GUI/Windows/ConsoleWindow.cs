@@ -9,13 +9,13 @@ namespace _2DRPG.GUI.Windows {
 	class ConsoleWindow : IWindow {
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 145, 205, 35, 0, "textBox"),
+			new UIBase(0, 144, 205, 36, 0, "textBox"),
 			input, output,
 
 		};
 
-		static UITypeBox input = new UITypeBox(0, 88, 200, 20, 0, 1, "") { showBackground = false };
-		static UITextBox output = new UITextBox(0, 170, .5f, 400, 0, 5, "");
+		static UITypeBox input = new UITypeBox(0, 100, 200, 20, 0, 1, "") { showBackground = false };
+		static UITextBox output = new UITextBox(0, 168, .5f, 400, 0, 3, "");
 
 		public HashSet<UIBase> LoadObjects() {
 			input.text.SetText("");

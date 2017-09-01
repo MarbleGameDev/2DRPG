@@ -24,7 +24,7 @@ namespace _2DRPG.GUI {
 		}
 		public UIButton(Action click, string labelText, string textureName) : base(textureName) {
 			buttonAction = click;
-			displayLabel = new UIText(0, 0, 1f, 1, labelText);
+			displayLabel = new UIText(0, 0, .5f, 1, labelText);
 		}
 		/// <summary>
 		/// Complete Declaration for UIButton

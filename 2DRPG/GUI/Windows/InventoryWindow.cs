@@ -8,12 +8,16 @@ using _2DRPG.Items;
 namespace _2DRPG.GUI.Windows {
 	class InventoryWindow : IWindow {
 
-		static UIDropdownButton items = new UIDropdownButton(-100, 100, 80, 15, 3, "button", new UIText(0, 0, .5f, 1, ""), new UIButton[] { }) { showDrops = true, hideTop = true, displaySize = 8};
+		//static UIDropdownButton items = new UIDropdownButton(-100, 100, 80, 12, 3, "button", new UIText(0, 0, .5f, 1, ""), new UIButton[] { }) { showDrops = true, hideTop = true, displaySize = 8};
+		static UIGridLayout items = new UIGridLayout(-100, 30, 3) { };
+
+		static UITextBox description = new UITextBox(100, 100, .5f, 100, 3, 6, "Placeholder text");
 
 		static HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 0, 200, 200, 5, "darkBack"),
-			new UIText(0, 0, 1f, 4, "Inventory Window"),
-			items
+			new UIBase(0, 0, 200, 160, 5, "darkBack"),
+			new UIText(0, 150, .5f, 4, "Inventory Window"),
+			new UIBase(-100, 30, 88, 104, 4, "lightBack"),
+			items, description
 		};
 
 		public HashSet<UIBase> GetScreenObjects() {
@@ -31,6 +35,8 @@ namespace _2DRPG.GUI.Windows {
 				int ind = index;
 				Item it = Player.MCObject.Data.inventory.GetSet()[ind];
 				b.Add(new UIButton(() => {
+					description.SetText(it.Name);
+					/*
 					if (it is IConsumable) {
 						Player.MCObject.Data.inventory.GetSet()[ind] -= 1;
 						Player.MCObject.Data.inventory.CleanupInventory();
@@ -39,12 +45,13 @@ namespace _2DRPG.GUI.Windows {
 						Player.MCObject.Data.inventory.EquipItem(ind);
 						UpdateInventoryItems();
 					}
-				}, it.Name + ((it.Quantity > 1) ? (" (" + it.Quantity + ")") : ("")), "button"));
+					*/
+				}, /*it.Name + ((it.Quantity > 1) ? (" (" + it.Quantity + ")") : (""))*/ "Item", "button"));
 			}
-			items.SetDropdowns(b.ToArray());
+			items.SetGridItems(b.ToArray());
 		}
 
-		static string[] textures = new string[] { "darkBack", "button"};
+		static string[] textures = new string[] { "darkBack", "button", "lightBack"};
 
 		public void LoadTextures() {
 			Screen.CloseWindow("hud");

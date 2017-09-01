@@ -21,7 +21,13 @@ namespace _2DRPG {
 
 		public static int screenHeight;
 		public static int screenWidth;
+		/// <summary>
+		/// Offset from the actual window that the rendered screen is
+		/// </summary>
 		public static int screenX;
+		/// <summary>
+		/// Offset from the actual window that the rendered screen is
+		/// </summary>
 		public static int screenY;
 
 		public static int pixelWidth = 640;

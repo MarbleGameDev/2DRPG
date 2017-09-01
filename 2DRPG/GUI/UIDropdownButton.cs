@@ -14,16 +14,14 @@ namespace _2DRPG.GUI {
 		public bool showDrops = false;
 		public bool hideTop = false;
 		private float spacing = 1f; //gap between buttons displayed in the dropdown
-									/// <summary>
-									/// Number of dropdown elements displayed at a time
-									/// </summary>
+		/// <summary>
+		/// Number of dropdown elements displayed at a time
+		/// </summary>
 		public float displaySize = 2f;
 		private int[] scissorMask = new int[4];
-		private float scrollAmount = 0, scrollMax;
+		private float scrollAmount = 0, scrollMax = 0;
 
 		public IScrollable scrollbar = null;
-
-		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIButton[] dropdowns) : this(x, y, width, height, layer, texName, null, dropdowns) { }
 
 		/// <summary>
 		/// Complete Declaration for UIDropdownButton
@@ -42,6 +40,8 @@ namespace _2DRPG.GUI {
 			buttonAction = new Action(ToggleDropdowns);
 		}
 		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIText label) : this(x, y, width, height, layer, texName, label, null) { }
+
+		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIButton[] dropdowns) : this(x, y, width, height, layer, texName, null, dropdowns) { }
 
 		public void SetDropdowns(UIButton[] dropdowns) {
 			if (dropdowns == null)
@@ -145,8 +145,8 @@ namespace _2DRPG.GUI {
 				Gl.Scissor(scissorMask[0], scissorMask[1], scissorMask[2], scissorMask[3]);
 				foreach (UIButton b in drops)
 					b.Render();
+				Gl.PopAttrib();
 			}
-			Gl.PopAttrib();
 		}
 
 
@@ -172,6 +172,8 @@ namespace _2DRPG.GUI {
 		}
 
 		public override void Setup() {
+			foreach (UIButton b in drops)
+				b.Setup();
 			SetScissorMask();
 			Screen.ResizeEvent += SetScissorMask;
 			Screen.SelectionEvent += HideDropdowns;

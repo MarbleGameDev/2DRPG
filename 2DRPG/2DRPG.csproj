@@ -73,6 +73,7 @@
     <Compile Include="GUI\Interaction\InteractionPath.cs" />
     <Compile Include="GUI\Interaction\InteractionQuests.cs" />
     <Compile Include="GUI\UIBlob.cs" />
+    <Compile Include="GUI\UIGridLayout.cs" />
     <Compile Include="GUI\UIScrollBar.cs" />
     <Compile Include="GUI\UITab.cs" />
     <Compile Include="GUI\UITypeBox.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Items\ItemClasses\BasicChestplate.cs" />
     <Compile Include="Items\ItemClasses\FoodBase.cs" />
     <Compile Include="Items\ItemDictionary.cs" />
+    <Compile Include="Items\WeaponItem.cs" />
     <Compile Include="LogicUtils\PathLogic.cs" />
     <Compile Include="Player\PlayerInventory.cs" />
     <Compile Include="Quests\IQuest.cs" />

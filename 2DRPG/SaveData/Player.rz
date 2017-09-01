@@ -3,7 +3,297 @@
   "playerY": 0.0,
   "playerZ": 0.0,
   "inventory": {
-    "ItemList": [],
+    "ItemList": [
+      {
+        "type": "_2DRPG.Items.ItemClasses.FoodBase, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Banana",
+        "Quantity": 5,
+        "Stackable": true,
+        "extraData": null
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.FoodBase, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Oatmeal",
+        "Quantity": 12,
+        "Stackable": true,
+        "extraData": null
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.FoodBase, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "soup",
+        "Quantity": 1,
+        "Stackable": true,
+        "extraData": null
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.FoodBase, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Generic Foodstuff",
+        "Quantity": 80,
+        "Stackable": true,
+        "extraData": null
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      },
+      {
+        "type": "_2DRPG.Items.ItemClasses.BasicChestplate, 2DRPG, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "Name": "Basic Chestplate",
+        "Quantity": 1,
+        "Stackable": false,
+        "extraData": [
+          1
+        ]
+      }
+    ],
     "EquippedList": []
   }
 }
