@@ -29,7 +29,7 @@ namespace _2DRPG {
 			{KeyInputs.escape, Keys.Escape},
 			{KeyInputs.interact, Keys.E},
 			{KeyInputs.console, Keys.Oemtilde },
-			{KeyInputs.inventory, Keys.I }
+			{KeyInputs.inventory, Keys.Tab }
 		};
 		private static bool anyKeysHeld = false;
 		private static Dictionary<KeyInputs, bool> keysHeld = new Dictionary<KeyInputs, bool>() {
@@ -43,6 +43,9 @@ namespace _2DRPG {
 
 		public static float MouseX, MouseY;
 		public static bool MouseHeld;
+		/// <summary>
+		/// Set true to allow input to be passed along to other game elements
+		/// </summary>
 		public static bool RedirectKeys;
 
 		public static void KeyDown(KeyEventArgs e) {
@@ -78,6 +81,7 @@ namespace _2DRPG {
 		public static void KeyUp(KeyEventArgs e) {
 			if (RedirectKeys && !e.KeyCode.Equals(Keys.Escape) && !e.KeyCode.Equals(Keys.Oemtilde))
 				return;
+
 			KeyInputs k = keycodes.FirstOrDefault(x => x.Value == e.KeyCode).Key;  //Reverse lookup for the key based on the value given by the keycode event
 			if (keysHeld.ContainsKey(k)) {
 				if (keysHeld[k]) {
@@ -164,6 +168,7 @@ namespace _2DRPG {
 		/// </summary>
 		/// <param name="keys"></param>
 		private static void ManualKeys(KeyInputs[] keys) {
+			System.Diagnostics.Debug.WriteLine(keys.Length);
 			if (keys.Contains(KeyInputs.escape)) {
 				if (GameState.CurrentState == GameState.GameStates.Game) {
 					List<string> windows = Screen.currentWindows.Keys.ToList();

@@ -14,7 +14,7 @@ namespace _2DRPG {
 
 		private static Dictionary<string, uint> loadedTextureIDs = new Dictionary<string, uint>();
 
-		private static HybridDictionary texturePaths = new HybridDictionary() {
+		private static Dictionary<string, string> texturePaths = new Dictionary<string, string>() {
 			{"flower", "Sprites/SpriteSheets/Flowers.png" },
 			{"default", "Sprites/Default.png" },
 			{"heart", "Sprites/Heart.png" },
@@ -25,7 +25,9 @@ namespace _2DRPG {
 			{"lightBack", "Sprites/LightBackground.png"},
 			{"darkBack", "Sprites/DarkBackground.png"},
 			{"textBox", "Sprites/TextBox.png"},
-			{"exit", "Sprites/Exit.png" }
+			{"exit", "Sprites/Exit.png" },
+			{ "none", "Sprites/None.png"},
+			{ "selected", "Sprites/Selected.png"}
 		};
 
 		private static string spriteLocation = "../../";
@@ -81,7 +83,7 @@ namespace _2DRPG {
 		/// <param name="textureNames"></param>
 		public static void RegisterTextures(string[] textureNames) {
 			foreach (string s in textureNames) {
-				if (texturePaths.Contains(s) && textureUses.ContainsKey(s)) {
+				if (texturePaths.ContainsKey(s) && textureUses.ContainsKey(s)) {
 					textureUses[s]++;
 					if (!loadedTextureIDs.ContainsKey(s))
 						LoadTexture(s);
@@ -94,7 +96,7 @@ namespace _2DRPG {
 		/// <param name="textureNames"></param>
 		public static void UnRegisterTextures(string[] textureNames) {
 			foreach (string s in textureNames) {
-				if (texturePaths.Contains(s) && textureUses.ContainsKey(s)) {
+				if (texturePaths.ContainsKey(s) && textureUses.ContainsKey(s)) {
 					textureUses[s]--;
 					if (textureUses[s] <= 0) {
 						if (loadedTextureIDs.ContainsKey(s)) {

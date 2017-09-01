@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 namespace _2DRPG.GUI {
 	class UIGridLayout : UIButton, IScrollable {
 
-		List<UIButton> gridItems = new List<UIButton>();
+		List<UIItem> gridItems = new List<UIItem>();
+
+		private int selectedIndex = -1;
 
 		public int gridWidth = 5;
 		public int gridDisplayHeight = 6;
@@ -25,14 +27,31 @@ namespace _2DRPG.GUI {
 			SetLayer(layer);
 		}
 
-		public void SetGridItems(UIButton[] items) {
+		public void SelectGridItem(int index) {
+			if (index >= gridItems.Count)
+				return;
+			foreach (UIItem i in gridItems) {
+				i.IsSelected = false;
+			}
+			gridItems[index].IsSelected = true;
+			selectedIndex = index;
+		}
+
+		public UIItem GetSelectedGridItem() {
+			if (selectedIndex > 0) {
+				return gridItems[selectedIndex];
+			}
+			return null;
+		}
+
+		public void SetGridItems(UIItem[] items) {
 			if (items == null)
 				return;
 			gridItems.Clear();
 			int counter = 0;
 			float xLeft = screenX - ((gridWidth - 1) * (gridSize + gridSpacing)) / 2f;
 			float yTop = ((gridDisplayHeight-1) * (gridSize + gridSpacing)) / 2f + screenY;
-			foreach (UIButton b in items) {
+			foreach (UIItem b in items) {
 				b.SetScreenDimensions((counter % gridWidth) * (gridSize + gridSpacing) + xLeft, yTop - (counter / gridWidth) * (gridSize + gridSpacing), gridSize / 2f, gridSize / 2f);
 				counter++;
 				b.SetLayer(layer);

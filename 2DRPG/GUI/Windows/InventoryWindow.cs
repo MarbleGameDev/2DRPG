@@ -8,7 +8,6 @@ using _2DRPG.Items;
 namespace _2DRPG.GUI.Windows {
 	class InventoryWindow : IWindow {
 
-		//static UIDropdownButton items = new UIDropdownButton(-100, 100, 80, 12, 3, "button", new UIText(0, 0, .5f, 1, ""), new UIButton[] { }) { showDrops = true, hideTop = true, displaySize = 8};
 		static UIGridLayout items = new UIGridLayout(-100, 30, 3) { };
 
 		static UITextBox description = new UITextBox(100, 100, .5f, 100, 3, 6, "Placeholder text");
@@ -30,28 +29,34 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		public void UpdateInventoryItems() {
-			List<UIButton> b = new List<UIButton>();
+			List<UIItem> b = new List<UIItem>();
 			for (int index = 0; index < Player.MCObject.Data.inventory.GetSet().Count; index++) {
 				int ind = index;
 				Item it = Player.MCObject.Data.inventory.GetSet()[ind];
-				b.Add(new UIButton(() => {
+				//b.Add(new UIItem(() => {
+				//	description.SetText(it.Name);
+				/*
+				if (it is IConsumable) {
+					Player.MCObject.Data.inventory.GetSet()[ind] -= 1;
+					Player.MCObject.Data.inventory.CleanupInventory();
+					UpdateInventoryItems();
+				} else if (it is IEquippable) {
+					Player.MCObject.Data.inventory.EquipItem(ind);
+					UpdateInventoryItems();
+				}
+				*/
+				//}, "button"));
+				UIItem i = new UIItem("button", it);
+				i.SetButtonAction(() => {
 					description.SetText(it.Name);
-					/*
-					if (it is IConsumable) {
-						Player.MCObject.Data.inventory.GetSet()[ind] -= 1;
-						Player.MCObject.Data.inventory.CleanupInventory();
-						UpdateInventoryItems();
-					} else if (it is IEquippable) {
-						Player.MCObject.Data.inventory.EquipItem(ind);
-						UpdateInventoryItems();
-					}
-					*/
-				}, /*it.Name + ((it.Quantity > 1) ? (" (" + it.Quantity + ")") : (""))*/ "Item", "button"));
+					items.SelectGridItem(ind);
+				});
+				b.Add(i);
 			}
 			items.SetGridItems(b.ToArray());
 		}
 
-		static string[] textures = new string[] { "darkBack", "button", "lightBack"};
+		static string[] textures = new string[] { "darkBack", "button", "lightBack", "selected"};
 
 		public void LoadTextures() {
 			Screen.CloseWindow("hud");

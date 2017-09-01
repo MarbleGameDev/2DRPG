@@ -91,7 +91,8 @@ namespace _2DRPG.GUI.Windows {
 						Input.DirectKeyCode += (Keys k) => {
 							Input.ClearDirectKeyCode();
 							ba.displayLabel.SetText(k.ToString(), .5f);
-							SaveData.GameSettings.keys[pair.Key] = k;
+							Input.keycodes[pair.Key] = k;
+							Input.RedirectKeys = false;
 						};
 					});
 					values.Add(ba);
@@ -107,16 +108,18 @@ namespace _2DRPG.GUI.Windows {
 		string[] textures = new string[] { "button", "darkBack", "textBox", "exit" };
 
 		public void LoadTextures() {
+			tabs.Setup();
 			TextureManager.RegisterTextures(textures);
 			Screen.CloseWindow("hud");
 			Screen.WindowOpen = true;
 		}
 
 		public void UnloadTextures() {
+			tabs.Cleanup();
 			TextureManager.UnRegisterTextures(textures);
 			Screen.OpenWindow("hud");
 			Screen.WindowOpen = false;
-			SaveData.SerializeObject(SaveData.GameSettings, "Settings");
+			SaveData.SaveGame();
 		}
 	}
 }

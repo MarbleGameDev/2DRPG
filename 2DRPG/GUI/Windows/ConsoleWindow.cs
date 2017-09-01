@@ -14,6 +14,9 @@ namespace _2DRPG.GUI.Windows {
 
 		};
 
+		List<string> previousInputs = new List<string>();
+		int currentInput;
+
 		static UITypeBox input = new UITypeBox(0, 100, 200, 20, 0, 1, "") { showBackground = false };
 		static UITextBox output = new UITextBox(0, 168, .5f, 400, 0, 3, "");
 
@@ -31,10 +34,31 @@ namespace _2DRPG.GUI.Windows {
 		private void SubmitInput() {
 			if (input.text.GetText().Substring(1).Length == 0)
 				return;
-			output.SetText(output.GetText() + "\n" + Console.ExecuteCommand(input.text.GetText().Substring(1)));
+			string s = input.text.GetText().Substring(1);
+			output.SetText(output.GetText() + "\n" + Console.ExecuteCommand(s));
+			previousInputs.Add(s);
+			currentInput = previousInputs.Count;
 			input.text.SetText("`");
 			input.StartTyping();
 			output.ScrollTo(1f);
+		}
+
+		public void KeyCode(Keys e) {
+			switch (e) {
+				case Keys.Up:
+					if (currentInput - 1 >= 0) {
+						currentInput--;
+						input.text.SetText("`" + previousInputs[currentInput] + "|");
+					}
+					break;
+				case Keys.Down:
+					if (++currentInput < previousInputs.Count) {
+						input.text.SetText("`" + previousInputs[currentInput] + "|");
+					} else {
+						input.text.SetText("`|");
+					}
+					break;
+			}
 		}
 
 
@@ -43,12 +67,14 @@ namespace _2DRPG.GUI.Windows {
 		public void LoadTextures() {
 			input.Setup();
 			output.Setup();
+			Input.DirectKeyCode += KeyCode;
 			TextureManager.RegisterTextures(textures);
 		}
 
 		public void UnloadTextures() {
 			input.Cleanup();
 			output.Cleanup();
+			Input.DirectKeyCode -= KeyCode;
 			TextureManager.UnRegisterTextures(textures);
 		}
 	}

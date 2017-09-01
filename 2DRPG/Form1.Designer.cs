@@ -74,7 +74,7 @@ namespace _2DRPG {
 		private OpenGL.GlControl RenderControl;
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
-			if (keyData == Keys.Left || keyData == Keys.Right)
+			if (keyData == Keys.Left || keyData == Keys.Right || keyData == Keys.Up || keyData == Keys.Down || keyData == Keys.Tab)
 				KeyDownE(this, new KeyEventArgs(keyData));
 			return base.ProcessCmdKey(ref msg, keyData);
 		}

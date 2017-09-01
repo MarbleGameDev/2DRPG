@@ -151,15 +151,19 @@ namespace _2DRPG.GUI {
 
 
 		public void ToggleDropdowns() {
-			Screen.SelectionEvent -= HideDropdowns;
+			ignoreHide = true;
 			Screen.InvokeSelection();
-			Screen.SelectionEvent += HideDropdowns;
+			ignoreHide = false;
 			showDrops = !showDrops;
 		}
+
+		private bool ignoreHide = false;
 		/// <summary>
 		/// If the top is hidden, it won't ever be hidden by selections
 		/// </summary>
 		public void HideDropdowns() {
+			if (ignoreHide)
+				return;
 			if (!hideTop)
 				showDrops = false;
 		}
@@ -169,6 +173,7 @@ namespace _2DRPG.GUI {
 				b.Cleanup();
 			Screen.ResizeEvent -= SetScissorMask;
 			Screen.SelectionEvent -= HideDropdowns;
+			HideDropdowns();
 		}
 
 		public override void Setup() {
@@ -177,6 +182,7 @@ namespace _2DRPG.GUI {
 			SetScissorMask();
 			Screen.ResizeEvent += SetScissorMask;
 			Screen.SelectionEvent += HideDropdowns;
+			scrollAmount = 0;
 		}
 	}
 }
