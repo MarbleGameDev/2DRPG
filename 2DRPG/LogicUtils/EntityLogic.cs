@@ -38,7 +38,7 @@ namespace _2DRPG.LogicUtils {
 						float dist = ObjectDistance(o, WorldData.controllableOBJ);
 						if (dist <= interactionDistance) {
 							if (o is WorldObjectInteractable io) {
-								if (ObjectDistance(io, WorldData.controllableOBJ) < ObjectDistance(interactableObject, WorldData.controllableOBJ))
+								if (interactableObject == null || dist < ObjectDistance(interactableObject, WorldData.controllableOBJ))
 									interactableObject = io;
 							}
 						}

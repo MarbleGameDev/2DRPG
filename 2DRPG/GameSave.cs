@@ -14,7 +14,7 @@ namespace _2DRPG {
 	public class GameSave {
 		public List<WorldObjectStorage> worldObjects = new List<WorldObjectStorage>();
 
-		public HashSet<Point> CollisionPoints = new HashSet<Point>();
+		public Dictionary<int, HashSet<int>> CollisionPoints = new Dictionary<int, HashSet<int>>();
 
 		/// <summary>
 		/// Constructs a WorldObject based on the storage object passed

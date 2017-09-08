@@ -35,7 +35,7 @@ namespace _2DRPG.World.Regions {
 			return nodes[dx + 75, dy + 75];
 		}
 
-		public List<Node> GetSurroundingNodes(Node nd, Node end) {
+		public List<Node> GetSurroundingNodes(Node nd) {
 			int dx = (nd.Location.X - centerX) / 4;
 			int dy = (nd.Location.Y - centerY) / 4;
 			if (Math.Abs(dx) >= 74 || Math.Abs(dy) >= 74)
@@ -51,10 +51,6 @@ namespace _2DRPG.World.Regions {
 				nodes[dx + 74, dy + 75],
 				nodes[dx + 74, dy + 76]
 			};
-			foreach (Node n in nods) {
-				if (n.IsOpen)
-					n.CalculateDistances(nd, end);
-			}
 			return nods;
 		}
 	}

@@ -14,7 +14,7 @@ namespace _2DRPG.World.Regions {
 		public string RegionTag { get; private set; }
 		public HashSet<string> TextureNames = new HashSet<string>();
 		protected HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
-		public HashSet<Point> CollisionPoints = new HashSet<Point>();
+		public Dictionary<int, HashSet<int>> CollisionPoints = new Dictionary<int, HashSet<int>>();
 
 		public RegionBase(string regionTag, GameSave save) {
 			RegionTag = regionTag;
@@ -58,16 +58,19 @@ namespace _2DRPG.World.Regions {
 				}
 
 			CollisionPoints.Clear();
-			for (int x = 0; x < 1000; x++) {
-				for (int y = 0; y < 1000; y++) {
+			for (int x = 0; x < 1000; x+= 4) {
+				for (int y = 0; y < 1000; y+= 4) {
 					int tempX = RegionX * 1000 + x;
 					int tempY = RegionY * 1000 + y;
 					bool open = true;
 					foreach (WorldObjectBase b in regobs) {
-						open = open & !LogicUtils.Logic.CheckIntersection(LogicUtils.PathLogic.ExpandPosition(b.quadPosition, 8), tempX, tempY);
+						open = open && !LogicUtils.Logic.CheckIntersection(LogicUtils.PathLogic.ExpandPosition(b.quadPosition, 8), tempX, tempY);
 					}
 					if (!open) {
-						CollisionPoints.Add(new Point(tempX, tempY));
+						if (CollisionPoints.ContainsKey(tempX))
+							CollisionPoints[tempX].Add(tempY);
+						else
+							CollisionPoints.Add(tempX, new HashSet<int>() { tempY });
 					}
 				}
 			}

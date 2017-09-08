@@ -44,7 +44,8 @@ namespace _2DRPG {
 				}
 			}
 			foreach (string s in removeList)
-				currentRegions.Remove(s);
+				lock(currentRegions)
+					currentRegions.Remove(s);
 			for (int rx = CurrentRegionX - 1; rx <= CurrentRegionX + 1; rx++) {
 				for (int ry = CurrentRegionY - 1; ry <= CurrentRegionY + 1; ry++) {
 					LoadRegion(rx, ry);
@@ -103,10 +104,11 @@ namespace _2DRPG {
 			int rx = (int)Math.Ceiling(x / 1000f) - 1;
 			int ry = (int)Math.Ceiling(y / 1000f) - 1;
 			string reg = rx + "x" + ry;
-			if (currentRegions.ContainsKey(reg))
+			if (currentRegions.ContainsKey(reg)) {
 				return currentRegions[reg];
-			else
+			} else {
 				return null;
+			}
 		}
 
 		/// <summary>
@@ -173,16 +175,19 @@ namespace _2DRPG {
 			NodeGrid grid = new NodeGrid();
 			Node[,] nodes = new Node[150, 150];
 			Point t = new Point();
-			float tempx, tempy;
-			bool open;
+			int tempx, tempy;
+			bool open = true;
 			s.Start();
 			for (int x = -75; x < 75; x++) {
 				for (int y = -75; y < 75; y++) {
-					tempx = center.X + x*4;
-					tempy = center.Y + y*4;
 					open = true;
-					t = new Point((int)tempx, (int)tempy);
-					open = !GetRegion((int)tempx, (int)tempy).CollisionPoints.Contains(t);
+					tempx = ((center.X + x*4) / 4) * 4;
+					tempy = ((center.Y + y*4) / 4) * 4;
+					t = new Point(tempx, tempy);
+					foreach (RegionBase b in currentRegions.Values)
+						if (b.CollisionPoints.ContainsKey(tempx))
+							if (b.CollisionPoints[tempx].Contains(tempy))
+								open = false;
 					nodes[x + 75, y + 75] = new Node() { IsOpen = open, Location = t };
 				}
 			}

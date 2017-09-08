@@ -168,7 +168,6 @@ namespace _2DRPG {
 		/// </summary>
 		/// <param name="keys"></param>
 		private static void ManualKeys(KeyInputs[] keys) {
-			System.Diagnostics.Debug.WriteLine(keys.Length);
 			if (keys.Contains(KeyInputs.escape)) {
 				if (GameState.CurrentState == GameState.GameStates.Game) {
 					List<string> windows = Screen.currentWindows.Keys.ToList();

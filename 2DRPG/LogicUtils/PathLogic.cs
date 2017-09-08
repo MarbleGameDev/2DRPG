@@ -11,65 +11,19 @@ namespace _2DRPG.LogicUtils {
 	static class PathLogic {
 
 		public static void TestPath() {
-			List<Node> path = new List<Node>();
-			Point start = new Point(170, 90);
-			Point end = new Point((int)WorldData.CurrentX, (int)WorldData.CurrentY);
-			Point center = new Point((start.X + end.X) / 2, (start.Y + end.Y) / 2);
-			NodeGrid grid = WorldData.GetNodeGrid(center);
-			Node st = grid.GetNode(start);
-			Node ed = grid.GetNode(end);
-			if (ed == null || st == null)
-				return;
-			path.Add(st);
-			bool atend = false;
-
-			if (showPath)
-				lock (WorldData.currentRegions)
-					WorldData.tempRender.Clear();
-
-			do {
-				Stopwatch s = new Stopwatch();
-				s.Start();
-				List<Node> surrounding = grid.GetSurroundingNodes(path[path.Count - 1], ed);
-				if (surrounding == null)
-					break;
-				float bestTotal = float.MaxValue;
-				Node bestNode = null;
-				for (int i = 0; i < surrounding.Count; i++) {
-					if (surrounding[i].IsOpen && surrounding[i].TotalDistanceEstimate < bestTotal) {
-						bestNode = surrounding[i];
-						bestTotal = bestNode.TotalDistanceEstimate;
-					}
-				}
-				if (bestNode == null)
-					break;
-				if (path.Count > 2)
-					if (path[path.Count - 1].Equals(bestNode) || path[path.Count - 2].Equals(bestNode))
-						break;
-				path.Add(bestNode);
-				if (Math.Abs(ed.Location.X - bestNode.Location.X) < 4 && Math.Abs(ed.Location.Y - bestNode.Location.Y) < 4)
-					atend = true;
-				if (s.Elapsed > TimeSpan.FromMilliseconds(100)) {
-					System.Diagnostics.Debug.WriteLine("Uh Oh: " + s.Elapsed);
-					break;
-				}
-			} while (!atend);
-			if (showPath)
-				lock (WorldData.currentRegions) {
-					foreach (Node nd in path) {
-						WorldData.tempRender.Add(new World.Objects.WorldObjectBase(nd.Location.X, nd.Location.Y, "button", 1, 1));
-					}
-				}
+			PathFind(new Point(-180, 70), new Point(-240, 70));
 		}
 
 		static bool showPath = false;
 
 		public static List<Node> PathFind(Point start, Point end) {
-			List<Node> path = new List<Node>();
-			Point center = new Point((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+			HashSet <Node> path = new HashSet<Node>(); //Open List
+			HashSet<Node> closed = new HashSet<Node>(); //Closed List
+			Point center = new Point((((start.X + end.X) / 2) / 4) * 4, (((start.Y + end.Y) / 2) / 4 ) * 4);
 			NodeGrid grid = WorldData.GetNodeGrid(center);
 			Node st = grid.GetNode(start);
 			Node ed = grid.GetNode(end);
+			Node current = st;
 			if (ed == null || st == null)
 				return null;
 			path.Add(st);
@@ -80,33 +34,68 @@ namespace _2DRPG.LogicUtils {
 					WorldData.tempRender.Clear();
 
 			do {
-				List<Node> surrounding = grid.GetSurroundingNodes(path[path.Count - 1], ed);
-				if (surrounding == null)
+				List<Node> surrounding = grid.GetSurroundingNodes(current);
+				if (surrounding == null) {
 					break;
-				float bestTotal = float.MaxValue;
-				Node bestNode = null;
+				}
+				//Move from surrounding list to the open path
 				for (int i = 0; i < surrounding.Count; i++) {
-					if (surrounding[i].IsOpen && surrounding[i].TotalDistanceEstimate < bestTotal) {
-						bestNode = surrounding[i];
-						bestTotal = bestNode.TotalDistanceEstimate;
+					if (surrounding[i].IsOpen && !closed.Contains(surrounding[i]))
+						if (!path.Contains(surrounding[i])) {
+							path.Add(surrounding[i]);
+							surrounding[i].ParentNode = current;
+						} else {
+							int newG = surrounding[i].CalculateDistFromStart(current);
+							if (newG < surrounding[i].DistanceFromStart) {
+								surrounding[i].DistanceEstimate(current, ed);
+								surrounding[i].ParentNode = current;
+							}
+						}
+				}
+
+				//Finds best F value from surrounding nodes
+				int bestTotal = int.MaxValue;
+				Node bestNode = null;
+				foreach(Node nd in path) {
+					int dist = nd.DistanceEstimate(current, ed);
+					if (dist < bestTotal) {
+						bestNode = nd;
+						bestTotal = dist;
 					}
 				}
-				if (bestNode == null)
+				if (bestNode == null) {
 					break;
-				if (path.Count > 2)
-					if (path[path.Count - 1].Equals(bestNode) || path[path.Count - 2].Equals(bestNode))
-						break;
-				path.Add(bestNode);
+				}
+
+				path.Remove(bestNode);
+				closed.Add(bestNode);
+				current = bestNode;
+
+				//If close enough, end the search for the end point
 				if (Math.Abs(ed.Location.X - bestNode.Location.X) < 4 && Math.Abs(ed.Location.Y - bestNode.Location.Y) < 4)
 					atend = true;
 			} while (!atend);
+			List<Node> routedPath = new List<Node>() { current };
+			while (true) {
+				current = current.ParentNode;
+				if (current == st)
+					break;
+				else
+					routedPath.Add(current);
+			}
+			routedPath.Reverse();
+
 			if (showPath)
 				lock (WorldData.currentRegions) {
 					foreach (Node nd in path) {
 						WorldData.tempRender.Add(new World.Objects.WorldObjectBase(nd.Location.X, nd.Location.Y, "button", 1, 1));
 					}
+					foreach (Node nd in routedPath)
+						WorldData.tempRender.Add(new World.Objects.WorldObjectBase(nd.Location.X, nd.Location.Y, "textBox", 1, 1));
+
 				}
-			return path;
+
+			return routedPath;
 		}
 		/// <summary>
 		/// Adds the boarder amount to each side of the quad array passed
@@ -127,6 +116,16 @@ namespace _2DRPG.LogicUtils {
 			tempPos[10] -= boarder;
 
 			return tempPos;
+		}
+
+		/// <summary>
+		/// Returns the Pythagorean distance between point A and point B
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <returns></returns>
+		public static float DistanceBetweenPoints(Point a, Point b) {
+			return (float)Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
 		}
 	}
 }

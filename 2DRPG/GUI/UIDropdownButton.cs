@@ -59,6 +59,7 @@ namespace _2DRPG.GUI {
 				drops.Add(b);
 			}
 			scrollMax = (drops.Count - displaySize) * (height * 2 + spacing);
+			scrollAmount = 0;
 			SetScissorMask();
 		}
 

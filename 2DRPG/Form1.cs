@@ -75,6 +75,9 @@ namespace _2DRPG {
 			ResizeE(sender, e);
 
 			LogicUtils.Logic.LogicStart();
+
+
+			//LogicUtils.PathLogic.TestPath();
 		}
 
 		public static void ResizeWindow(int x, int y) {
