@@ -12,7 +12,7 @@ namespace _2DRPG.World.Regions {
 		public int RegionX { get; private set; }
 		public int RegionY { get; private set; }
 		public string RegionTag { get; private set; }
-		public HashSet<string> TextureNames = new HashSet<string>();
+		public List<string> TextureNames = new List<string>();
 		protected HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
 		public Dictionary<int, HashSet<int>> CollisionPoints = new Dictionary<int, HashSet<int>>();
 

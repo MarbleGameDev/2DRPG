@@ -22,7 +22,6 @@ namespace _2DRPG {
 		private static JsonSerializer serializer = new JsonSerializer();
 
 		public static Settings GameSettings = new Settings();
-		//public static Dictionary<string, GameSave> RegionData = new Dictionary<string, GameSave>();
 
 		static SaveData() {
 			Directory.CreateDirectory(saveLocation);

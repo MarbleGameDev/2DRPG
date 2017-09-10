@@ -12,11 +12,14 @@ namespace _2DRPG.Player {
 
 		private List<IEquippable> equipped = new List<IEquippable>();
 
+		/// <summary>
+		/// List of Items for storage
+		/// </summary>
 		public List<GameSave.ItemStorage> ItemList{
 			get {
 				List<GameSave.ItemStorage> stores = new List<GameSave.ItemStorage>();
 				foreach (Item i in items)
-					stores.Add(i.SerializeObject());
+					stores.Add(i.StoreObject());
 				return stores;
 			} set {
 				foreach (GameSave.ItemStorage store in value) {
@@ -29,7 +32,7 @@ namespace _2DRPG.Player {
 			get {
 				List<GameSave.ItemStorage> stores = new List<GameSave.ItemStorage>();
 				foreach (Item i in equipped)
-					stores.Add(i.SerializeObject());
+					stores.Add(i.StoreObject());
 				return stores;
 			}
 			set {
@@ -93,6 +96,10 @@ namespace _2DRPG.Player {
 				EquipItem(items[index]);
 		}
 
+		/// <summary>
+		/// Returns the List of Items in the inventory
+		/// </summary>
+		/// <returns></returns>
 		public List<Item> GetSet() {
 			return items;
 		}

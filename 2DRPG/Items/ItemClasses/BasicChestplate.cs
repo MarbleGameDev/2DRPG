@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace _2DRPG.Items.ItemClasses {
 	class BasicChestplate : ArmorItem {
 
-		public override string Name { get { return "Basic Chestplate"; } }
+		public override string Name { get; set; } = "Basic Chestplate";
 
 		public BasicChestplate() : base(1) {
 
@@ -17,8 +17,8 @@ namespace _2DRPG.Items.ItemClasses {
 
 		}
 
-		public override GameSave.ItemStorage SerializeObject() {
-			GameSave.ItemStorage s = base.SerializeObject();
+		public override GameSave.ItemStorage StoreObject() {
+			GameSave.ItemStorage s = base.StoreObject();
 			s.type = typeof(BasicChestplate);
 			return s;
 		}

@@ -78,6 +78,7 @@
     <Compile Include="GUI\UIScrollBar.cs" />
     <Compile Include="GUI\UITab.cs" />
     <Compile Include="GUI\UITypeBox.cs" />
+    <Compile Include="GUI\Windows\ChestWindow.cs" />
     <Compile Include="GUI\Windows\InteractionWindow.cs" />
     <Compile Include="GUI\Windows\InventoryWindow.cs" />
     <Compile Include="GUI\Windows\NotificationWindow.cs" />
@@ -114,8 +115,9 @@
     <Compile Include="Settings.cs" />
     <Compile Include="World\Editable.cs" />
     <Compile Include="World\Objects\ICollidable.cs" />
+    <Compile Include="World\Objects\IInventory.cs" />
     <Compile Include="World\Objects\WorldObjectCollidable.cs" />
-    <Compile Include="World\Objects\WorldObjectInteractable.cs" />
+    <Compile Include="World\Objects\WorldObjectDialogue.cs" />
     <Compile Include="World\Objects\WorldObjectControllable.cs" />
     <Compile Include="EffectAttack.cs" />
     <Compile Include="Entities\EntityEffect.cs" />
@@ -149,8 +151,10 @@
     <Compile Include="WorldData.cs" />
     <Compile Include="World\Objects\WorldObjectAnimated.cs" />
     <Compile Include="World\Objects\WorldObjectBase.cs" />
+    <Compile Include="World\Objects\WorldObjectInventory.cs" />
     <Compile Include="World\Objects\WorldObjectMovable.cs" />
     <Compile Include="World\Objects\WorldObjectMovableAnimated.cs" />
+    <Compile Include="World\Objects\WorldObjectSimpleItem.cs" />
     <Compile Include="World\Regions\Node.cs" />
     <Compile Include="World\Regions\NodeGrid.cs" />
     <Compile Include="World\Regions\RegionBase.cs" />

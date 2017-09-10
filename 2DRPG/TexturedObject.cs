@@ -37,9 +37,9 @@ namespace _2DRPG {
 
 		}
 
-		public TexturedObject() : this(0, 0, 5, "default") { }
+		public TexturedObject() : this(0, 0, 10, "default") { }
 
-		public TexturedObject(string textureName) : this(0, 0, 5, textureName) { }
+		public TexturedObject(string textureName) : this(0, 0, 10, textureName) { }
 
 		public void ContextCreated() { }
 

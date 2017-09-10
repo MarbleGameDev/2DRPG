@@ -52,6 +52,7 @@ namespace _2DRPG {
 			windowFiles.Add("notification", new NotificationWindow());
 			windowFiles.Add("options", new OptionsWindow());
 			windowFiles.Add("inventory", new InventoryWindow());
+			windowFiles.Add("chest", new ChestWindow());
 		}
 		/// <summary>
 		/// Opens a window by name if it isn't already open

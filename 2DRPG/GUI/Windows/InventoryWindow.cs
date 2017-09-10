@@ -8,7 +8,7 @@ using _2DRPG.Items;
 namespace _2DRPG.GUI.Windows {
 	class InventoryWindow : IWindow {
 
-		static UIGridLayout items = new UIGridLayout(-100, 30, 3) { };
+		static UIGridLayout items = new UIGridLayout(-100, 30, 3);
 
 		static UITextBox description = new UITextBox(100, 100, .5f, 100, 3, 6, "Placeholder text");
 
@@ -29,6 +29,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		public void UpdateInventoryItems() {
+			Random rnd = new Random();
 			List<UIItem> b = new List<UIItem>();
 			for (int index = 0; index < Player.MCObject.Data.inventory.GetSet().Count; index++) {
 				int ind = index;
@@ -46,7 +47,8 @@ namespace _2DRPG.GUI.Windows {
 				}
 				*/
 				//}, "button"));
-				UIItem i = new UIItem("button", it);
+				string texture = "random" + rnd.Next(1, 5);
+				UIItem i = new UIItem(texture, it) { NineSliceRendering = false};
 				i.SetButtonAction(() => {
 					description.SetText(it.Name);
 					items.SelectGridItem(ind);
@@ -56,12 +58,13 @@ namespace _2DRPG.GUI.Windows {
 			items.SetGridItems(b.ToArray());
 		}
 
-		static string[] textures = new string[] { "darkBack", "button", "lightBack", "selected"};
+		static string[] textures = new string[] { "darkBack", "button", "lightBack", "selected", "random1", "random2", "random3", "random4" };
 
 		public void LoadTextures() {
 			Screen.CloseWindow("hud");
 			Screen.WindowOpen = true;
 			TextureManager.RegisterTextures(textures);
+			items.ScrollTo(0);
 		}
 
 		public void UnloadTextures() {

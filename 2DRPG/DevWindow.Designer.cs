@@ -58,12 +58,24 @@
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.Inventories = new System.Windows.Forms.TabPage();
+			this.listBox3 = new System.Windows.Forms.ListBox();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.button5 = new System.Windows.Forms.Button();
+			this.button6 = new System.Windows.Forms.Button();
+			this.button7 = new System.Windows.Forms.Button();
+			this.label3 = new System.Windows.Forms.Label();
+			this.listBox2 = new System.Windows.Forms.ListBox();
+			this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+			this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tabControl1.SuspendLayout();
 			this.Overview.SuspendLayout();
 			this.InteractionTree.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
+			this.Inventories.SuspendLayout();
+			this.toolStrip2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -71,6 +83,7 @@
 			this.tabControl1.Controls.Add(this.Overview);
 			this.tabControl1.Controls.Add(this.InteractionTree);
 			this.tabControl1.Controls.Add(this.tabPage1);
+			this.tabControl1.Controls.Add(this.Inventories);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -242,28 +255,28 @@
 			// choiceToolStripMenuItem
 			// 
 			this.choiceToolStripMenuItem.Name = "choiceToolStripMenuItem";
-			this.choiceToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+			this.choiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.choiceToolStripMenuItem.Text = "Choice";
 			this.choiceToolStripMenuItem.Click += new System.EventHandler(this.ChoiceToolStripMenuItem_Click);
 			// 
 			// dialogueToolStripMenuItem
 			// 
 			this.dialogueToolStripMenuItem.Name = "dialogueToolStripMenuItem";
-			this.dialogueToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+			this.dialogueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.dialogueToolStripMenuItem.Text = "Dialogue";
 			this.dialogueToolStripMenuItem.Click += new System.EventHandler(this.DialogueToolStripMenuItem_Click);
 			// 
 			// questToolStripMenuItem
 			// 
 			this.questToolStripMenuItem.Name = "questToolStripMenuItem";
-			this.questToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+			this.questToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.questToolStripMenuItem.Text = "Quest";
 			this.questToolStripMenuItem.Click += new System.EventHandler(this.QuestToolStripMenuItem_Click);
 			// 
 			// pathToolStripMenuItem
 			// 
 			this.pathToolStripMenuItem.Name = "pathToolStripMenuItem";
-			this.pathToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+			this.pathToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.pathToolStripMenuItem.Text = "Path";
 			this.pathToolStripMenuItem.Click += new System.EventHandler(this.PathToolStripMenuItem_Click);
 			// 
@@ -432,6 +445,117 @@
 			this.listBox1.TabIndex = 0;
 			this.listBox1.SelectedIndexChanged += new System.EventHandler(this.IndexChanged);
 			// 
+			// Inventories
+			// 
+			this.Inventories.Controls.Add(this.toolStrip2);
+			this.Inventories.Controls.Add(this.listBox3);
+			this.Inventories.Controls.Add(this.panel3);
+			this.Inventories.Controls.Add(this.button5);
+			this.Inventories.Controls.Add(this.button6);
+			this.Inventories.Controls.Add(this.button7);
+			this.Inventories.Controls.Add(this.label3);
+			this.Inventories.Controls.Add(this.listBox2);
+			this.Inventories.Location = new System.Drawing.Point(4, 22);
+			this.Inventories.Name = "Inventories";
+			this.Inventories.Padding = new System.Windows.Forms.Padding(3);
+			this.Inventories.Size = new System.Drawing.Size(1019, 541);
+			this.Inventories.TabIndex = 3;
+			this.Inventories.Text = "Inventories";
+			this.Inventories.UseVisualStyleBackColor = true;
+			// 
+			// listBox3
+			// 
+			this.listBox3.FormattingEnabled = true;
+			this.listBox3.Location = new System.Drawing.Point(187, 32);
+			this.listBox3.Name = "listBox3";
+			this.listBox3.Size = new System.Drawing.Size(172, 498);
+			this.listBox3.TabIndex = 20;
+			this.listBox3.SelectedIndexChanged += new System.EventHandler(this.ListBox3_SelectedIndexChanged);
+			// 
+			// panel3
+			// 
+			this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.panel3.AutoScroll = true;
+			this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel3.Location = new System.Drawing.Point(365, 32);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(204, 498);
+			this.panel3.TabIndex = 19;
+			// 
+			// button5
+			// 
+			this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.button5.Location = new System.Drawing.Point(890, 506);
+			this.button5.Name = "button5";
+			this.button5.Size = new System.Drawing.Size(126, 32);
+			this.button5.TabIndex = 18;
+			this.button5.Text = "Save Game";
+			this.button5.UseVisualStyleBackColor = true;
+			this.button5.Click += new System.EventHandler(this.Button5_Click);
+			// 
+			// button6
+			// 
+			this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.button6.Location = new System.Drawing.Point(941, 6);
+			this.button6.Name = "button6";
+			this.button6.Size = new System.Drawing.Size(75, 23);
+			this.button6.TabIndex = 17;
+			this.button6.Text = "Save";
+			this.button6.UseVisualStyleBackColor = true;
+			this.button6.Click += new System.EventHandler(this.Button6_Click);
+			// 
+			// button7
+			// 
+			this.button7.Location = new System.Drawing.Point(128, 7);
+			this.button7.Name = "button7";
+			this.button7.Size = new System.Drawing.Size(52, 20);
+			this.button7.TabIndex = 16;
+			this.button7.Text = "Update";
+			this.button7.UseVisualStyleBackColor = true;
+			this.button7.Click += new System.EventHandler(this.Button7_Click);
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label3.Location = new System.Drawing.Point(9, 7);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(81, 17);
+			this.label3.TabIndex = 15;
+			this.label3.Text = "Inventories:";
+			// 
+			// listBox2
+			// 
+			this.listBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.listBox2.FormattingEnabled = true;
+			this.listBox2.Location = new System.Drawing.Point(8, 32);
+			this.listBox2.Name = "listBox2";
+			this.listBox2.Size = new System.Drawing.Size(172, 498);
+			this.listBox2.TabIndex = 14;
+			this.listBox2.SelectedIndexChanged += new System.EventHandler(this.ListBox2_SelectedIndexChanged);
+			// 
+			// toolStrip2
+			// 
+			this.toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
+			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton2});
+			this.toolStrip2.Location = new System.Drawing.Point(278, 4);
+			this.toolStrip2.Name = "toolStrip2";
+			this.toolStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+			this.toolStrip2.Size = new System.Drawing.Size(81, 25);
+			this.toolStrip2.TabIndex = 21;
+			this.toolStrip2.Text = "toolStrip2";
+			// 
+			// toolStripDropDownButton2
+			// 
+			this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
+			this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+			this.toolStripDropDownButton2.Size = new System.Drawing.Size(69, 22);
+			this.toolStripDropDownButton2.Text = "Add Item";
+			// 
 			// DevWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -450,6 +574,10 @@
 			this.toolStrip1.PerformLayout();
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
+			this.Inventories.ResumeLayout(false);
+			this.Inventories.PerformLayout();
+			this.toolStrip2.ResumeLayout(false);
+			this.toolStrip2.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -490,5 +618,15 @@
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Button button4;
+		private System.Windows.Forms.TabPage Inventories;
+		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.Button button5;
+		private System.Windows.Forms.Button button6;
+		private System.Windows.Forms.Button button7;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.ListBox listBox2;
+		private System.Windows.Forms.ListBox listBox3;
+		private System.Windows.Forms.ToolStrip toolStrip2;
+		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
 	}
 }

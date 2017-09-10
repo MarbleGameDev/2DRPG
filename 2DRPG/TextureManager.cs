@@ -27,7 +27,11 @@ namespace _2DRPG {
 			{"textBox", "Sprites/TextBox.png"},
 			{"exit", "Sprites/Exit.png" },
 			{ "none", "Sprites/None.png"},
-			{ "selected", "Sprites/Selected.png"}
+			{ "selected", "Sprites/Selected.png"},
+			{ "random1", "Sprites/Random.png"},
+			{ "random2", "Sprites/Fish.png"},
+			{ "random3", "Sprites/Random2.png"},
+			{ "random4", "Sprites/Random3.png"}
 		};
 
 		private static string spriteLocation = "../../";

@@ -77,11 +77,12 @@ namespace _2DRPG.LogicUtils {
 			} while (!atend);
 			List<Node> routedPath = new List<Node>() { current };
 			while (true) {
-				current = current.ParentNode;
 				if (current == st)
 					break;
-				else
+				else {
+					current = current.ParentNode;
 					routedPath.Add(current);
+				}
 			}
 			routedPath.Reverse();
 

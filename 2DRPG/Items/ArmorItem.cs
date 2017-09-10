@@ -17,8 +17,8 @@ namespace _2DRPG.Items {
 			ValidSlot = Convert.ToInt32(store.extraData[0]);
 		}
 
-		public override GameSave.ItemStorage SerializeObject() {
-			GameSave.ItemStorage s = base.SerializeObject();
+		public override GameSave.ItemStorage StoreObject() {
+			GameSave.ItemStorage s = base.StoreObject();
 			s.type = typeof(ArmorItem);
 			s.extraData = new object[] { ValidSlot };
 			return s;

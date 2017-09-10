@@ -29,8 +29,8 @@ namespace _2DRPG.Items.ItemClasses {
 			throw new NotImplementedException();
 		}
 
-		public override GameSave.ItemStorage SerializeObject() {
-			GameSave.ItemStorage s = base.SerializeObject();
+		public override GameSave.ItemStorage StoreObject() {
+			GameSave.ItemStorage s = base.StoreObject();
 			s.type = typeof(FoodBase);
 			return s;
 		}

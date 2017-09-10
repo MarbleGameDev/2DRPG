@@ -8,7 +8,7 @@ using _2DRPG.Items.ItemClasses;
 namespace _2DRPG.Items {
 	static class ItemDictionary {
 
-		private static Dictionary<string, Type> itemClasses = new Dictionary<string, Type>();
+		public static Dictionary<string, Type> itemClasses = new Dictionary<string, Type>();
 
 		static ItemDictionary(){
 			RegisterItem("basicChest", typeof(BasicChestplate));

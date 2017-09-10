@@ -9,7 +9,7 @@ namespace _2DRPG.Items {
 
 		public bool Stackable { get; private set; }
 
-		public int Quantity { get; private set; }
+		public int Quantity { get; set; }
 
 		public virtual string Name { get; set; } = "Unnamed Item";
 
@@ -70,8 +70,12 @@ namespace _2DRPG.Items {
 			return a;
 		}
 
-		public virtual GameSave.ItemStorage SerializeObject() {
+		public virtual GameSave.ItemStorage StoreObject() {
 			return new GameSave.ItemStorage { type = typeof(Item), Name = Name, Quantity = Quantity, Stackable = Stackable };
+		}
+
+		public override string ToString() {
+			return Name;
 		}
 
 	}

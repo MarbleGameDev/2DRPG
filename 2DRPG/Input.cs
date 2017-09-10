@@ -194,7 +194,7 @@ namespace _2DRPG {
 				if (LogicUtils.Logic.interactableObject != null && !Screen.WindowOpen) {
 					GUI.Windows.InteractionWindow.holdInput = true;
 					if (GameState.CurrentState == GameState.GameStates.Game)
-						LogicUtils.Logic.interactableObject.Interact();
+						((World.Objects.IInteractable)LogicUtils.Logic.interactableObject).Interact();
 				}
 			} else if (keys.Contains(KeyInputs.inventory)) {
 				if (Screen.currentWindows.ContainsKey("inventory"))

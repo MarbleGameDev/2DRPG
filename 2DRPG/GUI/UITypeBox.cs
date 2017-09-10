@@ -55,7 +55,7 @@ namespace _2DRPG.GUI {
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
 				Input.DirectKeyCode -= GetKeyCode;
-				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1));
+				text.SetText(text.GetText().Replace("|", ""));
 				Screen.SelectionEvent -= DisableTyping;
 				UpdatePublicVar();
 			}
@@ -67,7 +67,7 @@ namespace _2DRPG.GUI {
 				Input.RedirectKeys = false;
 				Input.DirectCall -= GetKey;
 				Input.DirectKeyCode -= GetKeyCode;
-				text.SetText(text.GetText().Remove(text.GetText().Length - 1, 1));
+				text.SetText(text.GetText().Replace("|", ""));
 			}
 		}
 

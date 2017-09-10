@@ -31,8 +31,12 @@ namespace _2DRPG {
 					return new WorldObjectCollidable(store);
 				case WorldObjectType.Controllable:
 					return new WorldObjectControllable(store);
-				case WorldObjectType.Interactable:
-					return new WorldObjectInteractable(store);
+				case WorldObjectType.Dialogue:
+					return new WorldObjectDialogue(store);
+				case WorldObjectType.Inventory:
+					return new WorldObjectInventory(store);
+				case WorldObjectType.SimpleItem:
+					return new WorldObjectSimpleItem(store);
 				case WorldObjectType.Movable:
 					return new WorldObjectMovable(store);
 				case WorldObjectType.MovableAnimated:
@@ -40,6 +44,7 @@ namespace _2DRPG {
 				case WorldObjectType.StandardMob:
 					return new Entities.StandardMob(store);
 				default:
+					System.Diagnostics.Debug.WriteLine("Could not find type of object being constructed from save file, check GameSave");
 					return null;
 
 
@@ -86,7 +91,7 @@ namespace _2DRPG {
 		}
 
 
-		public enum WorldObjectType { Animated, Base, Collidable, Controllable, Interactable, Movable, MovableAnimated, StandardMob};
+		public enum WorldObjectType { Animated, Base, Collidable, Controllable, Dialogue, Inventory, SimpleItem, Movable, MovableAnimated, StandardMob};
 		public enum InteractionObjectType { Choice, Dialogue, Quests, Path};
 
 	}

@@ -12,11 +12,9 @@ namespace _2DRPG.LogicUtils {
 		//Logic for calculating entities
 		public static float interactionDistance = 55f;
 
-		public static WorldObjectInteractable interactableObject;
+		public static WorldObjectBase interactableObject;
 
-		private static WorldObjectInteractable nulled = new WorldObjectInteractable(float.MaxValue, float.MaxValue, 5);
-
-		internal static WorldObjectInteractable InteractableObject { get => interactableObject; set => interactableObject = value; }
+		private static WorldObjectBase nulled = new WorldObjectBase(float.MaxValue, float.MaxValue, 10, "default");
 
 		static void EntityLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused || Screen.WindowOpen) {
@@ -37,9 +35,9 @@ namespace _2DRPG.LogicUtils {
 
 						float dist = ObjectDistance(o, WorldData.controllableOBJ);
 						if (dist <= interactionDistance) {
-							if (o is WorldObjectInteractable io) {
+							if (o is IInteractable) {
 								if (interactableObject == null || dist < ObjectDistance(interactableObject, WorldData.controllableOBJ))
-									interactableObject = io;
+									interactableObject = o;
 							}
 						}
 					}

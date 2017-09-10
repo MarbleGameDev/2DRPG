@@ -70,6 +70,7 @@ namespace _2DRPG {
 		}
 		private static string Builder(string[] args) {
 			if (SaveData.GameSettings.worldBuilder) {
+				Screen.CloseWindow("console");
 				Screen.OpenWindow("worldBuilder");
 				return "";
 			} else {
@@ -108,6 +109,7 @@ namespace _2DRPG {
 				Form1.devWin = new DevWindow();
 				Form1.devWin.Show();
 			}
+			Screen.CloseWindow("console");
 			return "Dev Window Opened";
 		}
 		private static string AddItem(string[] args) {

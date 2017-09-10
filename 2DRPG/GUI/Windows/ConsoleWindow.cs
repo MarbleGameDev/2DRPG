@@ -35,11 +35,11 @@ namespace _2DRPG.GUI.Windows {
 			if (input.text.GetText().Substring(1).Length == 0)
 				return;
 			string s = input.text.GetText().Substring(1);
-			output.SetText(output.GetText() + "\n" + Console.ExecuteCommand(s));
 			previousInputs.Add(s);
 			currentInput = previousInputs.Count;
 			input.text.SetText("`");
 			input.StartTyping();
+			output.SetText(output.GetText() + "\n" + Console.ExecuteCommand(s));
 			output.ScrollTo(1f);
 		}
 
@@ -65,15 +65,11 @@ namespace _2DRPG.GUI.Windows {
 		string[] textures = new string[] { "textBox" };
 
 		public void LoadTextures() {
-			input.Setup();
-			output.Setup();
 			Input.DirectKeyCode += KeyCode;
 			TextureManager.RegisterTextures(textures);
 		}
 
 		public void UnloadTextures() {
-			input.Cleanup();
-			output.Cleanup();
 			Input.DirectKeyCode -= KeyCode;
 			TextureManager.UnRegisterTextures(textures);
 		}

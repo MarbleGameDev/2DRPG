@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using _2DRPG.GUI.Interaction;
+using _2DRPG.World.Objects;
 using _2DRPG.Quests;
+using _2DRPG.Items;
 
 namespace _2DRPG {
 	public partial class DevWindow : Form {
@@ -42,11 +44,20 @@ namespace _2DRPG {
 			Quest.grp.Visible = false;
 			Quest.items.Visible = false;
 			Quest.addButt.Visible = false;
+
+			//Inventories Tab
+			Inventory.list = listBox2;
+			Inventory.items = listBox3;
+			Inventory.grp = panel3;
+			Inventory.AddItems = toolStripDropDownButton2;
+			Inventory.Adds = toolStrip2;
+			Inventory.Adds.Visible = false;
+			Inventory.SetupNewItemsList();
 		}
 
-
+		#region Interaction Tab
 		public static class Interaction {
-			public static World.Objects.WorldObjectInteractable interactedObject;
+			public static WorldObjectDialogue interactedObject;
 			public static TreeView displayTree;
 			public static RichTextBox text;
 			public static GroupBox group;
@@ -419,7 +430,9 @@ namespace _2DRPG {
 		private void DownButton_Click(object sender, EventArgs e) {
 			Interaction.ShiftNode(-1);
 		}
+		#endregion
 
+		#region Quest Tab
 		public static class Quest {
 			public static ListBox list;
 			public static GroupBox grp;
@@ -508,6 +521,7 @@ namespace _2DRPG {
 						if (itemPars[i].Text.Length > 0)
 							tmp.taskItems.Add(new ItemPickup { itemName = itemPars[i].Text, itemQuantity = int.Parse(itemPars[i + 1].Text) });
 					}
+					UpdateSelected();
 				}
 			}
 		}
@@ -552,5 +566,159 @@ namespace _2DRPG {
 			Quest.itemPars.Add(vab);
 			Quest.itemPars.Add(vad);
 		}
+		#endregion
+
+		#region Inventory Tab
+		public static class Inventory {
+			public static ListBox list;
+			public static ListBox items;
+			public static Panel grp;
+			public static ToolStripDropDownButton AddItems;
+			public static ToolStrip Adds;
+
+			private static List<IInventory> inventoriesNearby = new List<IInventory>();
+			private static List<float> distancesNearby = new List<float>();
+
+			public static void SetupNewItemsList() {
+				foreach (string k in ItemDictionary.itemClasses.Keys) {
+					ToolStripButton it = new ToolStripButton(k);
+					string n = k;
+					it.Click += (object sender, EventArgs e) => {
+						if (inventoriesNearby[list.SelectedIndex] == null)
+							return;
+						Item i = ItemDictionary.GetItem(k, new object[] { });
+						inventoriesNearby[list.SelectedIndex].GetItems().Add(i);
+						items.Items.Add(i);
+					};
+					AddItems.DropDownItems.Add(it);
+				}
+			}
+
+			public static void PopulateItemList() {
+				if (list.SelectedIndex < 0)
+					return;
+				IInventory selected = inventoriesNearby[list.SelectedIndex];
+				if (selected == null)
+					return;
+				items.Items.Clear();
+				foreach (Item i in selected.GetItems()) {
+					items.Items.Add(i);
+				}
+				Adds.Visible = true;
+			}
+
+			static TextBox[] itemProperties;
+			static Type itemType;
+
+			public static void ItemSelected() {
+				if (items.SelectedIndex < 0)
+					return;
+				System.Diagnostics.Debug.WriteLine(items.SelectedItem);
+				Item sel = (Item)items.Items[items.SelectedIndex];
+				itemType = sel.GetType();
+				grp.Controls.Clear();
+				List<TextBox> properties = new List<TextBox>();
+				TextBox val = new TextBox() {
+					Location = new Point(1, 25),
+					Size = new Size(200, 20),
+					Text = sel.Name
+				};
+				properties.Add(val);
+				grp.Controls.Add(new Label() { Text = "Item Name: ", Location = new Point(0, 5), Size = new Size(200, 20) });
+				grp.Controls.Add(val);
+				if (sel.Stackable) {
+					TextBox vall = new TextBox() {
+						Location = new Point(1, 65),
+						Size = new Size(200, 20),
+						Text = sel.Quantity.ToString()
+					};
+					properties.Add(vall);
+					grp.Controls.Add(new Label() { Text = "Quantity: ", Location = new Point(0, 45), Size = new Size(200, 20) });
+					grp.Controls.Add(vall);
+				}
+
+
+				itemProperties = properties.ToArray();
+			}
+
+			public static void UpdateNearby() {
+				float maxDist = 100;
+				Point p = WorldData.controllableOBJ.GetPointLocation();
+				List<float> inventoryDistances = new List<float>();
+				List<IInventory> invs = new List<IInventory>();
+				//collect a list of nearby inventories
+				lock (WorldData.currentRegions) {
+					foreach (World.Regions.RegionBase b in WorldData.currentRegions.Values) {
+						foreach (WorldObjectBase bas in b.GetWorldObjects()) {
+							if (bas.GetType() == typeof(WorldObjectInventory) || bas.GetType() == typeof(WorldObjectSimpleItem)) {
+								float dst = LogicUtils.PathLogic.DistanceBetweenPoints(bas.GetPointLocation(), p);
+								if (dst < maxDist) {
+									invs.Add((IInventory)bas);
+									inventoryDistances.Add(dst);
+								}
+							}
+						}
+					}
+				}
+				inventoriesNearby.Clear();
+				distancesNearby.Clear();
+				System.Diagnostics.Debug.WriteLine(invs.Count);
+				//Sort the list of inventories
+				for (int i = 0; i < invs.Count; i++) {
+					bool found = false;
+					for (int j = 0; j < inventoriesNearby.Count; j++) {
+						if (inventoryDistances[i] < distancesNearby[j]) {
+							inventoriesNearby.Insert(j, invs[i]);
+							inventoryDistances.Insert(j, inventoryDistances[i]);
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						inventoriesNearby.Add(invs[i]);
+						distancesNearby.Add(inventoryDistances[i]);
+					}
+				}
+				list.Items.Clear();
+				for (int i = 0; i < inventoriesNearby.Count; i++) {
+					list.Items.Add(inventoriesNearby[i].GetName());
+				}
+			}
+
+			public static void SaveItemData() {
+				if (items.SelectedIndex < 0)
+					return;
+				Item sel = (Item)items.Items[items.SelectedIndex];
+				if (itemProperties[0].Text.Length > 0)
+					sel.Name = itemProperties[0].Text;
+				if (itemProperties.Length > 1) {
+					if (int.TryParse(itemProperties[1].Text, out int var))
+						sel.Quantity = var;
+				}
+				PopulateItemList();
+			}
+		}
+
+		private void Button6_Click(object sender, EventArgs e) {
+			Inventory.SaveItemData();
+		}
+
+		private void Button7_Click(object sender, EventArgs e) {
+			Inventory.UpdateNearby();
+		}
+
+		private void Button5_Click(object sender, EventArgs e) {
+			Inventory.SaveItemData();
+			SaveData.SaveGameData();
+		}
+
+		private void ListBox2_SelectedIndexChanged(object sender, EventArgs e) {
+			Inventory.PopulateItemList();
+		}
+
+		private void ListBox3_SelectedIndexChanged(object sender, EventArgs e) {
+			Inventory.ItemSelected();
+		}
+		#endregion
 	}
 }

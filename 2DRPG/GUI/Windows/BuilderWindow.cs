@@ -7,6 +7,7 @@ using _2DRPG.World.Objects;
 using _2DRPG.World;
 using System.Reflection;
 using _2DRPG.Entities;
+using System.Windows.Forms;
 
 namespace _2DRPG.GUI.Windows {
 	class BuilderWindow : IWindow {
@@ -26,6 +27,7 @@ namespace _2DRPG.GUI.Windows {
 		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 3, "button", null, null) { hideTop = true };
 		static UIDropdownButton newObjects = new UIDropdownButton(0, 100, 100, 20, 2, "button", new UIText(0, 100, .5f, 1, "Select Object Type")) { Visible = false, hideTop = true, showDrops = true, displaySize = 4 };
 		static UIButton applyBut = new UIButton(185, -140, 65, 8, () => { NewObject(); }, 1, "button") { displayLabel = new UIText(188, -140, .5f, 0, "Apply"), Visible = false };
+		static UIButton moveBut = new UIButton(145, 120, 25, 8, () => { StartMovement(); }, 1, "button") { displayLabel = new UIText(145, 122, .5f, 0, "Move"), Visible = false };
 		static UIText objectName = new UIText(220, 125, .5f, 1, "No Object Selected") { textColor = System.Drawing.Color.Aqua};
 		static UIText entityName = new UIText(220, 125, .5f, 1, "Selected Object is not Entity") { textColor = System.Drawing.Color.Aqua };
 
@@ -51,7 +53,7 @@ namespace _2DRPG.GUI.Windows {
 			new UIButton(155, 140, 35, 8, () => { Screen.CloseWindow("worldBuilder");  checkWorldObjects = true; },1, "button"){ displayLabel = new UIText(155, 142, .5f, 0, "Select Object") },
 			new UIButton(300, 140, 20, 8, () => { WorldData.RemoveObject(currentObject); }, 1, "button"){ displayLabel = new UIText(300, 142, .5f, 0, "Delete")},
 			new UIButton(235, 140, 35, 8, () => { newObjects.Visible = !newObjects.Visible; }, 1, "button"){ displayLabel = new UIText(235, 142, .5f, 0, "New Object")},
-			objectData, newObjects, applyBut, objectName
+			objectData, newObjects, applyBut, objectName, moveBut
 			},
 			new HashSet<UIBase> {
 				new UIText(160, 100, .5f, 3, "AI Type: "), AIType,
@@ -73,6 +75,7 @@ namespace _2DRPG.GUI.Windows {
 				tempbuts.Add(new UIButton("button") { displayLabel = new UIText(0, 0, .5f, 1, s.ToString()), buttonAction = () => {
 					AIType.displayLabel.SetText(s.ToString());
 					currentMob.mobAI.type = s;
+					AIType.ToggleDropdowns();
 				} });
 			}
 			AIType.SetDropdowns(tempbuts.ToArray());
@@ -129,6 +132,7 @@ namespace _2DRPG.GUI.Windows {
 				objectData.SetDropdowns(b.ToArray());
 				objectName.SetText(currentObject.GetType().Name);
 				objectData.showDrops = true;
+				moveBut.Visible = true;
 			} else {
 				objectData.displayLabel.SetText("No Object Selected");
 
@@ -150,8 +154,14 @@ namespace _2DRPG.GUI.Windows {
 				case GameSave.WorldObjectType.Controllable:
 					nt = typeof(WorldObjectControllable);
 					break;
-				case GameSave.WorldObjectType.Interactable:
-					nt = typeof(WorldObjectInteractable);
+				case GameSave.WorldObjectType.Dialogue:
+					nt = typeof(WorldObjectDialogue);
+					break;
+				case GameSave.WorldObjectType.Inventory:
+					nt = typeof(WorldObjectInventory);
+					break;
+				case GameSave.WorldObjectType.SimpleItem:
+					nt = typeof(WorldObjectSimpleItem);
 					break;
 				case GameSave.WorldObjectType.Movable:
 					nt = typeof(WorldObjectMovable);
@@ -160,6 +170,7 @@ namespace _2DRPG.GUI.Windows {
 					nt = typeof(WorldObjectMovableAnimated);
 					break;
 				default:
+					System.Diagnostics.Debug.WriteLine("No code path found for this new object!");
 					return;
 			}
 			List<UIButton> b = new List<UIButton>();
@@ -215,6 +226,39 @@ namespace _2DRPG.GUI.Windows {
 			}
 		}
 
+		static void StartMovement() {
+			Screen.InvokeSelection();
+			Input.RedirectKeys = true;
+			Input.DirectKeyCode += CheckKey;
+			moveBut.displayLabel.textColor = System.Drawing.Color.Aqua;
+		}
+		static void StopMovement() {
+			Input.DirectKeyCode -= CheckKey;
+			Input.RedirectKeys = false;
+			moveBut.displayLabel.textColor = System.Drawing.Color.Black;
+		}
+
+		static void CheckKey(Keys k) {
+			switch (k) {
+				case Keys.Enter:
+					StopMovement();
+					UpdateObjectInfo();
+					break;
+				case Keys.Left:
+					currentObject.SetWorldPosition(currentObject.worldX - 1, currentObject.worldY);
+					break;
+				case Keys.Right:
+					currentObject.SetWorldPosition(currentObject.worldX + 1, currentObject.worldY);
+					break;
+				case Keys.Up:
+					currentObject.SetWorldPosition(currentObject.worldX, currentObject.worldY + 1);
+					break;
+				case Keys.Down:
+					currentObject.SetWorldPosition(currentObject.worldX, currentObject.worldY - 1);
+					break;
+			}
+		}
+
 		string[] textures = new string[] {
 			"button", "lightBack", "darkBack", "textBox", "exit"
 		};
@@ -233,6 +277,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		public void UnloadTextures() {
+			StopMovement();
 			TextureManager.UnRegisterTextures(textures);
 			Screen.WindowOpen = false;
 			Screen.OpenWindow("hud");
