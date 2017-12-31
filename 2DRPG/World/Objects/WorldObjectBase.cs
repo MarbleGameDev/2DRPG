@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using _2DRPG.Save;
 
 namespace _2DRPG.World.Objects {
 	public class WorldObjectBase : TexturedObject {
@@ -11,7 +12,6 @@ namespace _2DRPG.World.Objects {
 		public float worldX;
 		[Editable]
 		public float worldY;
-
 
 		/// <summary>
 		/// Complete Declaration for WorldObjectBase
@@ -34,7 +34,20 @@ namespace _2DRPG.World.Objects {
 			SetWorldPosition(x, y);
 		}
 
-		public WorldObjectBase(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) { }
+		public WorldObjectBase(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
+			SetUID(store.uid);
+		}
+
+		/// <summary>
+		/// Sets the Guid of the object, generating if passed a null Guid
+		/// </summary>
+		/// <param name="ud"></param>
+		public void SetUID(Guid ud) {
+			if (ud == null || ud == Guid.Empty)
+				uid = Guid.NewGuid();
+			else
+				uid = ud;
+		}
 	
 		/// <summary>
 		/// Sets the position of the object in the world
@@ -65,7 +78,8 @@ namespace _2DRPG.World.Objects {
 		}
 
 		/// <summary>
-		/// Call when the WorldX and WorldY are updated outside of SetWorldPosition()
+		/// Redraws the vertices of the object using the world coordinates and dimensions
+		/// Call when the WorldX, WorldY, height, or width are updated outside of SetWorldPosition()
 		/// </summary>
 		public void UpdateWorldPosition() {
 			quadPosition[0] = worldX - width / 2;
@@ -76,11 +90,37 @@ namespace _2DRPG.World.Objects {
 			quadPosition[10] = worldY - height / 2;
 			quadPosition[4] = worldY + height / 2;
 			quadPosition[7] = worldY + height / 2;
+			SendPacket();
 		}
 
-		public virtual GameSave.WorldObjectStorage StoreObject() {
-			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Base
+		public static void ShiftPosition(float[] quad, float x, float y) {
+			quad[0] += x;
+			quad[3] += x;
+			quad[6] += x;
+			quad[9] += x;
+			quad[1] += y;
+			quad[4] += y;
+			quad[7] += y;
+			quad[10] += y;
+		}
+
+		protected void SendPacket() {
+			if (SaveData.GameSettings.coOp && Net.SessionManager.isHost)     //Send update packets
+				Net.SessionManager.SendFrame(new Net.UDPFrame() {
+					subject = Net.UDPFrame.FrameType.Movement,
+					uid = uid,
+					stringData = new string[] { WorldData.GetRegionString(worldX, worldY) },
+					floatData = new float[] { worldX, worldY }
+				});
+		}
+
+		/// <summary>
+		/// Generates a WorldObjectStorage for the world object to be saved
+		/// </summary>
+		/// <returns></returns>
+		public virtual RegionSave.WorldObjectStorage StoreObject() {
+			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
+				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = RegionSave.WorldObjectType.Base, uid = uid
 			};
 			return store;
 		}
@@ -99,14 +139,19 @@ namespace _2DRPG.World.Objects {
 		}
 
 		public override string ToString() {
-			return GetType().Name + "\nCoords: \n" + worldX + "," + worldY;
+			return GetType().Name + "- Coords: " + worldX + "," + worldY;
 		}
 
+		/// <summary>
+		/// To be called whenever values are directly modified outside of standard functions
+		/// </summary>
 		public virtual void ModificationAction() {
 			UpdateWorldPosition();
 			SetLayer(layer);
+			if (this is WorldObjectControllable)
+				return;
 			//Moves the world object to the correct region if it's misplaced
-			Regions.RegionBase bs = WorldData.GetRegion((int)worldX, (int)worldY);
+			Regions.RegionBase bs = WorldData.GetRegion(worldX, worldY);
 			if (!bs.GetWorldObjects().Contains(this)) {
 				lock (WorldData.currentRegions) {
 					foreach (Regions.RegionBase hsh in WorldData.currentRegions.Values)
@@ -116,5 +161,34 @@ namespace _2DRPG.World.Objects {
 				}
 			}
 		}
+		/// <summary>
+		/// Adds all necessary data in order to transmit the worldobject over UDP Packets
+		/// See table in WorldObjectBase for the integers for each WorldObject
+		/// </summary>
+		/// <returns></returns>
+		public virtual Net.UDPFrame[] ToPacket() {
+			return new Net.UDPFrame[]{
+				new Net.UDPFrame() {
+					subject = Net.UDPFrame.FrameType.WorldObject,
+					floatData = new float[] { worldX, worldY, width, height},
+					intData = new int[] { 0, 0, layer}, //[Object Type, multipacket system (0/1), extra data]
+					stringData = new string[]{ WorldData.GetRegionString(worldX, worldY), texName },
+					uid = uid
+				}
+			};
+		}
+
+
+		/*		Table of World Objects by integer for use in UDP Packets
+		 *	0: WorldObjectBase
+		 *	1: WorldObjectAnimated
+		 *	2: WorldObjectCollidable
+		 *  3: WorldObjectControllable
+		 *  4: WorldObjectMovable
+		 *  5: WorldObjectMovableAnimated
+		 *  6: WorldObjectSimpleItem
+		 *  7: WorldObjectDialogue
+		 *  8: WorldObjectInventory
+		*/
 	}
 }

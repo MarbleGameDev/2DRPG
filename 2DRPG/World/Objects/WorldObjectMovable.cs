@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.World.Objects {
 	class WorldObjectMovable : WorldObjectBase, IMovable {
@@ -20,30 +21,41 @@ namespace _2DRPG.World.Objects {
 		public WorldObjectMovable() : base() { }
 		public WorldObjectMovable(string textureName) : base(textureName) { }
 
-		public WorldObjectMovable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName, store.width, store.height) {
+		public WorldObjectMovable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.textureName, store.width, store.height) {
 			SetLayer(store.layer);
+			SetUID(store.uid);
 		}
 
+		/// <summary>
+		/// Shifts the position of the object by the values passed
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		public virtual void MoveRelative(float x = 0, float y = 0) {
+			ShiftPosition(quadPosition, x, y);
 			worldX += x;
 			worldY += y;
-			ShiftScreenPosition(x, y);
+			SendPacket();
 		}
 
 		public float movementQueueX;
 		public float movementQueueY;
 
+		/// <summary>
+		/// Method called every logic tick to update the position changes queued
+		/// </summary>
 		public virtual void UpdatePosition() {
-			SetWorldPosition(worldX + movementQueueX, worldY + movementQueueY);
+			if (movementQueueX != 0 || movementQueueY != 0)
+				MoveRelative(movementQueueX, movementQueueY);
 			movementQueueX = 0;
 			movementQueueY = 0;
 		}
 
 
-		public override GameSave.WorldObjectStorage StoreObject() {
-			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Movable, extraData = new object[] { MovementSpeed}
-			};
+		public override RegionSave.WorldObjectStorage StoreObject() {
+			RegionSave.WorldObjectStorage store = base.StoreObject();
+			store.objectType = RegionSave.WorldObjectType.Movable;
+			store.extraData = new object[] { MovementSpeed };
 			return store;
 		}
 	}

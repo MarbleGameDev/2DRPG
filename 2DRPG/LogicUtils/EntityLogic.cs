@@ -21,9 +21,11 @@ namespace _2DRPG.LogicUtils {
 				WorldData.interChar.Visible = false;
 				return;
 			}
+			if (Save.SaveData.GameSettings.coOp && !Net.SessionManager.isHost)
+				return;
 
 			interactableObject = nulled;
-			lock (WorldData.currentRegions) {     //Render the World Objects
+			lock (WorldData.currentRegions) {
 				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
 					foreach (WorldObjectBase o in l.GetWorldObjects()) {
 
@@ -33,10 +35,10 @@ namespace _2DRPG.LogicUtils {
 							sn.AITick();
 						}
 
-						float dist = ObjectDistance(o, WorldData.controllableOBJ);
+						float dist = ObjectDistance(o, WorldData.player);
 						if (dist <= interactionDistance) {
 							if (o is IInteractable) {
-								if (interactableObject == null || dist < ObjectDistance(interactableObject, WorldData.controllableOBJ))
+								if (interactableObject == null || dist < ObjectDistance(interactableObject, WorldData.player))
 									interactableObject = o;
 							}
 						}

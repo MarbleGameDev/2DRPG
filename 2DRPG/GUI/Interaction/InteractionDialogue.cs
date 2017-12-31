@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.GUI.Interaction {
 	class InteractionDialogue : InteractionBase {
@@ -18,7 +19,7 @@ namespace _2DRPG.GUI.Interaction {
 		public InteractionDialogue(string text) {
 			displayText = text;
 		}
-		public InteractionDialogue(GameSave.InteractionObjectStorage store) {
+		public InteractionDialogue(RegionSave.InteractionObjectStorage store) {
 			displayText = store.text;
 		}
 
@@ -33,9 +34,9 @@ namespace _2DRPG.GUI.Interaction {
 			textBox.Cleanup();
 		}
 
-		public override GameSave.InteractionObjectStorage StoreObject() {
-			GameSave.InteractionObjectStorage store = new GameSave.InteractionObjectStorage() {
-				objectType = GameSave.InteractionObjectType.Dialogue, text = displayText
+		public override RegionSave.InteractionObjectStorage StoreObject() {
+			RegionSave.InteractionObjectStorage store = new RegionSave.InteractionObjectStorage() {
+				objectType = RegionSave.InteractionObjectType.Dialogue, text = displayText
 			};
 			return store;
 		}

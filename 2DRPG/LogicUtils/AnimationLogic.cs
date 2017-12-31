@@ -12,10 +12,11 @@ namespace _2DRPG.LogicUtils {
 		public static void AnimationLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused)
 				return;
+			bool pos = !(Save.SaveData.GameSettings.coOp && !Net.SessionManager.isHost);
 			lock (WorldData.currentRegions) {
 				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
 					foreach (WorldObjectBase o in l.GetWorldObjects()) {
-						if (o is Entities.StandardMob sn)
+						if (pos && o is Entities.StandardMob sn)
 							sn.UpdatePosition();
 						if (o is WorldObjectAnimated an)
 							an.SpriteUpdate();

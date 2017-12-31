@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,6 +45,9 @@
     </Reference>
     <Reference Include="OpenGL.Net.WinForms, Version=0.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenGL.Net.WinForms.0.5.1\lib\net35\OpenGL.Net.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.3.3.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.3.3\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,11 +96,14 @@
     <Compile Include="Items\ItemDictionary.cs" />
     <Compile Include="Items\WeaponItem.cs" />
     <Compile Include="LogicUtils\PathLogic.cs" />
+    <Compile Include="Net\SessionManager.cs" />
+    <Compile Include="Net\UDPFrame.cs" />
+    <Compile Include="Net\UDPMessager.cs" />
     <Compile Include="Player\PlayerInventory.cs" />
     <Compile Include="Quests\IQuest.cs" />
     <Compile Include="Quests\ItemPickup.cs" />
     <Compile Include="Quests\QuestData.cs" />
-    <Compile Include="GameSave.cs" />
+    <Compile Include="Save\RegionSave.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\IScrollable.cs" />
     <Compile Include="GUI\UIButton.cs" />
@@ -111,8 +118,8 @@
     <Compile Include="GUI\Windows\IWindow.cs" />
     <Compile Include="GUI\Windows\PauseWindow.cs" />
     <Compile Include="Quests\TaskBase.cs" />
-    <Compile Include="SaveData.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Save\SaveData.cs" />
+    <Compile Include="Save\Settings.cs" />
     <Compile Include="World\Editable.cs" />
     <Compile Include="World\Objects\ICollidable.cs" />
     <Compile Include="World\Objects\IInventory.cs" />
@@ -220,6 +227,17 @@
     <Content Include="Sprites\TextBox.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="NATUPNPLib">
+      <Guid>{1C565858-F302-471E-B409-F180AA4ABEC6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

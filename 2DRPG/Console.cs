@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using _2DRPG.Net;
+using _2DRPG.Save;
 
 namespace _2DRPG {
 	public static class Console {
@@ -24,6 +26,7 @@ namespace _2DRPG {
 			commands.Add("saveGameData", SaveGameData);
 			commands.Add("saveAll", SaveAll);
 			commands.Add("setValue", SetValue);
+			commands.Add("connection", Connection);
 		}
 
 
@@ -131,10 +134,47 @@ namespace _2DRPG {
 				}
 				if (n == null)
 					return "Invalid item name / arguments";
-				Player.MCObject.Data.inventory.AddItem(n);
+				WorldData.player.Data.inventory.AddItem(n);
 				return "Item added to inventory";
 			}
 			return "Invalid Arguments. Usage: addItem 'item name' [quantity] [custom name]";
+		}
+		private static string Connection(string[] args) {
+			if (args.Length > 0) {
+				switch (args[0]) {
+					case "join":
+						if (args.Length > 1)
+							if (System.Net.IPAddress.TryParse(args[1], out System.Net.IPAddress ad))
+								SessionManager.JoinPartner(new System.Net.IPEndPoint(ad, UDPMessager.port));
+							else
+								return "Invalid ip address";
+						return "New Session Attempted with " + args[1];
+					case "halt":
+						SessionManager.EndPartner();
+						return "Halted Session";
+					case "enable":
+						SaveData.GameSettings.coOp = true;
+						SessionManager.StartRetreival();
+						return "CoOp enabled";
+					case "host":
+						SessionManager.isHost = true;
+						if (SaveData.GameSettings.coOp)
+							return "Game now Hosting on " + UDPMessager.GetLocal().Address.ToString();
+						SaveData.GameSettings.coOp = true;
+						SessionManager.StartRetreival();
+						return "CoOp enabled, Game now Hosting on " + UDPMessager.GetLocal().Address.ToString();
+					case "msg":
+						if (args.Length > 1)
+							if (SessionManager.SendFrame(new UDPFrame() { subject = UDPFrame.FrameType.Connection, intData = new int[] { 2 }, stringData = new string[] { args[1]} }) == 1)
+								return "Message sent to partner";
+						return "Message failed to send";
+					case "list":
+						return SessionManager.ConnectionInfo();
+					default:
+						return "Usage: connection {join,halt,enable,host,msg, list} [ip address]";
+				}
+			}
+			return "";
 		}
 	}
 }

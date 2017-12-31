@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.Items;
+using _2DRPG.Save;
 
 namespace _2DRPG.World.Objects {
 	class WorldObjectSimpleItem : WorldObjectBase, IInventory {
@@ -26,26 +27,26 @@ namespace _2DRPG.World.Objects {
 
 		}
 
-		public WorldObjectSimpleItem(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
+		public WorldObjectSimpleItem(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
 			Name = (string)store.extraData[0];
-			foreach (GameSave.ItemStorage st in ((JArray)store.extraData[1]).ToObject<List<GameSave.ItemStorage>>()) {
+			foreach (RegionSave.ItemStorage st in ((JArray)store.extraData[1]).ToObject<List<RegionSave.ItemStorage>>()) {
 				items.Add((Item)Activator.CreateInstance(st.type, st));
 			}
 		}
 
 		public void Interact() {
 			foreach (Item i in items)
-				Player.MCObject.Data.inventory.AddItem(i);
+				WorldData.player.Data.inventory.AddItem(i);
 			WorldData.RemoveObject(this);
 		}
 
-		public override GameSave.WorldObjectStorage StoreObject() {
-			GameSave.WorldObjectStorage store = base.StoreObject();
-			List<GameSave.ItemStorage> itemstores = new List<GameSave.ItemStorage>();
+		public override RegionSave.WorldObjectStorage StoreObject() {
+			RegionSave.WorldObjectStorage store = base.StoreObject();
+			List<RegionSave.ItemStorage> itemstores = new List<RegionSave.ItemStorage>();
 			foreach (Item i in items)
 				itemstores.Add(i.StoreObject());
 			store.extraData = new object[] { Name, itemstores };
-			store.objectType = GameSave.WorldObjectType.SimpleItem;
+			store.objectType = RegionSave.WorldObjectType.SimpleItem;
 			return store;
 
 		}

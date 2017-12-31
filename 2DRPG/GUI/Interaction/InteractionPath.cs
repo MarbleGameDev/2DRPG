@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.GUI.Interaction {
 	class InteractionPath : InteractionBase{
@@ -12,10 +13,10 @@ namespace _2DRPG.GUI.Interaction {
 		public string pathName;
 
 		public InteractionPath() { }
-		public InteractionPath(GameSave.InteractionObjectStorage store) {
+		public InteractionPath(RegionSave.InteractionObjectStorage store) {
 			pathName = store.text;
-			foreach (GameSave.InteractionObjectStorage s in store.subObjects)
-				items.Add(GameSave.ConstructInteractionObject(s));
+			foreach (RegionSave.InteractionObjectStorage s in store.subObjects)
+				items.Add(RegionSave.ConstructInteractionObject(s));
 		}
 
 		public override void Render() {
@@ -29,13 +30,13 @@ namespace _2DRPG.GUI.Interaction {
 
 		}
 
-		public override GameSave.InteractionObjectStorage StoreObject() {
-			List<GameSave.InteractionObjectStorage> stores = new List<GameSave.InteractionObjectStorage>();
+		public override RegionSave.InteractionObjectStorage StoreObject() {
+			List<RegionSave.InteractionObjectStorage> stores = new List<RegionSave.InteractionObjectStorage>();
 			foreach (InteractionBase b in items) {
 				stores.Add(b.StoreObject());
 			}
-			GameSave.InteractionObjectStorage store = new GameSave.InteractionObjectStorage() {
-				text = pathName, subObjects = stores, objectType = GameSave.InteractionObjectType.Path
+			RegionSave.InteractionObjectStorage store = new RegionSave.InteractionObjectStorage() {
+				text = pathName, subObjects = stores, objectType = RegionSave.InteractionObjectType.Path
 			};
 			return store;
 		}

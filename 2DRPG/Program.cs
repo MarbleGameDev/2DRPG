@@ -19,7 +19,7 @@ namespace _2DRPG {
             Application.SetCompatibleTextRenderingDefault(false);
 
 			//Add any pre-game checks here
-			if (!SaveData.CheckSaveState()) {
+			if (!Save.SaveData.CheckSaveState()) {
 				MessageBox.Show("Could not find game installation files, please check installation directory. If you believe this is incorrect, please file a bug report.", "Game Load Error");
 				Application.Exit();
 				return;

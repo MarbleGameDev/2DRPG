@@ -15,12 +15,14 @@ namespace _2DRPG.GUI.Windows {
 		private static WorldObjectBase currentObject;
 		private static StandardMob currentMob;
 		public static bool checkWorldObjects = false;
-		//private static bool isEntity = false;
+
+		private static bool moving = false;
 
 		public static void SetCurrentObject(WorldObjectBase obj) {
 			currentObject = obj;
 			checkWorldObjects = false;
 			Screen.OpenWindow("worldBuilder");
+			tabs.SetTab(0);
 			UpdateObjectInfo();
 		}
 
@@ -64,8 +66,8 @@ namespace _2DRPG.GUI.Windows {
 
 		HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
 			new UIBase(220, 0, 100, 180, 4, "darkBack"),
-			new UIButton(312, 172, 8, 8, () => { Screen.CloseWindow("worldBuilder"); },1, "exit"),
-			new UIButton(288, -170, 30, 8, () => { SaveData.SaveGameData(); }, 1, "button"){ displayLabel = new UIText(288, -168, .5f, 0, "Save Game")},
+			new UIButton(312, 172, 8, 8, () => { Screen.CloseWindow("worldBuilder"); Screen.InvokeSelection(); },1, "exit"),
+			new UIButton(288, -170, 30, 8, () => { Save.SaveData.SaveGameData(); }, 1, "button"){ displayLabel = new UIText(288, -168, .5f, 0, "Save Game")},
 			tabs
 		};
 
@@ -80,7 +82,8 @@ namespace _2DRPG.GUI.Windows {
 			}
 			AIType.SetDropdowns(tempbuts.ToArray());
 			AIType.displaySize = (tempbuts.Count > 3) ? 3.5f : tempbuts.Count;
-
+			if (currentObject != null)
+				UpdateObjectInfo();
 			return screenObjects;
 		}
 		public HashSet<UIBase> GetScreenObjects() {
@@ -89,11 +92,13 @@ namespace _2DRPG.GUI.Windows {
 
 		static void UpdateObjectInfo() {
 
+			if (currentObject == null)
+				return;
+
 			if (currentObject is StandardMob s) {
 				//isEntity = true;
 				AIType.Visible = true;
 				AIActive.Visible = true;
-				tabs.SetTab(1);
 				currentMob = s;
 				entityName.SetText(currentObject.GetType().Name);
 				AIType.displayLabel.SetText(currentMob.mobAI.type.ToString());
@@ -140,33 +145,33 @@ namespace _2DRPG.GUI.Windows {
 		}
 		static Type nt;
 		static object[] ntParams;
-		static void SetupNewObject(GameSave.WorldObjectType newType) {
+		static void SetupNewObject(Save.RegionSave.WorldObjectType newType) {
 			switch (newType) {
-				case GameSave.WorldObjectType.Animated:
+				case Save.RegionSave.WorldObjectType.Animated:
 					nt = typeof(WorldObjectAnimated);
 					break;
-				case GameSave.WorldObjectType.Base:
+				case Save.RegionSave.WorldObjectType.Base:
 					nt = typeof(WorldObjectBase);
 					break;
-				case GameSave.WorldObjectType.Collidable:
+				case Save.RegionSave.WorldObjectType.Collidable:
 					nt = typeof(WorldObjectCollidable);
 					break;
-				case GameSave.WorldObjectType.Controllable:
+				case Save.RegionSave.WorldObjectType.Controllable:
 					nt = typeof(WorldObjectControllable);
 					break;
-				case GameSave.WorldObjectType.Dialogue:
+				case Save.RegionSave.WorldObjectType.Dialogue:
 					nt = typeof(WorldObjectDialogue);
 					break;
-				case GameSave.WorldObjectType.Inventory:
+				case Save.RegionSave.WorldObjectType.Inventory:
 					nt = typeof(WorldObjectInventory);
 					break;
-				case GameSave.WorldObjectType.SimpleItem:
+				case Save.RegionSave.WorldObjectType.SimpleItem:
 					nt = typeof(WorldObjectSimpleItem);
 					break;
-				case GameSave.WorldObjectType.Movable:
+				case Save.RegionSave.WorldObjectType.Movable:
 					nt = typeof(WorldObjectMovable);
 					break;
-				case GameSave.WorldObjectType.MovableAnimated:
+				case Save.RegionSave.WorldObjectType.MovableAnimated:
 					nt = typeof(WorldObjectMovableAnimated);
 					break;
 				default:
@@ -228,14 +233,22 @@ namespace _2DRPG.GUI.Windows {
 
 		static void StartMovement() {
 			Screen.InvokeSelection();
+			if (moving) {
+				StopMovement();
+				return;
+			} else {
+				moving = true;
+			}
 			Input.RedirectKeys = true;
 			Input.DirectKeyCode += CheckKey;
 			moveBut.displayLabel.textColor = System.Drawing.Color.Aqua;
 		}
 		static void StopMovement() {
+			moving = false;
 			Input.DirectKeyCode -= CheckKey;
 			Input.RedirectKeys = false;
 			moveBut.displayLabel.textColor = System.Drawing.Color.Black;
+			UpdateObjectInfo();
 		}
 
 		static void CheckKey(Keys k) {
@@ -265,7 +278,7 @@ namespace _2DRPG.GUI.Windows {
 
 		public void LoadTextures() {
 			List<UIButton> buts = new List<UIButton>();
-			foreach (GameSave.WorldObjectType t in Enum.GetValues(typeof(GameSave.WorldObjectType))) {
+			foreach (Save.RegionSave.WorldObjectType t in Enum.GetValues(typeof(Save.RegionSave.WorldObjectType))) {
 				buts.Add(new UIButton(0, 0, newObjects.width, newObjects.height, () => { SetupNewObject(t); newObjects.Visible = false; }, 1, "button") {
 					displayLabel = new UIText(0, 0, .5f, 0, t.ToString())
 				});

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.Entities;
+using _2DRPG.Save;
 
 namespace _2DRPG.Items.ItemClasses {
 	class FoodBase : Item, IConsumable {
@@ -17,7 +18,7 @@ namespace _2DRPG.Items.ItemClasses {
 
 		public FoodBase() : base(1, true) { }
 
-		public FoodBase(GameSave.ItemStorage store) : base(store){
+		public FoodBase(RegionSave.ItemStorage store) : base(store){
 
 		}
 
@@ -29,8 +30,8 @@ namespace _2DRPG.Items.ItemClasses {
 			throw new NotImplementedException();
 		}
 
-		public override GameSave.ItemStorage StoreObject() {
-			GameSave.ItemStorage s = base.StoreObject();
+		public override RegionSave.ItemStorage StoreObject() {
+			RegionSave.ItemStorage s = base.StoreObject();
 			s.type = typeof(FoodBase);
 			return s;
 		}

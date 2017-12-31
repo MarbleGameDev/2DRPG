@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.GUI.Interaction;
 using Newtonsoft.Json.Linq;
+using _2DRPG.Save;
 
 namespace _2DRPG.World.Objects {
 	public class WorldObjectDialogue : WorldObjectBase, IInteractable {
@@ -24,11 +25,11 @@ namespace _2DRPG.World.Objects {
 		public WorldObjectDialogue(float x, float y, int layer, string textureName = "default", float width = 16, float height = 16) : base(x, y, layer, textureName, width, height) {
 			
 		}
-		public WorldObjectDialogue(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
+		public WorldObjectDialogue(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
 			InteractionID = (string)store.extraData[0];
-			List<GameSave.InteractionObjectStorage> st = ((JArray)store.extraData[1]).ToObject<List<GameSave.InteractionObjectStorage>>();
-			foreach (GameSave.InteractionObjectStorage s in st)
-				InterItems.Add(GameSave.ConstructInteractionObject(s));
+			List<RegionSave.InteractionObjectStorage> st = ((JArray)store.extraData[1]).ToObject<List<RegionSave.InteractionObjectStorage>>();
+			foreach (RegionSave.InteractionObjectStorage s in st)
+				InterItems.Add(RegionSave.ConstructInteractionObject(s));
 		}
 
 		public void Interact() {
@@ -40,14 +41,14 @@ namespace _2DRPG.World.Objects {
 			Screen.OpenWindow("interaction");
 		}
 
-		public override GameSave.WorldObjectStorage StoreObject() {
-			List<GameSave.InteractionObjectStorage> st = new List<GameSave.InteractionObjectStorage>();
+		public override RegionSave.WorldObjectStorage StoreObject() {
+			List<RegionSave.InteractionObjectStorage> st = new List<RegionSave.InteractionObjectStorage>();
 			foreach (InteractionBase b in InterItems) {
 				st.Add(b.StoreObject());
 			}
-			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Dialogue, extraData = new object[] { InteractionID, st}
-			};
+			RegionSave.WorldObjectStorage store = base.StoreObject();
+			store.objectType = RegionSave.WorldObjectType.Dialogue;
+			store.extraData = new object[] { InteractionID, st };
 			return store;
 		}
 

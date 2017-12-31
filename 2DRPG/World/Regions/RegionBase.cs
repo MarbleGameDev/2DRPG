@@ -16,13 +16,13 @@ namespace _2DRPG.World.Regions {
 		protected HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
 		public Dictionary<int, HashSet<int>> CollisionPoints = new Dictionary<int, HashSet<int>>();
 
-		public RegionBase(string regionTag, GameSave save) {
+		public RegionBase(string regionTag, Save.RegionSave save) {
 			RegionTag = regionTag;
 			string[] coords = regionTag.Split('x');
 			RegionX = int.Parse(coords[0]);
 			RegionY = int.Parse(coords[1]);
-			foreach (GameSave.WorldObjectStorage s in save.worldObjects) {
-				WorldObjectBase b = GameSave.ConstructWorldObject(s);
+			foreach (Save.RegionSave.WorldObjectStorage s in save.worldObjects) {
+				WorldObjectBase b = Save.RegionSave.ConstructWorldObject(s);
 				regionObjects.Add(b);
 				if (!TextureNames.Contains(b.texName))
 					TextureNames.Add(b.texName);

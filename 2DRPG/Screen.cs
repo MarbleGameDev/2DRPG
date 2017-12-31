@@ -132,6 +132,9 @@ namespace _2DRPG {
 			return (float)(yCoord + pixelHeight / 2) / pixelHeight;
 		}
 
+		/// <summary>
+		/// Invokes the SelectionEvent event listener
+		/// </summary>
 		public static void InvokeSelection() {
 			if (SelectionEvent != null) {
 				SelectionEvent.Invoke();

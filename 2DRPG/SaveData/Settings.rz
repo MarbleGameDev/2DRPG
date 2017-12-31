@@ -2,10 +2,12 @@
   "debugEnabled": true,
   "fullScreen": false,
   "VSync": true,
-  "devWindow": true,
+  "devWindow": false,
   "worldBuilder": true,
   "windowx": 1280,
   "windowy": 720,
+  "coOp": true,
+  "coOpUID": "2d0712f3-2c2a-4a6e-babe-5fa6feb1268c",
   "keys": {
     "left": "A",
     "right": "D",

@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace _2DRPG.Player {
+	[Serializable]
 	class PlayerData {
-
-		public float playerX = 0, playerY = 0, playerZ = 0;
 
 		public PlayerInventory inventory = new PlayerInventory();
 	}

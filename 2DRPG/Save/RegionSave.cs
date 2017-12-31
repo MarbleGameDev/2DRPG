@@ -9,9 +9,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Drawing;
 
-namespace _2DRPG {
+namespace _2DRPG.Save {
 	[Serializable]
-	public class GameSave {
+	public class RegionSave {
 		public List<WorldObjectStorage> worldObjects = new List<WorldObjectStorage>();
 
 		public Dictionary<int, HashSet<int>> CollisionPoints = new Dictionary<int, HashSet<int>>();
@@ -72,6 +72,7 @@ namespace _2DRPG {
 			public int layer;
 			public string textureName;
 			public object[] extraData;
+			public Guid uid;
 		}
 
 		public class InteractionObjectStorage {

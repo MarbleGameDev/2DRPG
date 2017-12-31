@@ -11,34 +11,31 @@ namespace _2DRPG.LogicUtils {
 		static void PhysicsLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused || Screen.WindowOpen)
 				return;
-			WorldData.controllableOBJ.UpdatePosition();
 			bool playerstuck = false;
-			WorldObjectControllable cont = WorldData.controllableOBJ;
+			float[] contPos = new float[12];
+			WorldData.player.quadPosition.CopyTo(contPos, 0);
+			WorldObjectBase.ShiftPosition(contPos, WorldData.player.movementQueueX, WorldData.player.movementQueueY);
 			lock (WorldData.currentRegions) {
 				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
-					foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects()) {
+					foreach (WorldObjectBase o in l.GetWorldObjects()) {
 						if (o is ICollidable)
-							if (CheckIntersection(o.quadPosition, cont.quadPosition[0], cont.quadPosition[1]) ||
-								CheckIntersection(o.quadPosition, cont.quadPosition[3], cont.quadPosition[4]) ||
-								CheckIntersection(o.quadPosition, cont.quadPosition[6], cont.quadPosition[7]) ||
-								CheckIntersection(o.quadPosition, cont.quadPosition[9], cont.quadPosition[10]) ||
-								CheckIntersection(o.quadPosition, (cont.quadPosition[0] + cont.quadPosition[9]) / 2, cont.quadPosition[1]) ||
-								CheckIntersection(o.quadPosition, cont.quadPosition[0], (cont.quadPosition[1] + cont.quadPosition[4]) / 2) ||
-								CheckIntersection(o.quadPosition, (cont.quadPosition[3] + cont.quadPosition[6]) / 2, cont.quadPosition[4]) ||
-								CheckIntersection(o.quadPosition, cont.quadPosition[6], (cont.quadPosition[7] + cont.quadPosition[10]) / 2) ||
-								CheckIntersection(o.quadPosition, (cont.quadPosition[0] + cont.quadPosition[9]) / 2, (cont.quadPosition[1] + cont.quadPosition[10]) / 2)) {
+							if (CheckIntersection(o.quadPosition, contPos[0], contPos[1]) ||
+								CheckIntersection(o.quadPosition, contPos[3], contPos[4]) ||
+								CheckIntersection(o.quadPosition, contPos[6], contPos[7]) ||
+								CheckIntersection(o.quadPosition, contPos[9], contPos[10]) ||
+								CheckIntersection(o.quadPosition, (contPos[0] + contPos[9]) / 2, contPos[1]) ||
+								CheckIntersection(o.quadPosition, contPos[0], (contPos[1] + contPos[4]) / 2) ||
+								CheckIntersection(o.quadPosition, (contPos[3] + contPos[6]) / 2, contPos[4]) ||
+								CheckIntersection(o.quadPosition, contPos[6], (contPos[7] + contPos[10]) / 2) ||
+								CheckIntersection(o.quadPosition, (contPos[0] + contPos[9]) / 2, (contPos[1] + contPos[10]) / 2)) {
 								playerstuck = true;
 							}
 					}
 				}
 			}
-			if (playerstuck) {
-				WorldData.controllableOBJ.MoveRelative(-WorldData.controllableOBJ.movementQueueX, -WorldData.controllableOBJ.movementQueueY);
-			} else{
-				WorldData.MoveCenter(WorldData.controllableOBJ.movementQueueX, WorldData.controllableOBJ.movementQueueY);
+			if (!playerstuck) {
+				Form1.AddOrthoUpdate(WorldData.player.UpdatePosition);
 			}
-			WorldData.controllableOBJ.movementQueueX = 0;
-			WorldData.controllableOBJ.movementQueueY = 0;
 		}
 
 		/// <summary>

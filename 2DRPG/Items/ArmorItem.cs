@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.Items {
 	abstract class ArmorItem : Item, IEquippable {
@@ -13,12 +14,12 @@ namespace _2DRPG.Items {
 			ValidSlot = slot;
 		}
 
-		public ArmorItem(GameSave.ItemStorage store) : base(store){
+		public ArmorItem(RegionSave.ItemStorage store) : base(store){
 			ValidSlot = Convert.ToInt32(store.extraData[0]);
 		}
 
-		public override GameSave.ItemStorage StoreObject() {
-			GameSave.ItemStorage s = base.StoreObject();
+		public override RegionSave.ItemStorage StoreObject() {
+			RegionSave.ItemStorage s = base.StoreObject();
 			s.type = typeof(ArmorItem);
 			s.extraData = new object[] { ValidSlot };
 			return s;

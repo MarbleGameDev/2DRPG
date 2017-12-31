@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.World.Regions;
+using _2DRPG.Save;
 
 namespace _2DRPG.Entities {
 	class StandardMob : World.Objects.WorldObjectMovable, IEffectable, IDamagable {
@@ -32,7 +33,7 @@ namespace _2DRPG.Entities {
 			mobAI = new AIBase(this) { type = type};
 		}
 
-		public StandardMob(GameSave.WorldObjectStorage store) : base(store) {
+		public StandardMob(RegionSave.WorldObjectStorage store) : base(store) {
 			MovementSpeed = (float)((double)store.extraData[0]);
 			mobAI = new AIBase(this) { type = (AIBase.AIType)Enum.Parse(typeof(AIBase.AIType), (string)store.extraData[1]) };
 			effectList = ((JArray)store.extraData[2]).ToObject<List<EntityEffect>>();
@@ -106,10 +107,10 @@ namespace _2DRPG.Entities {
 			entityHealth -= a.attackDamage;
 		}
 
-		public override GameSave.WorldObjectStorage StoreObject() {
-			GameSave.WorldObjectStorage s = base.StoreObject();
+		public override RegionSave.WorldObjectStorage StoreObject() {
+			RegionSave.WorldObjectStorage s = base.StoreObject();
 			s.extraData = new object[] { MovementSpeed, mobAI.type.ToString(), effectList };
-			s.objectType = GameSave.WorldObjectType.StandardMob;
+			s.objectType = RegionSave.WorldObjectType.StandardMob;
 			return s;
 		}
 	}

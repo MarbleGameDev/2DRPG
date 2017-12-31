@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.GUI.Interaction {
 	class InteractionQuests : InteractionChoice {
@@ -19,7 +20,7 @@ namespace _2DRPG.GUI.Interaction {
 
 		}
 
-		public InteractionQuests(GameSave.InteractionObjectStorage store) : base(store) {
+		public InteractionQuests(RegionSave.InteractionObjectStorage store) : base(store) {
 			interactionID = store.text;
 			questTags = ((JArray)store.extraData[1]).ToObject<List<string>>();
 			questInts = ((JArray)store.extraData[2]).ToObject<List<int>>();
@@ -53,9 +54,9 @@ namespace _2DRPG.GUI.Interaction {
 		public override void Takedown() {
 		}
 
-		public override GameSave.InteractionObjectStorage StoreObject() {
-			GameSave.InteractionObjectStorage store = base.StoreObject();
-			store.objectType = GameSave.InteractionObjectType.Quests;
+		public override RegionSave.InteractionObjectStorage StoreObject() {
+			RegionSave.InteractionObjectStorage store = base.StoreObject();
+			store.objectType = RegionSave.InteractionObjectType.Quests;
 			store.text = interactionID;
 			store.extraData = new object[]{ immediateMode, questTags.ToArray(), questInts.ToArray() };
 			return store;

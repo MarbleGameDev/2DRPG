@@ -21,20 +21,20 @@ namespace _2DRPG {
 		[World.Editable]
 		public string texName;
 
+		public Guid uid;
+
 		public TexturedObject(float x, float y, int layer, string textureName) {
 			texName = textureName;
-
 			SetScreenPosition(x, y, layer);
-
+			uid = Guid.NewGuid();
 		}
 
 		public TexturedObject(float x, float y, int layer, float width, float height, string textureName) {
 			texName = textureName;
 			this.height = height;
 			this.width = width;
-
 			SetScreenPosition(x, y, layer);
-
+			uid = Guid.NewGuid();
 		}
 
 		public TexturedObject() : this(0, 0, 10, "default") { }

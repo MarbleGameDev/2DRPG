@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.World.Objects {
 	class WorldObjectControllable : WorldObjectMovable {
@@ -18,12 +19,15 @@ namespace _2DRPG.World.Objects {
 		public WorldObjectControllable(float x, float y, int layer, string textureName, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = 2f;
+			SetLayer(layer);
 		}
 		public WorldObjectControllable(String textureName) : base(textureName) {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = 2f;
 		}
-		public WorldObjectControllable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) { }
+		public WorldObjectControllable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
+			SetUID(store.uid);
+		}
 
 		private void MoveOnKeys(Input.KeyInputs[] k) {
 			if (k.Contains(Input.KeyInputs.left))
@@ -36,20 +40,9 @@ namespace _2DRPG.World.Objects {
 				movementQueueY = -MovementSpeed;
 		}
 
-		public override void MoveRelative(float x = 0, float y = 0) {
-			//WorldData.MoveCenter(x, y);
-			SetWorldPosition(worldX + x, worldY + y);
-		}
-
-		public override void UpdatePosition() {
-			//WorldData.MoveCenter(movementQueueX, movementQueueY);
-			SetWorldPosition(worldX + movementQueueX, worldY + movementQueueY);
-		}
-
-		public override GameSave.WorldObjectStorage StoreObject() {
-			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = GameSave.WorldObjectType.Controllable
-			};
+		public override RegionSave.WorldObjectStorage StoreObject() {
+			RegionSave.WorldObjectStorage store = base.StoreObject();
+			store.objectType = RegionSave.WorldObjectType.Controllable;
 			return store;
 		}
 

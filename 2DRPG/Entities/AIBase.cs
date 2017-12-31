@@ -39,9 +39,9 @@ namespace _2DRPG.Entities {
 
 
 		protected virtual void AggressiveTick() {
-			float dist = LogicUtils.Logic.ObjectDistance(attachedObject, WorldData.controllableOBJ);
+			float dist = LogicUtils.Logic.ObjectDistance(attachedObject, WorldData.player);
 			if (dist < 200) {
-				attachedObject.SetPath(LogicUtils.PathLogic.PathFind(attachedObject.GetPointLocation(), WorldData.controllableOBJ.GetPointLocation()));
+				attachedObject.SetPath(LogicUtils.PathLogic.PathFind(attachedObject.GetPointLocation(), WorldData.player.GetPointLocation()));
 			} else {
 				attachedObject.SetPath(new List<World.Regions.Node>());
 			}
@@ -50,8 +50,8 @@ namespace _2DRPG.Entities {
 
 		}
 		protected virtual void NeutralTick() {
-			float dist = LogicUtils.Logic.ObjectDistance(attachedObject, WorldData.controllableOBJ);
-			if (dist > 350)
+			float dist = LogicUtils.Logic.ObjectDistance(attachedObject, WorldData.player);
+			if (dist > 450)
 				return;
 			Random rnd = new Random();
 			double d = rnd.NextDouble();

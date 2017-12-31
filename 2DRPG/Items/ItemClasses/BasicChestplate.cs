@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.Items.ItemClasses {
 	class BasicChestplate : ArmorItem {
@@ -13,12 +14,12 @@ namespace _2DRPG.Items.ItemClasses {
 
 		}
 
-		public BasicChestplate(GameSave.ItemStorage store) : base(store) {
+		public BasicChestplate(RegionSave.ItemStorage store) : base(store) {
 
 		}
 
-		public override GameSave.ItemStorage StoreObject() {
-			GameSave.ItemStorage s = base.StoreObject();
+		public override RegionSave.ItemStorage StoreObject() {
+			RegionSave.ItemStorage s = base.StoreObject();
 			s.type = typeof(BasicChestplate);
 			return s;
 		}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.World.Objects {
 	class WorldObjectCollidable : WorldObjectBase, ICollidable{
@@ -16,12 +17,11 @@ namespace _2DRPG.World.Objects {
 		/// <param name="textureName">Name of the texture</param>
 		public WorldObjectCollidable(float x, float y, int layer, string textureName = "default", float width = 16, float height = 16) : base(x, y, textureName, width, height) { }
 
-		public WorldObjectCollidable(GameSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) { }
+		public WorldObjectCollidable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) { }
 
-		public override GameSave.WorldObjectStorage StoreObject() {
-			GameSave.WorldObjectStorage store = new GameSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, layer = layer, width = width, height = height, textureName = texName, objectType = GameSave.WorldObjectType.Collidable
-			};
+		public override RegionSave.WorldObjectStorage StoreObject() {
+			RegionSave.WorldObjectStorage store = base.StoreObject();
+			store.objectType = RegionSave.WorldObjectType.Collidable;
 			return store;
 		}
 	}

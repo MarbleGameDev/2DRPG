@@ -31,9 +31,9 @@ namespace _2DRPG.GUI.Windows {
 		public void UpdateInventoryItems() {
 			Random rnd = new Random();
 			List<UIItem> b = new List<UIItem>();
-			for (int index = 0; index < Player.MCObject.Data.inventory.GetSet().Count; index++) {
+			for (int index = 0; index < WorldData.player.Data.inventory.GetSet().Count; index++) {
 				int ind = index;
-				Item it = Player.MCObject.Data.inventory.GetSet()[ind];
+				Item it = WorldData.player.Data.inventory.GetSet()[ind];
 				//b.Add(new UIItem(() => {
 				//	description.SetText(it.Name);
 				/*

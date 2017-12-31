@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.GUI.Interaction {
 	class InteractionChoice : InteractionBase {
@@ -29,11 +30,11 @@ namespace _2DRPG.GUI.Interaction {
 			}
 		}
 
-		public InteractionChoice(GameSave.InteractionObjectStorage store) {
+		public InteractionChoice(RegionSave.InteractionObjectStorage store) {
 			List<InteractionPath> pa = new List<InteractionPath>();
-			foreach (GameSave.InteractionObjectStorage s in store.subObjects) {
-				if (s.objectType == GameSave.InteractionObjectType.Path)
-					pa.Add((InteractionPath)GameSave.ConstructInteractionObject(s));
+			foreach (RegionSave.InteractionObjectStorage s in store.subObjects) {
+				if (s.objectType == RegionSave.InteractionObjectType.Path)
+					pa.Add((InteractionPath)RegionSave.ConstructInteractionObject(s));
 			}
 			PostConst(pa);
 		}
@@ -76,13 +77,13 @@ namespace _2DRPG.GUI.Interaction {
 		public override void Takedown() {
 		}
 
-		public override GameSave.InteractionObjectStorage StoreObject() {
-			List<GameSave.InteractionObjectStorage> subs = new List<GameSave.InteractionObjectStorage>();
+		public override RegionSave.InteractionObjectStorage StoreObject() {
+			List<RegionSave.InteractionObjectStorage> subs = new List<RegionSave.InteractionObjectStorage>();
 			foreach (InteractionBase b in paths) {
 				subs.Add(b.StoreObject());
 			}
-			GameSave.InteractionObjectStorage store = new GameSave.InteractionObjectStorage() {
-				subObjects = subs, objectType = GameSave.InteractionObjectType.Choice
+			RegionSave.InteractionObjectStorage store = new RegionSave.InteractionObjectStorage() {
+				subObjects = subs, objectType = RegionSave.InteractionObjectType.Choice
 			};
 			return store;
 		}

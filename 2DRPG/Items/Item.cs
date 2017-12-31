@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _2DRPG.Save;
 
 namespace _2DRPG.Items {
 	abstract class Item {
@@ -18,7 +19,7 @@ namespace _2DRPG.Items {
 			Stackable = stackable;
 		}
 
-		public Item(GameSave.ItemStorage store) {
+		public Item(RegionSave.ItemStorage store) {
 			Quantity = store.Quantity;
 			Stackable = store.Stackable;
 			Name = store.Name;
@@ -70,8 +71,8 @@ namespace _2DRPG.Items {
 			return a;
 		}
 
-		public virtual GameSave.ItemStorage StoreObject() {
-			return new GameSave.ItemStorage { type = typeof(Item), Name = Name, Quantity = Quantity, Stackable = Stackable };
+		public virtual RegionSave.ItemStorage StoreObject() {
+			return new RegionSave.ItemStorage { type = typeof(Item), Name = Name, Quantity = Quantity, Stackable = Stackable };
 		}
 
 		public override string ToString() {

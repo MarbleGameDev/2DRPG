@@ -10,6 +10,7 @@ using _2DRPG.World.Objects;
 using _2DRPG.World.Regions;
 using _2DRPG.GUI;
 using System.Diagnostics;
+using _2DRPG.Player;
 
 namespace _2DRPG {
 	static class WorldData {
@@ -19,8 +20,12 @@ namespace _2DRPG {
 		public static float CurrentY = 1;
 		public static Dictionary<string, RegionBase> currentRegions = new Dictionary<string, RegionBase>();
 		public static HashSet<UIBase> worldUIs = new HashSet<UIBase>();
+		//Hashset used for testing custom worldObjects, added via AddObjects()
 		public static HashSet<WorldObjectBase> tempRender = new HashSet<WorldObjectBase>();
-		public static WorldObjectControllable controllableOBJ;
+
+
+		public static MCObject player;
+		public static MCObject partner = null;
 
 		public static UIChar interChar = new UIChar(0, 0, 8f, 0, '!') {
 			Visible = false
@@ -34,7 +39,7 @@ namespace _2DRPG {
 		}
 
 		/// <summary>
-		/// Loads the regions surrounding the current region
+		/// Loads the regions surrounding the current region, unloading regions that are too far away
 		/// </summary>
 		public static void LoadRegionObjects() {
 			List<string> removeList = new List<string>();
@@ -77,9 +82,9 @@ namespace _2DRPG {
 			string reg = rx + "x" + ry;
 			if (currentRegions.ContainsKey(reg))
 				return;
-			GameSave s = SaveData.LoadRegion(reg);
+			Save.RegionSave s = Save.SaveData.LoadRegion(reg);
 			if (s == null)
-				s = new GameSave();
+				s = new Save.RegionSave();
 			RegionBase ba = new RegionBase(reg, s);
 			ba.Load();
 			lock (currentRegions)
@@ -100,15 +105,48 @@ namespace _2DRPG {
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public static RegionBase GetRegion(int x, int y) {
-			int rx = (int)Math.Ceiling(x / 1000f) - 1;
-			int ry = (int)Math.Ceiling(y / 1000f) - 1;
-			string reg = rx + "x" + ry;
+		public static RegionBase GetRegion(float x, float y) {
+			string reg = GetRegionString(x, y);
 			if (currentRegions.ContainsKey(reg)) {
 				return currentRegions[reg];
 			} else {
 				return null;
 			}
+		}
+
+		public static string GetRegionString(float x, float y) {
+			int rx = (int)Math.Ceiling(x / 1000f) - 1;
+			int ry = (int)Math.Ceiling(y / 1000f) - 1;
+			return rx + "x" + ry;
+		}
+
+		/// <summary>
+		/// Sets the current world save and loads it, returning bool for success
+		/// </summary>
+		/// <param name="saveName"></param>
+		/// <returns></returns>
+		public static bool LoadWorldSave(string saveName) { //TODO: Add support here for the hosted world loading
+			if (!Save.SaveData.SetCurrentSave(saveName))
+				return false;
+			currentRegions.Clear();
+			player = Save.SaveData.LoadPlayer();
+			CurrentX = player.worldX;
+			CurrentY = player.worldY;
+			Form1.SetOrtho(CurrentX, CurrentY);
+			LoadRegionObjects();
+			return true;
+		}
+
+		/// <summary>
+		/// Loads a player into the partner slot
+		/// New player is loaded if an existing save isn't found
+		/// </summary>
+		/// <param name="uid"></param>
+		public static void AddPlayer(Guid uid) {
+			//TODO: Add functionality to import existing player files (maybe)
+			partner = Save.SaveData.LoadPlayer(uid.ToString());
+			partner.SetWorldPosition(player.worldX, player.worldY);
+
 		}
 
 		/// <summary>
@@ -117,10 +155,10 @@ namespace _2DRPG {
 		public static void WorldStartup() {
 			TextureManager.ClearTextures();
 			TextureManager.RegisterTextures(new string[] { "character", "baseFont", "tempCharacter" });
-			controllableOBJ = new Player.MCObject();
-			controllableOBJ.SetWorldPosition(CurrentX, CurrentY);
 			worldUIs.Add(interChar);
-			LoadRegionObjects();
+
+			LoadWorldSave("master");
+
 			AddObjects();
 		}
 
@@ -136,12 +174,13 @@ namespace _2DRPG {
 				foreach (WorldObjectBase b in tempRender)
 					b.Render();
 			}
-
-			controllableOBJ.Render();
+			player.Render();
+			if (partner != null)
+				partner.Render();
 		}
 
 		/// <summary>
-		/// Moves the Center of the Screen around the world and unloads and loads regions if necessary
+		/// Shifts the Center of the Screen by the offset given and unloads and loads regions if necessary
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
@@ -158,11 +197,13 @@ namespace _2DRPG {
 				LoadRegionObjects();
 			}
 			Form1.ShiftOrtho(x, y);
+
 		}
 		public static void SetCenter(float x, float y) {
 			CurrentX = x;
 			CurrentY = y;
 			Form1.SetOrtho(CurrentX, CurrentY);
+
 		}
 
 		/// <summary>
@@ -196,5 +237,30 @@ namespace _2DRPG {
 			return grid;
 		}
 
+		public static void PacketToWorldObject(Net.UDPFrame frame) {
+			if (frame.intData[1] == 0) {    //Single packet object
+				if (!currentRegions.ContainsKey(frame.stringData[0])) {
+					RegionBase ba = new RegionBase(frame.stringData[0], new Save.RegionSave());
+					ba.Load();
+					lock (currentRegions)
+						currentRegions.Add(frame.stringData[0], ba);
+				} else {
+					lock (currentRegions)
+						foreach (WorldObjectBase b in currentRegions[frame.stringData[0]].GetWorldObjects())
+							if (b.uid.Equals(frame.uid))
+								return;
+				}
+			} else if (frame.intData[1] == 1) { //Multi packet object
+				if (currentRegions.ContainsKey(frame.stringData[0])) {
+					lock (currentRegions)
+						currentRegions[frame.stringData[0]].GetWorldObjects();	//help...
+				}
+			}
+			switch (frame.intData[0]) {
+				case 0:
+
+					break;
+			}
+		}
 	}
 }

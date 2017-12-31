@@ -25,9 +25,9 @@ namespace _2DRPG {
 		public Form1() {
 
 			InitializeComponent();
-			SaveData.LoadGameData();
-			SaveData.LoadGame();
-			if (SaveData.GameSettings.devWindow)
+			Save.SaveData.LoadGameData();
+			Save.SaveData.LoadGame();
+			if (Save.SaveData.GameSettings.devWindow)
 				devWin.Show();
 		}
 
@@ -62,38 +62,35 @@ namespace _2DRPG {
 						o.ContextCreated();
 				}
 			}
-			if (SaveData.GameSettings.fullScreen) {
+			if (Save.SaveData.GameSettings.fullScreen) {
 				FormBorderStyle = FormBorderStyle.None;
 				WindowState = FormWindowState.Maximized;
 			}
-			if (SaveData.GameSettings.VSync) {
+			if (Save.SaveData.GameSettings.VSync) {
 				Wgl.SwapIntervalEXT(-1); //Swap Interval (V-Sync Enabled at 1 or -1)
 			} else {
 				Wgl.SwapIntervalEXT(0);
 			}
-			ResizeWindow(SaveData.GameSettings.windowx, SaveData.GameSettings.windowy);
+			ResizeWindow(Save.SaveData.GameSettings.windowx, Save.SaveData.GameSettings.windowy);
 			ResizeE(sender, e);
 
 			LogicUtils.Logic.LogicStart();
-
-
-			//LogicUtils.PathLogic.TestPath();
 		}
 
 		public static void ResizeWindow(int x, int y) {
-			if (SaveData.GameSettings.fullScreen) {
+			if (Save.SaveData.GameSettings.fullScreen) {
 				Program.mainForm.FormBorderStyle = FormBorderStyle.FixedSingle;
 				Program.mainForm.WindowState = FormWindowState.Normal;
-				SaveData.GameSettings.fullScreen = false;
+				Save.SaveData.GameSettings.fullScreen = false;
 			}
 			Program.mainForm.ClientSize = new Size(x, y);
 			Program.mainForm.CenterToScreen();
-			SaveData.GameSettings.windowx = x;
-			SaveData.GameSettings.windowy = y;
+			Save.SaveData.GameSettings.windowx = x;
+			Save.SaveData.GameSettings.windowy = y;
 			updateResize = true;
 		}
 		public static void SetFullscreen() {
-			SaveData.GameSettings.fullScreen = true;
+			Save.SaveData.GameSettings.fullScreen = true;
 			updateFullscreen = true;
 		}
 
@@ -129,15 +126,21 @@ namespace _2DRPG {
 		}
 
 		public static void SetOrtho(double x, double y) {
-			OrthoLeft = x;
-			OrthoRight = x;
-			OrthoTop = y;
-			OrthoBottom = y;
+			OrthoLeft = x - 320;
+			OrthoRight = x + 320;
+			OrthoTop = y + 180;
+			OrthoBottom = y - 180;
 		}
 		private static double OrthoLeft = -320;
 		private static double OrthoRight = 320;
 		private static double OrthoTop = 180;
 		private static double OrthoBottom = -180;
+
+		public static event Action OrthoUpdate;
+
+		public static void AddOrthoUpdate(Action a) {
+			OrthoUpdate += a;
+		}
 
 		/// <summary>
 		/// Method that gets called to render each frame
@@ -155,6 +158,10 @@ namespace _2DRPG {
 			}
 
 			Gl.LoadIdentity();
+			if (OrthoUpdate != null) {
+				OrthoUpdate.Invoke();
+				OrthoUpdate = null;
+			}
 			Gl.Ortho(OrthoLeft, OrthoRight, OrthoBottom, OrthoTop, -0.1, 10.0);
 			Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			if (GameState.CurrentState == GameState.GameStates.Paused || GameState.WindowOpen)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.Items;
+using _2DRPG.Save;
 
 namespace _2DRPG.Player {
 	class PlayerInventory {
@@ -13,30 +14,31 @@ namespace _2DRPG.Player {
 		private List<IEquippable> equipped = new List<IEquippable>();
 
 		/// <summary>
-		/// List of Items for storage
+		/// List of Items for storage, automatically packaged up for serialization
 		/// </summary>
-		public List<GameSave.ItemStorage> ItemList{
+		public List<RegionSave.ItemStorage> ItemList{
 			get {
-				List<GameSave.ItemStorage> stores = new List<GameSave.ItemStorage>();
+				List<RegionSave.ItemStorage> stores = new List<RegionSave.ItemStorage>();
 				foreach (Item i in items)
 					stores.Add(i.StoreObject());
 				return stores;
-			} set {
-				foreach (GameSave.ItemStorage store in value) {
+			}
+			set {
+				foreach (RegionSave.ItemStorage store in value) {
 					items.Add((Item)Activator.CreateInstance(store.type, store));
 				}
 			}
 		}
 
-		public List<GameSave.ItemStorage> EquippedList {
+		public List<RegionSave.ItemStorage> EquippedList {
 			get {
-				List<GameSave.ItemStorage> stores = new List<GameSave.ItemStorage>();
+				List<RegionSave.ItemStorage> stores = new List<RegionSave.ItemStorage>();
 				foreach (Item i in equipped)
 					stores.Add(i.StoreObject());
 				return stores;
 			}
 			set {
-				foreach (GameSave.ItemStorage store in value)
+				foreach (RegionSave.ItemStorage store in value)
 					equipped.Add((IEquippable)Activator.CreateInstance(store.type, store));
 			}
 		}

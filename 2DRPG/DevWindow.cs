@@ -11,6 +11,7 @@ using _2DRPG.GUI.Interaction;
 using _2DRPG.World.Objects;
 using _2DRPG.Quests;
 using _2DRPG.Items;
+using _2DRPG.Save;
 
 namespace _2DRPG {
 	public partial class DevWindow : Form {
@@ -643,7 +644,7 @@ namespace _2DRPG {
 
 			public static void UpdateNearby() {
 				float maxDist = 100;
-				Point p = WorldData.controllableOBJ.GetPointLocation();
+				Point p = WorldData.player.GetPointLocation();
 				List<float> inventoryDistances = new List<float>();
 				List<IInventory> invs = new List<IInventory>();
 				//collect a list of nearby inventories
