@@ -40,23 +40,30 @@ namespace _2DRPG {
 		}
 
 		/// <summary>
-		/// Loads the regions surrounding the current region, unloading regions that are too far away
+		/// Loads the regions surrounding the current location
 		/// </summary>
 		public static void LoadRegionObjects() {
+			for (int rx = CurrentRegionX - 1; rx <= CurrentRegionX + 1; rx++) {
+				for (int ry = CurrentRegionY - 1; ry <= CurrentRegionY + 1; ry++) {
+					LoadRegion(rx, ry);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Removes any regions too far away
+		/// </summary>
+		public static void UnloadRegionObjects() {
 			List<RegionTag> removeList = new List<RegionTag>();
 			foreach (RegionBase b in currentRegions.Values) {
 				if (Math.Sqrt(Math.Pow(b.Tag.RegionX, 2) + Math.Pow(b.Tag.RegionY, 2)) > 1.5d) {
 					removeList.Add(b.Tag);
 				}
 			}
-			foreach (RegionTag s in removeList)
+			if (removeList.Count > 0)
 				lock(currentRegions)
-					currentRegions.Remove(s);
-			for (int rx = CurrentRegionX - 1; rx <= CurrentRegionX + 1; rx++) {
-				for (int ry = CurrentRegionY - 1; ry <= CurrentRegionY + 1; ry++) {
-					LoadRegion(rx, ry);
-				}
-			}
+					foreach (RegionTag s in removeList)
+						currentRegions.Remove(s);
 		}
 
 		/// <summary>
@@ -95,6 +102,7 @@ namespace _2DRPG {
 
 		/// <summary>
 		/// Loads the region at the region coordinates given and adds it to the world stack
+		/// Ignores if the region is already loaded
 		/// </summary>
 		/// <param name="rx"></param>
 		/// <param name="ry"></param>
@@ -224,12 +232,14 @@ namespace _2DRPG {
 			oldX = CurrentRegionX - oldX; 
 			oldY = CurrentRegionY - oldY;
 			if (oldX != 0 || oldY != 0) {
+				UnloadRegionObjects();
 				LoadRegionObjects();
 			}
 			Form1.ShiftOrtho(x, y);
 
 		}
 		public static void SetCenter(float x, float y) {
+			UnloadRegionObjects();
 			CurrentX = x;
 			CurrentY = y;
 			Form1.SetOrtho(CurrentX, CurrentY);

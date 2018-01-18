@@ -62,7 +62,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Console.cs" />
+    <Compile Include="Console\Commands\GameCommands.cs" />
+    <Compile Include="Console\Commands\GUICommands.cs" />
+    <Compile Include="Console\Commands\SaveCommands.cs" />
+    <Compile Include="Console\Console.cs" />
+    <Compile Include="Console\ConsoleCommand.cs" />
     <Compile Include="DevWindow.cs">
       <SubType>Form</SubType>
     </Compile>

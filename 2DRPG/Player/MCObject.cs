@@ -18,6 +18,11 @@ namespace _2DRPG.Player {
 			UpdateWorldPosition();
 		}
 
+		public void Teleport(float x, float y) {
+			WorldData.SetCenter(x, y);
+			SetWorldPosition(x, y);
+		}
+
 		/// <summary>
 		/// Moves the character relatively based on passed parameters
 		/// </summary>

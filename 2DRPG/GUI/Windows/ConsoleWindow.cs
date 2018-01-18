@@ -39,7 +39,7 @@ namespace _2DRPG.GUI.Windows {
 			currentInput = previousInputs.Count;
 			input.text.SetText("`");
 			input.StartTyping();
-			output.SetText(output.GetText() + "\n" + Console.ExecuteCommand(s));
+			output.SetText(output.GetText() + "\n" + Console.Console.ExecuteCommand(s));
 			output.ScrollTo(1f);
 		}
 

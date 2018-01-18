@@ -51,6 +51,7 @@ namespace _2DRPG {
 			Gl.EnableClientState(EnableCap.VertexArray);
 			Gl.EnableClientState(EnableCap.TextureCoordArray);
 			contextCreated = true;
+			Console.Console.ConsoleSetup();
 			WorldData.WorldStartup();
 			Screen.ScreenStartup();
 

@@ -29,11 +29,11 @@ namespace _2DRPG.World.Objects {
 		}
 
 		[OnSerialized]
-		private void LoadInteractions() {
+		private void LoadInteractions(StreamingContext sc) {
 			InterItems = SaveData.LoadInteractions(InteractionID);
 		}
 		[OnDeserializing]
-		private void SaveInteractions() {
+		private void SaveInteractions(StreamingContext sc) {
 			SaveData.SaveInteractions(InterItems, InteractionID);
 		}
 
