@@ -8,20 +8,20 @@ using System.Drawing;
 namespace _2DRPG.GUI.Windows {
 	class HUDWindow : IWindow {
 
-		static UIDropdownButton butt = new UIDropdownButton(-240, 140f, 60f, 15f, 4, "textBox", new UIText(-240f, 142f, .5f, 3, "Dropdown"), null);
+		static UIDropdownButton butt = new UIDropdownButton(-240, 140f, 60f, 15f, 4, TextureManager.TextureNames.textBox, new UIText(-240f, 142f, .5f, 3, "Dropdown"), null);
 		static UITextBox copypasta = new UITextBox(-180, 80, .5f, 200, 3, 3, "The quick brown cox jumped over the lazy doggo \n\nABCDEFGHIJKLMNOPQRSTUVWXYandZ\n\nabcdefghijklmnopqrstuvwxyandz\n\n!@#$%^&*()_-;'[]{}:<>,./?");
 		static UIScrollBar scroll = new UIScrollBar(-100, 0, 5, 20, 2) { scrollTarget = copypasta };
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			butt,
-			new UIDraggable(-100, -100, 15f, 15f, 2, "textBox"),
+			new UIDraggable(-100, -100, 15f, 15f, 2, TextureManager.TextureNames.textBox),
 			copypasta, scroll
 			
 		};
 
 		static HUDWindow() {
 			butt.SetDropdowns(new UIButton[]{
-				new UIButton(() => { butt.displayLabel.SetText("Button 1"); butt.ToggleDropdowns(); }, "Emoji crying fa", "textBox"),
-				new UIButton(() => { butt.displayLabel.SetText("Button 2"); butt.ToggleDropdowns(); }, "Click me", "textBox")
+				new UIButton(() => { butt.displayLabel.SetText("Button 1"); butt.ToggleDropdowns(); }, "Emoji crying fa", TextureManager.TextureNames.textBox),
+				new UIButton(() => { butt.displayLabel.SetText("Button 2"); butt.ToggleDropdowns(); }, "Click me", TextureManager.TextureNames.textBox)
 			});
 		}
 
@@ -34,8 +34,8 @@ namespace _2DRPG.GUI.Windows {
 			return UIObjects;
 		}
 
-		string[] textureNames = new string[] {
-			"button", "lightBack", "darkBack", "textBox"
+		Texture[] textureNames = new Texture[] {
+			TextureManager.TextureNames.button, TextureManager.TextureNames.lightBack, TextureManager.TextureNames.darkBack, TextureManager.TextureNames.textBox
 		};
 
 		public void LoadTextures() {

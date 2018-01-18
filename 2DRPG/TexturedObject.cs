@@ -8,6 +8,7 @@ using OpenGL;
 using System.Drawing.Imaging;
 
 namespace _2DRPG {
+	[Serializable]
 	public class TexturedObject {
 
 		public float screenX;
@@ -18,18 +19,18 @@ namespace _2DRPG {
 		public float height = 16;
 		[World.Editable]
 		public int layer;
-		[World.Editable]
-		public string texName;
+
+		public Texture texName = TextureManager.TextureNames.DEFAULT;
 
 		public Guid uid;
 
-		public TexturedObject(float x, float y, int layer, string textureName) {
+		public TexturedObject(float x, float y, int layer, Texture textureName) {
 			texName = textureName;
 			SetScreenPosition(x, y, layer);
 			uid = Guid.NewGuid();
 		}
 
-		public TexturedObject(float x, float y, int layer, float width, float height, string textureName) {
+		public TexturedObject(float x, float y, int layer, float width, float height, Texture textureName) {
 			texName = textureName;
 			this.height = height;
 			this.width = width;
@@ -37,15 +38,9 @@ namespace _2DRPG {
 			uid = Guid.NewGuid();
 		}
 
-		public TexturedObject() : this(0, 0, 10, "default") { }
+		public TexturedObject() : this(0, 0, 10, TextureManager.TextureNames.DEFAULT) { }
 
-		public TexturedObject(string textureName) : this(0, 0, 10, textureName) { }
-
-		public void ContextCreated() { }
-
-		public void ContextDestroyed() { }
-
-		public void ContextUpdate() { }
+		public TexturedObject(Texture textureName) : this(0, 0, 10, textureName) { }
 
 		public float[] quadPosition = new float[] {
 			0.25f, 0.25f, 0f,
@@ -53,7 +48,7 @@ namespace _2DRPG {
 			0.75f, 0.75f, 0f,
 			.75f, 0.25f, 0f
 		};
-
+		[NonSerialized]
 		private static float[] texturePosition = new float[] {
 			0.0f, 0.0f,
 			0.0f, 1.0f,
@@ -74,7 +69,7 @@ namespace _2DRPG {
 			using (MemoryLock vertexArrayLock = new MemoryLock(quadPosition))
 			using (MemoryLock vertexTextureLock = new MemoryLock(TexturePosition)) {
 				//Sets the texture used
-				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID(texName));
+				Gl.BindTexture(TextureTarget.Texture2d, texName.glID);
 				Gl.VertexPointer(3, VertexPointerType.Float, 0, vertexArrayLock.Address);	//Use the vertex array for vertex information
 				Gl.TexCoordPointer(2, TexCoordPointerType.Float, 0, vertexTextureLock.Address);		//Use the texture array for texture coordinates
 				Gl.DrawArrays(PrimitiveType.Quads, 0, 4);   //Draw the quad

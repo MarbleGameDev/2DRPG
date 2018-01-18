@@ -16,7 +16,7 @@ namespace _2DRPG.GUI {
 		public UIBase() : base() {
 			SetScreenPosition(screenX, screenY, defaultLayer);
 		}
-		public UIBase(string textureName) : base(textureName) {
+		public UIBase(Texture textureName) : base(textureName) {
 			SetScreenPosition(screenX, screenY, defaultLayer);
 		}
 		/// <summary>
@@ -28,7 +28,7 @@ namespace _2DRPG.GUI {
 		/// <param name="height">Distance to the top and bottom</param>
 		/// <param name="layer">Render layer</param>
 		/// <param name="textureName">Name of the texture</param>
-		public UIBase(float x, float y, float width, float height, int layer, string textureName) : base(x, y, layer, width, height, textureName) {
+		public UIBase(float x, float y, float width, float height, int layer, Texture textureName) : base(x, y, layer, width, height, textureName) {
 
 		}
 		/// <summary>
@@ -66,7 +66,7 @@ namespace _2DRPG.GUI {
 
 				float boarder = NineSliceBoarder / (float)TextureSize;
 
-				Gl.BindTexture(TextureTarget.Texture2d, TextureManager.GetTextureID(texName));
+				Gl.BindTexture(TextureTarget.Texture2d, texName.glID);
 				//Iterate clockwise from bottom left corner as 0
 				for (int i = 0; i < 9; i++) {
 					int row = i % 3;

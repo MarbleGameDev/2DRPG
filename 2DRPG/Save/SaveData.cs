@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Reflection;
 using Ionic.Zip;
 using System.Windows.Forms;
 using _2DRPG.Player;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace _2DRPG.Save {
 	static class SaveData {
@@ -25,13 +27,14 @@ namespace _2DRPG.Save {
 #endif
 
 		public static string CurrentSaveName = "master";
-		private static JsonSerializer serializer = new JsonSerializer();
+		private static BinaryFormatter serializer = new BinaryFormatter();
+		private static JsonSerializer jsonSerializer = new JsonSerializer();
 
 		public static Settings GameSettings = new Settings();
 
 		static SaveData() {
 			Directory.CreateDirectory(saveLocation);
-			serializer.ObjectCreationHandling = ObjectCreationHandling.Replace;
+			jsonSerializer.ObjectCreationHandling = ObjectCreationHandling.Replace;
 		}
 
 		/// <summary>
@@ -80,7 +83,7 @@ namespace _2DRPG.Save {
 		/// Loads the player settings, creating new copies if there doesn't exist others
 		/// </summary>
 		public static void LoadGame() {
-			GameSettings = DeSerializeObject<Settings>("Settings");
+			GameSettings = DeSerializeObjectJSON<Settings>("Settings");
 			if (GameSettings == null)
 				GameSettings = new Settings();
 			Quests.QuestData.ActiveQuests = DeSerializeObjectFromZip<HashSet<string>>("PlayerQuests", "Package_03");
@@ -91,7 +94,7 @@ namespace _2DRPG.Save {
 		/// Saves the player settings
 		/// </summary>
 		public static void SaveGame() {
-			SerializeObject(GameSettings, "Settings");
+			SerializeObjectJSON(GameSettings, "Settings");
 			SavePlayer(WorldData.player);
 			if (WorldData.partner != null)
 				SavePlayer(WorldData.partner);
@@ -147,19 +150,21 @@ namespace _2DRPG.Save {
 		/// </summary>
 		public static void SaveGameData() {
 			lock (WorldData.currentRegions) {
-				foreach (string r in WorldData.currentRegions.Keys) {
-					RegionSave s = new RegionSave();
-					foreach (World.Objects.WorldObjectBase b in WorldData.currentRegions[r].GetWorldObjects()) {
-						s.worldObjects.Add(b.StoreObject());
-					}
-					WorldData.currentRegions[r].CompileCollisionHash();
-					s.CollisionPoints = WorldData.currentRegions[r].CollisionPoints;
-					SerializeObjectToZip(s, r, "Package_01");
+				foreach (World.Regions.RegionBase b in WorldData.currentRegions.Values) {
+					SaveRegion(b);
 				}
 			}
 			SaveTasks();
 			GUI.Windows.NotificationWindow.NewNotification("Data Saved", 60);
 		}
+
+		public static List<GUI.Interaction.InteractionBase> LoadInteractions(string interactionID) {
+			return DeSerializeObjectFromZip<List<GUI.Interaction.InteractionBase>>(interactionID, "Package_04");
+		}
+		public static void SaveInteractions(List<GUI.Interaction.InteractionBase> interItems, string interactionID) {
+			SerializeObjectToZip(interItems, interactionID, "Package_04");
+		}
+
 		/// <summary>
 		/// Loads the game data from packages
 		/// </summary>
@@ -169,12 +174,16 @@ namespace _2DRPG.Save {
 		}
 
 		private static void LoadTasks() {
+			//Custom system for deserializing all objects from a zip without wasting streams
 			using (ZipFile zip = ZipFile.Read(gameDataLocation + CurrentSaveName + "/" + "Package_02.rzz")) {
-				foreach(ZipEntry e in zip)
-					using (StreamReader sw = new StreamReader(e.OpenReader()))
-					using (JsonReader reader = new JsonTextReader(sw)) {
-						Quests.TaskBase q = serializer.Deserialize<Quests.TaskBase>(reader);
-						Quests.QuestData.QuestDatabase.Add(q.taskName, q);
+				foreach (ZipEntry e in zip)
+					try {
+						using (Stream sw = e.OpenReader()) {
+							Quests.TaskBase q = (Quests.TaskBase)serializer.Deserialize(sw);
+							Quests.QuestData.QuestDatabase.Add(q.taskName, q);
+						}
+					} catch (SerializationException) {
+						System.Diagnostics.Debug.WriteLine("Serialization Error on LoadTasks()");
 					}
 			}
 			if (!Form1.devWin.IsDisposed)
@@ -187,30 +196,54 @@ namespace _2DRPG.Save {
 			}
 		}
 
-
-		public static RegionSave LoadRegion(string regionTag) {
-
-			return DeSerializeObjectFromZip<RegionSave>(regionTag, "Package_01");
+		//Move regions to and from Disk
+		public static World.Regions.RegionBase LoadRegion(World.Regions.RegionTag regionTag) {
+			return DeSerializeObjectFromZip<World.Regions.RegionBase>(regionTag.ToString(), "Package_01");
+		}
+		public static void SaveRegion(World.Regions.RegionBase reg) {
+			SerializeObjectToZip(reg, reg.Tag.ToString(), "Package_01");
 		}
 
 
 		public static void SerializeObject(object obj, string fileName) {
-				try {
-					using (StreamWriter sw = new StreamWriter(saveLocation + fileName + ".rz"))
-					using (JsonWriter writer = new JsonTextWriter(sw)) {
-						writer.Formatting = Formatting.Indented;
-						serializer.Serialize(writer, obj);
-					}
-				} catch (JsonSerializationException e) {
-					System.Diagnostics.Debug.WriteLine("Serialization Error: " + e.Message);
+			try {
+				using (Stream sw = new FileStream(saveLocation + fileName + ".rz", FileMode.Create, FileAccess.Write, FileShare.None)) {
+					serializer.Serialize(sw, obj);
 				}
-			
+			} catch (SerializationException e) {
+				System.Diagnostics.Debug.WriteLine("Serialization Error: " + e.Message);
+			}
+
 		}
 		public static T DeSerializeObject<T>(string fileName) {
 			try {
+				using (Stream sw = new FileStream(saveLocation + fileName + ".rz", FileMode.Open, FileAccess.Read, FileShare.Read)) {
+					return (T)serializer.Deserialize(sw);
+				}
+			} catch (FileNotFoundException e) {
+				System.Diagnostics.Debug.WriteLine("Deserialization Error: " + e.Message);
+			} catch (SerializationException e) {
+				System.Diagnostics.Debug.WriteLine("Deserialization Error: " + e.Message);
+			}
+			return default(T);
+		}
+
+		public static void SerializeObjectJSON(object obj, string fileName) {
+			try {
+				using (StreamWriter sw = new StreamWriter(saveLocation + fileName + ".rz"))
+				using (JsonWriter writer = new JsonTextWriter(sw)) {
+					writer.Formatting = Formatting.Indented;
+					jsonSerializer.Serialize(writer, obj);
+				}
+			} catch (JsonSerializationException e) {
+				System.Diagnostics.Debug.WriteLine("Serialization Error: " + e.Message);
+			}
+		}
+		public static T DeSerializeObjectJSON<T>(string fileName) {
+			try {
 				using (StreamReader sw = new StreamReader(saveLocation + fileName + ".rz"))
 				using (JsonReader reader = new JsonTextReader(sw)) {
-					return serializer.Deserialize<T>(reader);
+					return jsonSerializer.Deserialize<T>(reader);
 				}
 			} catch (JsonSerializationException e) {
 				System.Diagnostics.Debug.WriteLine("Deserialization Error: " + e.Message);
@@ -223,15 +256,12 @@ namespace _2DRPG.Save {
 		//Package_01: Region Data
 		//Package_02: Tasks Data
 		//Package_03: Player Data
+		//Package_04: Interaction Data
 
 		public static void SerializeObjectToZip(object obj, string fileName, string zipName) {
 			using (ZipFile zip = ZipFile.Read(gameDataLocation + CurrentSaveName + "/" + zipName + ".rzz"))
-			using (Stream st = new MemoryStream())
-			using (StreamWriter sw = new StreamWriter(st))
-			using (JsonWriter writer = new JsonTextWriter(sw)) {
-				writer.Formatting = Formatting.Indented;
-				serializer.Serialize(writer, obj);
-				writer.Flush();
+			using (Stream st = new MemoryStream()) {
+				serializer.Serialize(st, obj);
 				st.Position = 0;
 				if (zip.ContainsEntry(fileName + ".rz"))
 					zip.UpdateEntry(fileName + ".rz", st);
@@ -246,11 +276,15 @@ namespace _2DRPG.Save {
 					System.Diagnostics.Debug.WriteLine("File does not exist: " + fileName);
 					return default(T);
 				}
-				using (StreamReader sw = new StreamReader(zip[fileName + ".rz"].OpenReader()))
-				using (JsonReader reader = new JsonTextReader(sw)) {
-					return serializer.Deserialize<T>(reader);
+				try {
+					using (Stream sw = zip[fileName + ".rz"].OpenReader()) {
+						return (T)serializer.Deserialize(sw);
+					}
+				} catch (SerializationException e) {
+					System.Diagnostics.Debug.WriteLine("Serialization Error in " + zipName + ": " + e.Message);
 				}
 			}
+			return default(T);
 		}
 
 		private static bool CheckObjectInZip(string fileName, string zipName) {

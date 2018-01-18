@@ -18,8 +18,9 @@ namespace _2DRPG {
 		static int CurrentRegionY = 0;
 		public static float CurrentX = 1;
 		public static float CurrentY = 1;
-		public static Dictionary<string, RegionBase> currentRegions = new Dictionary<string, RegionBase>();
+		public static Dictionary<RegionTag, RegionBase> currentRegions = new Dictionary<RegionTag, RegionBase>();
 		public static HashSet<UIBase> worldUIs = new HashSet<UIBase>();
+		
 		//Hashset used for testing custom worldObjects, added via AddObjects()
 		public static HashSet<WorldObjectBase> tempRender = new HashSet<WorldObjectBase>();
 
@@ -35,20 +36,20 @@ namespace _2DRPG {
 		/// Used to add objects to the world that can't be done during runtime
 		/// </summary>
 		private static void AddObjects() {
-
+				//AddToRegion(-1, 0, new WorldObjectCollidable(-40, 20, 10, TextureManager.TextureNames.heart));
 		}
 
 		/// <summary>
 		/// Loads the regions surrounding the current region, unloading regions that are too far away
 		/// </summary>
 		public static void LoadRegionObjects() {
-			List<string> removeList = new List<string>();
+			List<RegionTag> removeList = new List<RegionTag>();
 			foreach (RegionBase b in currentRegions.Values) {
-				if (Math.Sqrt(Math.Pow(b.RegionX, 2) + Math.Pow(b.RegionY, 2)) > 1.5d) {
-					removeList.Add(b.RegionTag);
+				if (Math.Sqrt(Math.Pow(b.Tag.RegionX, 2) + Math.Pow(b.Tag.RegionY, 2)) > 1.5d) {
+					removeList.Add(b.Tag);
 				}
 			}
-			foreach (string s in removeList)
+			foreach (RegionTag s in removeList)
 				lock(currentRegions)
 					currentRegions.Remove(s);
 			for (int rx = CurrentRegionX - 1; rx <= CurrentRegionX + 1; rx++) {
@@ -58,15 +59,29 @@ namespace _2DRPG {
 			}
 		}
 
-		public static void AddToRegion(float rx, float ry, WorldObjectBase b) {
-			currentRegions[rx + "x" + ry].GetWorldObjects().Add(b);
+		/// <summary>
+		/// Adds a given WorldObject to the region given by the region coordinates
+		/// </summary>
+		/// <param name="rx"></param>
+		/// <param name="ry"></param>
+		/// <param name="b"></param>
+		public static void AddToRegion(int rx, int ry, WorldObjectBase b) {
+			RegionTag reg = new RegionTag(rx, ry);
+			if (currentRegions.ContainsKey(reg))
+				currentRegions[reg].GetWorldObjects().Add(b);
 		}
 
+		/// <summary>
+		/// Removes a given WorldObject from the region it belongs to
+		/// </summary>
+		/// <param name="b"></param>
 		public static void RemoveObject(WorldObjectBase b) {
 			if (b == null)
 				return;
 			lock (currentRegions) {
-				currentRegions[WorldToRegion(b.worldX) + "x" + WorldToRegion(b.worldY)].GetWorldObjects().Remove(b);
+				RegionBase ba = GetRegion(b.worldX, b.worldY);
+				if (ba != null && ba.GetWorldObjects().Contains(b))
+					ba.GetWorldObjects().Remove(b);
 			}
 		}
 		/// <summary>
@@ -78,20 +93,30 @@ namespace _2DRPG {
 			return (int)Math.Ceiling(coord / 1000f) - 1;
 		}
 
+		/// <summary>
+		/// Loads the region at the region coordinates given and adds it to the world stack
+		/// </summary>
+		/// <param name="rx"></param>
+		/// <param name="ry"></param>
 		private static void LoadRegion(int rx, int ry) {
-			string reg = rx + "x" + ry;
+			RegionTag reg = new RegionTag(rx, ry);
 			if (currentRegions.ContainsKey(reg))
 				return;
-			Save.RegionSave s = Save.SaveData.LoadRegion(reg);
-			if (s == null)
-				s = new Save.RegionSave();
-			RegionBase ba = new RegionBase(reg, s);
-			ba.Load();
+			RegionBase s = Save.SaveData.LoadRegion(reg);
+			if (s == null) {
+				s = new RegionBase(reg);
+			}
+			s.Load();
 			lock (currentRegions)
-				currentRegions.Add(reg, ba);
+				currentRegions.Add(reg, s);
 		}
+		/// <summary>
+		/// Unloads the region at the region coordinates given and removes it from the world stack
+		/// </summary>
+		/// <param name="rx"></param>
+		/// <param name="ry"></param>
 		private static void UnloadRegion(int rx, int ry) {
-			string reg = rx + "x" + ry;
+			RegionTag reg = new RegionTag(rx, ry);
 			if (currentRegions.ContainsKey(reg)) {
 				currentRegions[reg].Unload();
 				lock(currentRegions)
@@ -100,13 +125,13 @@ namespace _2DRPG {
 		}
 
 		/// <summary>
-		/// Returns the region file responsible for the passed world coordinates if loaded, null if not
+		/// Returns the region file responsible for the passed world coordinates if loaded, null if not loaded
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
 		public static RegionBase GetRegion(float x, float y) {
-			string reg = GetRegionString(x, y);
+			RegionTag reg = GetRegionTag(x, y);
 			if (currentRegions.ContainsKey(reg)) {
 				return currentRegions[reg];
 			} else {
@@ -114,10 +139,16 @@ namespace _2DRPG {
 			}
 		}
 
-		public static string GetRegionString(float x, float y) {
+		/// <summary>
+		/// Generates the region tag object responsible for the given world coordinates
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
+		public static RegionTag GetRegionTag(float x, float y) {
 			int rx = (int)Math.Ceiling(x / 1000f) - 1;
 			int ry = (int)Math.Ceiling(y / 1000f) - 1;
-			return rx + "x" + ry;
+			return new RegionTag(rx, ry);
 		}
 
 		/// <summary>
@@ -153,8 +184,7 @@ namespace _2DRPG {
 		/// Loads all textures needed for the world objects to be added afterwards, This function is called once GL context is created, do not invoke manually
 		/// </summary>
 		public static void WorldStartup() {
-			TextureManager.ClearTextures();
-			TextureManager.RegisterTextures(new string[] { "character", "baseFont", "tempCharacter" });
+			TextureManager.RegisterTextures(new Texture[] { TextureManager.TextureNames.character, TextureManager.TextureNames.baseFont, TextureManager.TextureNames.tempCharacter });
 			worldUIs.Add(interChar);
 
 			LoadWorldSave("master");
@@ -237,6 +267,7 @@ namespace _2DRPG {
 			return grid;
 		}
 
+		/* Completely Broken as of 1/17/18
 		public static void PacketToWorldObject(Net.UDPFrame frame) {
 			if (frame.intData[1] == 0) {    //Single packet object
 				if (!currentRegions.ContainsKey(frame.stringData[0])) {
@@ -262,5 +293,6 @@ namespace _2DRPG {
 					break;
 			}
 		}
+		*/
 	}
 }

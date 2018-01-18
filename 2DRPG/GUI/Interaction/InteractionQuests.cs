@@ -9,22 +9,16 @@ using System.Threading.Tasks;
 using _2DRPG.Save;
 
 namespace _2DRPG.GUI.Interaction {
+	[Serializable]
 	class InteractionQuests : InteractionChoice {
 
 		public List<string> questTags = new List<string>(); //use dictionary to pair with path names
 		public List<int> questInts = new List<int>(); //use dictionary to pair with the quest tags
-		public string interactionID;
+		public string interactionID = "interaction";
 		public bool immediateMode = false;
 
 		public InteractionQuests(List<InteractionPath> choices) : base(choices) {
 
-		}
-
-		public InteractionQuests(RegionSave.InteractionObjectStorage store) : base(store) {
-			interactionID = store.text;
-			questTags = ((JArray)store.extraData[1]).ToObject<List<string>>();
-			questInts = ((JArray)store.extraData[2]).ToObject<List<int>>();
-			immediateMode = (bool)store.extraData[0];
 		}
 
 		public override void Setup() {
@@ -37,7 +31,7 @@ namespace _2DRPG.GUI.Interaction {
 					if (questInts[i] != QuestData.QuestDatabase[questTags[i]].CheckStatus())
 						check = false;
 				if (check)
-					items.Add(new UIButton(0, -100 - counter * 21, 30, 10, 2, "textBox") {
+					items.Add(new UIButton(0, -100 - counter * 21, 30, 10, 2, TextureManager.TextureNames.textBox) {
 						displayLabel = new UIText(0, -98 - counter++ * 21, .5f, 1, p.pathName),
 						buttonAction = () => {
 							Windows.InteractionWindow.InsertNodes(p.items);
@@ -52,14 +46,7 @@ namespace _2DRPG.GUI.Interaction {
 
 		}
 		public override void Takedown() {
-		}
 
-		public override RegionSave.InteractionObjectStorage StoreObject() {
-			RegionSave.InteractionObjectStorage store = base.StoreObject();
-			store.objectType = RegionSave.InteractionObjectType.Quests;
-			store.text = interactionID;
-			store.extraData = new object[]{ immediateMode, questTags.ToArray(), questInts.ToArray() };
-			return store;
 		}
 
 		public override string ToString() {

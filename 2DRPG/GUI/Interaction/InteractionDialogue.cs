@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using _2DRPG.Save;
 
 namespace _2DRPG.GUI.Interaction {
+	[Serializable]
 	class InteractionDialogue : InteractionBase {
 
 		[Editable]
@@ -14,13 +15,11 @@ namespace _2DRPG.GUI.Interaction {
 
 		public string DialogueText { get { return displayText; } set { displayText = value; } }
 
+		[NonSerialized]
 		static UITextBox textBox = new UITextBox(0, -94, .5f, 280, 1, 6, "");
 
 		public InteractionDialogue(string text) {
 			displayText = text;
-		}
-		public InteractionDialogue(RegionSave.InteractionObjectStorage store) {
-			displayText = store.text;
 		}
 
 		public override void Render() {
@@ -32,13 +31,6 @@ namespace _2DRPG.GUI.Interaction {
 		}
 		public override void Takedown() {
 			textBox.Cleanup();
-		}
-
-		public override RegionSave.InteractionObjectStorage StoreObject() {
-			RegionSave.InteractionObjectStorage store = new RegionSave.InteractionObjectStorage() {
-				objectType = RegionSave.InteractionObjectType.Dialogue, text = displayText
-			};
-			return store;
 		}
 
 		public override string ToString() {

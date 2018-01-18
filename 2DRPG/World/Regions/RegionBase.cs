@@ -5,32 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.World.Objects;
 using System.Drawing;
+using System.Runtime.Serialization;
 
 namespace _2DRPG.World.Regions {
+	[Serializable]
 	class RegionBase {
 
-		public int RegionX { get; private set; }
-		public int RegionY { get; private set; }
-		public string RegionTag { get; private set; }
-		public List<string> TextureNames = new List<string>();
+		public RegionTag Tag { get; private set; }
+		public List<Texture> TextureNames = new List<Texture>();
 		protected HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
 		public Dictionary<int, HashSet<int>> CollisionPoints = new Dictionary<int, HashSet<int>>();
 
-		public RegionBase(string regionTag, Save.RegionSave save) {
-			RegionTag = regionTag;
-			string[] coords = regionTag.Split('x');
-			RegionX = int.Parse(coords[0]);
-			RegionY = int.Parse(coords[1]);
-			foreach (Save.RegionSave.WorldObjectStorage s in save.worldObjects) {
-				WorldObjectBase b = Save.RegionSave.ConstructWorldObject(s);
-				regionObjects.Add(b);
-				if (!TextureNames.Contains(b.texName))
-					TextureNames.Add(b.texName);
-			}
-			CollisionPoints = save.CollisionPoints;
+		public RegionBase() {
+
+		}
+		public RegionBase(RegionTag reg) {
+			Tag = reg;
 		}
 
-		public virtual HashSet<WorldObjectBase> GetWorldObjects() {
+		public HashSet<WorldObjectBase> GetWorldObjects() {
 			return regionObjects;
 		}
 
@@ -50,6 +43,14 @@ namespace _2DRPG.World.Regions {
 			TextureManager.UnRegisterTextures(TextureNames.ToArray());
 		}
 
+		[OnSerializing]
+		private void FindTextures(StreamingContext sc) {
+			TextureNames.Clear();
+			foreach (WorldObjectBase b in regionObjects)
+				TextureNames.Add(b.texName);
+			CompileCollisionHash();
+		}
+
 		public void CompileCollisionHash() {
 			List<WorldObjectBase> regobs = new List<WorldObjectBase>();
 			foreach (WorldObjectBase b in regionObjects)
@@ -60,8 +61,8 @@ namespace _2DRPG.World.Regions {
 			CollisionPoints.Clear();
 			for (int x = 0; x < 1000; x+= 4) {
 				for (int y = 0; y < 1000; y+= 4) {
-					int tempX = RegionX * 1000 + x;
-					int tempY = RegionY * 1000 + y;
+					int tempX = Tag.RegionX * 1000 + x;
+					int tempY = Tag.RegionY * 1000 + y;
 					bool open = true;
 					foreach (WorldObjectBase b in regobs) {
 						open = open && !LogicUtils.Logic.CheckIntersection(LogicUtils.PathLogic.ExpandPosition(b.quadPosition, 8), tempX, tempY);

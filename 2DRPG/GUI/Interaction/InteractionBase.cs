@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using _2DRPG.Save;
 
 namespace _2DRPG.GUI.Interaction {
+	[Serializable]
 	public abstract class InteractionBase {
 
 		public Action nextNode;
@@ -14,8 +15,6 @@ namespace _2DRPG.GUI.Interaction {
 
 		public abstract void Setup();
 		public abstract void Takedown();
-
-		public abstract RegionSave.InteractionObjectStorage StoreObject();
 
 		public abstract override string ToString();
 

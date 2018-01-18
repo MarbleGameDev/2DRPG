@@ -33,7 +33,7 @@ namespace _2DRPG.GUI {
 		/// <param name="layer">Render layer</param>
 		/// <param name="maxRows">Maximum number of rows enterable, or scrollable if LimitTyping is set to false</param>
 		/// <param name="textureName">Name of the texture</param>
-		public UITypeBox(float x, float y, float width, float height, int layer, float maxRows, string textureName) : base(x, y, width, height, layer, textureName) {
+		public UITypeBox(float x, float y, float width, float height, int layer, float maxRows, Texture textureName) : base(x, y, width, height, layer, textureName) {
 			text = new UITextBox(x, y, .5f, (int)width * 2, layer - 1, maxRows, "");
 			this.maxRows = maxRows;
 			buttonAction = new Action(StartTyping);

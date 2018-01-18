@@ -13,9 +13,9 @@ namespace _2DRPG.GUI.Windows {
 		static UITextBox description = new UITextBox(100, 100, .5f, 100, 3, 6, "Placeholder text");
 
 		static HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 0, 200, 160, 5, "darkBack"),
+			new UIBase(0, 0, 200, 160, 5, TextureManager.TextureNames.darkBack),
 			new UIText(0, 150, .5f, 4, "Inventory Window"),
-			new UIBase(-100, 30, 88, 104, 4, "lightBack"),
+			new UIBase(-100, 30, 88, 104, 4, TextureManager.TextureNames.lightBack),
 			items, description
 		};
 
@@ -47,7 +47,7 @@ namespace _2DRPG.GUI.Windows {
 				}
 				*/
 				//}, "button"));
-				string texture = "random" + rnd.Next(1, 5);
+				Texture texture = TextureManager.TextureNames.DEFAULT;
 				UIItem i = new UIItem(texture, it) { NineSliceRendering = false};
 				i.SetButtonAction(() => {
 					description.SetText(it.Name);
@@ -58,7 +58,9 @@ namespace _2DRPG.GUI.Windows {
 			items.SetGridItems(b.ToArray());
 		}
 
-		static string[] textures = new string[] { "darkBack", "button", "lightBack", "selected", "random1", "random2", "random3", "random4" };
+		static Texture[] textures = new Texture[] {
+			TextureManager.TextureNames.darkBack, TextureManager.TextureNames.button, TextureManager.TextureNames.lightBack, TextureManager.TextureNames.selected
+		};
 
 		public void LoadTextures() {
 			Screen.CloseWindow("hud");

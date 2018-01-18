@@ -21,7 +21,7 @@ namespace _2DRPG.GUI {
 		/// <param name="y">Y position on the screen</param>
 		/// <param name="textSize">size of the text, multipled by 16 to get pixel counts</param>
 		/// <param name="text">text to be displayed</param>
-		public UIText(float x, float y, float textSize, int layer, string text) : base(x, y, textSize * 16 * text.Length, textSize * 16, layer, "button") {
+		public UIText(float x, float y, float textSize, int layer, string text) : base(x, y, textSize * 16 * text.Length, textSize * 16, layer, TextureManager.TextureNames.button) {
 			SetText(text, textSize);
 		}
 		/// <summary>
@@ -33,7 +33,7 @@ namespace _2DRPG.GUI {
 		/// <param name="charWidth">width of the text</param>
 		/// <param name="layer">Render layer</param>
 		/// <param name="text">text to be displayed</param>
-		public UIText(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, charWidth, textSize * 16, layer, "button") {
+		public UIText(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, charWidth, textSize * 16, layer, TextureManager.TextureNames.button) {
 			SetText(text, textSize);
 		}
 

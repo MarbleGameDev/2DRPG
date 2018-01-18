@@ -24,7 +24,7 @@ namespace _2DRPG.GUI {
 		/// <param name="layer"></param>
 		/// <param name="tabs"></param>
 		/// <param name="tabItems"></param>
-		public UITab(float x, float y, float width, float height, int layer, List<UIButton> tabs, HashSet<UIBase>[] tabItems) : base("button") {
+		public UITab(float x, float y, float width, float height, int layer, List<UIButton> tabs, HashSet<UIBase>[] tabItems) : base(TextureManager.TextureNames.button) {
 			int counter = 0;
 			foreach(UIButton b in tabs) {
 				b.SetScreenDimensions(x + counter * (width * 2 + 2), y, width, height);

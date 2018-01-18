@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using _2DRPG.Save;
 
 namespace _2DRPG.World.Objects {
+	[Serializable]
 	public class WorldObjectBase : TexturedObject {
 		[Editable]
 		public float worldX;
@@ -20,22 +21,20 @@ namespace _2DRPG.World.Objects {
 		/// <param name="y">Y position in the world</param>
 		/// <param name="layer">Render Layer</param>
 		/// <param name="textureName">Name of the texture</param>
-		public WorldObjectBase(float x, float y, int layer, string textureName, float width = 16, float height = 16) : this(x, y, textureName, width, height) {
+		public WorldObjectBase(float x, float y, int layer, Texture textureName, float width = 16, float height = 16) : this(x, y, textureName, width, height) {
 			SetLayer(layer);
 		}
 
-		public WorldObjectBase() : base() { }
-		public WorldObjectBase(string textureName) : base(textureName) {
+		public WorldObjectBase() : base() {
+			UpdateWorldPosition();
+		}
+		public WorldObjectBase(Texture textureName) : base(textureName) {
 
         }
-		public WorldObjectBase(float x, float y, string textureName, float width = 16, float height = 16) : base(textureName) {
+		public WorldObjectBase(float x, float y, Texture textureName, float width = 16, float height = 16) : base(textureName) {
 			this.width = width;
 			this.height = height;
 			SetWorldPosition(x, y);
-		}
-
-		public WorldObjectBase(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
-			SetUID(store.uid);
 		}
 
 		/// <summary>
@@ -109,20 +108,9 @@ namespace _2DRPG.World.Objects {
 				Net.SessionManager.SendFrame(new Net.UDPFrame() {
 					subject = Net.UDPFrame.FrameType.Movement,
 					uid = uid,
-					stringData = new string[] { WorldData.GetRegionString(worldX, worldY) },
+					//stringData = new string[] { WorldData.GetRegionString(worldX, worldY) },
 					floatData = new float[] { worldX, worldY }
 				});
-		}
-
-		/// <summary>
-		/// Generates a WorldObjectStorage for the world object to be saved
-		/// </summary>
-		/// <returns></returns>
-		public virtual RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage store = new RegionSave.WorldObjectStorage() {
-				worldX = worldX, worldY = worldY, width = width, height = height, textureName = texName, layer = layer, objectType = RegionSave.WorldObjectType.Base, uid = uid
-			};
-			return store;
 		}
 
 		/// <summary>
@@ -172,7 +160,7 @@ namespace _2DRPG.World.Objects {
 					subject = Net.UDPFrame.FrameType.WorldObject,
 					floatData = new float[] { worldX, worldY, width, height},
 					intData = new int[] { 0, 0, layer}, //[Object Type, multipacket system (0/1), extra data]
-					stringData = new string[]{ WorldData.GetRegionString(worldX, worldY), texName },
+					//stringData = new string[]{ WorldData.GetRegionString(worldX, worldY) },
 					uid = uid
 				}
 			};

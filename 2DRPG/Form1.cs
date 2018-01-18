@@ -56,12 +56,6 @@ namespace _2DRPG {
 
 			MaximizeBox = false;
 
-			lock (WorldData.currentRegions) {
-				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
-					foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects())
-						o.ContextCreated();
-				}
-			}
 			if (Save.SaveData.GameSettings.fullScreen) {
 				FormBorderStyle = FormBorderStyle.None;
 				WindowState = FormWindowState.Maximized;
@@ -99,23 +93,11 @@ namespace _2DRPG {
 		}
 
 		private void RenderControl_ContextUpdate(object sender, GlControlEventArgs e) {
-			lock (WorldData.currentRegions) {     //Render the World Objects
-				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
-					foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects())
-						o.ContextUpdate();
-				}
-			}
 
 		}
 
 		private void RenderControl_ContextDestroying(object sender, GlControlEventArgs e) {
-			// Here you can dispose resources allocated in RenderControl_ContextCreated
-			lock (WorldData.currentRegions) {     //Render the World Objects
-				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
-					foreach (World.Objects.WorldObjectBase o in l.GetWorldObjects())
-						o.ContextDestroyed();
-				}
-			}
+
 		}
 
 		public static void ShiftOrtho(double x, double y) {
@@ -148,6 +130,8 @@ namespace _2DRPG {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void RenderControl_Render_GL(object sender, GlControlEventArgs e) {
+			if (!contextCreated)
+				return;
 			if (updateFullscreen) {
 				FormBorderStyle = FormBorderStyle.None;
 				WindowState = FormWindowState.Maximized;

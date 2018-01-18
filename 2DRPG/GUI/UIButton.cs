@@ -13,16 +13,16 @@ namespace _2DRPG.GUI {
 		/// </summary>
 		public UIText displayLabel = null;
 
-		public UIButton(string textureName) : base(textureName) { }
+		public UIButton(Texture textureName) : base(textureName) { }
 
-		public UIButton(Action click) : base("button") {
+		public UIButton(Action click) : base(TextureManager.TextureNames.button) {
 			buttonAction = click;
 		}
-		public UIButton(Action click, string labelText) : base("button") {
+		public UIButton(Action click, string labelText) : base(TextureManager.TextureNames.button) {
 			buttonAction = click;
 			displayLabel = new UIText(0, 0, 1f, 1, labelText);
 		}
-		public UIButton(Action click, string labelText, string textureName) : base(textureName) {
+		public UIButton(Action click, string labelText, Texture textureName) : base(textureName) {
 			buttonAction = click;
 			displayLabel = new UIText(0, 0, .5f, 1, labelText);
 		}
@@ -36,11 +36,11 @@ namespace _2DRPG.GUI {
 		/// <param name="click">Action to be executed when clicked</param>
 		/// <param name="layer">Render layer</param>
 		/// <param name="textureName">Name of the texture</param>
-		public UIButton(float x, float y, float width, float height, Action click, int layer, string textureName) : base(x, y, width, height, layer, textureName) {
+		public UIButton(float x, float y, float width, float height, Action click, int layer, Texture textureName) : base(x, y, width, height, layer, textureName) {
 			buttonAction = click;
 		}
-		public UIButton(float x, float y, float width, float height, int layer, string textureName) : base(x, y, width, height, layer, textureName) { }
-		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 2, "textBox") {
+		public UIButton(float x, float y, float width, float height, int layer, Texture textureName) : base(x, y, width, height, layer, textureName) { }
+		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 2, TextureManager.TextureNames.button) {
 			SetLayer(defaultLayer);
 			buttonAction = click;
 		}

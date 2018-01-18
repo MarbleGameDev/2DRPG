@@ -34,14 +34,14 @@ namespace _2DRPG.GUI {
 		/// <param name="texName">Name of the texture</param>
 		/// <param name="label">UIText label to be displayed on the dropdown button</param>
 		/// <param name="dropdowns">array of UIButtons to consist of the dropdown options</param>
-		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIText label, UIButton[] dropdowns) : base(x, y, width, height, layer, texName) {
+		public UIDropdownButton(float x, float y, float width, float height, int layer, Texture texName, UIText label, UIButton[] dropdowns) : base(x, y, width, height, layer, texName) {
 			displayLabel = label;
 			SetDropdowns(dropdowns);
 			buttonAction = new Action(ToggleDropdowns);
 		}
-		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIText label) : this(x, y, width, height, layer, texName, label, null) { }
+		public UIDropdownButton(float x, float y, float width, float height, int layer, Texture texName, UIText label) : this(x, y, width, height, layer, texName, label, null) { }
 
-		public UIDropdownButton(float x, float y, float width, float height, int layer, string texName, UIButton[] dropdowns) : this(x, y, width, height, layer, texName, null, dropdowns) { }
+		public UIDropdownButton(float x, float y, float width, float height, int layer, Texture texName, UIButton[] dropdowns) : this(x, y, width, height, layer, texName, null, dropdowns) { }
 
 		public void SetDropdowns(UIButton[] dropdowns) {
 			if (dropdowns == null)

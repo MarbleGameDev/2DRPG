@@ -65,7 +65,8 @@ namespace _2DRPG {
 				if (ignoreKeys.Contains(k))
 					return;
 				ManualKeys(new KeyInputs[] { k });
-				InputCall.Invoke(new KeyInputs[] { k });
+				if (InputCall != null)
+					InputCall.Invoke(new KeyInputs[] { k });
 				ignoreKeys.Add(k);
 
 			}
@@ -105,7 +106,8 @@ namespace _2DRPG {
 					if (keysHeld[k])
 						keys.Add(k);
 				}
-				InputCall.Invoke(keys.ToArray());
+				if (InputCall != null)
+					InputCall.Invoke(keys.ToArray());
 				ManualKeys(keys.ToArray());
 			}
 		}

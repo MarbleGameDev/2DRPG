@@ -11,18 +11,18 @@ namespace _2DRPG.GUI.Windows {
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			new UIButton(0f, 80f, 80f, 10f, () => {
 				Screen.CloseWindow("pause");
-			}, 1, "button") {
+			}, 1, TextureManager.TextureNames.button) {
 				displayLabel = new UIText(0f, 80f, .5f, 0, "Continue")
 			},
 			new UIButton(0f, 50f, 80f, 10f, () => {
 				Screen.CloseWindow("pause");
 				Screen.OpenWindow("options");
-			}, 1, "button") {
+			}, 1, TextureManager.TextureNames.button) {
 				displayLabel = new UIText(0f, 50f, .5f, 0, "Options")
 			},
 			new UIButton(0f, 20f, 80f, 10f, () => {
 				Application.Exit();
-			}, 1, "button") {
+			}, 1, TextureManager.TextureNames.button) {
 				displayLabel = new UIText(0f, 20f, .5f, 0, "Quit")
 			}
 		};
@@ -36,8 +36,8 @@ namespace _2DRPG.GUI.Windows {
 			return UIObjects;
 		}
 
-		public string[] textureNames = new string[] {
-			"button"
+		Texture[] textureNames = new Texture[] {
+			TextureManager.TextureNames.button
 		};
 
 		public void LoadTextures() {

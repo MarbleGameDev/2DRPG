@@ -10,7 +10,7 @@ namespace _2DRPG.GUI.Windows {
 		static UIGridLayout items = new UIGridLayout(0, 0, 3) { gridDisplayHeight = 3, gridWidth = 3 };
 
 		static HashSet<UIBase> UIItems = new HashSet<UIBase>() {
-			new UIBase(0, 0, 80, 80, 5, "darkBack"),
+			new UIBase(0, 0, 80, 80, 5, TextureManager.TextureNames.darkBack),
 			items
 		};
 
@@ -25,14 +25,15 @@ namespace _2DRPG.GUI.Windows {
 			return UIItems;
 		}
 
-
+		/// <summary>
+		/// Sets up all UI components in the itemList
+		/// </summary>
 		private void UpdateItemGrid() {
 			List<UIItem> b = new List<UIItem>();
 			for (int index = 0; index < displayItems.Count; index++) {
 				int ind = index;
 				Items.Item it = displayItems[ind];
-				string texture = "random1";
-				UIItem i = new UIItem(texture, it) { NineSliceRendering = false };
+				UIItem i = new UIItem(TextureManager.TextureNames.DEFAULT, it) { NineSliceRendering = false };
 				i.SetButtonAction(() => {
 					items.SelectGridItem(ind);
 				});
@@ -41,7 +42,7 @@ namespace _2DRPG.GUI.Windows {
 			items.SetGridItems(b.ToArray());
 		}
 
-		string[] textureNames = new string[] { "darkBack", "random1", "selected" };
+		Texture[] textureNames = new Texture[] { TextureManager.TextureNames.darkBack, TextureManager.TextureNames.selected };
 
 		public void LoadTextures() {
 			Screen.WindowOpen = true;

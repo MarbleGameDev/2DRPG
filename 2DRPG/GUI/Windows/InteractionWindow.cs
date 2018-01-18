@@ -17,7 +17,7 @@ namespace _2DRPG.GUI.Windows {
 		};
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, -120, 150, 40, 3, "textBox"),
+			new UIBase(0, -120, 150, 40, 3, TextureManager.TextureNames.textBox),
 			blob	
 		};
 
@@ -86,8 +86,8 @@ namespace _2DRPG.GUI.Windows {
 			return UIObjects;
 		}
 
-		private string[] textures = new string[] {
-			"darkBack", "button", "textBox"
+		Texture[] textures = new Texture[] {
+			TextureManager.TextureNames.darkBack, TextureManager.TextureNames.button, TextureManager.TextureNames.textBox
 		};
 
 		public void LoadTextures() {

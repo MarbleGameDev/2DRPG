@@ -8,113 +8,81 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Specialized;
 using System.Collections;
+using System.Reflection;
 
 namespace _2DRPG {
 	public static class TextureManager {
 
-		private static Dictionary<string, uint> loadedTextureIDs = new Dictionary<string, uint>();
-
-		private static Dictionary<string, string> texturePaths = new Dictionary<string, string>() {
-			{"flower", "Sprites/SpriteSheets/Flowers.png" },
-			{"default", "Sprites/Default.png" },
-			{"heart", "Sprites/Heart.png" },
-            {"character", "Sprites/SpriteSheets/MainCharacter.png" },
-			{"tempCharacter", "Sprites/SpriteSheets/Character.png" },
-			{"baseFont", "Sprites/SpriteSheets/BaseFont.png" },
-			{"button", "Sprites/Button.png" },
-			{"lightBack", "Sprites/LightBackground.png"},
-			{"darkBack", "Sprites/DarkBackground.png"},
-			{"textBox", "Sprites/TextBox.png"},
-			{"exit", "Sprites/Exit.png" },
-			{ "none", "Sprites/None.png"},
-			{ "selected", "Sprites/Selected.png"},
-			{ "random1", "Sprites/Random.png"},
-			{ "random2", "Sprites/Fish.png"},
-			{ "random3", "Sprites/Random2.png"},
-			{ "random4", "Sprites/Random3.png"}
+		public static class TextureNames {
+			public static readonly Texture
+				flower = new Texture("SpriteSheets/Flowers.png"),
+				DEFAULT = new Texture("Default.png"),
+				heart = new Texture("Heart.png"),
+				character = new Texture("SpriteSheets/MainCharacter.png"),
+				tempCharacter = new Texture("SpriteSheets/Character.png"),
+				baseFont = new Texture("SpriteSheets/BaseFont.png"),
+				button = new Texture("Button.png"),
+				lightBack = new Texture("LightBackground.png"),
+				darkBack = new Texture("DarkBackground.png"),
+				textBox = new Texture("TextBox.png"),
+				exit = new Texture("Exit.png"),
+				none = new Texture("None.png"),
+				selected = new Texture("Selected.png")
+		;
 		};
 
-		private static string spriteLocation = "../../";
-
-		private static Dictionary<string, int> textureUses = new Dictionary<string, int>();
-
-		static TextureManager() {
-			foreach (string s in texturePaths.Keys) {
-				textureUses.Add(s, 0);
-			}
-		}
-		/// <summary>
-		/// Returns the Texture ID for the given textureName as set up earlier by LoadTexture
-		/// </summary>
-		/// <param name="textureName"></param>
-		/// <returns></returns>
-		public static uint GetTextureID(string textureName) {
-			if (loadedTextureIDs.ContainsKey(textureName))
-				return loadedTextureIDs[textureName];
-			return 0;
-		}
+		private static string spriteLocation = "../../Sprites/";
 
 		/// <summary>
 		/// Loads a texture from the file path specified into the manager for access via the textureName given
 		/// </summary>
 		/// <param name="textureName">Name of the texture as registed in TextureManager</param>
-		private static void LoadTexture(string textureName) {
-				try {
-					Bitmap texSource = new Bitmap(spriteLocation + (string)texturePaths[textureName]);    //Graps the bitmap data from the path
-					texSource.RotateFlip(RotateFlipType.RotateNoneFlipY);
-					uint id = Gl.GenTexture();
-					Gl.BindTexture(TextureTarget.Texture2d, id);
-					Gl.TexStorage2D(TextureTarget.Texture2d, 12, InternalFormat.Rgba, texSource.Width, texSource.Height);
-					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest); //Mipmap options
-					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
-					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
-					Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
-					Gl.TexImage2D(TextureTarget.Texture2d, 0, InternalFormat.Rgba, texSource.Width, texSource.Height, 0, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);     //Sets up the blank GL 2d Texture
-					BitmapData bitmap_data = texSource.LockBits(new Rectangle(0, 0, texSource.Width, texSource.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);    //extracts the bitmap data
-					Gl.TexSubImage2D(TextureTarget.Texture2d, 0, 0, 0, texSource.Width, texSource.Height, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmap_data.Scan0);      //Adds the bitmap data to the texture
-					Gl.GenerateMipmap(TextureTarget.Texture2d);
-					texSource.UnlockBits(bitmap_data);
-					loadedTextureIDs.Add(textureName, id);
-					Gl.BindTexture(TextureTarget.Texture2d, 0);
-				} catch (Exception) {
-					System.Diagnostics.Debug.WriteLine("Could not find file: " + textureName);
-				}
+		private static void LoadTexture(Texture textureName) {
+			try {
+				Bitmap texSource = new Bitmap(spriteLocation + textureName.path);    //Graps the bitmap data from the path
+				texSource.RotateFlip(RotateFlipType.RotateNoneFlipY);
+				uint id = Gl.GenTexture();
+				Gl.BindTexture(TextureTarget.Texture2d, id);
+				Gl.TexStorage2D(TextureTarget.Texture2d, 12, InternalFormat.Rgba, texSource.Width, texSource.Height);
+				Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest); //Mipmap options
+				Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
+				Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+				Gl.TexParameter(TextureTarget.Texture2d, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+				Gl.TexImage2D(TextureTarget.Texture2d, 0, InternalFormat.Rgba, texSource.Width, texSource.Height, 0, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);     //Sets up the blank GL 2d Texture
+				BitmapData bitmap_data = texSource.LockBits(new Rectangle(0, 0, texSource.Width, texSource.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);    //extracts the bitmap data
+				Gl.TexSubImage2D(TextureTarget.Texture2d, 0, 0, 0, texSource.Width, texSource.Height, OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmap_data.Scan0);      //Adds the bitmap data to the texture
+				Gl.GenerateMipmap(TextureTarget.Texture2d);
+				texSource.UnlockBits(bitmap_data);
+				textureName.glID = id;
+				Gl.BindTexture(TextureTarget.Texture2d, 0);
+			} catch (Exception) {
+				System.Diagnostics.Debug.WriteLine("Could not find file: " + textureName);
+			}
         }
 
 		/// <summary>
 		/// Registers all textures in the array if necessary
 		/// </summary>
 		/// <param name="textureNames"></param>
-		public static void RegisterTextures(string[] textureNames) {
-			foreach (string s in textureNames) {
-				if (texturePaths.ContainsKey(s) && textureUses.ContainsKey(s)) {
-					textureUses[s]++;
-					if (!loadedTextureIDs.ContainsKey(s))
-						LoadTexture(s);
-				}
+		public static void RegisterTextures(Texture[] textures) {
+			foreach (Texture s in textures) {
+				s.uses++;
+				if (s.glID == 0)
+					LoadTexture(s);
 			}
 		}
 		/// <summary>
 		/// Unregisters all textures in the array if necesary
 		/// </summary>
 		/// <param name="textureNames"></param>
-		public static void UnRegisterTextures(string[] textureNames) {
-			foreach (string s in textureNames) {
-				if (texturePaths.ContainsKey(s) && textureUses.ContainsKey(s)) {
-					textureUses[s]--;
-					if (textureUses[s] <= 0) {
-						if (loadedTextureIDs.ContainsKey(s)) {
-							Gl.DeleteTextures(loadedTextureIDs[s]);
-							loadedTextureIDs.Remove(s);
-						}
-						textureUses[s] = 0;
-					}
+		public static void UnRegisterTextures(Texture[] textures) {
+			foreach (Texture s in textures) {
+				if (s.uses == 1) {
+					Gl.DeleteTextures(s.glID);
+					s.glID = 0;
 				}
+				s.uses--;
 			}
-		}
-
-		public static void ClearTextures() {
-			loadedTextureIDs.Clear();
 		}
 
 	}

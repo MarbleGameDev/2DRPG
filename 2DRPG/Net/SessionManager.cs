@@ -133,6 +133,7 @@ namespace _2DRPG.Net {
 					break;
 				case UDPFrame.FrameType.Movement:   //Packet received by guest to update position of an object that moved on the host's end
 					System.Diagnostics.Debug.WriteLine("Movement");
+					/*			Movement currently broken
 					if (frame.floatData.Length > 1 && frame.stringData.Length > 0 && WorldData.currentRegions.ContainsKey(frame.stringData[0])) {
 						lock(WorldData.currentRegions)
 							foreach (World.Objects.WorldObjectBase b in WorldData.currentRegions[frame.stringData[0]].GetWorldObjects()) {
@@ -142,6 +143,7 @@ namespace _2DRPG.Net {
 								}
 							}
 					}
+					*/
 					break;
 				case UDPFrame.FrameType.Quest:
 					System.Diagnostics.Debug.WriteLine("Quest");
@@ -198,7 +200,8 @@ namespace _2DRPG.Net {
 					}
 					break;
 				case UDPFrame.FrameType.WorldObject:
-					WorldData.PacketToWorldObject(frame);
+					//World Objects not supported by packets currently
+					//WorldData.PacketToWorldObject(frame);
 					break;
 			}
 			SendFrame(new UDPFrame() {

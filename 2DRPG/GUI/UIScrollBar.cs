@@ -13,8 +13,8 @@ namespace _2DRPG.GUI {
 		private UIDraggable scrollKnob;
 		public IScrollable scrollTarget;
 
-		public UIScrollBar(float x, float y, float width, float height, int layer) : base(x, y, width, height, layer, "textBox") {
-			scrollKnob = new UIDraggable(x, y, width + 2, width + 2, 1, "textBox") {
+		public UIScrollBar(float x, float y, float width, float height, int layer) : base(x, y, width, height, layer, TextureManager.TextureNames.textBox) {
+			scrollKnob = new UIDraggable(x, y, width + 2, width + 2, layer - 1, TextureManager.TextureNames.textBox) {
 				positionUpdate = () => {
 					newMouse = Input.MouseY + mouseY;
 					SetScroll();

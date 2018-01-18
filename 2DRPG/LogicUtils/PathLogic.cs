@@ -89,10 +89,10 @@ namespace _2DRPG.LogicUtils {
 			if (showPath)
 				lock (WorldData.currentRegions) {
 					foreach (Node nd in path) {
-						WorldData.tempRender.Add(new World.Objects.WorldObjectBase(nd.Location.X, nd.Location.Y, "button", 1, 1));
+						WorldData.tempRender.Add(new World.Objects.WorldObjectBase(nd.Location.X, nd.Location.Y, TextureManager.TextureNames.button, 1, 1));
 					}
 					foreach (Node nd in routedPath)
-						WorldData.tempRender.Add(new World.Objects.WorldObjectBase(nd.Location.X, nd.Location.Y, "textBox", 1, 1));
+						WorldData.tempRender.Add(new World.Objects.WorldObjectBase(nd.Location.X, nd.Location.Y, TextureManager.TextureNames.textBox, 1, 1));
 
 				}
 

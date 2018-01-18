@@ -103,7 +103,6 @@
     <Compile Include="Quests\IQuest.cs" />
     <Compile Include="Quests\ItemPickup.cs" />
     <Compile Include="Quests\QuestData.cs" />
-    <Compile Include="Save\RegionSave.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\IScrollable.cs" />
     <Compile Include="GUI\UIButton.cs" />
@@ -120,7 +119,11 @@
     <Compile Include="Quests\TaskBase.cs" />
     <Compile Include="Save\SaveData.cs" />
     <Compile Include="Save\Settings.cs" />
+    <Compile Include="Texture.cs" />
     <Compile Include="World\Editable.cs" />
+    <Compile Include="World\Entities\WorldEntity.cs" />
+    <Compile Include="World\Entities\WorldEntityAnimated.cs" />
+    <Compile Include="World\ObjectData.cs" />
     <Compile Include="World\Objects\ICollidable.cs" />
     <Compile Include="World\Objects\IInventory.cs" />
     <Compile Include="World\Objects\WorldObjectCollidable.cs" />
@@ -165,6 +168,7 @@
     <Compile Include="World\Regions\Node.cs" />
     <Compile Include="World\Regions\NodeGrid.cs" />
     <Compile Include="World\Regions\RegionBase.cs" />
+    <Compile Include="World\Regions\RegionTag.cs" />
     <EmbeddedResource Include="DevWindow.resx">
       <DependentUpon>DevWindow.cs</DependentUpon>
     </EmbeddedResource>

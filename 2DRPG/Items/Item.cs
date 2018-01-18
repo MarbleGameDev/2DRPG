@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using _2DRPG.Save;
 
 namespace _2DRPG.Items {
+	[Serializable]
 	abstract class Item {
 
 		public bool Stackable { get; private set; }
@@ -17,12 +18,6 @@ namespace _2DRPG.Items {
 		public Item(int quantity, bool stackable) {
 			Quantity = quantity;
 			Stackable = stackable;
-		}
-
-		public Item(RegionSave.ItemStorage store) {
-			Quantity = store.Quantity;
-			Stackable = store.Stackable;
-			Name = store.Name;
 		}
 
 		/// <summary>
@@ -69,10 +64,6 @@ namespace _2DRPG.Items {
 			if (a.Quantity <= 0)
 				a = null;
 			return a;
-		}
-
-		public virtual RegionSave.ItemStorage StoreObject() {
-			return new RegionSave.ItemStorage { type = typeof(Item), Name = Name, Quantity = Quantity, Stackable = Stackable };
 		}
 
 		public override string ToString() {

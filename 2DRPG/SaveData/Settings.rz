@@ -6,8 +6,8 @@
   "worldBuilder": true,
   "windowx": 1280,
   "windowy": 720,
-  "coOp": true,
-  "coOpUID": "2d0712f3-2c2a-4a6e-babe-5fa6feb1268c",
+  "coOp": false,
+  "coOpUID": "615c998b-cac8-4bb8-9f85-ce50c87bb9c5",
   "keys": {
     "left": "A",
     "right": "D",

@@ -20,7 +20,7 @@ namespace _2DRPG.GUI {
 		/// <param name="height">Distance to the top and bottom</param>
 		/// <param name="layer">Render layer</param>
 		/// <param name="textureName">Name of the texture</param>
-		public UIDraggable(float x, float y, float width, float height, int layer = 0, string textureName = "button") : base(x, y, width, height, layer, textureName) {
+		public UIDraggable(float x, float y, float width, float height, int layer, Texture textureName) : base(x, y, width, height, layer, textureName) {
 			buttonAction = () => { Form1.dragged = this; };
 			positionUpdate = () => { SetScreenPosition(Input.MouseX + mouseX, Input.MouseY + mouseY); };
 		}

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using _2DRPG.GUI.Interaction;
 using Newtonsoft.Json.Linq;
 using _2DRPG.Save;
+using System.Runtime.Serialization;
 
 namespace _2DRPG.World.Objects {
+	[Serializable]
 	public class WorldObjectDialogue : WorldObjectBase, IInteractable {
 
 		[Editable]
@@ -22,15 +24,19 @@ namespace _2DRPG.World.Objects {
 		/// <param name="y">Y position in the world</param>
 		/// <param name="layer">Render Layer</param>
 		/// <param name="textureName">Name of the texture</param>
-		public WorldObjectDialogue(float x, float y, int layer, string textureName = "default", float width = 16, float height = 16) : base(x, y, layer, textureName, width, height) {
+		public WorldObjectDialogue(float x, float y, int layer, Texture textureName, float width = 16, float height = 16) : base(x, y, layer, textureName, width, height) {
 			
 		}
-		public WorldObjectDialogue(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
-			InteractionID = (string)store.extraData[0];
-			List<RegionSave.InteractionObjectStorage> st = ((JArray)store.extraData[1]).ToObject<List<RegionSave.InteractionObjectStorage>>();
-			foreach (RegionSave.InteractionObjectStorage s in st)
-				InterItems.Add(RegionSave.ConstructInteractionObject(s));
+
+		[OnSerialized]
+		private void LoadInteractions() {
+			InterItems = SaveData.LoadInteractions(InteractionID);
 		}
+		[OnDeserializing]
+		private void SaveInteractions() {
+			SaveData.SaveInteractions(InterItems, InteractionID);
+		}
+
 
 		public void Interact() {
 			GUI.Windows.InteractionWindow.SetInteractionElements(InterItems);
@@ -39,17 +45,6 @@ namespace _2DRPG.World.Objects {
 				DevWindow.Interaction.SetupTree();
 			}
 			Screen.OpenWindow("interaction");
-		}
-
-		public override RegionSave.WorldObjectStorage StoreObject() {
-			List<RegionSave.InteractionObjectStorage> st = new List<RegionSave.InteractionObjectStorage>();
-			foreach (InteractionBase b in InterItems) {
-				st.Add(b.StoreObject());
-			}
-			RegionSave.WorldObjectStorage store = base.StoreObject();
-			store.objectType = RegionSave.WorldObjectType.Dialogue;
-			store.extraData = new object[] { InteractionID, st };
-			return store;
 		}
 
 		public string GetName() {

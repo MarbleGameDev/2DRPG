@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using _2DRPG.Entities;
 
 namespace _2DRPG.Player {
+	[Serializable]
 	class MCObject : World.Objects.WorldObjectControllable, IDamagable, IEffectable {
 
 		public PlayerData Data = new PlayerData();
 
-		public MCObject() : base("character") {
+		public MCObject() : base(TextureManager.TextureNames.character) {
 			MovementSpeed = 2.5f ;
 			width = 15;
 			height = 33;

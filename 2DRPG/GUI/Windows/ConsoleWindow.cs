@@ -9,7 +9,7 @@ namespace _2DRPG.GUI.Windows {
 	class ConsoleWindow : IWindow {
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIBase(0, 144, 205, 36, 0, "textBox"),
+			new UIBase(0, 144, 205, 36, 0, TextureManager.TextureNames.textBox),
 			input, output,
 
 		};
@@ -17,7 +17,7 @@ namespace _2DRPG.GUI.Windows {
 		List<string> previousInputs = new List<string>();
 		int currentInput;
 
-		static UITypeBox input = new UITypeBox(0, 100, 200, 20, 0, 1, "") { showBackground = false };
+		static UITypeBox input = new UITypeBox(0, 100, 200, 20, 0, 1, TextureManager.TextureNames.DEFAULT) { showBackground = false };
 		static UITextBox output = new UITextBox(0, 168, .5f, 400, 0, 3, "");
 
 		public HashSet<UIBase> LoadObjects() {
@@ -32,9 +32,9 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		private void SubmitInput() {
-			if (input.text.GetText().Substring(1).Length == 0)
+			string s = input.text.GetText().Replace("`", "");
+			if (s.Length == 0)
 				return;
-			string s = input.text.GetText().Substring(1);
 			previousInputs.Add(s);
 			currentInput = previousInputs.Count;
 			input.text.SetText("`");
@@ -62,7 +62,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 
-		string[] textures = new string[] { "textBox" };
+		Texture[] textures = new Texture[] { TextureManager.TextureNames.textBox };
 
 		public void LoadTextures() {
 			Input.DirectKeyCode += KeyCode;

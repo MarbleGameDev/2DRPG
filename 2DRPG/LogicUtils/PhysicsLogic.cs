@@ -35,6 +35,9 @@ namespace _2DRPG.LogicUtils {
 			}
 			if (!playerstuck) {
 				Form1.AddOrthoUpdate(WorldData.player.UpdatePosition);
+			} else {
+				WorldData.player.movementQueueX = 0;
+				WorldData.player.movementQueueY = 0;
 			}
 		}
 

@@ -11,11 +11,11 @@ namespace _2DRPG.GUI {
 
 		public Items.Item backedItem;
 
-		public UIItem(string textureName, Items.Item itm) : base(textureName) {
+		public UIItem(Texture textureName, Items.Item itm) : base(textureName) {
 			backedItem = itm;
 		}
 
-		public UIItem(Action click, string textureName, Items.Item itm) : base (textureName) {
+		public UIItem(Action click, Texture textureName, Items.Item itm) : base (textureName) {
 			SetButtonAction(click);
 			backedItem = itm;
 		}
@@ -24,8 +24,8 @@ namespace _2DRPG.GUI {
 		public override void Render() {
 			base.Render();
 			if (IsSelected) {
-				string tmp = texName;
-				texName = "selected";
+				Texture tmp = texName;
+				texName = TextureManager.TextureNames.selected;
 				base.Render();
 				texName = tmp;
 			}

@@ -7,41 +7,13 @@ using _2DRPG.Items;
 using _2DRPG.Save;
 
 namespace _2DRPG.Player {
+	[Serializable]
 	class PlayerInventory {
 
 		private List<Item> items = new List<Item>();
 
 		private List<IEquippable> equipped = new List<IEquippable>();
 
-		/// <summary>
-		/// List of Items for storage, automatically packaged up for serialization
-		/// </summary>
-		public List<RegionSave.ItemStorage> ItemList{
-			get {
-				List<RegionSave.ItemStorage> stores = new List<RegionSave.ItemStorage>();
-				foreach (Item i in items)
-					stores.Add(i.StoreObject());
-				return stores;
-			}
-			set {
-				foreach (RegionSave.ItemStorage store in value) {
-					items.Add((Item)Activator.CreateInstance(store.type, store));
-				}
-			}
-		}
-
-		public List<RegionSave.ItemStorage> EquippedList {
-			get {
-				List<RegionSave.ItemStorage> stores = new List<RegionSave.ItemStorage>();
-				foreach (Item i in equipped)
-					stores.Add(i.StoreObject());
-				return stores;
-			}
-			set {
-				foreach (RegionSave.ItemStorage store in value)
-					equipped.Add((IEquippable)Activator.CreateInstance(store.type, store));
-			}
-		}
 
 		public void AddItem(Item i) {
 			if (!Contains(i))

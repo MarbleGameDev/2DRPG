@@ -14,7 +14,7 @@ namespace _2DRPG.LogicUtils {
 
 		public static WorldObjectBase interactableObject;
 
-		private static WorldObjectBase nulled = new WorldObjectBase(float.MaxValue, float.MaxValue, 10, "default");
+		private static WorldObjectBase nulled = new WorldObjectBase(float.MaxValue, float.MaxValue, 10, TextureManager.TextureNames.DEFAULT);
 
 		static void EntityLogic(object sender, ElapsedEventArgs e) {
 			if (GameState.CurrentState == GameState.GameStates.Paused || Screen.WindowOpen) {

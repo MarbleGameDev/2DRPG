@@ -38,7 +38,7 @@ namespace _2DRPG.GUI {
 			}
 		}
 
-		public UIChar(float x, float y, float size, int layer, char cha) : base(x, y, size, size, layer, "baseFont") {
+		public UIChar(float x, float y, float size, int layer, char cha) : base(x, y, size, size, layer, TextureManager.TextureNames.baseFont) {
 			charSize = size;
 			displayChar = cha;
 			NineSliceRendering = false;

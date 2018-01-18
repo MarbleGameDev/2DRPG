@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using _2DRPG.Save;
 
 namespace _2DRPG.World.Objects {
+	[Serializable]
 	class WorldObjectControllable : WorldObjectMovable {
 
 
@@ -16,17 +17,14 @@ namespace _2DRPG.World.Objects {
 		/// <param name="y"></param>
 		/// <param name="layer"></param>
 		/// <param name="textureName"></param>
-		public WorldObjectControllable(float x, float y, int layer, string textureName, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
+		public WorldObjectControllable(float x, float y, int layer, Texture textureName, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = 2f;
 			SetLayer(layer);
 		}
-		public WorldObjectControllable(String textureName) : base(textureName) {
+		public WorldObjectControllable(Texture textureName) : base(textureName) {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = 2f;
-		}
-		public WorldObjectControllable(RegionSave.WorldObjectStorage store) : this(store.worldX, store.worldY, store.layer, store.textureName, store.width, store.height) {
-			SetUID(store.uid);
 		}
 
 		private void MoveOnKeys(Input.KeyInputs[] k) {
@@ -38,12 +36,6 @@ namespace _2DRPG.World.Objects {
 				movementQueueY = MovementSpeed;
 			if (k.Contains(Input.KeyInputs.down))
 				movementQueueY = -MovementSpeed;
-		}
-
-		public override RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage store = base.StoreObject();
-			store.objectType = RegionSave.WorldObjectType.Controllable;
-			return store;
 		}
 
 	}

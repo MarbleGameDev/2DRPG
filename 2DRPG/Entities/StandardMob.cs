@@ -22,21 +22,15 @@ namespace _2DRPG.Entities {
 		/// <param name="y">Y position in the world</param>
 		/// <param name="textureName">Name of the texture</param>
 		/// <param name="type">AIType to use for the Mob</param>
-		public StandardMob(float x, float y, string textureName, AIBase.AIType type, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
+		public StandardMob(float x, float y, Texture textureName, AIBase.AIType type, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
 			mobAI = new AIBase(this) { type = type};
 		}
 
-		public StandardMob(float x, float y, string textureName, AIBase.AIType type = AIBase.AIType.Passive) : base(x, y, textureName) {
+		public StandardMob(float x, float y, Texture textureName, AIBase.AIType type = AIBase.AIType.Passive) : base(x, y, textureName) {
 			mobAI = new AIBase(this) { type = type};
 		}
-		public StandardMob(string textureName, AIBase.AIType type = AIBase.AIType.Passive) : base(textureName) {
+		public StandardMob(Texture textureName, AIBase.AIType type = AIBase.AIType.Passive) : base(textureName) {
 			mobAI = new AIBase(this) { type = type};
-		}
-
-		public StandardMob(RegionSave.WorldObjectStorage store) : base(store) {
-			MovementSpeed = (float)((double)store.extraData[0]);
-			mobAI = new AIBase(this) { type = (AIBase.AIType)Enum.Parse(typeof(AIBase.AIType), (string)store.extraData[1]) };
-			effectList = ((JArray)store.extraData[2]).ToObject<List<EntityEffect>>();
 		}
 
 		public override void UpdatePosition() {
@@ -105,13 +99,6 @@ namespace _2DRPG.Entities {
 		public void ReceiveAttack(Attack a) {
 			a.GetAttackAction(this).Invoke();
 			entityHealth -= a.attackDamage;
-		}
-
-		public override RegionSave.WorldObjectStorage StoreObject() {
-			RegionSave.WorldObjectStorage s = base.StoreObject();
-			s.extraData = new object[] { MovementSpeed, mobAI.type.ToString(), effectList };
-			s.objectType = RegionSave.WorldObjectType.StandardMob;
-			return s;
 		}
 	}
 }
