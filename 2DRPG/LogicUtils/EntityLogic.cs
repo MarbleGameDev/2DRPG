@@ -31,7 +31,7 @@ namespace _2DRPG.LogicUtils {
 
 						if (o is Entities.IEffectable en)
 							en.EffectTick();
-						if (o is Entities.StandardMob sn) {
+						if (o is World.Entities.StandardMob sn) {
 							sn.AITick();
 						}
 

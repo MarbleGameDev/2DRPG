@@ -10,9 +10,11 @@ namespace _2DRPG {
 		public string path;
 		public uint glID;
 		public ushort uses;
+		public string name;
 
-		public Texture(string path) {
+		public Texture(string name, string path) {
 			this.path = path;
+			this.name = name;
 			glID = 0;
 			uses = 0;
 		}

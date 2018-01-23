@@ -15,21 +15,33 @@ namespace _2DRPG {
 
 		public static class TextureNames {
 			public static readonly Texture
-				flower = new Texture("SpriteSheets/Flowers.png"),
-				DEFAULT = new Texture("Default.png"),
-				heart = new Texture("Heart.png"),
-				character = new Texture("SpriteSheets/MainCharacter.png"),
-				tempCharacter = new Texture("SpriteSheets/Character.png"),
-				baseFont = new Texture("SpriteSheets/BaseFont.png"),
-				button = new Texture("Button.png"),
-				lightBack = new Texture("LightBackground.png"),
-				darkBack = new Texture("DarkBackground.png"),
-				textBox = new Texture("TextBox.png"),
-				exit = new Texture("Exit.png"),
-				none = new Texture("None.png"),
-				selected = new Texture("Selected.png")
+				flower = new Texture("flower", "SpriteSheets/Flowers.png"),
+				DEFAULT = new Texture("default", "Default.png"),
+				heart = new Texture("heart", "Heart.png"),
+				character = new Texture("character", "SpriteSheets/MainCharacter.png"),
+				tempCharacter = new Texture("tempCharacter", "SpriteSheets/Character.png"),
+				baseFont = new Texture("baseFont", "SpriteSheets/BaseFont.png"),
+				button = new Texture("button", "Button.png"),
+				lightBack = new Texture("lightBack", "LightBackground.png"),
+				darkBack = new Texture("darkBack", "DarkBackground.png"),
+				textBox = new Texture("textBox", "TextBox.png"),
+				exit = new Texture("exit", "Exit.png"),
+				none = new Texture("none", "None.png"),
+				selected = new Texture("selected", "Selected.png")
 		;
-		};
+		}
+
+		private static Dictionary<string, Texture> textureLookup = new Dictionary<string, Texture>();
+
+		static TextureManager() {
+			textureLookup = typeof(TextureNames).GetFields(BindingFlags.Public | BindingFlags.Static).ToDictionary(f => ((Texture)f.GetValue(null)).name, f => (Texture)f.GetValue(null));
+		}
+
+		public static Texture RetrieveTexture(string textureName) {
+			if (textureLookup != null && textureLookup.ContainsKey(textureName))
+				return textureLookup[textureName];
+			return TextureNames.DEFAULT;
+		}
 
 		private static string spriteLocation = "../../Sprites/";
 
@@ -65,6 +77,8 @@ namespace _2DRPG {
 		/// </summary>
 		/// <param name="textureNames"></param>
 		public static void RegisterTextures(Texture[] textures) {
+			if (textures.Length == 0)
+				return;
 			foreach (Texture s in textures) {
 				s.uses++;
 				if (s.glID == 0)
@@ -76,6 +90,8 @@ namespace _2DRPG {
 		/// </summary>
 		/// <param name="textureNames"></param>
 		public static void UnRegisterTextures(Texture[] textures) {
+			if (textures.Length == 0)
+				return;
 			foreach (Texture s in textures) {
 				if (s.uses == 1) {
 					Gl.DeleteTextures(s.glID);

@@ -12,12 +12,13 @@ namespace _2DRPG.World.Regions {
 	class RegionBase {
 
 		public RegionTag Tag { get; private set; }
+
+		[NonSerialized]
 		public List<Texture> TextureNames = new List<Texture>();
 		protected HashSet<WorldObjectBase> regionObjects = new HashSet<WorldObjectBase>();
 		public Dictionary<int, HashSet<int>> CollisionPoints = new Dictionary<int, HashSet<int>>();
 
 		public RegionBase() {
-
 		}
 		public RegionBase(RegionTag reg) {
 			Tag = reg;
@@ -31,7 +32,13 @@ namespace _2DRPG.World.Regions {
 		/// Called when the region is loaded into active world space
 		/// </summary>
 		public void Load() {
-
+			TextureNames = new List<Texture>();
+			Unload();
+			TextureNames.Clear();
+			foreach (WorldObjectBase ba in regionObjects) {
+				TextureNames.Add(ba.texName);
+				System.Diagnostics.Debug.WriteLine(ba);
+			}
 			TextureManager.RegisterTextures(TextureNames.ToArray());
 		}
 
@@ -45,10 +52,11 @@ namespace _2DRPG.World.Regions {
 
 		[OnSerializing]
 		private void FindTextures(StreamingContext sc) {
-			TextureNames.Clear();
-			foreach (WorldObjectBase b in regionObjects)
-				TextureNames.Add(b.texName);
 			CompileCollisionHash();
+		}
+		[OnDeserialized]
+		private void GetTextures(StreamingContext sc) {
+			System.Diagnostics.Debug.WriteLine(Tag);
 		}
 
 		public void CompileCollisionHash() {

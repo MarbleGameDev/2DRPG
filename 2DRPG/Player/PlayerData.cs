@@ -8,6 +8,6 @@ namespace _2DRPG.Player {
 	[Serializable]
 	class PlayerData {
 
-		public PlayerInventory inventory = new PlayerInventory();
+		public StandardInventory inventory = new StandardInventory();
 	}
 }

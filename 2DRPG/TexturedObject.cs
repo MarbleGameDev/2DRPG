@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenGL;
 using System.Drawing.Imaging;
+using System.Runtime.Serialization;
 
 namespace _2DRPG {
 	[Serializable]
@@ -20,7 +21,9 @@ namespace _2DRPG {
 		[World.Editable]
 		public int layer;
 
+		[NonSerialized]
 		public Texture texName = TextureManager.TextureNames.DEFAULT;
+		private string storeTex;
 
 		public Guid uid;
 
@@ -131,6 +134,16 @@ namespace _2DRPG {
 			quadPosition[5] = -(float)layer / 10;
 			quadPosition[8] = -(float)layer / 10;
 			quadPosition[11] = -(float)layer / 10;
+		}
+
+		[OnSerializing]
+		private void StoreTexture(StreamingContext sc) {
+			storeTex = texName.name;
+		}
+		[OnDeserialized]
+		private void LoadTexture(StreamingContext sc) {
+			System.Diagnostics.Debug.WriteLine("three");
+			texName = TextureManager.RetrieveTexture(storeTex);
 		}
 	}
 }

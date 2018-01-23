@@ -155,6 +155,7 @@ namespace _2DRPG.Save {
 				}
 			}
 			SaveTasks();
+			SaveEntities();
 			GUI.Windows.NotificationWindow.NewNotification("Data Saved", 60);
 		}
 
@@ -170,6 +171,7 @@ namespace _2DRPG.Save {
 		/// </summary>
 		public static void LoadGameData() {
 			LoadTasks();
+			LoadEntities();
 			//Loading of region files is handled by the WorldData class
 		}
 
@@ -194,6 +196,15 @@ namespace _2DRPG.Save {
 			foreach (KeyValuePair<string, Quests.IQuest> q in Quests.QuestData.QuestDatabase) {
 				SerializeObjectToZip(q.Value, q.Key, "Package_02");
 			}
+		}
+
+		private static void LoadEntities() {
+			WorldData.worldEntities = DeSerializeObjectFromZip<HashSet<World.Entities.WorldEntity>>("E_01", "Package_01");
+			if (WorldData.worldEntities == null)
+				WorldData.worldEntities = new HashSet<World.Entities.WorldEntity>();
+		}
+		private static void SaveEntities() {
+			SerializeObjectToZip(WorldData.worldEntities, "E_01", "Package_01");
 		}
 
 		//Move regions to and from Disk

@@ -17,10 +17,9 @@ namespace _2DRPG.World.Objects {
 		/// <param name="y"></param>
 		/// <param name="layer"></param>
 		/// <param name="textureName"></param>
-		public WorldObjectControllable(float x, float y, int layer, Texture textureName, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
+		public WorldObjectControllable(float x, float y, int layer, Texture textureName, float width = 16, float height = 16) : base(x, y, layer, textureName, width, height) {
 			Input.InputCall += MoveOnKeys;
 			MovementSpeed = 2f;
-			SetLayer(layer);
 		}
 		public WorldObjectControllable(Texture textureName) : base(textureName) {
 			Input.InputCall += MoveOnKeys;

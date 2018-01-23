@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _2DRPG.World.Regions;
-using _2DRPG.Save;
+using _2DRPG.Entities;
 
-namespace _2DRPG.Entities {
-	class StandardMob : World.Objects.WorldObjectMovable, IEffectable, IDamagable {
+namespace _2DRPG.World.Entities {
+	class StandardMob : World.Entities.WorldEntity, IEffectable, IDamagable {
 		public float entityHealth;
 		List<EntityEffect> effectList = new List<EntityEffect>();
 		List<Node> navigationPath = new List<Node>();
@@ -22,14 +22,11 @@ namespace _2DRPG.Entities {
 		/// <param name="y">Y position in the world</param>
 		/// <param name="textureName">Name of the texture</param>
 		/// <param name="type">AIType to use for the Mob</param>
-		public StandardMob(float x, float y, Texture textureName, AIBase.AIType type, float width = 16, float height = 16) : base(x, y, textureName, width, height) {
+		public StandardMob(float x, float y, int layer, Texture textureName, AIBase.AIType type, float width = 16, float height = 16) : base(x, y, layer, textureName, width, height) {
 			mobAI = new AIBase(this) { type = type};
 		}
 
 		public StandardMob(float x, float y, Texture textureName, AIBase.AIType type = AIBase.AIType.Passive) : base(x, y, textureName) {
-			mobAI = new AIBase(this) { type = type};
-		}
-		public StandardMob(Texture textureName, AIBase.AIType type = AIBase.AIType.Passive) : base(textureName) {
 			mobAI = new AIBase(this) { type = type};
 		}
 

@@ -103,7 +103,7 @@
     <Compile Include="Net\SessionManager.cs" />
     <Compile Include="Net\UDPFrame.cs" />
     <Compile Include="Net\UDPMessager.cs" />
-    <Compile Include="Player\PlayerInventory.cs" />
+    <Compile Include="Player\StandardInventory.cs" />
     <Compile Include="Quests\IQuest.cs" />
     <Compile Include="Quests\ItemPickup.cs" />
     <Compile Include="Quests\QuestData.cs" />
@@ -127,15 +127,17 @@
     <Compile Include="World\Editable.cs" />
     <Compile Include="World\Entities\WorldEntity.cs" />
     <Compile Include="World\Entities\WorldEntityAnimated.cs" />
+    <Compile Include="World\Entities\WorldEntityAnimatedDecayable.cs" />
     <Compile Include="World\ObjectData.cs" />
     <Compile Include="World\Objects\ICollidable.cs" />
+    <Compile Include="World\Objects\IDelayable.cs" />
     <Compile Include="World\Objects\IInventory.cs" />
     <Compile Include="World\Objects\WorldObjectCollidable.cs" />
     <Compile Include="World\Objects\WorldObjectDialogue.cs" />
     <Compile Include="World\Objects\WorldObjectControllable.cs" />
     <Compile Include="EffectAttack.cs" />
     <Compile Include="Entities\EntityEffect.cs" />
-    <Compile Include="Entities\StandardMob.cs" />
+    <Compile Include="World\Entities\StandardMob.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

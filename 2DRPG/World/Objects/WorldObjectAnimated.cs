@@ -62,7 +62,7 @@ namespace _2DRPG.World.Objects {
 		}
 
 		int frameCount = 0;
-        public void SpriteUpdate() {
+        public virtual void AnimationTick() {
 			if (frameInterval == 0)
 				return;
 			if (frameCount % frameInterval == 0) {

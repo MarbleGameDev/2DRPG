@@ -8,7 +8,7 @@ using _2DRPG.Save;
 
 namespace _2DRPG.Player {
 	[Serializable]
-	class PlayerInventory {
+	class StandardInventory {
 
 		private List<Item> items = new List<Item>();
 
@@ -81,6 +81,8 @@ namespace _2DRPG.Player {
 		public void CleanupInventory() {
 			for (int i = items.Count - 1; i >= 0; i--) {
 				if (items[i] == null)
+					items.RemoveAt(i--);
+				else if (items[i].Quantity == 0)
 					items.RemoveAt(i--);
 			}
 		}

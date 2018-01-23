@@ -149,6 +149,7 @@ namespace _2DRPG.World.Objects {
 				}
 			}
 		}
+
 		/// <summary>
 		/// Adds all necessary data in order to transmit the worldobject over UDP Packets
 		/// See table in WorldObjectBase for the integers for each WorldObject

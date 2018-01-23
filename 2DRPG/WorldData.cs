@@ -11,6 +11,7 @@ using _2DRPG.World.Regions;
 using _2DRPG.GUI;
 using System.Diagnostics;
 using _2DRPG.Player;
+using _2DRPG.World.Entities;
 
 namespace _2DRPG {
 	static class WorldData {
@@ -20,6 +21,7 @@ namespace _2DRPG {
 		public static float CurrentY = 1;
 		public static Dictionary<RegionTag, RegionBase> currentRegions = new Dictionary<RegionTag, RegionBase>();
 		public static HashSet<UIBase> worldUIs = new HashSet<UIBase>();
+		public static HashSet<WorldEntity> worldEntities = new HashSet<WorldEntity>();
 		
 		//Hashset used for testing custom worldObjects, added via AddObjects()
 		public static HashSet<WorldObjectBase> tempRender = new HashSet<WorldObjectBase>();
@@ -36,7 +38,7 @@ namespace _2DRPG {
 		/// Used to add objects to the world that can't be done during runtime
 		/// </summary>
 		private static void AddObjects() {
-				//AddToRegion(-1, 0, new WorldObjectCollidable(-40, 20, 10, TextureManager.TextureNames.heart));
+				//AddToRegion(0, 0, new WorldObjectCollidable(40, 20, 10, TextureManager.TextureNames.heart));
 		}
 
 		/// <summary>

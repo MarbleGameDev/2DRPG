@@ -16,10 +16,12 @@ namespace _2DRPG.LogicUtils {
 			lock (WorldData.currentRegions) {
 				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
 					foreach (WorldObjectBase o in l.GetWorldObjects()) {
-						if (pos && o is Entities.StandardMob sn)
+						if (pos && o is World.Entities.StandardMob sn)
 							sn.UpdatePosition();
 						if (o is WorldObjectAnimated an)
-							an.SpriteUpdate();
+							an.AnimationTick();
+						else if (o is IDelayable de)
+							de.AnimationTick();
 					}
 				}
 			}

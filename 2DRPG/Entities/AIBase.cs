@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using _2DRPG.World.Objects;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using _2DRPG.World.Entities;
 
 namespace _2DRPG.Entities {
 	class AIBase {

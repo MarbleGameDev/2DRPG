@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using _2DRPG.World.Objects;
 using _2DRPG.World;
 using System.Reflection;
+using _2DRPG.World.Entities;
 using _2DRPG.Entities;
 using System.Windows.Forms;
 
