@@ -51,8 +51,9 @@ namespace _2DRPG.GUI {
 			int counter = 0;
 			float xLeft = screenX - ((gridWidth - 1) * (gridSize + gridSpacing)) / 2f;
 			float yTop = ((gridDisplayHeight-1) * (gridSize + gridSpacing)) / 2f + screenY;
+			float[] dims = { gridSize / 2f, gridSize / 2f };
 			foreach (UIItem b in items) {
-				b.SetScreenDimensions((counter % gridWidth) * (gridSize + gridSpacing) + xLeft, yTop - (counter / gridWidth) * (gridSize + gridSpacing), gridSize / 2f, gridSize / 2f);
+				b.SetScreenDimensions((counter % gridWidth) * (gridSize + gridSpacing) + xLeft, yTop - (counter / gridWidth) * (gridSize + gridSpacing), dims, dims, dims, dims);
 				counter++;
 				b.SetLayer(layer);
 				gridItems.Add(b);
@@ -68,7 +69,8 @@ namespace _2DRPG.GUI {
 			scissorMask[1] = (int)(Screen.PixeltoNormalizedHeight(screenY - hei) * Screen.screenHeight) + Screen.screenY;
 			scissorMask[2] = (int)(Screen.PixeltoNormalizedWidth(screenX + wid) * Screen.screenWidth) - (int)(Screen.PixeltoNormalizedWidth(screenX - wid) * Screen.screenWidth);
 			scissorMask[3] = (int)(Screen.PixeltoNormalizedHeight(screenY + hei) * Screen.screenHeight) - (int)(Screen.PixeltoNormalizedHeight(screenY - hei) * Screen.screenHeight);
-			SetScreenDimensions(wid, hei);
+			float[] dims = { wid, hei };
+			SetScreenDimensions(dims, dims, dims, dims);
 		}
 
 		public bool CheckScrollWheel(float x, float y, int dir, object sender) {

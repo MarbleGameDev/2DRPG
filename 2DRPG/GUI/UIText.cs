@@ -21,7 +21,7 @@ namespace _2DRPG.GUI {
 		/// <param name="y">Y position on the screen</param>
 		/// <param name="textSize">size of the text, multipled by 16 to get pixel counts</param>
 		/// <param name="text">text to be displayed</param>
-		public UIText(float x, float y, float textSize, int layer, string text) : base(x, y, textSize * 16 * text.Length, textSize * 16, layer, TextureManager.TextureNames.button) {
+		public UIText(float x, float y, float textSize, int layer, string text) : base(x, y, layer, TextureManager.TextureNames.button, textSize * 16 * text.Length, textSize * 16, textSize * 16 * text.Length, textSize * 16, textSize * 16 * text.Length, textSize * 16, textSize * 16 * text.Length, textSize * 16) {
 			SetText(text, textSize);
 		}
 		/// <summary>
@@ -33,7 +33,7 @@ namespace _2DRPG.GUI {
 		/// <param name="charWidth">width of the text</param>
 		/// <param name="layer">Render layer</param>
 		/// <param name="text">text to be displayed</param>
-		public UIText(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, charWidth, textSize * 16, layer, TextureManager.TextureNames.button) {
+		public UIText(float x, float y, float textSize, int charWidth, int layer, string text) : base(x, y, layer, TextureManager.TextureNames.button, charWidth, textSize * 16, charWidth, textSize * 16, charWidth, textSize * 16, charWidth, textSize * 16) {
 			SetText(text, textSize);
 		}
 
@@ -61,8 +61,14 @@ namespace _2DRPG.GUI {
 		}
 		public void SetTextSize(float textSize) {
 			this.textSize = textSize;
-			width = textSize * 16 * displayText.Length;
-			height = textSize * 16;
+			width1 = textSize * 16 * displayText.Length;
+			width2 = width1;
+			width3 = width1;
+			width4 = width1;
+			height1 = textSize * 16;
+			height2 = height1;
+			height3 = height1;
+			height4 = height1;
 			SetupChars();
 		}
 		public string GetText() {
@@ -78,17 +84,17 @@ namespace _2DRPG.GUI {
 				float charSize, startX, startY;
 				float widthA = 0, widthB = 0;
                 int col = -2;
-				if (width / characters.Length < height) {
-					charSize = width / characters.Length;
-					startX = screenX - width / 2;
-					startY = screenY + (height - charSize) / 2 - height / 4;
+				if (width1 / characters.Length < height1) {
+					charSize = width1 / characters.Length;
+					startX = screenX - width1 / 2;
+					startY = screenY + (height1 - charSize) / 2 - height1 / 4;
 				} else {
 					int count = 0;
 					foreach (char c in characters) {
 						count += (int)(UIChar.baseFontWidth[c - 32] * textSize * 2);
 					}
-					charSize = height;
-					startY = screenY - height / 4;
+					charSize = height1;
+					startY = screenY - height1 / 4;
 					startX = screenX - count / 2;
 				}
 				if (characters.Length > 0) {

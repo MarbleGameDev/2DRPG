@@ -17,23 +17,37 @@ namespace _2DRPG.World.Objects {
 		/// <summary>
 		/// Complete Declaration for WorldObjectBase
 		/// </summary>
-		/// <param name="x">X position in the world</param>
-		/// <param name="y">Y position in the world</param>
-		/// <param name="layer">Render Layer</param>
-		/// <param name="textureName">Name of the texture</param>
-		public WorldObjectBase(float x, float y, int layer, Texture textureName, float width = 16, float height = 16) : this(x, y, textureName, width, height) {
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="layer"></param>
+		/// <param name="textureName"></param>
+		/// <param name="width1"></param>
+		/// <param name="height1"></param>
+		/// <param name="width2"></param>
+		/// <param name="height2"></param>
+		/// <param name="width3"></param>
+		/// <param name="height3"></param>
+		/// <param name="width4"></param>
+		/// <param name="height4"></param>
+		public WorldObjectBase(float x, float y, int layer, Texture textureName, float width1 = 8, float height1 = 8, float width2 = 8, float height2 = 8, float width3 = 8, float height3 = 8, float width4 = 8, float height4 = 8) : this(x, y, textureName, width1, height1, width2, height2, width3, height3, width4, height4) {
 			SetLayer(layer);
 		}
 
 		public WorldObjectBase() : base() {
-			UpdateWorldPosition();
+			UpdateQuadPosition();
 		}
 		public WorldObjectBase(Texture textureName) : base(textureName) {
 
         }
-		public WorldObjectBase(float x, float y, Texture textureName, float width = 16, float height = 16) : base(textureName) {
-			this.width = width;
-			this.height = height;
+		public WorldObjectBase(float x, float y, Texture textureName, float width1 = 8, float height1 = 8, float width2 = 8, float height2 = 8, float width3 = 8, float height3 = 8, float width4 = 8, float height4 = 8) : base(textureName) {
+			this.width1 = width1;
+			this.height1 = height1;
+			this.width2 = width2;
+			this.height2 = height2;
+			this.width3 = width3;
+			this.height3 = height3;
+			this.width4 = width4;
+			this.height4 = height4;
 			SetWorldPosition(x, y);
 		}
 
@@ -56,17 +70,7 @@ namespace _2DRPG.World.Objects {
 		public void SetWorldPosition(float x, float y) {
 			worldX = x;
 			worldY = y;
-			UpdateWorldPosition();
-		}
-		/// <summary>
-		/// Adjusts the dimensions of the world object
-		/// </summary>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		public override void SetScreenDimensions(float width, float height) {
-			this.width = width;
-			this.height = height;
-			UpdateWorldPosition();
+			UpdateQuadPosition();
 		}
 		/// <summary>
 		/// Returns the location of the object as a Point
@@ -78,18 +82,45 @@ namespace _2DRPG.World.Objects {
 
 		/// <summary>
 		/// Redraws the vertices of the object using the world coordinates and dimensions
-		/// Call when the WorldX, WorldY, height, or width are updated outside of SetWorldPosition()
+		/// Call when the WorldX, WorldY, heights, or widths are updated outside of SetWorldPosition()
 		/// </summary>
-		public void UpdateWorldPosition() {
-			quadPosition[0] = worldX - width / 2;
-			quadPosition[3] = worldX - width / 2;
-			quadPosition[6] = worldX + width / 2;
-			quadPosition[9] = worldX + width / 2;
-			quadPosition[1] = worldY - height / 2;
-			quadPosition[10] = worldY - height / 2;
-			quadPosition[4] = worldY + height / 2;
-			quadPosition[7] = worldY + height / 2;
+		protected override void UpdateQuad() {
+			quadPosition[0] = worldX - width3;
+			quadPosition[1] = worldY - height3;
+			quadPosition[3] = worldX - width2;
+			quadPosition[4] = worldY + height2;
+			quadPosition[6] = worldX + width1;
+			quadPosition[7] = worldY + height1;
+			quadPosition[9] = worldX + width4;
+			quadPosition[10] = worldY - height4;
+			if (automaticTextureMapping)
+				ResetTexturePosition();
 			SendPacket();
+		}
+
+		protected override void Rotate(float angle) {
+			//UpdateQuad();
+			float anglRad = angle * (float)(Math.PI / 180);
+			//Working counterclockwise through quadrants
+			float currentang = (float)Math.Atan(height1 / width1) + anglRad;    //Fundamental angle of the vertex plus the current rotation
+			float hyp = (float)Math.Sqrt(height1 * height1 + width1 * width1);
+			quadPosition[6] = worldX + hyp * (float)Math.Cos(currentang);
+			quadPosition[7] = worldY + hyp * (float)Math.Sin(currentang);
+
+			currentang = (float)Math.Atan(height2 / -width2) + (float)Math.PI + anglRad;
+			hyp = (float)Math.Sqrt(height2 * height2 + width2 * width2);
+			quadPosition[3] = worldX + hyp * (float)Math.Cos(currentang);
+			quadPosition[4] = worldY + hyp * (float)Math.Sin(currentang);
+
+			currentang = (float)Math.Atan(height3 / width3) + (float)Math.PI + anglRad;
+			hyp = (float)Math.Sqrt(height3 * height3 + width3 * width3);
+			quadPosition[0] = worldX + hyp * (float)Math.Cos(currentang);
+			quadPosition[1] = worldY + hyp * (float)Math.Sin(currentang);
+
+			currentang = (float)Math.Atan(-height4 / width4) + anglRad;
+			hyp = (float)Math.Sqrt(height4 * height4 + width4 * width4);
+			quadPosition[9] = worldX + hyp * (float)Math.Cos(currentang);
+			quadPosition[10] = worldY + hyp * (float)Math.Sin(currentang);
 		}
 
 		public static void ShiftPosition(float[] quad, float x, float y) {
@@ -134,7 +165,7 @@ namespace _2DRPG.World.Objects {
 		/// To be called whenever values are directly modified outside of standard functions
 		/// </summary>
 		public virtual void ModificationAction() {
-			UpdateWorldPosition();
+			UpdateQuadPosition();
 			SetLayer(layer);
 			if (this is WorldObjectControllable)
 				return;
@@ -159,7 +190,7 @@ namespace _2DRPG.World.Objects {
 			return new Net.UDPFrame[]{
 				new Net.UDPFrame() {
 					subject = Net.UDPFrame.FrameType.WorldObject,
-					floatData = new float[] { worldX, worldY, width, height},
+					floatData = new float[] { worldX, worldY, width1, height1, width2, height2, width3, height3, width4, height4},
 					intData = new int[] { 0, 0, layer}, //[Object Type, multipacket system (0/1), extra data]
 					//stringData = new string[]{ WorldData.GetRegionString(worldX, worldY) },
 					uid = uid

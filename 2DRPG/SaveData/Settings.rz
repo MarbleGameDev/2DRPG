@@ -4,6 +4,7 @@
   "VSync": true,
   "devWindow": false,
   "worldBuilder": true,
+  "repairSaves": false,
   "windowx": 1280,
   "windowy": 720,
   "coOp": false,

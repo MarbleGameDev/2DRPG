@@ -13,44 +13,36 @@ namespace _2DRPG.GUI {
 		public int NineSliceBoarder = 5;
 		public int TextureSize = 15;
 
+		/// <summary>
+		/// Complete Declaration for UIBase
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="layer"></param>
+		/// <param name="textureName"></param>
+		/// <param name="width1"></param>
+		/// <param name="height1"></param>
+		/// <param name="width2"></param>
+		/// <param name="height2"></param>
+		/// <param name="width3"></param>
+		/// <param name="height3"></param>
+		/// <param name="width4"></param>
+		/// <param name="height4"></param>
+		public UIBase(float x, float y, int layer, Texture textureName, float width1 = 16, float height1 = 16, float width2 = 16, float height2 = 16, float width3 = 16, float height3 = 16, float width4 = 16, float height4 = 16) : base(x, y, layer, textureName, width1, height1, width2, height2, width3, height3, width4, height4) {
+
+		}
+
+		public UIBase(float x, float y, float width, float height, int layer, Texture textureName) : this(x, y, layer, textureName, width, height, width, height, width, height, width, height) {
+
+		}
+
 		public UIBase() : base() {
 			SetScreenPosition(screenX, screenY, defaultLayer);
 		}
 		public UIBase(Texture textureName) : base(textureName) {
 			SetScreenPosition(screenX, screenY, defaultLayer);
-		}
-		/// <summary>
-		/// Complete Declaration for UIBase
-		/// </summary>
-		/// <param name="x">X position on the screen</param>
-		/// <param name="y">Y position on the screen</param>
-		/// <param name="width">Distance to the left and right</param>
-		/// <param name="height">Distance to the top and bottom</param>
-		/// <param name="layer">Render layer</param>
-		/// <param name="textureName">Name of the texture</param>
-		public UIBase(float x, float y, float width, float height, int layer, Texture textureName) : base(x, y, layer, width, height, textureName) {
-
-		}
-		/// <summary>
-		/// Sets the position of the object on the screen
-		/// </summary>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		public override void SetScreenPosition(float x, float y) {
-			screenX = x;
-			screenY = y;
-			quadPosition[0] = (screenX - width);
-			quadPosition[3] = (screenX - width);
-			quadPosition[6] = (screenX + width);
-			quadPosition[9] = (screenX + width);
-			quadPosition[1] = (screenY - height);
-			quadPosition[10] = (screenY - height);
-			quadPosition[4] = (screenY + height);
-			quadPosition[7] = (screenY + height);
-		}
-		public override void SetScreenPosition(float x, float y, int layer) {
-			SetScreenPosition(x, y);
-			SetLayer(layer);
 		}
 
 		public override void Render() {
@@ -71,14 +63,14 @@ namespace _2DRPG.GUI {
 				for (int i = 0; i < 9; i++) {
 					int row = i % 3;
 					int col = i / 3;
-					tempQuad[0] = (col == 0) ? (screenX - width) : (col == 1) ? (screenX - width + NineSliceBoarder) : (screenX + width - NineSliceBoarder);
-					tempQuad[3] = tempQuad[0];
-					tempQuad[6] = (col == 0) ? (screenX - width + NineSliceBoarder) : (col == 1) ? (screenX + width - NineSliceBoarder) : (screenX + width);
-					tempQuad[9] = tempQuad[6];
-					tempQuad[1] = (row == 0) ? (screenY - height) : (row == 1) ? (screenY - height + NineSliceBoarder) : (screenY + height - NineSliceBoarder);
-					tempQuad[10] = tempQuad[1];
-					tempQuad[4] = (row == 0) ? (screenY - height + NineSliceBoarder) : (row == 1) ? (screenY + height - NineSliceBoarder) : (screenY + height);
-					tempQuad[7] = tempQuad[4];
+					tempQuad[0] = (col == 0) ? (screenX - width3) : (col == 1) ? (screenX - width3 + NineSliceBoarder) : (screenX + width4 - NineSliceBoarder);
+					tempQuad[3] = (col == 0) ? (screenX - width2) : (col == 1) ? (screenX - width2 + NineSliceBoarder) : (screenX + width1 - NineSliceBoarder);
+					tempQuad[6] = (col == 0) ? (screenX - width2 + NineSliceBoarder) : (col == 1) ? (screenX + width1 - NineSliceBoarder) : (screenX + width1);
+					tempQuad[9] = (col == 0) ? (screenX - width3 + NineSliceBoarder) : (col == 1) ? (screenX + width4 - NineSliceBoarder) : (screenX + width4);
+					tempQuad[1] = (row == 0) ? (screenY - height3) : (row == 1) ? (screenY - height3 + NineSliceBoarder) : (screenY + height2 - NineSliceBoarder);
+					tempQuad[10] = (row == 0) ? (screenY - height4) : (row == 1) ? (screenY - height4 + NineSliceBoarder) : (screenY + height1 - NineSliceBoarder);
+					tempQuad[4] = (row == 0) ? (screenY - height3 + NineSliceBoarder) : (row == 1) ? (screenY + height2 - NineSliceBoarder) : (screenY + height2);
+					tempQuad[7] = (row == 0) ? (screenY - height4 + NineSliceBoarder) : (row == 1) ? (screenY + height1 - NineSliceBoarder) : (screenY + height1);
 
 					tempTex[0] = (col == 0) ? (0f) : (col == 1) ? (boarder) : (1f - boarder);
 					tempTex[2] = tempTex[0];

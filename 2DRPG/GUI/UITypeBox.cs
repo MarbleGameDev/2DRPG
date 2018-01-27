@@ -23,7 +23,7 @@ namespace _2DRPG.GUI {
 		public Action valueAction = null;
 
 		/// <summary>
-		/// Complete Declaration for UITextBox,
+		/// Complete Declaration for UITypeBox,
 		/// Allows user input and typing
 		/// </summary>
 		/// <param name="x">X position on the screen</param>

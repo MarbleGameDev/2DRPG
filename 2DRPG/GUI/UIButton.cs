@@ -36,11 +36,11 @@ namespace _2DRPG.GUI {
 		/// <param name="click">Action to be executed when clicked</param>
 		/// <param name="layer">Render layer</param>
 		/// <param name="textureName">Name of the texture</param>
-		public UIButton(float x, float y, float width, float height, Action click, int layer, Texture textureName) : base(x, y, width, height, layer, textureName) {
+		public UIButton(float x, float y, float width1, float height1, float width2, float height2, float width3, float height3, float width4, float height4, Action click, int layer, Texture textureName) : base(x, y, layer, textureName, width1, height1, width2, height2, width3, height3, width4, height4) {
 			buttonAction = click;
 		}
-		public UIButton(float x, float y, float width, float height, int layer, Texture textureName) : base(x, y, width, height, layer, textureName) { }
-		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, width, height, 2, TextureManager.TextureNames.button) {
+		public UIButton(float x, float y, float width, float height, int layer, Texture textureName) : base(x, y, layer, textureName, width, height, width, height, width, height, width, height) { }
+		public UIButton(float x, float y, float width, float height, Action click) : base(x, y, 2, TextureManager.TextureNames.button, width, height, width, height, width, height, width, height) {
 			SetLayer(defaultLayer);
 			buttonAction = click;
 		}
@@ -85,9 +85,13 @@ namespace _2DRPG.GUI {
 		}
 		public override void SetScreenPosition(float x, float y) {
 			base.SetScreenPosition(x, y);
-			if (displayLabel != null) {
-				displayLabel.SetScreenPosition(x, y + (int)(height / 8));
-			}
+			if (displayLabel != null)
+				displayLabel.SetScreenPosition(x, y + (int)(height1 / 8));
+		}
+		public override void SetScreenDimensions(float x, float y, float[] dim1, float[] dim2, float[] dim3, float[] dim4) {
+			base.SetScreenDimensions(x, y, dim1, dim2, dim3, dim4);
+			if (displayLabel != null)
+				displayLabel.SetScreenPosition(x, y + (int)(height1 / 8));
 		}
 
 	}

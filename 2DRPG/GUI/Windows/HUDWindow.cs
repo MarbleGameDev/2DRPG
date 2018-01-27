@@ -35,7 +35,7 @@ namespace _2DRPG.GUI.Windows {
 		}
 
 		Texture[] textureNames = new Texture[] {
-			TextureManager.TextureNames.button, TextureManager.TextureNames.lightBack, TextureManager.TextureNames.darkBack, TextureManager.TextureNames.textBox
+			TextureManager.TextureNames.button, TextureManager.TextureNames.lightBack, TextureManager.TextureNames.darkBack, TextureManager.TextureNames.textBox, TextureManager.TextureNames.baseFont
 		};
 
 		public void LoadTextures() {

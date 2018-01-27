@@ -15,6 +15,7 @@ namespace _2DRPG.Save {
 		public bool VSync = true;
 		public bool devWindow = false;
 		public bool worldBuilder = true;
+		public bool repairSaves = false;
 		public int windowx = 640, windowy = 360;
 		public bool coOp = false;
 		public Guid coOpUID = Guid.NewGuid();

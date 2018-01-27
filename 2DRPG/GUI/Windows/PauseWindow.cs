@@ -9,21 +9,24 @@ namespace _2DRPG.GUI.Windows {
 	class PauseWindow : IWindow {
 
 		HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
-			new UIButton(0f, 80f, 80f, 10f, () => {
-				Screen.CloseWindow("pause");
-			}, 1, TextureManager.TextureNames.button) {
-				displayLabel = new UIText(0f, 80f, .5f, 0, "Continue")
+			new UIButton(0f, 80f, 80f, 10f, 1, TextureManager.TextureNames.button) {
+				displayLabel = new UIText(0f, 80f, .5f, 0, "Continue"),
+				buttonAction = () => {
+					Screen.CloseWindow("pause");
+				}
 			},
-			new UIButton(0f, 50f, 80f, 10f, () => {
-				Screen.CloseWindow("pause");
-				Screen.OpenWindow("options");
-			}, 1, TextureManager.TextureNames.button) {
-				displayLabel = new UIText(0f, 50f, .5f, 0, "Options")
+			new UIButton(0f, 50f, 80f, 10f, 1, TextureManager.TextureNames.button) {
+				displayLabel = new UIText(0f, 50f, .5f, 0, "Options"),
+				buttonAction = () => {
+					Screen.CloseWindow("pause");
+					Screen.OpenWindow("options");
+				}
 			},
-			new UIButton(0f, 20f, 80f, 10f, () => {
-				Application.Exit();
-			}, 1, TextureManager.TextureNames.button) {
-				displayLabel = new UIText(0f, 20f, .5f, 0, "Quit")
+			new UIButton(0f, 20f, 80f, 10f, 1, TextureManager.TextureNames.button) {
+				displayLabel = new UIText(0f, 20f, .5f, 0, "Quit"),
+				buttonAction = () => {
+					Application.Exit();
+				}
 			}
 		};
 

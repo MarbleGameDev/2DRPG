@@ -11,11 +11,10 @@ namespace _2DRPG.Player {
 
 		public PlayerData Data = new PlayerData();
 
-		public MCObject() : base(TextureManager.TextureNames.character) {
+		public MCObject() : base(0, 0, 10, TextureManager.TextureNames.character, 15, 33, 15, 33, 15, 33, 15, 33) {
 			MovementSpeed = 2.5f ;
-			width = 15;
-			height = 33;
-			UpdateWorldPosition();
+			//float[] size = { 15, 33 };
+			//SetScreenDimensions(size, size, size, size);
 		}
 
 		public void Teleport(float x, float y) {

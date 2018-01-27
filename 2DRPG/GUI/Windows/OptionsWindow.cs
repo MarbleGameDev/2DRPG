@@ -15,7 +15,7 @@ namespace _2DRPG.GUI.Windows {
 		static UIDropdownButton controls = new UIDropdownButton(40, 30, 40, 10, 3, TextureManager.TextureNames.button, new UIButton[] { }) { displaySize = 4, hideTop = true, showDrops = true, displayLabel = new UIText(0, 0, .5f, 1, "")};
 		static UIDropdownButton controlNames = new UIDropdownButton(-40, 30, 40, 10, 3, TextureManager.TextureNames.button, new UIButton[] { }) { displaySize = 4, hideTop = true, showDrops = true, displayLabel = new UIText(0, 0, .5f, 1, "")};
 
-		static UITab tabs = new UITab(-30, 110, 30, 10, 3, new List<UIButton> {
+		static UITab tabs = new UITab(-30, 110, 30, 10, 3, new UIButton[] {
 			new UIButton(TextureManager.TextureNames.textBox){ displayLabel = new UIText(-30, 112, .5f, 1, "Graphics") },
 			new UIButton(TextureManager.TextureNames.textBox){ displayLabel = new UIText(30, 112, .5f, 1, "Controls") }
 		}, new HashSet<UIBase>[] {
@@ -33,7 +33,9 @@ namespace _2DRPG.GUI.Windows {
 
 		static HashSet<UIBase> UIObjects = new HashSet<UIBase>() {
 			new UIBase(0, 0, 120, 150, 4, TextureManager.TextureNames.darkBack),
-			new UIButton(110, 140, 8, 8, () => { Screen.CloseWindow("options"); },1, TextureManager.TextureNames.exit),
+			new UIButton(110, 140, 8, 8,1, TextureManager.TextureNames.exit){
+				buttonAction = () => { Screen.CloseWindow("options"); }
+			},
 			new UIText(0, 140, 1f, 2, "Options"),
 			tabs
 		};

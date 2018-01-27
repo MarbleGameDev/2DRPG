@@ -21,6 +21,8 @@ namespace _2DRPG.GUI {
 		private int[] scissorMask = new int[4];
 		private float scrollAmount = 0, scrollMax = 0;
 
+		private float maxHeight = 0, minHeight = 0, maxWidth = 0, minWidth = 0;
+
 		public IScrollable scrollbar = null;
 
 		/// <summary>
@@ -44,30 +46,41 @@ namespace _2DRPG.GUI {
 		public UIDropdownButton(float x, float y, float width, float height, int layer, Texture texName, UIButton[] dropdowns) : this(x, y, width, height, layer, texName, null, dropdowns) { }
 
 		public void SetDropdowns(UIButton[] dropdowns) {
+			maxHeight = (height1 > height2) ? height1 : height2;
+			minHeight = (height3 > height4) ? height3 : height4;
+			maxWidth = (width1 > width4) ? width1 : width4;
+			minWidth = (width2 > width3) ? width2 : width3;
 			if (dropdowns == null)
 				return;
 			drops.Clear();
 			int counter = 1;
 			foreach (UIButton b in dropdowns) {
-				b.width = width;
-				b.height = height;
+				b.width1 = width1;
+				b.width2 = width2;
+				b.width3 = width3;
+				b.width4 = width4;
+				b.height1 = height1;
+				b.height2 = height2;
+				b.height3 = height3;
+				b.height4 = height4;
 				if (displayLabel != null && b.displayLabel != null) {
 					b.displayLabel.SetTextSize(displayLabel.textSize);
 				}
-				b.SetScreenPosition(screenX, screenY - counter++ * (height * 2 + spacing), layer - 2);
+				b.SetScreenPosition(screenX, screenY - counter++ * (minHeight + maxHeight + spacing), layer - 2);
 
 				drops.Add(b);
 			}
-			scrollMax = (drops.Count - displaySize) * (height * 2 + spacing);
+			scrollMax = (drops.Count - displaySize) * (height1 * 2 + spacing);	//find largest height
 			scrollAmount = 0;
 			SetScissorMask();
 		}
 
 		public void SetScissorMask() {
-			scissorMask[0] = (int)(Screen.PixeltoNormalizedWidth(screenX - width) * Screen.screenWidth) + Screen.screenX;
-			scissorMask[1] = (int)(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * (height * 2 + spacing)) * Screen.screenHeight) + Screen.screenY;
-			scissorMask[2] = -(int)(Screen.PixeltoNormalizedWidth(screenX - width) * Screen.screenWidth) + (int)(Screen.PixeltoNormalizedWidth(screenX + width) * Screen.screenWidth);
-			scissorMask[3] = (int)(Screen.PixeltoNormalizedHeight(screenY - height) * Screen.screenHeight) - (int)(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * (height * 2 + spacing)) * Screen.screenHeight);
+			//TODO: Check spacing correctness
+			scissorMask[0] = (int)(Screen.PixeltoNormalizedWidth(screenX - minWidth) * Screen.screenWidth) + Screen.screenX;
+			scissorMask[1] = (int)(Screen.PixeltoNormalizedHeight(screenY - minHeight - displaySize * (minHeight + maxHeight + spacing)) * Screen.screenHeight) + Screen.screenY;
+			scissorMask[2] = -(int)(Screen.PixeltoNormalizedWidth(screenX - minWidth) * Screen.screenWidth) + (int)(Screen.PixeltoNormalizedWidth(screenX + maxWidth) * Screen.screenWidth);
+			scissorMask[3] = (int)(Screen.PixeltoNormalizedHeight(screenY - minHeight) * Screen.screenHeight) - (int)(Screen.PixeltoNormalizedHeight(screenY - minHeight - displaySize * (minHeight + maxHeight + spacing)) * Screen.screenHeight);
 		}
 
 		private int scrollMod = 4;  //Amount of pixels each mouse turn moves
@@ -123,8 +136,8 @@ namespace _2DRPG.GUI {
 			if (showDrops) {
 				float[] testCoords = new float[12];
 				quadPosition.CopyTo(testCoords, 0);
-				testCoords[1] -= displaySize * (height * 2 + spacing);
-				testCoords[10] -= displaySize * (height * 2 + spacing);
+				testCoords[1] -= displaySize * (minHeight + maxHeight + spacing);
+				testCoords[10] -= displaySize * (minHeight + maxHeight + spacing);
 				return LogicUtils.Logic.CheckIntersection(testCoords, x, y);
 			} else {
 				if (!hideTop)

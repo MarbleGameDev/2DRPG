@@ -29,8 +29,12 @@ namespace _2DRPG.GUI.Windows {
 
 		static UIDropdownButton objectData = new UIDropdownButton(220, 100, 100, 20, 3, TextureManager.TextureNames.button, null, null) { hideTop = true };
 		static UIDropdownButton newObjects = new UIDropdownButton(0, 100, 100, 20, 2, TextureManager.TextureNames.button, new UIText(0, 100, .5f, 1, "Select Object Type")) { Visible = false, hideTop = true, showDrops = true, displaySize = 4 };
-		static UIButton applyBut = new UIButton(185, -140, 65, 8, () => { NewObject(); }, 1, TextureManager.TextureNames.button) { displayLabel = new UIText(188, -140, .5f, 0, "Apply"), Visible = false };
-		static UIButton moveBut = new UIButton(145, 120, 25, 8, () => { StartMovement(); }, 1, TextureManager.TextureNames.button) { displayLabel = new UIText(145, 122, .5f, 0, "Move"), Visible = false };
+		static UIButton applyBut = new UIButton(185, -140, 65, 8, 1, TextureManager.TextureNames.button) {
+			displayLabel = new UIText(188, -140, .5f, 0, "Apply"),
+			buttonAction = () => { NewObject(); }, Visible = false };
+		static UIButton moveBut = new UIButton(145, 120, 25, 8, 1, TextureManager.TextureNames.button) {
+			displayLabel = new UIText(145, 122, .5f, 0, "Move"),
+			buttonAction = () => { StartMovement(); }, Visible = false };
 		static UIText objectName = new UIText(220, 125, .5f, 1, "No Object Selected") { textColor = System.Drawing.Color.Aqua};
 		static UIText entityName = new UIText(220, 125, .5f, 1, "Selected Object is not Entity") { textColor = System.Drawing.Color.Aqua };
 
@@ -48,14 +52,20 @@ namespace _2DRPG.GUI.Windows {
 			}){ displayLabel = new UIText(0, 0, .5f, 1, "False")}
 		}) { Visible = false };
 
-		static UITab tabs = new UITab(190, 170, 35, 10, 3, new List<UIButton> {
+		static UITab tabs = new UITab(190, 170, 35, 10, 3, new UIButton[] {
 			new UIButton(TextureManager.TextureNames.textBox) { displayLabel = new UIText(0, 0, .5f, 1, "Objects")},
 			new UIButton(TextureManager.TextureNames.textBox) { displayLabel = new UIText(0, 0, .5f, 1, "Entities")}
 		}, new HashSet<UIBase>[] {
 			new HashSet<UIBase> {
-			new UIButton(155, 140, 35, 8, () => { Screen.CloseWindow("worldBuilder");  checkWorldObjects = true; },1, TextureManager.TextureNames.button){ displayLabel = new UIText(155, 142, .5f, 0, "Select Object") },
-			new UIButton(300, 140, 20, 8, () => { WorldData.RemoveObject(currentObject); }, 1, TextureManager.TextureNames.button){ displayLabel = new UIText(300, 142, .5f, 0, "Delete")},
-			new UIButton(235, 140, 35, 8, () => { newObjects.Visible = !newObjects.Visible; }, 1, TextureManager.TextureNames.button){ displayLabel = new UIText(235, 142, .5f, 0, "New Object")},
+			new UIButton(155, 140, 35, 8,1, TextureManager.TextureNames.button){
+				displayLabel = new UIText(155, 142, .5f, 0, "Select Object"),
+				buttonAction = () => { Screen.CloseWindow("worldBuilder"); checkWorldObjects = true; } },
+			new UIButton(300, 140, 20, 8, 1, TextureManager.TextureNames.button){
+				displayLabel = new UIText(300, 142, .5f, 0, "Delete"),
+				buttonAction = () => { WorldData.RemoveObject(currentObject); } },
+			new UIButton(235, 140, 35, 8, 1, TextureManager.TextureNames.button){
+				displayLabel = new UIText(235, 142, .5f, 0, "New Object"),
+				buttonAction = () => { newObjects.Visible = !newObjects.Visible; } },
 			objectData, newObjects, applyBut, objectName, moveBut
 			},
 			new HashSet<UIBase> {
@@ -67,8 +77,11 @@ namespace _2DRPG.GUI.Windows {
 
 		HashSet<UIBase> screenObjects = new HashSet<UIBase>() {
 			new UIBase(220, 0, 100, 180, 4, TextureManager.TextureNames.darkBack),
-			new UIButton(312, 172, 8, 8, () => { Screen.CloseWindow("worldBuilder"); Screen.InvokeSelection(); },1, TextureManager.TextureNames.exit),
-			new UIButton(288, -170, 30, 8, () => { Save.SaveData.SaveGameData(); }, 1, TextureManager.TextureNames.button){ displayLabel = new UIText(288, -168, .5f, 0, "Save Game")},
+			new UIButton(312, 172, 8, 8,1, TextureManager.TextureNames.exit){
+			buttonAction = () => { Screen.CloseWindow("worldBuilder"); Screen.InvokeSelection(); } },
+			new UIButton(288, -170, 30, 8, 1, TextureManager.TextureNames.button){
+				displayLabel = new UIText(288, -168, .5f, 0, "Save Game"),
+				buttonAction = () => { Save.SaveData.SaveGameData(); }},
 			tabs
 		};
 
@@ -114,7 +127,7 @@ namespace _2DRPG.GUI.Windows {
 				List<UIButton> b = new List<UIButton>();
 				FieldInfo[] props = currentObject.GetType().GetFields().Where(prop => Attribute.IsDefined(prop, typeof(Editable))).ToArray();
 				foreach (FieldInfo f in props) {
-					UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, 1, TextureManager.TextureNames.button);
+					UITypeBox tb = new UITypeBox(0, 0, objectData.width1, objectData.height1, 2, 1, TextureManager.TextureNames.button);
 					tb.text.SetText(f.Name + ":" + f.GetValue(currentObject).ToString());
 					tb.text.SetLayer(1);
 					tb.valueAction = () => {
@@ -184,7 +197,7 @@ namespace _2DRPG.GUI.Windows {
 			ntParams = new object[parms.Length];
 			int counter = 0;
 			foreach (ParameterInfo p in parms) {
-				UITypeBox tb = new UITypeBox(0, 0, objectData.width, objectData.height, 2, 1, TextureManager.TextureNames.button);
+				UITypeBox tb = new UITypeBox(0, 0, objectData.width1, objectData.height1, 2, 1, TextureManager.TextureNames.button);
 				tb.text.SetText(p.Name + ":");
 				int i = counter++;
 				tb.valueAction = () => {
@@ -280,8 +293,9 @@ namespace _2DRPG.GUI.Windows {
 		public void LoadTextures() {
 			List<UIButton> buts = new List<UIButton>();
 			foreach (ObjectData.WorldObjects t in Enum.GetValues(typeof(ObjectData.WorldObjects))) {
-				buts.Add(new UIButton(0, 0, newObjects.width, newObjects.height, () => { SetupNewObject(t); newObjects.Visible = false; }, 1, TextureManager.TextureNames.button) {
-					displayLabel = new UIText(0, 0, .5f, 0, t.ToString())
+				buts.Add(new UIButton(0, 0, newObjects.width1, newObjects.height1, 1, TextureManager.TextureNames.button) {
+					displayLabel = new UIText(0, 0, .5f, 0, t.ToString()),
+					buttonAction = () => { SetupNewObject(t); newObjects.Visible = false; }
 				});
 			}
 			newObjects.SetDropdowns(buts.ToArray());

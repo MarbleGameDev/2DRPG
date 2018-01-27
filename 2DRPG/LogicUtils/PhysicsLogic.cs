@@ -18,7 +18,7 @@ namespace _2DRPG.LogicUtils {
 			lock (WorldData.currentRegions) {
 				foreach (World.Regions.RegionBase l in WorldData.currentRegions.Values) {
 					foreach (WorldObjectBase o in l.GetWorldObjects()) {
-						if (o is ICollidable)
+						if (o is ICollidable)	//TODO: change collision to use line intersection instead of test points on the player
 							if (CheckIntersection(o.quadPosition, contPos[0], contPos[1]) ||
 								CheckIntersection(o.quadPosition, contPos[3], contPos[4]) ||
 								CheckIntersection(o.quadPosition, contPos[6], contPos[7]) ||

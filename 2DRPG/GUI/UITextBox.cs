@@ -41,7 +41,7 @@ namespace _2DRPG.GUI {
 				return false;
 			float[] testCoords = new float[12];
 			quadPosition.CopyTo(testCoords, 0);
-			testCoords[1] = screenY - height - displaySize * linespacing * textSize;
+			testCoords[1] = screenY - height3 - displaySize * linespacing * textSize;
 			testCoords[10] = testCoords[1];
 			return LogicUtils.Logic.CheckIntersection(testCoords, x, y);
 		}
@@ -84,10 +84,14 @@ namespace _2DRPG.GUI {
 		}
 
 		private void SetScissorMask() {
-			scissorMask[0] = (int)(Screen.PixeltoNormalizedWidth(screenX - width) * Screen.screenWidth) + Screen.screenX;
-			scissorMask[1] = (int)Math.Round(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * linespacing * textSize) * Screen.screenHeight) + Screen.screenY;
-			scissorMask[2] = -(int)(Screen.PixeltoNormalizedWidth(screenX - width) * Screen.screenWidth) + (int)(Screen.PixeltoNormalizedWidth(screenX + width + 2) * Screen.screenWidth);
-			scissorMask[3] = (int)(Screen.PixeltoNormalizedHeight(screenY + height) * Screen.screenHeight) - (int)(Screen.PixeltoNormalizedHeight(screenY - height - displaySize * linespacing * textSize) * Screen.screenHeight);
+			float maxHeight = (height1 > height2) ? height1 : height2;
+			float minHeight = (height3 > height4) ? height3 : height4;
+			float maxWidth = (width1 > width4) ? width1 : width4;
+			float minWidth = (width2 > width3) ? width2 : width3;
+			scissorMask[0] = (int)(Screen.PixeltoNormalizedWidth(screenX - minWidth) * Screen.screenWidth) + Screen.screenX;
+			scissorMask[1] = (int)Math.Round(Screen.PixeltoNormalizedHeight(screenY - minHeight - displaySize * linespacing * textSize) * Screen.screenHeight) + Screen.screenY;
+			scissorMask[2] = -(int)(Screen.PixeltoNormalizedWidth(screenX - minWidth) * Screen.screenWidth) + (int)(Screen.PixeltoNormalizedWidth(screenX + maxWidth + 2) * Screen.screenWidth);
+			scissorMask[3] = (int)(Screen.PixeltoNormalizedHeight(screenY + minHeight) * Screen.screenHeight) - (int)(Screen.PixeltoNormalizedHeight(screenY - minHeight - displaySize * linespacing * textSize) * Screen.screenHeight);
 		}
 
 		/// <summary>
@@ -127,7 +131,7 @@ namespace _2DRPG.GUI {
 				chars.Clear();
 				string[] words = displayText.Split(' ');
 				
-				float startX = screenX - width;
+				float startX = screenX - width2;
 				float startY = screenY;
                 float widthA = 6, widthB = 0;
 				int row = 0, col = 0;

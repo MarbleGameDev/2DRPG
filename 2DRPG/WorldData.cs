@@ -15,6 +15,9 @@ using _2DRPG.World.Entities;
 
 namespace _2DRPG {
 	static class WorldData {
+		static readonly float entityRenderDistance = 200f;
+
+
 		static int CurrentRegionX = 0;
 		static int CurrentRegionY = 0;
 		public static float CurrentX = 1;
@@ -34,11 +37,12 @@ namespace _2DRPG {
 			Visible = false
 		};
 
+		private static WorldObjectBase test = new WorldObjectCollidable(60, 20, 10, TextureManager.TextureNames.heart, 8, 8);
 		/// <summary>
 		/// Used to add objects to the world that can't be done during runtime
 		/// </summary>
 		private static void AddObjects() {
-				//AddToRegion(0, 0, new WorldObjectCollidable(40, 20, 10, TextureManager.TextureNames.heart));
+				AddToRegion(0, 0, test);
 		}
 
 		/// <summary>
@@ -169,6 +173,8 @@ namespace _2DRPG {
 		public static bool LoadWorldSave(string saveName) { //TODO: Add support here for the hosted world loading
 			if (!Save.SaveData.SetCurrentSave(saveName))
 				return false;
+			if (Save.SaveData.ValidateZips())
+
 			currentRegions.Clear();
 			player = Save.SaveData.LoadPlayer();
 			CurrentX = player.worldX;
@@ -194,7 +200,7 @@ namespace _2DRPG {
 		/// Loads all textures needed for the world objects to be added afterwards, This function is called once GL context is created, do not invoke manually
 		/// </summary>
 		public static void WorldStartup() {
-			TextureManager.RegisterTextures(new Texture[] { TextureManager.TextureNames.character, TextureManager.TextureNames.baseFont, TextureManager.TextureNames.tempCharacter });
+			TextureManager.RegisterTextures(new Texture[] { TextureManager.TextureNames.character, TextureManager.TextureNames.baseFont, TextureManager.TextureNames.tempCharacter, TextureManager.TextureNames.heart });
 			worldUIs.Add(interChar);
 
 			LoadWorldSave("master");
@@ -203,6 +209,7 @@ namespace _2DRPG {
 		}
 
 		public static void WorldRender() {
+			test.Rotation += .2f;
 			lock (currentRegions) {
 				foreach (RegionBase l in currentRegions.Values) {
 					foreach (WorldObjectBase o in l.GetWorldObjects())
@@ -214,6 +221,13 @@ namespace _2DRPG {
 				foreach (WorldObjectBase b in tempRender)
 					b.Render();
 			}
+			lock (worldEntities) {
+				foreach (WorldEntity e in worldEntities)
+					if (LogicUtils.Logic.ObjectDistance(player, e) < entityRenderDistance)
+						e.Render();
+			}
+
+
 			player.Render();
 			if (partner != null)
 				partner.Render();

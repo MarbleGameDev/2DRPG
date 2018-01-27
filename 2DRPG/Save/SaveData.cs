@@ -139,10 +139,10 @@ namespace _2DRPG.Save {
 		/// </summary>
 		/// <returns></returns>
 		public static bool CheckSaveState() {
-			if (!Directory.Exists(gameDataLocation)) {
-				return false;
+			if (Directory.Exists(gameDataLocation) && Directory.GetFiles(gameDataLocation).Contains(gameDataLocation + "Settings.rz")) {
+				return true;
 			}
-			return true;
+			return false;
 		}
 
 		/// <summary>
@@ -264,10 +264,12 @@ namespace _2DRPG.Save {
 			return default(T);
 		}
 
-		//Package_01: Region Data
-		//Package_02: Tasks Data
-		//Package_03: Player Data
-		//Package_04: Interaction Data
+		static readonly string[] packageNames = new string[] {
+			"Package_01",	//Region Data
+			"Package_02",	//Tasks Data
+			"Package_03",	//Player Data
+			"Package_04"	//Interaction Data
+		};
 
 		public static void SerializeObjectToZip(object obj, string fileName, string zipName) {
 			using (ZipFile zip = ZipFile.Read(gameDataLocation + CurrentSaveName + "/" + zipName + ".rzz"))
@@ -302,6 +304,35 @@ namespace _2DRPG.Save {
 			using (ZipFile zip = ZipFile.Read(gameDataLocation + CurrentSaveName + "/" + zipName + ".rzz")) {
 				return zip.ContainsEntry(fileName + ".rz");
 			}
+		}
+
+		/// <summary>
+		/// Checks all game package files, generates new zips if the settings are set
+		/// </summary>
+		/// <returns></returns>
+		public static bool ValidateZips() {
+			bool genZips = false;
+			string[] zips = Directory.GetFiles(gameDataLocation + CurrentSaveName + "/");
+
+			for (int i = 0; i < packageNames.Length; i++) {
+				if (!zips.Contains(gameDataLocation + CurrentSaveName + "/" + packageNames[i] + ".rzz") || !ZipFile.IsZipFile(gameDataLocation + CurrentSaveName + "/" + packageNames[i] + ".rzz")) {
+					System.Diagnostics.Debug.WriteLine("Missing Zip " + packageNames[i]);
+					if (CurrentSaveName  + "/" != MasterSaveLocation) {
+						if (GameSettings.repairSaves) {
+							File.Copy(gameDataLocation + MasterSaveLocation + packageNames[i], gameDataLocation + CurrentSaveName + "/" + packageNames[i]);
+							genZips = true;
+						} else {
+							MessageBox.Show("Missing game package " + packageNames[i] + ".rzz, set 'repairSaves' in Settings.rz to automatically restore on next start", "Game Save Error");
+						}
+					} else {
+						MessageBox.Show("Package " + packageNames[i] + "has been damaged, exit program now to avoid deletion", "Package Error");
+						ZipFile n = new ZipFile();
+						n.Save(gameDataLocation + CurrentSaveName + "/" + packageNames[i] + ".rzz");
+						genZips = true;
+					}
+				}
+			}
+			return !genZips;
 		}
 
 	}
